@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="{{ KEYWORDS }}">
+    <meta name="description" content="{{ DESCRIPTION }}">
+    <meta name="author" content="{{ AUTHOR }}">
+    <title>{{ TITLE }} - {{ PROJECT_NAME }}</title>
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
+    <!-- Plugin -->
+    <link href="{{ url_for('static', filename='plugin/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='plugin/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap-select.min.css') }}" rel="stylesheet">
+    <!-- Custom -->
+    <link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.css', v='1.5.02') }}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <!-- 头部导航 -->
+            {% include "_top.html" %}
+            <!-- 左侧导航 -->
+            {% include "_left.html" %}
+        </nav>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+            {# 闪现消息 success info warning danger #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            </div>
+            {% block content %}{% endblock %}
+
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/jquery-1.11.3.min.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='plugin/metisMenu/metisMenu.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-select.min.js') }}"></script>
+
+    <!-- Chart Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='plugin/Chart.js-2.6.0/dist/Chart.min.js') }}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ url_for('static', filename='js/sb-admin-2.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom.js', v='1.5.02') }}"></script>
+
+    <script src="{{ url_for('static', filename='plugin/moment-2.18.1/min/moment-with-locales.min.js') }}"></script>
+    <script>
+        moment.locale("zh-cn");
+        function flask_moment_render(elem) {
+            $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'));
+            $(elem).removeClass('flask-moment').show();
+        }
+        function flask_moment_render_all() {
+            $('.flask-moment').each(function () {
+                flask_moment_render(this);
+                if ($(this).data('refresh')) {
+                    (function (elem, interval) {
+                        setInterval(function () {
+                            flask_moment_render(elem)
+                        }, interval);
+                    })(this, $(this).data('refresh'));
+                }
+            })
+        }
+        $(document).ready(function () {
+            flask_moment_render_all();
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

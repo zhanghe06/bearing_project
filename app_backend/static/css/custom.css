@@ -1,0 +1,11 @@
+.fa {
+    font-size: initial;
+}
+
+/*闪现消息顶部固定*/
+.alert-fixed-top {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1040;
+}

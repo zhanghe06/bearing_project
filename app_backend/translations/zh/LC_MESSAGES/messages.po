@@ -1,0 +1,76 @@
+# Chinese translations for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-03-19 19:46+0800\n"
+"PO-Revision-Date: 2018-03-19 19:47+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.3\n"
+
+#: templates/_left.html:16
+msgid "management center"
+msgstr "管理中心"
+
+#: templates/_left.html:20
+msgid "customer management"
+msgstr "客户管理"
+
+#: templates/_left.html:23 views/customer.py:73
+msgid "customer lists"
+msgstr "客户列表"
+
+#: templates/_left.html:26 views/customer.py:137
+msgid "customer add"
+msgstr "客户创建"
+
+#: templates/_left.html:29
+msgid "customer stats"
+msgstr "客户统计"
+
+#: templates/customer/lists.html:48
+msgid "Search"
+msgstr "查询"
+
+#: templates/customer/lists.html:49
+msgid "Export"
+msgstr "导出"
+
+#: views/customer.py:83
+msgid "Search Failure"
+msgstr "查询失败"
+
+#: views/customer.py:121
+msgid "customer info"
+msgstr "客户信息"
+
+#: views/customer.py:155 views/customer.py:184
+msgid "Add Failure"
+msgstr "创建失败"
+
+#: views/customer.py:180
+msgid "Add Success"
+msgstr "创建成功"
+
+#: views/customer.py:211
+msgid "customer edit"
+msgstr "客户编辑"
+
+#: views/customer.py:243 views/customer.py:272
+msgid "Edit Failure"
+msgstr "编辑失败"
+
+#: views/customer.py:268
+msgid "Edit Success"
+msgstr "编辑成功"
+

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li><a href="/">后台管理</a></li>
+        <li class="active">后台首页</li>
+    </ol>
+    <div class="col-md-8 col-sm-offset-2 text-center">
+        <h2 class="sub-header">Welcome!</h2>
+        <div id="current_time">{{ moment().format('dddd, YYYY-MM-DD, a hh:mm:ss') }}</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// 当前时间同步刷新
+var update_time;
+(update_time = function () {
+    $('#current_time').html(moment().format('dddd, YYYY-MM-DD, a hh:mm:ss'));
+})();
+setInterval(update_time, 1000);
+</script>
+{% endblock %}

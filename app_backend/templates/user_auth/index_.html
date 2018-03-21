@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container">
+    <div class="row">
+        <h2>账号登录</h2>
+        <form class="form-horizontal" method="post" action="">
+            {{ form.csrf_token }}
+
+            {# 标签导航 #}
+            {#        <ul class="nav nav-tabs">  {# 填充整个导航条：nav-justified #}
+            {#            <li role="presentation" class="active"><a href="{{ url_for('auth.index') }}">账号登录</a></li>#}
+            {#            <li role="presentation"><a href="{{ url_for('auth.phone') }}">手机登录</a></li>#}
+            {#            <li role="presentation"><a href="{{ url_for('auth.email') }}">邮箱登录</a></li>#}
+            {#        </ul>#}
+            <div class="form-group"></div>
+            <div class="form-group{% if form.auth_key.errors %} has-error{% endif %}">
+                {{ form.auth_key.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-10">
+                    {{ form.auth_key(class="form-control") }}
+                    {% for error in form.auth_key.errors %}
+                        <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group{% if form.auth_secret.errors %} has-error{% endif %}">
+                {{ form.auth_secret.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-10">
+                    {{ form.auth_secret(class="form-control") }}
+                    {% for error in form.auth_secret.errors %}
+                        <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group{% if form.captcha.errors %} has-error{% endif %}">
+                {{ form.captcha.label(class="col-sm-2 col-xs-12 control-label") }}
+                <div class="col-sm-8 col-xs-8">
+                    {{ form.captcha(class="form-control") }}
+                    {% for error in form.captcha.errors %}
+                        <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="col-sm-2 col-xs-2">
+                    <img src="{{ url_for('captcha.get_code', code_type='login') }}" rel="tooltip" title="看不清？换一张"
+                         id="captcha_img" onclick="refresh_code();">
+                </div>
+            </div>
+            <div class="form-group{% if form.remember.errors %} has-error{% endif %}">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            {{ form.remember }} 记住登录状态
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" id="login_button" class="btn btn-default btn-load" data-loading-text="登录中"
+                            autocomplete="off">登录
+                    </button>
+                    <a href="#" data-toggle="modal" data-target="#forget_password">忘记密码?</a>
+                </div>
+            </div>
+        </form>
+
+
+
+    </div>
+    </div>
+    <!-- 忘记密码 -->
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // 刷新验证码
+        function refresh_code() {
+            var now = new Date();
+            $('#captcha_img')[0].setAttribute("src", "{{ url_for('captcha.get_code', code_type='login') }}" + "?t=" + now.getTime());
+        }
+    </script>
+{% endblock %}
