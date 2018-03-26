@@ -24,9 +24,11 @@ SECRET_KEY = '\x03\xabjR\xbbg\x82\x0b{\x96f\xca\xa8\xbdM\xb0x\xdbK%\xf2\x07\r\x8
 # 会话配置
 PERMANENT_SESSION_LIFETIME = timedelta(minutes=20)  # 登录状态保持，默认31天
 REMEMBER_COOKIE_DURATION = timedelta(days=14)       # 记住登录状态，默认365天
-LOGIN_MESSAGE = '请登录后操作'
-LOGIN_MESSAGE_CATEGORY = 'warning'                  # 默认'message'
 SESSION_COOKIE_SECURE = True
+
+SESSION_COOKIE_NAME_BACKEND = 's_a'
+REMEMBER_COOKIE_NAME_BACKEND = 'r_a'
+REDIS_SESSION_PREFIX_BACKEND = 's:a:'
 
 
 # requests 超时设置
@@ -70,6 +72,7 @@ DOCUMENT_INFO = {
     'AUTHOR': '',       # 作者
     'PROJECT_NAME': '网站名称',
     'ICP_CODE': '沪ICP备12024750号',
+    'APP_NAME': '应用名称',
 }
 
 PER_PAGE_FRONTEND = 20

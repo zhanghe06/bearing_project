@@ -13,11 +13,12 @@
                 <!-- /input-group -->
             </li>
             <li>
-                <a href="/"><i class="fa fa-dashboard fa-fw"></i> {{ _('management center') }}</a>
+                <a href="{{ url_for('index') }}"><i class="fa fa-dashboard fa-fw"></i> {{ _('management center') }}</a>
             </li>
 
             <li class="active">
-                <a id="menu-user" href="#"><i class="fa fa-table fa-fw"></i> {{ _('customer management') }}<span class="fa arrow"></span></a>
+                <a id="menu-customer" href="#"><i class="fa fa-table fa-fw"></i> {{ _('customer management') }}<span
+                        class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ url_for('customer.lists') }}">{{ _('customer lists') }}</a>
@@ -31,128 +32,144 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-{#            <li{% if 'active' in request.path %} class="active"{% endif %}>#}
-{#                <a id="menu-active" href="#"><i class="fa fa-users fa-fw"></i> 激活管理<span class="fa arrow"></span></a>#}
-{#                <ul class="nav nav-second-level">#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('active.lists') }}">激活列表</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('active.add') }}">赠送激活码</a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-{#            <li{% if 'scheduling' in request.path %} class="active"{% endif %}>#}
-{#                <a id="menu-scheduling" href="#"><i class="fa fa-money fa-fw"></i> 排单管理<span class="fa arrow"></span></a>#}
-{#                <ul class="nav nav-second-level">#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('scheduling.lists') }}">排单币表</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('scheduling.add') }}">发送排单币</a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-{##}
-{#            <li>#}
-{#                <a id="menu-order" href="#"><i class="fa fa-edit fa-fw"></i> 订单管理<span class="fa arrow"></span></a>#}
-{#                <ul class="nav nav-second-level">#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('order.lists', status_rec=0) }}">订单列表 - 进行中</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('order.lists', status_rec=1) }}">订单列表 - 已完成</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('apply_put.lists') }}">投资申请列表</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('apply_get.lists') }}">提现申请列表</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('apply_put.add') }}">添加投资申请</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('apply_get.add') }}">添加提现申请</a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#                <!-- /.nav-second-level -->#}
-{#            </li>#}
-{#            <li>#}
-{#                <a id="menu-message" href="#"><i class="fa fa-files-o fa-fw"></i> 留言管理<span class="fa arrow"></span></a>#}
-{#                <ul class="nav nav-second-level">#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('message.lists') }}">留言列表</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('complaint.lists') }}">投诉列表</a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#                <!-- /.nav-second-level -->#}
-{#            </li>#}
-{#            <li{% if 'settings' in request.path %} class="active"{% endif %}>#}
-{#                <a id="menu-settings" href="#"><i class="fa fa-sitemap fa-fw"></i> 系统配置<span class="fa arrow"></span></a>#}
-{#                <ul class="nav nav-second-level">#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('settings.switch') }}">开关配置</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('settings.user') }}">会员配置</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('settings.order') }}">订单配置</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('settings.apply_put') }}">投资配置</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('settings.apply_get') }}">提现配置</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('settings.interest') }}">利息配置</a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#                <!-- /.nav-second-level -->#}
-{#            </li>#}
-{#            <li{% if 'admin' in request.path %} class="active"{% endif %}>#}
-{#                <a id="menu-admin" href="#"><i class="fa fa-files-o fa-fw"></i> 权限管理<span class="fa arrow"></span></a>#}
-{#                <ul class="nav nav-second-level">#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('admin.lists') }}"{% if url_for('admin.lists') == request.path %} class="active"{% endif %}>后台成员</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('admin.add') }}"{% if url_for('admin.add') == request.path %} class="active"{% endif %}>添加成员</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('admin.role') }}"{% if url_for('admin.role') == request.path %} class="active"{% endif %}>角色管理</a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#                <!-- /.nav-second-level -->#}
-{#            </li>#}
-{#            <li{% if 'stats' in request.path %} class="active"{% endif %}>#}
-{#                <a id="menu-stats" href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 运营统计<span class="fa arrow"></span></a>#}
-{#                <ul class="nav nav-second-level">#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('stats.user') }}"{% if url_for('stats.user') == request.path %} class="active"{% endif %}>用户统计</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('stats.apply_put') }}"{% if url_for('stats.apply_put') == request.path %} class="active"{% endif %}>投资统计</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('stats.apply_get') }}"{% if url_for('stats.apply_get') == request.path %} class="active"{% endif %}>提现统计</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('stats.order') }}"{% if url_for('stats.order') == request.path %} class="active"{% endif %}>订单统计</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('wallet.stats') }}">钱包统计</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('score.stats') }}">积分统计</a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#                <!-- /.nav-second-level -->#}
-{#            </li>#}
+            <li{% if 'user' in request.path %} class="active"{% endif %}>
+                <a id="menu-user" href="#"><i class="fa fa-users fa-fw"></i> {{ _('user management') }}<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url_for('user.lists') }}">{{ _('user lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('user.add') }}">{{ _('user add') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('user.stats') }}">{{ _('user stats') }}</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            {#            <li{% if 'active' in request.path %} class="active"{% endif %}>#}
+            {#                <a id="menu-active" href="#"><i class="fa fa-users fa-fw"></i> 激活管理<span class="fa arrow"></span></a>#}
+            {#                <ul class="nav nav-second-level">#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('active.lists') }}">激活列表</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('active.add') }}">赠送激活码</a>#}
+            {#                    </li>#}
+            {#                </ul>#}
+            {#            </li>#}
+            {#            <li{% if 'scheduling' in request.path %} class="active"{% endif %}>#}
+            {#                <a id="menu-scheduling" href="#"><i class="fa fa-money fa-fw"></i> 排单管理<span class="fa arrow"></span></a>#}
+            {#                <ul class="nav nav-second-level">#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('scheduling.lists') }}">排单币表</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('scheduling.add') }}">发送排单币</a>#}
+            {#                    </li>#}
+            {#                </ul>#}
+            {#            </li>#}
+            {##}
+            {#            <li>#}
+            {#                <a id="menu-order" href="#"><i class="fa fa-edit fa-fw"></i> 订单管理<span class="fa arrow"></span></a>#}
+            {#                <ul class="nav nav-second-level">#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('order.lists', status_rec=0) }}">订单列表 - 进行中</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('order.lists', status_rec=1) }}">订单列表 - 已完成</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('apply_put.lists') }}">投资申请列表</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('apply_get.lists') }}">提现申请列表</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('apply_put.add') }}">添加投资申请</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('apply_get.add') }}">添加提现申请</a>#}
+            {#                    </li>#}
+            {#                </ul>#}
+            {#                <!-- /.nav-second-level -->#}
+            {#            </li>#}
+            {#            <li>#}
+            {#                <a id="menu-message" href="#"><i class="fa fa-files-o fa-fw"></i> 留言管理<span class="fa arrow"></span></a>#}
+            {#                <ul class="nav nav-second-level">#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('message.lists') }}">留言列表</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('complaint.lists') }}">投诉列表</a>#}
+            {#                    </li>#}
+            {#                </ul>#}
+            {#                <!-- /.nav-second-level -->#}
+            {#            </li>#}
+            {#            <li{% if 'settings' in request.path %} class="active"{% endif %}>#}
+            {#                <a id="menu-settings" href="#"><i class="fa fa-sitemap fa-fw"></i> 系统配置<span class="fa arrow"></span></a>#}
+            {#                <ul class="nav nav-second-level">#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('settings.switch') }}">开关配置</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('settings.user') }}">会员配置</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('settings.order') }}">订单配置</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('settings.apply_put') }}">投资配置</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('settings.apply_get') }}">提现配置</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('settings.interest') }}">利息配置</a>#}
+            {#                    </li>#}
+            {#                </ul>#}
+            {#                <!-- /.nav-second-level -->#}
+            {#            </li>#}
+            {#            <li{% if 'admin' in request.path %} class="active"{% endif %}>#}
+            {#                <a id="menu-admin" href="#"><i class="fa fa-files-o fa-fw"></i> 权限管理<span class="fa arrow"></span></a>#}
+            {#                <ul class="nav nav-second-level">#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('admin.lists') }}"{% if url_for('admin.lists') == request.path %} class="active"{% endif %}>后台成员</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('admin.add') }}"{% if url_for('admin.add') == request.path %} class="active"{% endif %}>添加成员</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('admin.role') }}"{% if url_for('admin.role') == request.path %} class="active"{% endif %}>角色管理</a>#}
+            {#                    </li>#}
+            {#                </ul>#}
+            {#                <!-- /.nav-second-level -->#}
+            {#            </li>#}
+            {#            <li{% if 'stats' in request.path %} class="active"{% endif %}>#}
+            {#                <a id="menu-stats" href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 运营统计<span class="fa arrow"></span></a>#}
+            {#                <ul class="nav nav-second-level">#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('stats.user') }}"{% if url_for('stats.user') == request.path %} class="active"{% endif %}>用户统计</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('stats.apply_put') }}"{% if url_for('stats.apply_put') == request.path %} class="active"{% endif %}>投资统计</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('stats.apply_get') }}"{% if url_for('stats.apply_get') == request.path %} class="active"{% endif %}>提现统计</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('stats.order') }}"{% if url_for('stats.order') == request.path %} class="active"{% endif %}>订单统计</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('wallet.stats') }}">钱包统计</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="{{ url_for('score.stats') }}">积分统计</a>#}
+            {#                    </li>#}
+            {#                </ul>#}
+            {#                <!-- /.nav-second-level -->#}
+            {#            </li>#}
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

@@ -4,23 +4,23 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
-            <li><a href="javascript:void(0);" onclick="$('#menu-customer').trigger('click');">{{ _('customer management') }}</a></li>
-            <li class="active">{{ _('customer lists') }}</li>
+            <li><a href="javascript:void(0);" onclick="$('#menu-user').trigger('click');">{{ _('user management') }}</a></li>
+            <li class="active">{{ _('user lists') }}</li>
         </ol>
 
         <form class="form-inline" method="post">
             {{ form.csrf_token }}
-            <div class="form-group{% if form.company_name.errors %} has-error{% endif %}">
-                {{ form.company_name.label() }}
-                {{ form.company_name(class="form-control") }}
+            <div class="form-group{% if form.name.errors %} has-error{% endif %}">
+                {{ form.name.label() }}
+                {{ form.name(class="form-control") }}
             </div>
-            <div class="form-group{% if form.company_type.errors %} has-error{% endif %}">
-                {{ form.company_type.label() }}
-                {{ form.company_type(class="form-control") }}
+            <div class="form-group{% if form.role_id.errors %} has-error{% endif %}">
+                {{ form.role_id.label() }}
+                {{ form.role_id(class="form-control") }}
             </div>
-            <div class="form-group{% if form.owner_uid.errors %} has-error{% endif %}">
-                {{ form.owner_uid.label() }}
-                {{ form.owner_uid(class="form-control") }}
+            <div class="form-group{% if form.parent_id.errors %} has-error{% endif %}">
+                {{ form.parent_id.label() }}
+                {{ form.parent_id(class="form-control") }}
             </div>
             <div class="form-group{% if form.start_create_time.errors %} has-error{% endif %}">
                 {{ form.start_create_time.label() }}
@@ -43,13 +43,10 @@
                 <thead>
                 <tr>
                     <th>编号</th>
-                    <th>公司名称</th>
-                    <th>公司地址</th>
-                    <th>公司官网</th>
-                    <th>公司电话</th>
-                    <th>公司传真</th>
-                    <th>公司类型</th>
-                    <th>所属销售</th>
+                    <th>用户名称</th>
+                    <th>用户角色</th>
+                    <th>所属上级</th>
+                    <th>在线状态</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
                     <th>操作</th>
@@ -59,20 +56,17 @@
                 {% for info in pagination.items %}
                     <tr class="text-muted">
                         <td>{{ info.id }}</td>
-                        <td><a href="{{ url_for('customer.info', customer_id=info.id) }}" rel="tooltip"
-                               title="点击详情">{{ info.company_name }}</a></td>
-                        <td>{{ info.company_address }}</td>
-                        <td>{{ info.company_site }}</td>
-                        <td>{{ info.company_tel }}</td>
-                        <td>{{ info.company_fax }}</td>
-                        <td>{{ info.company_type | type_company }}</td>
-                        <td>{{ info.owner_uid | user_name }}</td>
+                        <td><a href="{{ url_for('user.info', user_id=info.id) }}" rel="tooltip"
+                               title="点击详情">{{ info.name }}</a></td>
+                        <td>{{ info.role_id | type_role }}</td>
+                        <td>{{ info.parent_id | user_name }}</td>
+                        <td>{% if info.id | status_online %}<span class="label label-success">Online</span>{% else %}<span class="label label-default">Offline</span>{% endif %}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
-                            <a href="{{ url_for('customer.edit', customer_id=info.id, next=request.path) }}"
+                            <a href="{{ url_for('user.edit', user_id=info.id, next=request.path) }}"
                                rel="tooltip" title="编辑"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="customer_delete({{ info.id }});" rel="tooltip"
+                            <a href="javascript:void(0);" onclick="user_delete({{ info.id }});" rel="tooltip"
                                title="删除"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
@@ -81,7 +75,7 @@
             </table>
             {# 翻页 #}
             {% from "macros.html" import render_pagination %}
-            {{ render_pagination(pagination, 'customer.lists') }}
+            {{ render_pagination(pagination, 'user.lists') }}
         </div>
     </div>
 
@@ -89,12 +83,12 @@
 
 {% block extra_js %}
     <script>
-        // 客户删除
-        function customer_delete(customer_id) {
+        // 用户删除
+        function user_delete(user_id) {
             if (confirm('删除数据不能恢复，是否确认删除?')) {
                 $.getJSON('{{ url_for('customer.ajax_delete') }}',
                     {
-                        customer_id: customer_id
+                        user_id: user_id
                     }, function (data) {
                         if (data.result === true) {
                             alert(data.msg);

@@ -18,33 +18,47 @@ import traceback
 from flask import current_app, Response
 from sqlalchemy.exc import OperationalError
 from flask import send_from_directory
-from flask_principal import identity_changed, Identity, AnonymousIdentity
-from flask_principal import identity_loaded, RoleNeed, UserNeed
+from flask_principal import (
+    identity_changed,
+    Identity,
+    AnonymousIdentity,
+    identity_loaded,
+    RoleNeed,
+    UserNeed
+)
 
-from flask import g, request, render_template, jsonify
-from flask import session, redirect, url_for, flash
-from flask_login import login_user
-from flask_login import logout_user
-from flask_login import current_user
-from flask_login import login_required
-from flask_login import user_loaded_from_cookie
+from flask import (
+    g,
+    request,
+    render_template,
+    jsonify,
+    session,
+    redirect,
+    url_for,
+    flash
+)
+from flask_login import (
+    login_user,
+    logout_user,
+    current_user,
+    login_required,
+    user_loaded_from_cookie
+)
 
-from app_backend.api.user import get_user_row_by_id
+from app_backend.api.login_user import get_login_user_row_by_id
 from app_backend.api.customer import get_customer_rows
-
+from app_backend.api.role import get_role_row_by_id
 
 from app_backend import app, oauth_github, oauth_qq, oauth_weibo
-
+from flask_babel import gettext as _, ngettext
 
 from app_backend import app, login_manager, babel
 from app_backend.permissions import (
     permission_role_administrator,
     SectionNeed,
-    EditCustomerNeed
+    EditCustomerItemNeed
 )
 
-
-from app_backend.api.role import get_role_row_by_id
 
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 
@@ -56,7 +70,7 @@ def load_user(user_id):
     :param user_id:
     :return:
     """
-    return get_user_row_by_id(int(user_id))
+    return get_login_user_row_by_id(int(user_id))
 
 
 @app.before_request
@@ -86,7 +100,7 @@ def on_identity_loaded(sender, identity):
         }
         customer_rows = get_customer_rows(**customer_rows_condition)
         for customer_row in customer_rows:
-            edit_customer_need = EditCustomerNeed(unicode(customer_row.id))
+            edit_customer_need = EditCustomerItemNeed(unicode(customer_row.id))
             identity.provides.add(edit_customer_need)
 
     # Assuming the User model has a list of roles, update the
@@ -195,30 +209,8 @@ def logout():
     # Tell Flask-Principal the user is anonymous
     identity_changed.send(app, identity=AnonymousIdentity())
 
-    flash('成功退出登录', 'info')
+    flash(_('Exit Success'), 'info')
     return redirect(url_for('auth.index'))
-
-
-@app.errorhandler(403)
-def page_permission_denied(error):
-    flash('暂无权限', 'warning')
-    session['redirected_from'] = request.url
-    return redirect(request.args.get('next') or url_for('index'))
-
-
-@app.errorhandler(404)
-def page_not_found(error):
-    return render_template('404.html'), 404
-
-
-@app.errorhandler(413)
-def request_entity_too_large(error):
-    return '文件超出大小限制', 413
-
-
-@app.errorhandler(500)
-def internal_error(error):
-    return render_template('500.html'), 500
 
 
 @app.route('/test_permission_role_administrator/')
@@ -261,3 +253,54 @@ def stream_with_context():
             time.sleep(0.5)
             yield i
     return Response(stream_with_context(generate()))
+
+
+@app.errorhandler(401)
+def unauthorized(error):
+    flash(_('Unauthorized'), 'warning')
+    return render_template('http_exception/401.html'), 401
+
+
+@app.errorhandler(403)
+def forbidden(error):
+    flash(_('Forbidden'), 'warning')
+    session['redirected_from'] = request.url
+    return render_template('http_exception/403.html'), 403
+    # return redirect(request.args.get('next') or url_for('index'))
+
+
+@app.errorhandler(404)
+def not_found(error):
+    flash(_('Not Found'), 'warning')
+    return render_template('http_exception/404.html'), 404
+
+
+@app.errorhandler(405)
+def method_not_allowed(error):
+    flash(_('Method Not Allowed'), 'warning')
+    return render_template('http_exception/405.html'), 405
+
+
+@app.errorhandler(410)
+def gone(error):
+    flash(_('Gone'), 'warning')
+    return render_template('http_exception/410.html'), 410
+
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    flash(_('Request Entity Too Large'), 'warning')
+    # return '文件超出大小限制', 413
+    return render_template('http_exception/413.html'), 413
+
+
+@app.errorhandler(429)
+def too_many_requests(error):
+    flash(_('Too Many Requests'), 'warning')
+    return render_template('http_exception/429.html'), 429
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    flash(_('Internal Server Error'), 'warning')
+    return render_template('http_exception/500.html'), 500

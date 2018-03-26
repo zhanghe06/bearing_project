@@ -10,11 +10,32 @@
 
 from __future__ import unicode_literals
 
+import json
+
 from app_backend import app
 from app_backend.api.user import get_user_row_by_id
 from app_common.maps.type_auth import TYPE_AUTH_DICT
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 from app_common.maps.type_role import TYPE_ROLE_DICT
+from app_backend.clients.client_redis import redis_client
+
+
+@app.template_filter('status_online')
+def filter_status_online(user_id):
+    """
+    在线状态
+    :param user_id:
+    :return:
+    """
+    if not user_id:
+        return False
+    session_keys = redis_client.keys('%s*' % app.config['REDIS_SESSION_PREFIX_BACKEND'])
+    if not session_keys:
+        return False
+    user_ids = [int(json.loads(s_k).get('user_id')) for s_k in redis_client.mget(session_keys)]
+    if user_id in user_ids:
+        return True
+    return False
 
 
 @app.template_filter('user_name')
@@ -25,7 +46,7 @@ def filter_user_name(user_id):
     :return:
     """
     user_info = get_user_row_by_id(user_id)
-    return user_info.name if user_info else '不明身份'
+    return user_info.name if user_info else '-'
 
 
 @app.template_filter('type_auth')

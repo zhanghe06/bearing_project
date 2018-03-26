@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-19 19:46+0800\n"
+"POT-Creation-Date: 2018-03-23 17:19+0800\n"
 "PO-Revision-Date: 2018-03-19 19:47+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -18,59 +18,130 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
 
-#: templates/_left.html:16
+#: __init__.py:41
+msgid "Please log in to access this page."
+msgstr "访问页面，请先登录。"
+
+#: templates/_left.html:16 templates/customer/lists.html:6
+#: templates/user/lists.html:6
 msgid "management center"
 msgstr "管理中心"
 
-#: templates/_left.html:20
+#: templates/_left.html:20 templates/customer/lists.html:7
 msgid "customer management"
 msgstr "客户管理"
 
-#: templates/_left.html:23 views/customer.py:73
+#: templates/_left.html:24 templates/customer/lists.html:8 views/customer.py:73
 msgid "customer lists"
 msgstr "客户列表"
 
-#: templates/_left.html:26 views/customer.py:137
+#: templates/_left.html:27 views/customer.py:140
 msgid "customer add"
 msgstr "客户创建"
 
-#: templates/_left.html:29
+#: templates/_left.html:30 views/customer.py:370
 msgid "customer stats"
 msgstr "客户统计"
 
-#: templates/customer/lists.html:48
+#: templates/_left.html:36 templates/user/lists.html:7
+msgid "user management"
+msgstr "用户管理"
+
+#: templates/_left.html:40 templates/user/lists.html:8 views/user.py:85
+msgid "user lists"
+msgstr "用户列表"
+
+#: templates/_left.html:43 views/user.py:154
+msgid "user add"
+msgstr "用户创建"
+
+#: templates/_left.html:46 views/user.py:375
+msgid "user stats"
+msgstr "用户统计"
+
+#: templates/customer/lists.html:49 templates/user/lists.html:34
 msgid "Search"
 msgstr "查询"
 
-#: templates/customer/lists.html:49
+#: templates/customer/lists.html:50 templates/user/lists.html:35
 msgid "Export"
 msgstr "导出"
 
-#: views/customer.py:83
+#: views/__init__.py:212
+msgid "Exit Success"
+msgstr "退出成功"
+
+#: views/__init__.py:218
+msgid "Permission Denied"
+msgstr "暂无权限"
+
+#: views/customer.py:83 views/user.py:97
 msgid "Search Failure"
 msgstr "查询失败"
 
-#: views/customer.py:121
+#: views/customer.py:124
 msgid "customer info"
 msgstr "客户信息"
 
-#: views/customer.py:155 views/customer.py:184
+#: views/customer.py:158 views/customer.py:187 views/user.py:172
+#: views/user.py:201
 msgid "Add Failure"
 msgstr "创建失败"
 
-#: views/customer.py:180
+#: views/customer.py:183 views/user.py:197
 msgid "Add Success"
 msgstr "创建成功"
 
-#: views/customer.py:211
+#: views/customer.py:214
 msgid "customer edit"
 msgstr "客户编辑"
 
-#: views/customer.py:243 views/customer.py:272
+#: views/customer.py:246 views/customer.py:275 views/user.py:256
+#: views/user.py:285
 msgid "Edit Failure"
 msgstr "编辑失败"
 
-#: views/customer.py:268
+#: views/customer.py:271 views/user.py:281
 msgid "Edit Success"
 msgstr "编辑成功"
+
+#: views/customer.py:304 views/customer.py:345 views/user.py:350
+msgid "Del Success"
+msgstr "删除成功"
+
+#: views/customer.py:306 views/customer.py:322 views/customer.py:328
+#: views/customer.py:334 views/customer.py:348 views/customer.py:350
+#: views/user.py:328 views/user.py:334 views/user.py:339 views/user.py:353
+#: views/user.py:355
+msgid "Del Failure"
+msgstr "删除失败"
+
+#: views/customer.py:393
+msgid "customer stats item"
+msgstr "客户统计明细"
+
+#: views/user.py:138
+msgid "user info"
+msgstr "用户信息"
+
+#: views/user.py:224
+msgid "user edit"
+msgstr "用户编辑"
+
+#: views/user.py:398
+msgid "user stats item"
+msgstr "用户统计明细"
+
+#: views/user_auth.py:60
+msgid "account login"
+msgstr "账号登录"
+
+#: views/user_auth.py:77 views/user_auth.py:92 views/user_auth.py:100
+#: views/user_auth.py:108
+msgid "Auth Failure"
+msgstr "认证失败"
+
+#: views/user_auth.py:122
+msgid "Auth Success"
+msgstr "认证成功"
 

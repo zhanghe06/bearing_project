@@ -24,6 +24,7 @@ pip install Flask-SQLAlchemy
 pip install Flask-WTF
 pip install Flask-OAuthlib
 pip install Flask-Excel
+pip install pyexcel-xls
 pip install Flask-Principal
 pip install Flask-Babel
 pip install Flask-Moment
@@ -35,6 +36,7 @@ pip install requests
 pip install MySQL-python
 pip install PyMongo
 pip install Pillow
+pip install six
 pip install future
 ```
 
@@ -84,6 +86,9 @@ pybabel compile -d translations
 
 更新步骤
 ```bash
+# 重新生成模板
+pybabel extract -F babel.cfg -k lazy_gettext -o messages.pot .
+
 # 更新翻译文件
 pybabel update -i messages.pot -d translations
 
@@ -96,6 +101,7 @@ pybabel compile -d translations
 注意:
 - `Babel`插件, 中文为`zh`
 - `Moment`插件, 中文为`zh-cn`
+- `html`标签`lang`属性, 中文为`zh-CN`
 
 
 ## 闪现消息
@@ -137,3 +143,13 @@ tips默认是不支持换行的, 需要`data-html`和`data-toggle`一起配合
      id="captcha_img"
      onclick="refresh_code();">
 ```
+
+## 权限控制
+
+控制目标
+1. 同一浏览器，切换不同用户，身份、权限不同
+2. 后台修改用户权限，被修改用户权限立即生效
+
+权限分配
+1. 系统管理角色，拥有用户管理、角色管理的权限；
+2. 普通用户角色，用户产品管理、客户管理，报价管理的权限；

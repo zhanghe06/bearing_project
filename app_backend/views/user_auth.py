@@ -28,11 +28,13 @@ from flask_login import (
 )
 
 from app_backend import app
-from app_backend.api.user import get_user_row_by_id
+from app_backend.api.login_user import get_login_user_row_by_id
 from app_backend.api.user_auth import get_user_auth_row
 from app_backend.forms.user_auth import UserAuthForm
 from app_common.maps.status_verified import STATUS_VERIFIED_OK
 from app_common.maps.type_auth import TYPE_AUTH_ACCOUNT
+
+from flask_babel import gettext as _, ngettext
 
 bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -55,7 +57,7 @@ def index():
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = 'customer add'
+    document_info['TITLE'] = _('account login')
 
     # 加载表单
     form = UserAuthForm(request.form)
@@ -72,7 +74,7 @@ def index():
     if request.method == 'POST':
         # 表单校验失败
         if not form.validate_on_submit():
-            flash('Auth Failure', 'danger')
+            flash(_('Auth Failure'), 'danger')
             return render_template(
                 template_name,
                 form=form,
@@ -87,7 +89,7 @@ def index():
         user_auth_info = get_user_auth_row(**condition)
         if not user_auth_info:
             form.auth_key.errors.append('账号错误')
-            flash('Auth Failure', 'danger')
+            flash(_('Auth Failure'), 'danger')
             return render_template(
                 template_name,
                 form=form,
@@ -95,7 +97,7 @@ def index():
             )
         if user_auth_info.status_verified != STATUS_VERIFIED_OK:
             form.auth_key.errors.append('账号失效')
-            flash('Auth Failure', 'danger')
+            flash(_('Auth Failure'), 'danger')
             return render_template(
                 template_name,
                 form=form,
@@ -103,7 +105,7 @@ def index():
             )
         if user_auth_info.auth_secret != form.auth_secret.data:
             form.auth_secret.errors.append('密码错误')
-            flash('Auth Failure', 'danger')
+            flash(_('Auth Failure'), 'danger')
             return render_template(
                 template_name,
                 form=form,
@@ -112,10 +114,10 @@ def index():
 
         # 认证成功
         # 用户登录
-        login_user(get_user_row_by_id(user_auth_info.user_id), remember=form.remember.data)
+        login_user(get_login_user_row_by_id(user_auth_info.user_id), remember=form.remember.data)
 
         # 加载权限信号通知(Tell Flask-Principal the identity changed)
         identity_changed.send(app, identity=Identity(user_auth_info.user_id))
 
-        flash('Auth Success', 'success')
+        flash(_('Auth Success'), 'success')
         return redirect(request.args.get('next') or url_for('index'))

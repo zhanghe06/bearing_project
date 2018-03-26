@@ -4,57 +4,58 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: user.py
-@time: 2018-03-16 09:58
+@file: login_user.py
+@time: 2018-03-23 14:52
 """
 
+
 from app_backend import db
-from app_backend.login import User
+from app_backend.login import LoginUser
 from app_common.libs.mysql_orm_op import DbInstance
 
 db_instance = DbInstance(db)
 
 
-def get_user_row_by_id(user_id):
+def get_login_user_row_by_id(user_id):
     """
     通过 id 获取信息
     :param user_id:
     :return: None/object
     """
-    return db_instance.get_row_by_id(User, user_id)
+    return db_instance.get_row_by_id(LoginUser, user_id)
 
 
-def get_user_row(*args, **kwargs):
+def get_login_user_row(*args, **kwargs):
     """
     获取信息
     :param args:
     :param kwargs:
     :return: None/object
     """
-    return db_instance.get_row(User, *args, **kwargs)
+    return db_instance.get_row(LoginUser, *args, **kwargs)
 
 
-def get_user_rows(*args, **kwargs):
+def get_login_user_rows(*args, **kwargs):
     """
     获取列表
     :param args:
     :param kwargs:
     :return:
     """
-    return db_instance.get_rows(User, *args, **kwargs)
+    return db_instance.get_rows(LoginUser, *args, **kwargs)
 
 
-def add_user(user_data):
+def add_login_user(user_data):
     """
     添加信息
     :param user_data:
     :return: None/Value of user.id
     :except:
     """
-    return db_instance.add(User, user_data)
+    return db_instance.add(LoginUser, user_data)
 
 
-def edit_user(user_id, user_data):
+def edit_login_user(user_id, user_data):
     """
     修改信息
     :param user_id:
@@ -62,20 +63,20 @@ def edit_user(user_id, user_data):
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.edit(User, user_id, user_data)
+    return db_instance.edit(LoginUser, user_id, user_data)
 
 
-def delete_user(user_id):
+def delete_login_user(user_id):
     """
     删除信息
     :param user_id:
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.delete(User, user_id)
+    return db_instance.delete(LoginUser, user_id)
 
 
-def get_user_pagination(page=1, per_page=10, *args, **kwargs):
+def get_login_user_pagination(page=1, per_page=10, *args, **kwargs):
     """
     获取列表（分页）
     Usage:
@@ -92,5 +93,5 @@ def get_user_pagination(page=1, per_page=10, *args, **kwargs):
     :param kwargs:
     :return:
     """
-    rows = db_instance.get_pagination(User, page, per_page, *args, **kwargs)
+    rows = db_instance.get_pagination(LoginUser, page, per_page, *args, **kwargs)
     return rows
