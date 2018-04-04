@@ -13,18 +13,11 @@ from __future__ import unicode_literals
 from collections import namedtuple
 from functools import partial
 
-from flask_principal import Need, ItemNeed, Permission, RoleNeed, TypeNeed, ActionNeed
+from flask_principal import Permission, RoleNeed
 
 
 SectionActionNeed = namedtuple('Need', ['section', 'action'])
 SectionActionItemNeed = namedtuple('ItemNeed', ['section', 'action', 'item_id'])
-
-# # 自定义版块 need
-# SectionNeed = partial(Need, 'section')
-# SectionNeed.__doc__ = """A need with the method preset to `"section"`."""
-
-
-# 参考 http://blog.csdn.net/jmilk/article/details/53542686
 
 # -------------------------------------------------------------
 # 角色类型 默认,销售,经理,系统
@@ -40,28 +33,6 @@ permission_role_default = Permission(RoleNeed('默认'))
 permission_role_sales = Permission(RoleNeed('销售'))
 permission_role_manager = Permission(RoleNeed('经理'))
 permission_role_administrator = Permission(RoleNeed('系统'))
-
-
-# -------------------------------------------------------------
-# # 版块类型 产品,客户,报价,统计,用户,角色,系统
-# sections = [
-#     '产品',
-#     '客户',
-#     '报价',
-#     '统计',
-#     '用户',
-#     '角色',
-#     '系统',
-# ]
-#
-# # 版块权限（默认查询权限）
-# permission_section_product = Permission(SectionNeed('产品'))
-# permission_section_customer = Permission(SectionNeed('客户'))
-# permission_section_quote = Permission(SectionNeed('报价'))
-# permission_section_stats = Permission(SectionNeed('统计'))
-# permission_section_user = Permission(SectionNeed('用户'))
-# permission_section_role = Permission(SectionNeed('角色'))
-# permission_section_sys = Permission(SectionNeed('系统'))
 
 
 # =============================================================
