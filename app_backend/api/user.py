@@ -8,9 +8,13 @@
 @time: 2018-03-16 09:58
 """
 
+from datetime import datetime
+from sqlalchemy.sql import func
 from app_backend import db
 from app_backend.login import User
 from app_common.libs.mysql_orm_op import DbInstance
+from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
+    get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 
 db_instance = DbInstance(db)
 
@@ -94,3 +98,56 @@ def get_user_pagination(page=1, per_page=10, *args, **kwargs):
     """
     rows = db_instance.get_pagination(User, page, per_page, *args, **kwargs)
     return rows
+
+
+def user_reg_stats(time_based='hour'):
+    """
+    用户统计
+    :return:
+    """
+    # 按小时统计
+    if time_based == 'hour':
+        start_time, end_time = get_current_day_time_ends()
+        hours = get_hours(False)
+        hours_zerofill = get_hours()
+        result = dict(zip(hours, [0] * len(hours)))
+        rows = db.session \
+            .query(func.hour(User.create_time).label('hour'), func.count(User.id)) \
+            .filter(User.create_time >= time_local_to_utc(start_time),
+                    User.create_time <= time_local_to_utc(end_time)) \
+            .group_by('hour') \
+            .limit(len(hours)) \
+            .all()
+        result.update(dict(rows))
+        return [(hours_zerofill[i], result[hour]) for i, hour in enumerate(hours)]
+    # 按日期统计
+    if time_based == 'date':
+        start_time, end_time = get_current_month_time_ends()
+        today = datetime.today()
+        days = get_days(year=today.year, month=today.month, zerofill=False)
+        days_zerofill = get_days(year=today.year, month=today.month)
+        result = dict(zip(days, [0] * len(days)))
+        rows = db.session \
+            .query(func.day(User.create_time).label('date'), func.count(User.id)) \
+            .filter(User.create_time >= time_local_to_utc(start_time),
+                    User.create_time <= time_local_to_utc(end_time)) \
+            .group_by('date') \
+            .limit(len(days)) \
+            .all()
+        result.update(dict(rows))
+        return [(days_zerofill[i], result[day]) for i, day in enumerate(days)]
+    # 按月份统计
+    if time_based == 'month':
+        start_time, end_time = get_current_year_time_ends()
+        months = get_months(False)
+        months_zerofill = get_months()
+        result = dict(zip(months, [0] * len(months)))
+        rows = db.session \
+            .query(func.month(User.create_time).label('month'), func.count(User.id)) \
+            .filter(User.create_time >= time_local_to_utc(start_time),
+                    User.create_time <= time_local_to_utc(end_time)) \
+            .group_by('month') \
+            .limit(len(months)) \
+            .all()
+        result.update(dict(rows))
+        return [(months_zerofill[i], result[month]) for i, month in enumerate(months)]

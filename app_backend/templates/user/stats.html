@@ -1,10 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);" onclick="$('#menu-user').trigger('click');">{{ _('user management') }}</a></li>
+            <li class="active">{{ _('user stats') }}</li>
+        </ol>
+        {#    <h2 class="sub-header">User Stats!</h2>#}
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <p class="btn-group pull-right" role="group" aria-label="...">
+            {% if not request.query_string or request.query_string == 'time_based=hour' %}
+                <a type="button" class="btn btn-default active">时</a>
+                <a type="button" class="btn btn-default" href="{{ url_for('user.stats', time_based='date') }}">日</a>
+                <a type="button" class="btn btn-default" href="{{ url_for('user.stats', time_based='month') }}">月</a>
+            {% elif request.query_string == 'time_based=date' %}
+                <a type="button" class="btn btn-default" href="{{ url_for('user.stats', time_based='hour') }}">时</a>
+                <a type="button" class="btn btn-default active">日</a>
+                <a type="button" class="btn btn-default" href="{{ url_for('user.stats', time_based='month') }}">月</a>
+            {% elif request.query_string == 'time_based=month' %}
+                <a type="button" class="btn btn-default" href="{{ url_for('user.stats', time_based='hour') }}">时</a>
+                <a type="button" class="btn btn-default" href="{{ url_for('user.stats', time_based='date') }}">日</a>
+                <a type="button" class="btn btn-default active">月</a>
+            {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <section id="chart_line_graphs">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong class="panel-title">
+                                <span class="glyphicon glyphicon-signal"></span> {{ _('user stats') }}
+                                <span class="glyphicon glyphicon-refresh pull-right" onclick="user_stats();" style="cursor: pointer;"></span>
+                            </strong>
+                        </div>
+                        <div class="panel-body">
+                            <canvas id="chart_line_canvas"></canvas>
+                        </div>
+                        <div class="panel-footer text-center text-muted">
+                            <i id="current_time">{{ moment().format('dddd, YYYY-MM-DD, h:mm:ss a') }}</i>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+    <script>
+        // 用户统计
+        function user_stats() {
+            // 配置图表选项
+            var options = {
+                responsive: true,
+                tooltips: {
+                    intersect: false,
+                    mode: 'index',
+                    bodySpacing: 4
+                },
+                legend: {
+                    position: 'bottom'
+                },
+                title: {
+                    display: true,
+                    text: '用户统计 - 在职用户'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            };
+
+            // 获取Line图标数据
+            $.getJSON('{{ url_for('user.ajax_stats') }}',
+                {
+                    time_based: '{{ time_based }}'
+                },
+                function (data) {
+                    /* 创建Line图表 */
+                    var ctx = $("#chart_line_canvas").get(0).getContext("2d");
+                    var myLineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: data,
+                        options: options
+                    });
+                    // console.log(myLineChart);
+                }
+            );
+        }
+        $(function () {
+            user_stats();
+        });
+
+        // 当前时间同步刷新
+        var update_time;
+        (update_time = function () {
+            $('#current_time').html(moment().format('dddd, YYYY-MM-DD, h:mm:ss a'));
+        })();
+        setInterval(update_time, 1000);
+    </script>
+{% endblock %}

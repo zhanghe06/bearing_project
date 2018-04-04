@@ -16,9 +16,12 @@ from functools import partial
 from flask_principal import Need, ItemNeed, Permission, RoleNeed, TypeNeed, ActionNeed
 
 
-# 自定义版块 need
-SectionNeed = partial(Need, 'section')
-SectionNeed.__doc__ = """A need with the method preset to `"section"`."""
+SectionActionNeed = namedtuple('Need', ['section', 'action'])
+SectionActionItemNeed = namedtuple('ItemNeed', ['section', 'action', 'item_id'])
+
+# # 自定义版块 need
+# SectionNeed = partial(Need, 'section')
+# SectionNeed.__doc__ = """A need with the method preset to `"section"`."""
 
 
 # 参考 http://blog.csdn.net/jmilk/article/details/53542686
@@ -40,29 +43,29 @@ permission_role_administrator = Permission(RoleNeed('系统'))
 
 
 # -------------------------------------------------------------
-# 版块类型 产品,客户,报价,统计,用户,角色,系统
-sections = [
-    '产品',
-    '客户',
-    '报价',
-    '统计',
-    '用户',
-    '角色',
-    '系统',
-]
-
-# 版块权限（默认查询权限）
-permission_section_product = Permission(SectionNeed('产品'))
-permission_section_customer = Permission(SectionNeed('客户'))
-permission_section_quote = Permission(SectionNeed('报价'))
-permission_section_stats = Permission(SectionNeed('统计'))
-permission_section_user = Permission(SectionNeed('用户'))
-permission_section_role = Permission(SectionNeed('角色'))
-permission_section_sys = Permission(SectionNeed('系统'))
+# # 版块类型 产品,客户,报价,统计,用户,角色,系统
+# sections = [
+#     '产品',
+#     '客户',
+#     '报价',
+#     '统计',
+#     '用户',
+#     '角色',
+#     '系统',
+# ]
+#
+# # 版块权限（默认查询权限）
+# permission_section_product = Permission(SectionNeed('产品'))
+# permission_section_customer = Permission(SectionNeed('客户'))
+# permission_section_quote = Permission(SectionNeed('报价'))
+# permission_section_stats = Permission(SectionNeed('统计'))
+# permission_section_user = Permission(SectionNeed('用户'))
+# permission_section_role = Permission(SectionNeed('角色'))
+# permission_section_sys = Permission(SectionNeed('系统'))
 
 
 # =============================================================
-# 板块基本操作权限（创建、查询、导出、统计、审核）与用户身份相关，需关联
+# 板块基本操作权限（创建、查询、导出、统计）与用户的角色身份相关，需关联
 #
 # 操作     角色
 # ------------
@@ -70,162 +73,203 @@ permission_section_sys = Permission(SectionNeed('系统'))
 # 查询     销售、经理
 # 导出     经理
 # 统计     销售、经理
-# 审核     经理
 #
-# 销售能够查看所属自己的内容，经理能够查看所属自己销售的内容
 # =============================================================
 
 
 # -------------------------------------------------------------
-# 客户板块操作权限（创建、查询、导出、统计、审核）
-CustomerSectionNeed = namedtuple('CustomerSection', ['action', 'uid'])
+# 客户板块操作权限（创建、查询、导出、统计）
+CustomerSectionNeed = partial(SectionActionNeed, 'customer')
+CustomerSectionNeed.__doc__ = """A need with the section preset to `"customer"`."""
 
-AddCustomerSectionNeed = partial(CustomerSectionNeed, 'add')
-SearchCustomerSectionNeed = partial(CustomerSectionNeed, 'search')
-ExportCustomerSectionNeed = partial(CustomerSectionNeed, 'export')
-StatsCustomerSectionNeed = partial(CustomerSectionNeed, 'stats')
-AuditCustomerSectionNeed = partial(CustomerSectionNeed, 'audit')
-
-
-class AddCustomerSectionPermission(Permission):
-    def __init__(self, uid):
-        need = AddCustomerSectionNeed(unicode(uid))
-        super(AddCustomerSectionPermission, self).__init__(need)
-
-
-class SearchCustomerSectionPermission(Permission):
-    def __init__(self, uid):
-        need = SearchCustomerSectionNeed(unicode(uid))
-        super(SearchCustomerSectionPermission, self).__init__(need)
-
-
-class ExportCustomerSectionPermission(Permission):
-    def __init__(self, uid):
-        need = ExportCustomerSectionNeed(unicode(uid))
-        super(ExportCustomerSectionPermission, self).__init__(need)
-
-
-class StatsCustomerSectionPermission(Permission):
-    def __init__(self, uid):
-        need = StatsCustomerSectionNeed(unicode(uid))
-        super(StatsCustomerSectionPermission, self).__init__(need)
-
-
-class AuditCustomerSectionPermission(Permission):
-    def __init__(self, uid):
-        need = AuditCustomerSectionNeed(unicode(uid))
-        super(AuditCustomerSectionPermission, self).__init__(need)
+permission_customer_section_add = Permission(CustomerSectionNeed('add'))
+permission_customer_section_search = Permission(CustomerSectionNeed('search'))
+permission_customer_section_export = Permission(CustomerSectionNeed('export'))
+permission_customer_section_stats = Permission(CustomerSectionNeed('stats'))
 
 
 # -------------------------------------------------------------
-# 报价板块操作权限（创建、查询、导出、统计、审核）
-QuoteSectionNeed = namedtuple('QuoteSection', ['action', 'uid'])
+# 用户板块操作权限（创建、查询、导出、统计）
+UserSectionNeed = partial(SectionActionNeed, 'user')
+UserSectionNeed.__doc__ = """A need with the section preset to `"user"`."""
 
-AddQuoteSectionNeed = partial(QuoteSectionNeed, 'add')
-SearchQuoteSectionNeed = partial(QuoteSectionNeed, 'search')
-ExportQuoteSectionNeed = partial(QuoteSectionNeed, 'export')
-StatsQuoteSectionNeed = partial(QuoteSectionNeed, 'stats')
-AuditQuoteSectionNeed = partial(QuoteSectionNeed, 'audit')
-
-
-class AddQuoteSectionPermission(Permission):
-    def __init__(self, uid):
-        need = AddQuoteSectionNeed(unicode(uid))
-        super(AddQuoteSectionPermission, self).__init__(need)
+permission_user_section_add = Permission(UserSectionNeed('add'))
+permission_user_section_search = Permission(UserSectionNeed('search'))
+permission_user_section_export = Permission(UserSectionNeed('export'))
+permission_user_section_stats = Permission(UserSectionNeed('stats'))
 
 
-class SearchQuoteSectionPermission(Permission):
-    def __init__(self, uid):
-        need = SearchQuoteSectionNeed(unicode(uid))
-        super(SearchQuoteSectionPermission, self).__init__(need)
+# -------------------------------------------------------------
+# 产品板块操作权限（创建、查询、导出、统计）
+ProductSectionNeed = partial(SectionActionNeed, 'product')
+ProductSectionNeed.__doc__ = """A need with the section preset to `"product"`."""
+
+permission_product_section_add = Permission(UserSectionNeed('add'))
+permission_product_section_search = Permission(UserSectionNeed('search'))
+permission_product_section_export = Permission(UserSectionNeed('export'))
+permission_product_section_stats = Permission(UserSectionNeed('stats'))
 
 
-class ExportQuoteSectionPermission(Permission):
-    def __init__(self, uid):
-        need = ExportQuoteSectionNeed(unicode(uid))
-        super(ExportQuoteSectionPermission, self).__init__(need)
+# -------------------------------------------------------------
+# 报价板块操作权限（创建、查询、导出、统计）
+QuoteSectionNeed = partial(SectionActionNeed, 'quote')
+QuoteSectionNeed.__doc__ = """A need with the section preset to `"quote"`."""
 
-
-class StatsQuoteSectionPermission(Permission):
-    def __init__(self, uid):
-        need = StatsQuoteSectionNeed(unicode(uid))
-        super(StatsQuoteSectionPermission, self).__init__(need)
-
-
-class AuditQuoteSectionPermission(Permission):
-    def __init__(self, uid):
-        need = AuditQuoteSectionNeed(unicode(uid))
-        super(AuditQuoteSectionPermission, self).__init__(need)
+permission_quote_section_add = Permission(QuoteSectionNeed('add'))
+permission_quote_section_search = Permission(QuoteSectionNeed('search'))
+permission_quote_section_export = Permission(QuoteSectionNeed('export'))
+permission_quote_section_stats = Permission(QuoteSectionNeed('stats'))
 
 
 # =============================================================
 # 因客户、报价有所有者，明细操作需要校验所有者身份，下面单独配置明细权限
+# 用户、产品因其为系统基础资源，应由系统管理角色操作，需单独设置此类权限
+# 业务实现：如需新建用户、新建产品，通过邮件提出申请，由管理员来执行操作
 # =============================================================
 
 
 # -------------------------------------------------------------
 # 客户明细操作权限(读取、更新、删除、打印)
-CustomerItemNeed = namedtuple('CustomerItem', ['action', 'item_id'])
+CustomerItemNeed = partial(SectionActionItemNeed, 'customer')
+CustomerItemNeed.__doc__ = """A need with the section preset to `"customer"`."""
 
-GetCustomerItemNeed = partial(CustomerItemNeed, 'get')
-EditCustomerItemNeed = partial(CustomerItemNeed, 'edit')
-DelCustomerItemNeed = partial(CustomerItemNeed, 'del')
-PrintCustomerItemNeed = partial(CustomerItemNeed, 'print')
+CustomerItemGetNeed = partial(CustomerItemNeed, 'get')
+CustomerItemEditNeed = partial(CustomerItemNeed, 'edit')
+CustomerItemDelNeed = partial(CustomerItemNeed, 'del')
+CustomerItemPrintNeed = partial(CustomerItemNeed, 'print')
 
 
-class GetCustomerItemPermission(Permission):
+class CustomerItemGetPermission(Permission):
     def __init__(self, customer_id):
-        need = GetCustomerItemNeed(unicode(customer_id))
-        super(GetCustomerItemPermission, self).__init__(need)
+        need = CustomerItemGetNeed(unicode(customer_id))
+        super(CustomerItemGetPermission, self).__init__(need)
 
 
-class EditCustomerItemPermission(Permission):
+class CustomerItemEditPermission(Permission):
     def __init__(self, customer_id):
-        need = EditCustomerItemNeed(unicode(customer_id))
-        super(EditCustomerItemPermission, self).__init__(need)
+        need = CustomerItemEditNeed(unicode(customer_id))
+        super(CustomerItemEditPermission, self).__init__(need)
 
 
-class DelCustomerItemPermission(Permission):
+class CustomerItemDelPermission(Permission):
     def __init__(self, customer_id):
-        need = DelCustomerItemNeed(unicode(customer_id))
-        super(DelCustomerItemPermission, self).__init__(need)
+        need = CustomerItemDelNeed(unicode(customer_id))
+        super(CustomerItemDelPermission, self).__init__(need)
 
 
-class PrintCustomerItemPermission(Permission):
+class CustomerItemPrintPermission(Permission):
     def __init__(self, customer_id):
-        need = PrintCustomerItemNeed(unicode(customer_id))
-        super(PrintCustomerItemPermission, self).__init__(need)
+        need = CustomerItemPrintNeed(unicode(customer_id))
+        super(CustomerItemPrintPermission, self).__init__(need)
 
 
 # -------------------------------------------------------------
-# 报价明细操作权限（读取、更新、删除、打印）
-QuoteItemNeed = namedtuple('QuoteItem', ['action', 'item_id'])
+# 用户明细操作权限(读取、更新、删除、打印)
+UserItemNeed = partial(SectionActionItemNeed, 'user')
+UserItemNeed.__doc__ = """A need with the section preset to `"user"`."""
 
-GetQuoteItemNeed = partial(QuoteItemNeed, 'get')
-EditQuoteItemNeed = partial(QuoteItemNeed, 'edit')
-DelQuoteItemNeed = partial(QuoteItemNeed, 'del')
-PrintQuoteItemNeed = partial(QuoteItemNeed, 'print')
+UserItemGetNeed = partial(UserItemNeed, 'get')
+UserItemEditNeed = partial(UserItemNeed, 'edit')
+UserItemDelNeed = partial(UserItemNeed, 'del')
+UserItemPrintNeed = partial(UserItemNeed, 'print')
 
 
-class GetQuoteItemPermission(Permission):
+class UserItemGetPermission(Permission):
+    def __init__(self, user_id):
+        need = UserItemGetNeed(unicode(user_id))
+        super(UserItemGetPermission, self).__init__(need)
+
+
+class UserItemEditPermission(Permission):
+    def __init__(self, user_id):
+        need = UserItemEditNeed(unicode(user_id))
+        super(UserItemEditPermission, self).__init__(need)
+
+
+class UserItemDelPermission(Permission):
+    def __init__(self, user_id):
+        need = UserItemDelNeed(unicode(user_id))
+        super(UserItemDelPermission, self).__init__(need)
+
+
+class UserItemPrintPermission(Permission):
+    def __init__(self, user_id):
+        need = UserItemPrintNeed(unicode(user_id))
+        super(UserItemPrintPermission, self).__init__(need)
+
+
+# -------------------------------------------------------------
+# 产品明细操作权限(读取、更新、删除、打印)
+ProductItemNeed = partial(SectionActionItemNeed, 'product')
+ProductItemNeed.__doc__ = """A need with the section preset to `"product"`."""
+
+ProductItemGetNeed = partial(ProductItemNeed, 'get')
+ProductItemEditNeed = partial(ProductItemNeed, 'edit')
+ProductItemDelNeed = partial(ProductItemNeed, 'del')
+ProductItemPrintNeed = partial(ProductItemNeed, 'print')
+
+
+class ProductItemGetPermission(Permission):
+    def __init__(self, product_id):
+        need = ProductItemGetNeed(unicode(product_id))
+        super(ProductItemGetPermission, self).__init__(need)
+
+
+class ProductItemEditPermission(Permission):
+    def __init__(self, product_id):
+        need = ProductItemEditNeed(unicode(product_id))
+        super(ProductItemEditPermission, self).__init__(need)
+
+
+class ProductItemDelPermission(Permission):
+    def __init__(self, product_id):
+        need = ProductItemDelNeed(unicode(product_id))
+        super(ProductItemDelPermission, self).__init__(need)
+
+
+class ProductItemPrintPermission(Permission):
+    def __init__(self, product_id):
+        need = ProductItemPrintNeed(unicode(product_id))
+        super(ProductItemPrintPermission, self).__init__(need)
+
+
+# -------------------------------------------------------------
+# 报价明细操作权限（读取、更新、删除、打印、审核）
+QuoteItemNeed = partial(SectionActionItemNeed, 'quote')
+QuoteItemNeed.__doc__ = """A need with the section preset to `"quote"`."""
+
+QuoteItemGetNeed = partial(QuoteItemNeed, 'get')
+QuoteItemEditNeed = partial(QuoteItemNeed, 'edit')
+QuoteItemDelNeed = partial(QuoteItemNeed, 'del')
+QuoteItemPrintNeed = partial(QuoteItemNeed, 'print')
+QuoteItemAuditNeed = partial(QuoteItemNeed, 'audit')
+
+
+class QuoteItemGetPermission(Permission):
     def __init__(self, quote_id):
-        need = GetQuoteItemNeed(unicode(quote_id))
-        super(GetQuoteItemPermission, self).__init__(need)
+        need = QuoteItemGetNeed(unicode(quote_id))
+        super(QuoteItemGetPermission, self).__init__(need)
 
 
-class EditQuoteItemPermission(Permission):
+class QuoteItemEditPermission(Permission):
     def __init__(self, quote_id):
-        need = EditQuoteItemNeed(unicode(quote_id))
-        super(EditQuoteItemPermission, self).__init__(need)
+        need = QuoteItemEditNeed(unicode(quote_id))
+        super(QuoteItemEditPermission, self).__init__(need)
 
 
-class DelQuoteItemPermission(Permission):
+class QuoteItemDelPermission(Permission):
     def __init__(self, quote_id):
-        need = DelQuoteItemNeed(unicode(quote_id))
-        super(DelQuoteItemPermission, self).__init__(need)
+        need = QuoteItemDelNeed(unicode(quote_id))
+        super(QuoteItemDelPermission, self).__init__(need)
 
 
-class PrintQuoteItemPermission(Permission):
+class QuoteItemPrintPermission(Permission):
     def __init__(self, quote_id):
-        need = PrintQuoteItemNeed(unicode(quote_id))
-        super(PrintQuoteItemPermission, self).__init__(need)
+        need = QuoteItemPrintNeed(unicode(quote_id))
+        super(QuoteItemPrintPermission, self).__init__(need)
+
+
+class QuoteItemAuditPermission(Permission):
+    def __init__(self, quote_id):
+        need = QuoteItemAuditNeed(unicode(quote_id))
+        super(QuoteItemAuditPermission, self).__init__(need)

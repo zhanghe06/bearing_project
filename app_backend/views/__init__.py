@@ -46,7 +46,9 @@ from flask_login import (
 )
 
 from app_backend.api.login_user import get_login_user_row_by_id
+from app_backend.api.user import get_user_rows
 from app_backend.api.customer import get_customer_rows
+from app_backend.api.quote import get_quote_rows
 from app_backend.api.role import get_role_row_by_id
 
 from app_backend import app, oauth_github, oauth_qq, oauth_weibo
@@ -54,9 +56,14 @@ from flask_babel import gettext as _, ngettext
 
 from app_backend import app, login_manager, babel
 from app_backend.permissions import (
+    SectionActionNeed,
+    SectionActionItemNeed,
     permission_role_administrator,
-    SectionNeed,
-    EditCustomerItemNeed
+)
+from app_common.maps.type_role import (
+    TYPE_ROLE_SALES,
+    TYPE_ROLE_MANAGER,
+    TYPE_ROLE_SYSTEM,
 )
 
 
@@ -87,30 +94,156 @@ def before_request():
 
 @identity_loaded.connect_via(app)
 def on_identity_loaded(sender, identity):
+    """
+    视图层模块的权限控制
+    :param sender:
+    :param identity:
+    :return:
+    """
     # Set the identity user object
     identity.user = current_user
 
-    # Add the UserNeed to the identity
-    if hasattr(current_user, 'id'):
-        identity.provides.add(UserNeed(current_user.id))
+    if not (hasattr(current_user, 'id') and hasattr(current_user, 'role_id')):
+        return
 
-        # 客户编辑权限
+    # Add the UserNeed to the identity
+    identity.provides.add(UserNeed(current_user.id))
+
+    # 角色 - 销售
+    if current_user.role_id == TYPE_ROLE_SALES:
+        # 版块基本操作权限（销售）
+        # （创建、查询、统计）
+        # 客户-----------------------------------------------------------------------
+        # 客户创建
+        identity.provides.add(SectionActionNeed('customer', 'add'))
+        # 客户查询
+        identity.provides.add(SectionActionNeed('customer', 'search'))
+        # 客户统计
+        identity.provides.add(SectionActionNeed('customer', 'stats'))
+        # 报价-----------------------------------------------------------------------
+        # 报价创建
+        identity.provides.add(SectionActionNeed('quote', 'add'))
+        # 报价查询
+        identity.provides.add(SectionActionNeed('quote', 'search'))
+        # 报价统计
+        identity.provides.add(SectionActionNeed('quote', 'stats'))
+
+        # 版块明细操作权限（销售）
+        # （读取、编辑、删除、打印）
+        # 客户-----------------------------------------------------------------------
         customer_rows_condition = {
             'owner_uid': current_user.id
         }
         customer_rows = get_customer_rows(**customer_rows_condition)
         for customer_row in customer_rows:
-            edit_customer_need = EditCustomerItemNeed(unicode(customer_row.id))
-            identity.provides.add(edit_customer_need)
+            # 客户读取权限
+            identity.provides.add(SectionActionItemNeed('customer', 'get', unicode(customer_row.id)))
+            # 客户编辑权限
+            identity.provides.add(SectionActionItemNeed('customer', 'edit', unicode(customer_row.id)))
+            # 客户删除权限
+            identity.provides.add(SectionActionItemNeed('customer', 'del', unicode(customer_row.id)))
+            # 客户打印权限
+            identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
 
-    # Assuming the User model has a list of roles, update the
-    # identity with the roles that the user provides
-    if hasattr(current_user, 'role_id'):
-        role_row = get_role_row_by_id(current_user.role_id)
-        sections = role_row.section.split(',') if role_row else []
-        for section in sections:
-            section_need = SectionNeed(section)
-            identity.provides.add(section_need)
+    # 角色 - 经理
+    if current_user.role_id == TYPE_ROLE_MANAGER:
+        # 版块基本操作权限（经理）
+        # （创建、查询、统计、导出）
+        # 客户-----------------------------------------------------------------------
+        # 客户创建
+        identity.provides.add(SectionActionNeed('customer', 'add'))
+        # 客户查询
+        identity.provides.add(SectionActionNeed('customer', 'search'))
+        # 客户统计
+        identity.provides.add(SectionActionNeed('customer', 'stats'))
+        # 客户导出
+        identity.provides.add(SectionActionNeed('customer', 'export'))
+        # 报价-----------------------------------------------------------------------
+        # 报价创建
+        identity.provides.add(SectionActionNeed('quote', 'add'))
+        # 报价查询
+        identity.provides.add(SectionActionNeed('quote', 'search'))
+        # 报价统计
+        identity.provides.add(SectionActionNeed('quote', 'stats'))
+        # 报价导出
+        identity.provides.add(SectionActionNeed('quote', 'export'))
+
+        # 版块明细操作权限（经理）
+        # （读取、编辑、删除、打印、审核）
+        # 客户-----------------------------------------------------------------------
+        customer_rows_condition = {
+            'owner_uid': current_user.id
+        }
+        customer_rows = get_customer_rows(**customer_rows_condition)
+        for customer_row in customer_rows:
+            # 客户读取权限
+            identity.provides.add(SectionActionItemNeed('customer', 'get', unicode(customer_row.id)))
+            # 客户编辑权限
+            identity.provides.add(SectionActionItemNeed('customer', 'edit', unicode(customer_row.id)))
+            # 客户删除权限
+            identity.provides.add(SectionActionItemNeed('customer', 'del', unicode(customer_row.id)))
+            # 客户打印权限
+            identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
+        # 报价-----------------------------------------------------------------------
+        quote_rows_condition = {
+            'uid': current_user.id
+        }
+        quote_rows = get_quote_rows(**quote_rows_condition)
+        for quote_row in quote_rows:
+            # 报价读取权限
+            identity.provides.add(SectionActionItemNeed('quote', 'get', unicode(quote_row.id)))
+            # 报价编辑权限
+            identity.provides.add(SectionActionItemNeed('quote', 'edit', unicode(quote_row.id)))
+            # 报价删除权限
+            identity.provides.add(SectionActionItemNeed('quote', 'del', unicode(quote_row.id)))
+            # 报价打印权限
+            identity.provides.add(SectionActionItemNeed('quote', 'print', unicode(quote_row.id)))
+            # 报价审核权限
+            identity.provides.add(SectionActionItemNeed('quote', 'audit', unicode(quote_row.id)))
+
+        # 版块明细操作权限 - 所属销售（经理）
+        sales_rows_condition = {
+            'parent_id': current_user.id
+        }
+        sales_rows = get_user_rows(**sales_rows_condition)
+        for sales_item in sales_rows:
+            # 客户-----------------------------------------------------------------------
+            customer_rows_condition = {
+                'owner_uid': sales_item.id
+            }
+            customer_rows = get_customer_rows(**customer_rows_condition)
+            for customer_row in customer_rows:
+                # 客户读取权限
+                identity.provides.add(SectionActionItemNeed('customer', 'get', unicode(customer_row.id)))
+                # 客户编辑权限
+                identity.provides.add(SectionActionItemNeed('customer', 'edit', unicode(customer_row.id)))
+                # 客户删除权限
+                identity.provides.add(SectionActionItemNeed('customer', 'del', unicode(customer_row.id)))
+                # 客户打印权限
+                identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
+            # 报价-----------------------------------------------------------------------
+            quote_rows_condition = {
+                'uid': sales_item.id
+            }
+            quote_rows = get_quote_rows(**quote_rows_condition)
+            for quote_row in quote_rows:
+                # 报价读取权限
+                identity.provides.add(SectionActionItemNeed('quote', 'get', unicode(quote_row.id)))
+                # 报价编辑权限
+                identity.provides.add(SectionActionItemNeed('quote', 'edit', unicode(quote_row.id)))
+                # 报价删除权限
+                identity.provides.add(SectionActionItemNeed('quote', 'del', unicode(quote_row.id)))
+                # 报价打印权限
+                identity.provides.add(SectionActionItemNeed('quote', 'print', unicode(quote_row.id)))
+                # 报价审核权限
+                identity.provides.add(SectionActionItemNeed('quote', 'audit', unicode(quote_row.id)))
+
+    # 版块基本操作权限（系统）
+    if current_user.role_id == TYPE_ROLE_SYSTEM:
+        pass
+        # 用户-----------------------------------------------------------------------
+        # 产品-----------------------------------------------------------------------
+        # 系统角色拥有全部版块权限，不区分明细权限
 
 
 @user_loaded_from_cookie.connect_via(app)

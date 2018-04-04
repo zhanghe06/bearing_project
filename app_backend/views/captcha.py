@@ -8,7 +8,10 @@
 @time: 2018-03-17 22:20
 """
 
-import StringIO
+
+# from StringIO import StringIO     # PY2
+# from io import StringIO           # PY3
+from six import StringIO
 
 from flask import (
     Blueprint,
@@ -43,7 +46,7 @@ def get_code(code_type):
     code_key = '%s:%s' % ('code_str', code_type)
     session[code_key] = code_str
     # 返回验证码图片
-    buf = StringIO.StringIO()
+    buf = StringIO()
     code_img.save(buf, 'JPEG', quality=70)
     buf_str = buf.getvalue()
     response = make_response(buf_str)

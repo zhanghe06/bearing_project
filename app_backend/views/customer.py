@@ -23,7 +23,7 @@ from flask import (
     jsonify,
     Blueprint,
 )
-from flask_login import login_required
+from flask_login import login_required, current_user
 from app_backend import excel
 from app_backend import app
 from app_backend.api.customer import (
@@ -43,8 +43,14 @@ from app_backend.forms.customer import (
 )
 from app_backend.models.bearing_project import Customer
 from app_backend.permissions import (
-    permission_section_customer,
-    EditCustomerItemPermission,
+    permission_customer_section_add,
+    permission_customer_section_search,
+    permission_customer_section_export,
+    permission_customer_section_stats,
+    CustomerItemGetPermission,
+    CustomerItemEditPermission,
+    CustomerItemDelPermission,
+    CustomerItemPrintPermission,
 )
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -68,6 +74,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 def get_sales_user_list():
     sales_user_list = copy(default_choices)
     user_list = get_user_rows(**{'role_id': TYPE_ROLE_SALES})
+    sales_user_list.extend([(0, '-')])
     sales_user_list.extend([(user.id, user.name) for user in user_list])
     return sales_user_list
 
@@ -75,7 +82,7 @@ def get_sales_user_list():
 @bp_customer.route('/lists.html', methods=['GET', 'POST'])
 @bp_customer.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
-@permission_section_customer.require(http_exception=403)
+@permission_customer_section_search.require(http_exception=403)
 def lists(page=1):
     """
     客户列表
@@ -113,6 +120,9 @@ def lists(page=1):
                 search_condition.append(Customer.create_time <= form.end_create_time.data)
         # 处理导出
         if form.op.data == 1:
+            # 检查导出权限
+            if not permission_customer_section_export.can():
+                abort(403)
             column_names = Customer.__table__.columns.keys()
             query_sets = get_customer_rows(*search_condition)
 
@@ -136,13 +146,16 @@ def lists(page=1):
 
 @bp_customer.route('/<int:customer_id>/info.html')
 @login_required
-@permission_section_customer.require(http_exception=403)
 def info(customer_id):
     """
     客户详情
     :param customer_id:
     :return:
     """
+    # 检查读取权限
+    customer_item_get_permission = CustomerItemGetPermission(customer_id)
+    if not customer_item_get_permission.can():
+        abort(403)
     # 详情数据
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在
@@ -160,7 +173,7 @@ def info(customer_id):
 
 @bp_customer.route('/add.html', methods=['GET', 'POST'])
 @login_required
-@permission_section_customer.require(http_exception=403)
+@permission_customer_section_add.require(http_exception=403)
 def add():
     """
     创建客户
@@ -226,14 +239,13 @@ def add():
 
 @bp_customer.route('/<int:customer_id>/edit.html', methods=['GET', 'POST'])
 @login_required
-@permission_section_customer.require(http_exception=403)
 def edit(customer_id):
     """
     客户编辑
     """
     # 检查编辑权限
-    edit_customer_permission = EditCustomerItemPermission(customer_id)
-    if not edit_customer_permission.can():
+    customer_item_edit_permission = CustomerItemEditPermission(customer_id)
+    if not customer_item_edit_permission.can():
         abort(403)
 
     customer_info = get_customer_row_by_id(customer_id)
@@ -317,32 +329,6 @@ def edit(customer_id):
             )
 
 
-@bp_customer.route('/<int:customer_id>/del.html')
-@login_required
-@permission_section_customer.require(http_exception=403)
-def delete(customer_id):
-    """
-    客户删除
-    """
-    # 检查编辑权限
-    edit_customer_permission = EditCustomerItemPermission(customer_id)
-    if not edit_customer_permission.can():
-        abort(403)
-
-    current_time = datetime.utcnow()
-    customer_data = {
-        'status_delete': STATUS_DEL_OK,
-        'delete_time': current_time,
-        'update_time': current_time,
-    }
-    result = edit_customer(customer_id, customer_data)
-    if result:
-        flash(_('Del Success'), 'success')
-    else:
-        flash(_('Del Failure'), 'danger')
-    return redirect(request.args.get('next') or url_for('customer.lists'))
-
-
 @bp_customer.route('/ajax/del', methods=['GET', 'POST'])
 @login_required
 def ajax_delete():
@@ -352,11 +338,6 @@ def ajax_delete():
     """
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
-
-    # 检查模块权限
-    if not permission_section_customer.can():
-        ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
-        return jsonify(ajax_failure_msg)
 
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
@@ -369,11 +350,21 @@ def ajax_delete():
         ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
         return jsonify(ajax_failure_msg)
 
-    # 检查编辑权限
-    edit_customer_permission = EditCustomerItemPermission(customer_id)
-    if not edit_customer_permission.can():
+    # 检查删除权限
+    customer_item_del_permission = CustomerItemDelPermission(customer_id)
+    if not customer_item_del_permission.can():
         ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
         return jsonify(ajax_failure_msg)
+
+    customer_info = get_customer_row_by_id(customer_id)
+    # 检查资源是否存在
+    if not customer_info:
+        ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
+        return jsonify(ajax_failure_msg)
+    # 检查资源是否删除
+    if customer_info.status_delete == STATUS_DEL_OK:
+        ajax_success_msg['msg'] = _('Del Success')  # Already deleted
+        return jsonify(ajax_success_msg)
 
     current_time = datetime.utcnow()
     customer_data = {
@@ -393,13 +384,14 @@ def ajax_delete():
 @bp_customer.route('/stats.html')
 @bp_customer.route('/stats/<int:page>.html')
 @login_required
-@permission_section_customer.require(http_exception=403)
+@permission_customer_section_stats.require(http_exception=403)
 def stats(page=1):
     """
     客户统计
     :param page:
     :return:
     """
+    # 获取当前用户角色（销售统计自己的客户，经理统计所属销售的客户）
     # 统计数据
     customer_stats_info = get_customer_pagination(page, PER_PAGE_BACKEND)
     # 翻页数据
@@ -418,13 +410,21 @@ def stats(page=1):
 
 @bp_customer.route('/<int:customer_id>/stats.html')
 @login_required
-@permission_section_customer.require(http_exception=403)
+@permission_customer_section_stats.require(http_exception=403)
 def stats_item(customer_id):
     """
     客户统计明细
     :param customer_id:
     :return:
     """
+    customer_info = get_customer_row_by_id(customer_id)
+    # 检查资源是否存在
+    if not customer_info:
+        abort(404)
+    # 检查资源是否删除
+    if customer_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
     # 统计数据
     customer_stats_item_info = get_customer_row_by_id(customer_id)
     # 文档信息

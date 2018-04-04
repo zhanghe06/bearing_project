@@ -32,7 +32,7 @@ def filter_status_online(user_id):
     session_keys = redis_client.keys('%s*' % app.config['REDIS_SESSION_PREFIX_BACKEND'])
     if not session_keys:
         return False
-    user_ids = [int(json.loads(s_k).get('user_id')) for s_k in redis_client.mget(session_keys)]
+    user_ids = [int(json.loads(s_k).get('user_id', 0)) for s_k in redis_client.mget(session_keys)]
     if user_id in user_ids:
         return True
     return False
