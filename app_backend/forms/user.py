@@ -63,8 +63,8 @@ class UserSearchForm(FlaskForm):
     )
     parent_id = SelectField(
         '所属上级',
+        validators=[],
         default=default_choice_option,
-        # validators=[],
         coerce=int,
         description='所属上级',
         render_kw={
@@ -109,11 +109,91 @@ class UserAddForm(FlaskForm):
     """
     创建表单（字段一般带有默认选项）
     """
-    pass
+    name = StringField(
+        '用户名称',
+        validators=[],
+        default='',
+        description='用户名称',
+        render_kw={
+            'placeholder': '用户名称',
+            'rel': "tooltip",
+            'title': "用户名称",
+        }
+    )
+    role_id = SelectField(
+        '用户角色',
+        validators=[
+            InputRequired(),  # 可以为0
+        ],
+        default=default_choice_option,
+        coerce=int,
+        choices=role_id_choices,
+        description='用户角色',
+        render_kw={
+            'rel': "tooltip",
+            'title': "用户角色",
+        }
+    )
+    parent_id = SelectField(
+        '所属上级',
+        validators=[],
+        default=default_choice_option,
+        coerce=int,
+        description='所属上级',
+        render_kw={
+            'rel': "tooltip",
+            'title': "所属上级",
+        }
+    )
 
 
 class UserEditForm(FlaskForm):
     """
     编辑表单（字段默认选项需要去除）
     """
-    pass
+    name = StringField(
+        '用户名称',
+        validators=[],
+        default='',
+        description='用户名称',
+        render_kw={
+            'placeholder': '用户名称',
+            'rel': "tooltip",
+            'title': "用户名称",
+        }
+    )
+    role_id = SelectField(
+        '用户角色',
+        validators=[
+            InputRequired(),  # 可以为0
+        ],
+        default=default_choice_option,
+        coerce=int,
+        choices=role_id_choices,
+        description='用户角色',
+        render_kw={
+            'rel': "tooltip",
+            'title': "用户角色",
+        }
+    )
+    parent_id = SelectField(
+        '所属上级',
+        validators=[],
+        default=default_choice_option,
+        coerce=int,
+        description='所属上级',
+        render_kw={
+            'rel': "tooltip",
+            'title': "所属上级",
+        }
+    )
+    create_time = DateField(
+        '创建时间',
+        validators=[DataRequired()],
+        description='创建时间'
+    )
+    update_time = DateField(
+        '更新时间',
+        validators=[DataRequired()],
+        description='更新时间'
+    )

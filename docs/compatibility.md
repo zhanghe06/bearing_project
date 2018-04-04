@@ -21,12 +21,6 @@ from future.moves.html.parser import HTMLParser
 ```
 
 ```python
-# PY2(raw_input)
-# PY3(input)
-from future.builtins import input
-```
-
-```python
 # from urlparse import urljoin                  # PY2
 # from urllib.parse import urljoin              # PY3
 from future.moves.urllib.parse import urljoin
@@ -43,4 +37,16 @@ from future.moves.urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
 # from urllib import quote                      # PY2
 # from urllib.parse import quote                # PY3
 from future.moves.urllib.parse import quote
+```
+
+```python
+# PY2(raw_input)
+# PY3(input)
+from future.builtins import input
+```
+
+```python
+# PY2(iteritems)
+# PY3(items)
+from six import iteritems, iterkeys, itervalues
 ```

@@ -10,6 +10,7 @@
 
 from __future__ import unicode_literals
 
+import json
 from copy import copy
 from datetime import datetime
 
@@ -23,15 +24,21 @@ from flask import (
     jsonify,
     Blueprint,
 )
-from flask_login import login_required, current_user
-from app_backend import excel
-from app_backend import app
+from flask_babel import gettext as _
+from flask_login import login_required
+
+from app_backend import (
+    app,
+    excel,
+)
 from app_backend.api.customer import (
     get_customer_pagination,
     get_customer_row_by_id,
     add_customer,
     edit_customer,
     get_customer_rows,
+    customer_middleman_stats,
+    customer_end_user_stats,
 )
 from app_backend.api.user import (
     get_user_rows
@@ -50,16 +57,15 @@ from app_backend.permissions import (
     CustomerItemGetPermission,
     CustomerItemEditPermission,
     CustomerItemDelPermission,
-    CustomerItemPrintPermission,
 )
+from app_common.maps.default import default_choices, default_choice_option
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
 )
 from app_common.maps.type_role import (
-    TYPE_ROLE_SALES
+    TYPE_ROLE_SALES,
 )
-from app_common.maps.default import default_choices, default_choice_option
-from flask_babel import gettext as _, ngettext
+from app_common.tools import json_default
 
 # 定义蓝图
 bp_customer = Blueprint('customer', __name__, url_prefix='/customer')
@@ -217,8 +223,6 @@ def add():
             'company_fax': form.company_fax.data,
             'company_type': form.company_type.data,
             'owner_uid': form.owner_uid.data,
-            'status_delete': form.status_delete.data,
-            'delete_time': form.delete_time.data,
             'create_time': current_time,
             'update_time': current_time,
         }
@@ -308,9 +312,6 @@ def edit(customer_id):
             'company_fax': form.company_fax.data,
             'company_type': form.company_type.data,
             'owner_uid': form.owner_uid.data,
-            'status_delete': form.status_delete.data,
-            'delete_time': form.delete_time.data,
-            'create_time': current_time,
             'update_time': current_time,
         }
         result = edit_customer(customer_id, customer_data)
@@ -381,29 +382,62 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
 
-@bp_customer.route('/stats.html')
-@bp_customer.route('/stats/<int:page>.html')
+@bp_customer.route('/ajax/stats', methods=['GET', 'POST'])
 @login_required
-@permission_customer_section_stats.require(http_exception=403)
-def stats(page=1):
+def ajax_stats():
     """
-    客户统计
-    :param page:
+    获取客户统计
     :return:
     """
-    # 获取当前用户角色（销售统计自己的客户，经理统计所属销售的客户）
+    time_based = request.args.get('time_based', 'hour')
+    result_customer_middleman = customer_middleman_stats(time_based)
+    result_customer_end_user = customer_end_user_stats(time_based)
+
+    line_chart_data = {
+        'labels': [label for label, _ in result_customer_middleman],
+        'datasets': [
+            {
+                'label': '同行',
+                'backgroundColor': 'rgba(220,220,220,0.5)',
+                'borderColor': 'rgba(220,220,220,1)',
+                'pointBackgroundColor': 'rgba(220,220,220,1)',
+                'pointBorderColor': '#fff',
+                'pointBorderWidth': 2,
+                'data': [data for _, data in result_customer_middleman]
+            },
+            {
+                'label': '终端',
+                'backgroundColor': 'rgba(151,187,205,0.5)',
+                'borderColor': 'rgba(151,187,205,1)',
+                'pointBackgroundColor': 'rgba(151,187,205,1)',
+                'pointBorderColor': '#fff',
+                'pointBorderWidth': 2,
+                'data': [data for _, data in result_customer_end_user]
+            }
+        ]
+    }
+    return json.dumps(line_chart_data, default=json_default)
+
+
+@bp_customer.route('/stats.html')
+@login_required
+@permission_customer_section_stats.require(http_exception=403)
+def stats():
+    """
+    客户统计
+    :return:
+    """
     # 统计数据
-    customer_stats_info = get_customer_pagination(page, PER_PAGE_BACKEND)
-    # 翻页数据
-    pagination = get_customer_pagination(page, PER_PAGE_BACKEND)
+    time_based = request.args.get('time_based', 'hour')
+    if time_based not in ['hour', 'date', 'month']:
+        abort(404)
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('customer stats')
     # 渲染模板
     return render_template(
         'customer/stats.html',
-        customer_stats_info=customer_stats_info,
-        pagination=pagination,
+        time_based=time_based,
         **document_info
     )
 

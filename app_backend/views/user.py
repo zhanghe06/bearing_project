@@ -5,14 +5,14 @@
 @author: zhanghe
 @software: PyCharm
 @file: user.py
-@time: 2018-03-16 09:58
+@time: 2018-04-04 17:33
 """
 
 from __future__ import unicode_literals
 
 import json
 from copy import copy
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from flask import (
     request,
@@ -24,15 +24,22 @@ from flask import (
     jsonify,
     Blueprint,
 )
-from flask_login import login_required, current_user
-from app_backend import excel
+from flask_babel import gettext as _
+from flask_login import login_required
+
 from app_backend import app
+from app_backend import excel
 from app_backend.api.user import (
     get_user_pagination,
     get_user_row_by_id,
     add_user,
     edit_user,
-    get_user_rows, user_reg_stats)
+    user_current_stats,
+    user_former_stats,
+)
+from app_backend.api.user import (
+    get_user_rows
+)
 from app_backend.forms.user import (
     UserSearchForm,
     UserAddForm,
@@ -47,22 +54,15 @@ from app_backend.permissions import (
     UserItemGetPermission,
     UserItemEditPermission,
     UserItemDelPermission,
-    UserItemPrintPermission,
 )
+from app_common.maps.default import default_choices, default_choice_option
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
 )
-
-from app_common.maps.default import default_choices, default_choice_option
-
-from flask_babel import gettext as _, ngettext
-
-
 from app_common.maps.type_role import TYPE_ROLE_MANAGER
-
-# 定义蓝图
 from app_common.tools import json_default
 
+# 定义蓝图
 bp_user = Blueprint('user', __name__, url_prefix='/user')
 
 # 加载配置
@@ -98,7 +98,6 @@ def lists(page=1):
     # 搜索条件
     form = UserSearchForm(request.form)
     form.parent_id.choices = get_manager_user_list()
-
     # app.logger.info('')
 
     search_condition = []
@@ -134,7 +133,6 @@ def lists(page=1):
                 file_type='csv',
                 file_name='%s.csv' % _('user lists')
             )
-
     # 翻页数据
     pagination = get_user_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
@@ -159,7 +157,6 @@ def info(user_id):
     user_item_get_permission = UserItemGetPermission(user_id)
     if not user_item_get_permission.can():
         abort(403)
-
     # 详情数据
     user_info = get_user_row_by_id(user_id)
     # 检查资源是否存在
@@ -214,15 +211,9 @@ def add():
         # 表单校验成功
         current_time = datetime.utcnow()
         user_data = {
-            'company_name': form.company_name.data,
-            'company_address': form.company_address.data,
-            'company_site': form.company_site.data,
-            'company_tel': form.company_tel.data,
-            'company_fax': form.company_fax.data,
-            'company_type': form.company_type.data,
-            'owner_uid': form.owner_uid.data,
-            'status_delete': form.status_delete.data,
-            'delete_time': form.delete_time.data,
+            'name': form.name.data,
+            'role_id': form.role_id.data,
+            'parent_id': form.parent_id.data,
             'create_time': current_time,
             'update_time': current_time,
         }
@@ -272,15 +263,9 @@ def edit(user_id):
     # 进入编辑页面
     if request.method == 'GET':
         # 表单赋值
-        form.company_name.data = user_info.company_name
-        form.company_address.data = user_info.company_address
-        form.company_site.data = user_info.company_site
-        form.company_tel.data = user_info.company_tel
-        form.company_fax.data = user_info.company_fax
-        form.company_type.data = user_info.company_type
-        form.owner_uid.data = user_info.owner_uid
-        form.status_delete.data = user_info.status_delete
-        form.delete_time.data = user_info.delete_time
+        form.name.data = user_info.name
+        form.role_id.data = user_info.role_id
+        form.parent_id.data = user_info.parent_id
         form.create_time.data = user_info.create_time
         form.update_time.data = user_info.update_time
         # 渲染页面
@@ -305,16 +290,9 @@ def edit(user_id):
         # 表单校验成功
         current_time = datetime.utcnow()
         user_data = {
-            'company_name': form.company_name.data,
-            'company_address': form.company_address.data,
-            'company_site': form.company_site.data,
-            'company_tel': form.company_tel.data,
-            'company_fax': form.company_fax.data,
-            'company_type': form.company_type.data,
-            'owner_uid': form.owner_uid.data,
-            'status_delete': form.status_delete.data,
-            'delete_time': form.delete_time.data,
-            'create_time': current_time,
+            'name': form.name.data,
+            'role_id': form.role_id.data,
+            'parent_id': form.parent_id.data,
             'update_time': current_time,
         }
         result = edit_user(user_id, user_data)
@@ -393,10 +371,11 @@ def ajax_stats():
     :return:
     """
     time_based = request.args.get('time_based', 'hour')
-    result_user_reg = user_reg_stats(time_based)
+    result_user_current = user_current_stats(time_based)
+    result_user_former = user_former_stats(time_based)
 
     line_chart_data = {
-        'labels': [label for label, _ in result_user_reg],
+        'labels': [label for label, _ in result_user_current],
         'datasets': [
             {
                 'label': '在职',
@@ -405,17 +384,17 @@ def ajax_stats():
                 'pointBackgroundColor': 'rgba(220,220,220,1)',
                 'pointBorderColor': '#fff',
                 'pointBorderWidth': 2,
-                'data': [data for _, data in result_user_reg]
+                'data': [data for _, data in result_user_current]
             },
-            # {
-            #     'label': u'激活',
-            #     'backgroundColor': 'rgba(151,187,205,0.5)',
-            #     'borderColor': 'rgba(151,187,205,1)',
-            #     'pointBackgroundColor': 'rgba(151,187,205,1)',
-            #     'pointBorderColor': '#fff',
-            #     'pointBorderWidth': 2,
-            #     'data': [data for _, data in result_user_active]
-            # }
+            {
+                'label': '离职',
+                'backgroundColor': 'rgba(151,187,205,0.5)',
+                'borderColor': 'rgba(151,187,205,1)',
+                'pointBackgroundColor': 'rgba(151,187,205,1)',
+                'pointBorderColor': '#fff',
+                'pointBorderWidth': 2,
+                'data': [data for _, data in result_user_former]
+            }
         ]
     }
     return json.dumps(line_chart_data, default=json_default)
@@ -432,7 +411,7 @@ def stats():
     # 统计数据
     time_based = request.args.get('time_based', 'hour')
     if time_based not in ['hour', 'date', 'month']:
-        time_based = 'hour'
+        abort(404)
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('user stats')

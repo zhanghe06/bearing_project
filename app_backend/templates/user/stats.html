@@ -35,7 +35,7 @@
                         <div class="panel-heading">
                             <strong class="panel-title">
                                 <span class="glyphicon glyphicon-signal"></span> {{ _('user stats') }}
-                                <span class="glyphicon glyphicon-refresh pull-right" onclick="user_stats();" style="cursor: pointer;"></span>
+                                <span class="glyphicon glyphicon-refresh pull-right" onclick="user_stats();" style="cursor: pointer;" title="{{ _('Refresh') }}" rel="tooltip" data-placement="left"></span>
                             </strong>
                         </div>
                         <div class="panel-body">
@@ -70,7 +70,7 @@
                 },
                 title: {
                     display: true,
-                    text: '用户统计 - 在职用户'
+                    text: '{{ _('user stats') }}'
                 },
                 scales: {
                     yAxes: [{

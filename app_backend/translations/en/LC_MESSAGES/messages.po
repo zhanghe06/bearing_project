@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-23 17:19+0800\n"
+"POT-Creation-Date: 2018-04-04 19:58+0800\n"
 "PO-Revision-Date: 2018-03-19 19:46+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,117 +18,157 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
 
-#: __init__.py:41
+#: __init__.py:42
 msgid "Please log in to access this page."
 msgstr "Please log in to access this page."
 
 #: templates/_left.html:16 templates/customer/lists.html:6
-#: templates/user/lists.html:6
+#: templates/customer/stats.html:6 templates/user/lists.html:6
+#: templates/user/stats.html:6
 msgid "management center"
 msgstr "management center"
 
 #: templates/_left.html:20 templates/customer/lists.html:7
+#: templates/customer/stats.html:7
 msgid "customer management"
 msgstr "customer management"
 
-#: templates/_left.html:24 templates/customer/lists.html:8 views/customer.py:73
+#: templates/_left.html:24 templates/customer/lists.html:8
+#: views/customer.py:101 views/customer.py:139
 msgid "customer lists"
 msgstr "customer lists"
 
-#: templates/_left.html:27 views/customer.py:140
+#: templates/_left.html:27 views/customer.py:191
 msgid "customer add"
 msgstr "customer add"
 
-#: templates/_left.html:30 views/customer.py:370
+#: templates/_left.html:30 templates/customer/stats.html:8
+#: templates/customer/stats.html:37 templates/customer/stats.html:73
+#: views/customer.py:436
 msgid "customer stats"
 msgstr "customer stats"
 
 #: templates/_left.html:36 templates/user/lists.html:7
+#: templates/user/stats.html:7
 msgid "user management"
 msgstr "user management"
 
-#: templates/_left.html:40 templates/user/lists.html:8 views/user.py:85
+#: templates/_left.html:40 templates/user/lists.html:8 views/user.py:96
+#: views/user.py:134
 msgid "user lists"
 msgstr "user lists"
 
-#: templates/_left.html:43 views/user.py:154
+#: templates/_left.html:43 views/user.py:186
 msgid "user add"
 msgstr "user add"
 
-#: templates/_left.html:46 views/user.py:375
+#: templates/_left.html:46 templates/user/stats.html:8
+#: templates/user/stats.html:37 templates/user/stats.html:73 views/user.py:417
 msgid "user stats"
 msgstr "user stats"
 
-#: templates/customer/lists.html:49 templates/user/lists.html:34
+#: templates/customer/lists.html:34 templates/user/lists.html:34
 msgid "Search"
 msgstr "Search"
 
-#: templates/customer/lists.html:50 templates/user/lists.html:35
+#: templates/customer/lists.html:35 templates/user/lists.html:35
 msgid "Export"
 msgstr "Export"
 
-#: views/__init__.py:212
+#: templates/customer/stats.html:38 templates/user/stats.html:38
+msgid "Refresh"
+msgstr "Refresh"
+
+#: views/__init__.py:345
 msgid "Exit Success"
 msgstr "Exit Success"
 
-#: views/__init__.py:218
-msgid "Permission Denied"
-msgstr "Permission Denied"
+#: views/__init__.py:393
+msgid "Unauthorized"
+msgstr "Unauthorized"
 
-#: views/customer.py:83 views/user.py:97
+#: views/__init__.py:399
+msgid "Forbidden"
+msgstr "Forbidden"
+
+#: views/__init__.py:407
+msgid "Not Found"
+msgstr "Not Found"
+
+#: views/__init__.py:413
+msgid "Method Not Allowed"
+msgstr "Method Not Allowed"
+
+#: views/__init__.py:419
+msgid "Gone"
+msgstr "Gone"
+
+#: views/__init__.py:425
+msgid "Request Entity Too Large"
+msgstr "Request Entity Too Large"
+
+#: views/__init__.py:432
+msgid "Too Many Requests"
+msgstr "Too Many Requests"
+
+#: views/__init__.py:438
+msgid "Internal Server Error"
+msgstr "Internal Server Error"
+
+#: views/customer.py:112 views/user.py:107
 msgid "Search Failure"
 msgstr "Search Failure"
 
-#: views/customer.py:124
+#: views/customer.py:175
 msgid "customer info"
 msgstr "customer info"
 
-#: views/customer.py:158 views/customer.py:187 views/user.py:172
-#: views/user.py:201
+#: views/customer.py:209 views/customer.py:236 views/user.py:204
+#: views/user.py:227
 msgid "Add Failure"
 msgstr "Add Failure"
 
-#: views/customer.py:183 views/user.py:197
+#: views/customer.py:232 views/user.py:223
 msgid "Add Success"
 msgstr "Add Success"
 
-#: views/customer.py:214
+#: views/customer.py:270
 msgid "customer edit"
 msgstr "customer edit"
 
-#: views/customer.py:246 views/customer.py:275 views/user.py:256
-#: views/user.py:285
+#: views/customer.py:298 views/customer.py:324 views/user.py:283
+#: views/user.py:305
 msgid "Edit Failure"
 msgstr "Edit Failure"
 
-#: views/customer.py:271 views/user.py:281
+#: views/customer.py:320 views/user.py:301
 msgid "Edit Success"
 msgstr "Edit Success"
 
-#: views/customer.py:304 views/customer.py:345 views/user.py:350
-msgid "Del Success"
-msgstr "Del Success"
-
-#: views/customer.py:306 views/customer.py:322 views/customer.py:328
-#: views/customer.py:334 views/customer.py:348 views/customer.py:350
-#: views/user.py:328 views/user.py:334 views/user.py:339 views/user.py:353
-#: views/user.py:355
+#: views/customer.py:345 views/customer.py:351 views/customer.py:357
+#: views/customer.py:363 views/customer.py:381 views/user.py:326
+#: views/user.py:332 views/user.py:338 views/user.py:344 views/user.py:362
 msgid "Del Failure"
 msgstr "Del Failure"
 
-#: views/customer.py:393
+#: views/customer.py:367 views/customer.py:378 views/user.py:348
+#: views/user.py:359
+msgid "Del Success"
+msgstr "Del Success"
+
+#: views/customer.py:466
 msgid "customer stats item"
 msgstr "customer stats item"
 
-#: views/user.py:138
+#: views/user.py:170
 msgid "user info"
 msgstr "user info"
 
-#: views/user.py:224
+#: views/user.py:261
 msgid "user edit"
 msgstr "user edit"
 
-#: views/user.py:398
+#: views/user.py:447
 msgid "user stats item"
 msgstr "user stats item"
 
@@ -144,4 +184,7 @@ msgstr "Auth Failure"
 #: views/user_auth.py:122
 msgid "Auth Success"
 msgstr "Auth Success"
+
+#~ msgid "Permission Denied"
+#~ msgstr "Permission Denied"
 
