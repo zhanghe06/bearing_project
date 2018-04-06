@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-04 19:58+0800\n"
+"POT-Creation-Date: 2018-04-07 01:40+0800\n"
 "PO-Revision-Date: 2018-03-19 19:46+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -23,99 +23,183 @@ msgid "Please log in to access this page."
 msgstr "Please log in to access this page."
 
 #: templates/_left.html:16 templates/customer/lists.html:6
-#: templates/customer/stats.html:6 templates/user/lists.html:6
-#: templates/user/stats.html:6
+#: templates/customer/stats.html:6 templates/inventory/lists.html:6
+#: templates/inventory/stats.html:6 templates/product/lists.html:6
+#: templates/product/stats.html:6 templates/quote/lists.html:6
+#: templates/quote/stats.html:6 templates/rack/lists.html:6
+#: templates/rack/stats.html:6 templates/user/lists.html:6
+#: templates/user/stats.html:6 templates/warehouse/lists.html:6
+#: templates/warehouse/stats.html:6
 msgid "management center"
 msgstr "management center"
 
-#: templates/_left.html:20 templates/customer/lists.html:7
-#: templates/customer/stats.html:7
+#: templates/_left.html:20 templates/inventory/lists.html:7
+#: templates/product/lists.html:7 templates/rack/lists.html:7
+msgid "product management"
+msgstr "product management"
+
+#: templates/_left.html:24 templates/inventory/lists.html:8
+#: templates/product/lists.html:8 templates/rack/lists.html:8
+#: views/product.py:95 views/product.py:127
+msgid "product lists"
+msgstr "product lists"
+
+#: templates/_left.html:27 views/product.py:175
+msgid "product add"
+msgstr "product add"
+
+#: templates/_left.html:33 templates/customer/lists.html:7
+#: templates/customer/stats.html:7 templates/inventory/stats.html:7
+#: templates/product/stats.html:7 templates/quote/stats.html:7
+#: templates/rack/stats.html:7 templates/warehouse/stats.html:7
 msgid "customer management"
 msgstr "customer management"
 
-#: templates/_left.html:24 templates/customer/lists.html:8
+#: templates/_left.html:37 templates/customer/lists.html:8
 #: views/customer.py:101 views/customer.py:139
 msgid "customer lists"
 msgstr "customer lists"
 
-#: templates/_left.html:27 views/customer.py:191
+#: templates/_left.html:40 views/customer.py:191
 msgid "customer add"
 msgstr "customer add"
 
-#: templates/_left.html:30 templates/customer/stats.html:8
+#: templates/_left.html:43 templates/customer/stats.html:8
 #: templates/customer/stats.html:37 templates/customer/stats.html:73
-#: views/customer.py:436
+#: templates/inventory/stats.html:8 templates/inventory/stats.html:37
+#: templates/inventory/stats.html:73 templates/product/stats.html:8
+#: templates/product/stats.html:37 templates/product/stats.html:73
+#: templates/quote/stats.html:8 templates/quote/stats.html:37
+#: templates/quote/stats.html:73 templates/rack/stats.html:8
+#: templates/rack/stats.html:37 templates/rack/stats.html:73
+#: templates/warehouse/stats.html:8 templates/warehouse/stats.html:37
+#: templates/warehouse/stats.html:73 views/customer.py:436
 msgid "customer stats"
 msgstr "customer stats"
 
-#: templates/_left.html:36 templates/user/lists.html:7
+#: templates/_left.html:48 templates/user/lists.html:7
 #: templates/user/stats.html:7
 msgid "user management"
 msgstr "user management"
 
-#: templates/_left.html:40 templates/user/lists.html:8 views/user.py:96
+#: templates/_left.html:52 templates/user/lists.html:8 views/user.py:96
 #: views/user.py:134
 msgid "user lists"
 msgstr "user lists"
 
-#: templates/_left.html:43 views/user.py:186
+#: templates/_left.html:55 views/user.py:186
 msgid "user add"
 msgstr "user add"
 
-#: templates/_left.html:46 templates/user/stats.html:8
+#: templates/_left.html:58 templates/user/stats.html:8
 #: templates/user/stats.html:37 templates/user/stats.html:73 views/user.py:417
 msgid "user stats"
 msgstr "user stats"
 
-#: templates/customer/lists.html:34 templates/user/lists.html:34
+#: templates/_left.html:63 templates/quote/lists.html:7
+msgid "quote management"
+msgstr "quote management"
+
+#: templates/_left.html:67 templates/quote/lists.html:8 views/quote.py:102
+#: views/quote.py:140
+msgid "quote lists"
+msgstr "quote lists"
+
+#: templates/_left.html:70 views/quote.py:192
+msgid "quote add"
+msgstr "quote add"
+
+#: templates/_left.html:73 views/quote.py:437
+msgid "quote stats"
+msgstr "quote stats"
+
+#: templates/_left.html:78 templates/warehouse/lists.html:7
+msgid "warehouse management"
+msgstr "warehouse management"
+
+#: templates/_left.html:82 templates/warehouse/lists.html:8
+#: views/warehouse.py:96 views/warehouse.py:128
+msgid "warehouse lists"
+msgstr "warehouse lists"
+
+#: templates/_left.html:85 views/warehouse.py:176
+msgid "warehouse add"
+msgstr "warehouse add"
+
+#: templates/customer/lists.html:34 templates/inventory/lists.html:22
+#: templates/product/lists.html:22 templates/quote/lists.html:34
+#: templates/rack/lists.html:22 templates/user/lists.html:34
+#: templates/warehouse/lists.html:22
 msgid "Search"
 msgstr "Search"
 
-#: templates/customer/lists.html:35 templates/user/lists.html:35
+#: templates/customer/lists.html:35 templates/inventory/lists.html:23
+#: templates/product/lists.html:23 templates/quote/lists.html:35
+#: templates/rack/lists.html:23 templates/user/lists.html:35
+#: templates/warehouse/lists.html:23
 msgid "Export"
 msgstr "Export"
 
-#: templates/customer/stats.html:38 templates/user/stats.html:38
+#: templates/customer/stats.html:38 templates/inventory/stats.html:38
+#: templates/product/stats.html:38 templates/quote/stats.html:38
+#: templates/rack/stats.html:38 templates/user/stats.html:38
+#: templates/warehouse/stats.html:38
 msgid "Refresh"
 msgstr "Refresh"
 
-#: views/__init__.py:345
+#: templates/inventory/lists.html:48 templates/product/lists.html:48
+#: templates/rack/lists.html:48 templates/warehouse/lists.html:49
+msgid "Click details"
+msgstr "Click details"
+
+#: templates/inventory/lists.html:54 templates/product/lists.html:54
+#: templates/rack/lists.html:54 templates/warehouse/lists.html:59
+msgid "Edit"
+msgstr "Edit"
+
+#: templates/inventory/lists.html:56 templates/product/lists.html:56
+#: templates/rack/lists.html:56 templates/warehouse/lists.html:61
+msgid "Delete"
+msgstr "Delete"
+
+#: views/__init__.py:384
 msgid "Exit Success"
 msgstr "Exit Success"
 
-#: views/__init__.py:393
+#: views/__init__.py:432
 msgid "Unauthorized"
 msgstr "Unauthorized"
 
-#: views/__init__.py:399
+#: views/__init__.py:438
 msgid "Forbidden"
 msgstr "Forbidden"
 
-#: views/__init__.py:407
+#: views/__init__.py:446
 msgid "Not Found"
 msgstr "Not Found"
 
-#: views/__init__.py:413
+#: views/__init__.py:452
 msgid "Method Not Allowed"
 msgstr "Method Not Allowed"
 
-#: views/__init__.py:419
+#: views/__init__.py:458
 msgid "Gone"
 msgstr "Gone"
 
-#: views/__init__.py:425
+#: views/__init__.py:464
 msgid "Request Entity Too Large"
 msgstr "Request Entity Too Large"
 
-#: views/__init__.py:432
+#: views/__init__.py:471
 msgid "Too Many Requests"
 msgstr "Too Many Requests"
 
-#: views/__init__.py:438
+#: views/__init__.py:477
 msgid "Internal Server Error"
 msgstr "Internal Server Error"
 
-#: views/customer.py:112 views/user.py:107
+#: views/customer.py:112 views/product.py:106 views/quote.py:113
+#: views/user.py:107 views/warehouse.py:107
 msgid "Search Failure"
 msgstr "Search Failure"
 
@@ -123,12 +207,14 @@ msgstr "Search Failure"
 msgid "customer info"
 msgstr "customer info"
 
-#: views/customer.py:209 views/customer.py:236 views/user.py:204
-#: views/user.py:227
+#: views/customer.py:209 views/customer.py:236 views/product.py:193
+#: views/product.py:216 views/quote.py:210 views/quote.py:237 views/user.py:204
+#: views/user.py:227 views/warehouse.py:194 views/warehouse.py:219
 msgid "Add Failure"
 msgstr "Add Failure"
 
-#: views/customer.py:232 views/user.py:223
+#: views/customer.py:232 views/product.py:212 views/quote.py:233
+#: views/user.py:223 views/warehouse.py:215
 msgid "Add Success"
 msgstr "Add Success"
 
@@ -136,29 +222,57 @@ msgstr "Add Success"
 msgid "customer edit"
 msgstr "customer edit"
 
-#: views/customer.py:298 views/customer.py:324 views/user.py:283
-#: views/user.py:305
+#: views/customer.py:298 views/customer.py:324 views/product.py:268
+#: views/product.py:290 views/quote.py:299 views/quote.py:325 views/user.py:283
+#: views/user.py:305 views/warehouse.py:273 views/warehouse.py:297
 msgid "Edit Failure"
 msgstr "Edit Failure"
 
-#: views/customer.py:320 views/user.py:301
+#: views/customer.py:320 views/product.py:286 views/quote.py:321
+#: views/user.py:301 views/warehouse.py:293
 msgid "Edit Success"
 msgstr "Edit Success"
 
 #: views/customer.py:345 views/customer.py:351 views/customer.py:357
-#: views/customer.py:363 views/customer.py:381 views/user.py:326
+#: views/customer.py:363 views/customer.py:381 views/product.py:311
+#: views/product.py:317 views/product.py:322 views/product.py:328
+#: views/product.py:346 views/quote.py:346 views/quote.py:352
+#: views/quote.py:358 views/quote.py:364 views/quote.py:382 views/user.py:326
 #: views/user.py:332 views/user.py:338 views/user.py:344 views/user.py:362
+#: views/warehouse.py:318 views/warehouse.py:324 views/warehouse.py:329
+#: views/warehouse.py:335 views/warehouse.py:353
 msgid "Del Failure"
 msgstr "Del Failure"
 
-#: views/customer.py:367 views/customer.py:378 views/user.py:348
-#: views/user.py:359
+#: views/customer.py:367 views/customer.py:378 views/product.py:332
+#: views/product.py:343 views/quote.py:368 views/quote.py:379 views/user.py:348
+#: views/user.py:359 views/warehouse.py:339 views/warehouse.py:350
 msgid "Del Success"
 msgstr "Del Success"
 
 #: views/customer.py:466
 msgid "customer stats item"
 msgstr "customer stats item"
+
+#: views/product.py:159
+msgid "product info"
+msgstr "product info"
+
+#: views/product.py:246
+msgid "product edit"
+msgstr "product edit"
+
+#: views/quote.py:176
+msgid "quote info"
+msgstr "quote info"
+
+#: views/quote.py:271
+msgid "quote edit"
+msgstr "quote edit"
+
+#: views/quote.py:467
+msgid "quote stats item"
+msgstr "quote stats item"
 
 #: views/user.py:170
 msgid "user info"
@@ -184,6 +298,14 @@ msgstr "Auth Failure"
 #: views/user_auth.py:122
 msgid "Auth Success"
 msgstr "Auth Success"
+
+#: views/warehouse.py:160
+msgid "warehouse info"
+msgstr "warehouse info"
+
+#: views/warehouse.py:249
+msgid "warehouse edit"
+msgstr "warehouse edit"
 
 #~ msgid "Permission Denied"
 #~ msgstr "Permission Denied"

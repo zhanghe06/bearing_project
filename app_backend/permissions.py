@@ -20,19 +20,23 @@ SectionActionNeed = namedtuple('Need', ['section', 'action'])
 SectionActionItemNeed = namedtuple('ItemNeed', ['section', 'action', 'item_id'])
 
 # -------------------------------------------------------------
-# 角色类型 默认,销售,经理,系统
+# 角色类型 0:默认,1:系统,2:销售,3:经理,4:库管,5:财务
 roles = [
     '默认',
+    '系统',
     '销售',
     '经理',
-    '系统',
+    '库管',
+    '财务',
 ]
 
 # 角色权限
 permission_role_default = Permission(RoleNeed('默认'))
+permission_role_administrator = Permission(RoleNeed('系统'))
 permission_role_sales = Permission(RoleNeed('销售'))
 permission_role_manager = Permission(RoleNeed('经理'))
-permission_role_administrator = Permission(RoleNeed('系统'))
+permission_role_stock_keeper = Permission(RoleNeed('库管'))
+permission_role_accountant = Permission(RoleNeed('财务'))
 
 
 # =============================================================
@@ -75,10 +79,43 @@ permission_user_section_stats = Permission(UserSectionNeed('stats'))
 ProductSectionNeed = partial(SectionActionNeed, 'product')
 ProductSectionNeed.__doc__ = """A need with the section preset to `"product"`."""
 
-permission_product_section_add = Permission(UserSectionNeed('add'))
-permission_product_section_search = Permission(UserSectionNeed('search'))
-permission_product_section_export = Permission(UserSectionNeed('export'))
-permission_product_section_stats = Permission(UserSectionNeed('stats'))
+permission_product_section_add = Permission(ProductSectionNeed('add'))
+permission_product_section_search = Permission(ProductSectionNeed('search'))
+permission_product_section_export = Permission(ProductSectionNeed('export'))
+permission_product_section_stats = Permission(ProductSectionNeed('stats'))
+
+
+# -------------------------------------------------------------
+# 仓库板块操作权限（创建、查询、导出、统计）
+WarehouseSectionNeed = partial(SectionActionNeed, 'warehouse')
+WarehouseSectionNeed.__doc__ = """A need with the section preset to `"warehouse"`."""
+
+permission_warehouse_section_add = Permission(WarehouseSectionNeed('add'))
+permission_warehouse_section_search = Permission(WarehouseSectionNeed('search'))
+permission_warehouse_section_export = Permission(WarehouseSectionNeed('export'))
+permission_warehouse_section_stats = Permission(WarehouseSectionNeed('stats'))
+
+
+# -------------------------------------------------------------
+# 货架板块操作权限（创建、查询、导出、统计）
+RackSectionNeed = partial(SectionActionNeed, 'rack')
+RackSectionNeed.__doc__ = """A need with the section preset to `"rack"`."""
+
+permission_rack_section_add = Permission(RackSectionNeed('add'))
+permission_rack_section_search = Permission(RackSectionNeed('search'))
+permission_rack_section_export = Permission(RackSectionNeed('export'))
+permission_rack_section_stats = Permission(RackSectionNeed('stats'))
+
+
+# -------------------------------------------------------------
+# 库存板块操作权限（创建、查询、导出、统计）
+InventorySectionNeed = partial(SectionActionNeed, 'inventory')
+InventorySectionNeed.__doc__ = """A need with the section preset to `"inventory"`."""
+
+permission_inventory_section_add = Permission(InventorySectionNeed('add'))
+permission_inventory_section_search = Permission(InventorySectionNeed('search'))
+permission_inventory_section_export = Permission(InventorySectionNeed('export'))
+permission_inventory_section_stats = Permission(InventorySectionNeed('stats'))
 
 
 # -------------------------------------------------------------
@@ -169,39 +206,39 @@ class UserItemPrintPermission(Permission):
         super(UserItemPrintPermission, self).__init__(need)
 
 
-# -------------------------------------------------------------
-# 产品明细操作权限(读取、更新、删除、打印)
-ProductItemNeed = partial(SectionActionItemNeed, 'product')
-ProductItemNeed.__doc__ = """A need with the section preset to `"product"`."""
-
-ProductItemGetNeed = partial(ProductItemNeed, 'get')
-ProductItemEditNeed = partial(ProductItemNeed, 'edit')
-ProductItemDelNeed = partial(ProductItemNeed, 'del')
-ProductItemPrintNeed = partial(ProductItemNeed, 'print')
-
-
-class ProductItemGetPermission(Permission):
-    def __init__(self, product_id):
-        need = ProductItemGetNeed(unicode(product_id))
-        super(ProductItemGetPermission, self).__init__(need)
-
-
-class ProductItemEditPermission(Permission):
-    def __init__(self, product_id):
-        need = ProductItemEditNeed(unicode(product_id))
-        super(ProductItemEditPermission, self).__init__(need)
-
-
-class ProductItemDelPermission(Permission):
-    def __init__(self, product_id):
-        need = ProductItemDelNeed(unicode(product_id))
-        super(ProductItemDelPermission, self).__init__(need)
-
-
-class ProductItemPrintPermission(Permission):
-    def __init__(self, product_id):
-        need = ProductItemPrintNeed(unicode(product_id))
-        super(ProductItemPrintPermission, self).__init__(need)
+# # -------------------------------------------------------------
+# # 产品明细操作权限(读取、更新、删除、打印)
+# ProductItemNeed = partial(SectionActionItemNeed, 'product')
+# ProductItemNeed.__doc__ = """A need with the section preset to `"product"`."""
+#
+# ProductItemGetNeed = partial(ProductItemNeed, 'get')
+# ProductItemEditNeed = partial(ProductItemNeed, 'edit')
+# ProductItemDelNeed = partial(ProductItemNeed, 'del')
+# ProductItemPrintNeed = partial(ProductItemNeed, 'print')
+#
+#
+# class ProductItemGetPermission(Permission):
+#     def __init__(self, product_id):
+#         need = ProductItemGetNeed(unicode(product_id))
+#         super(ProductItemGetPermission, self).__init__(need)
+#
+#
+# class ProductItemEditPermission(Permission):
+#     def __init__(self, product_id):
+#         need = ProductItemEditNeed(unicode(product_id))
+#         super(ProductItemEditPermission, self).__init__(need)
+#
+#
+# class ProductItemDelPermission(Permission):
+#     def __init__(self, product_id):
+#         need = ProductItemDelNeed(unicode(product_id))
+#         super(ProductItemDelPermission, self).__init__(need)
+#
+#
+# class ProductItemPrintPermission(Permission):
+#     def __init__(self, product_id):
+#         need = ProductItemPrintNeed(unicode(product_id))
+#         super(ProductItemPrintPermission, self).__init__(need)
 
 
 # -------------------------------------------------------------

@@ -23,11 +23,11 @@ from wtforms.validators import InputRequired, DataRequired, Length, NumberRange,
 
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_choices, default_choice_option
+from app_common.maps.default import default_choices_int, default_choice_option_int
 
 from copy import copy
 
-role_id_choices = copy(default_choices)
+role_id_choices = copy(default_choices_int)
 role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 
@@ -52,7 +52,7 @@ class UserSearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option,
+        default=default_choice_option_int,
         coerce=int,
         choices=role_id_choices,
         description='用户角色',
@@ -64,7 +64,7 @@ class UserSearchForm(FlaskForm):
     parent_id = SelectField(
         '所属上级',
         validators=[],
-        default=default_choice_option,
+        default=default_choice_option_int,
         coerce=int,
         description='所属上级',
         render_kw={
@@ -125,7 +125,7 @@ class UserAddForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option,
+        default=default_choice_option_int,
         coerce=int,
         choices=role_id_choices,
         description='用户角色',
@@ -137,7 +137,7 @@ class UserAddForm(FlaskForm):
     parent_id = SelectField(
         '所属上级',
         validators=[],
-        default=default_choice_option,
+        default=default_choice_option_int,
         coerce=int,
         description='所属上级',
         render_kw={
@@ -167,7 +167,7 @@ class UserEditForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option,
+        default=default_choice_option_int,
         coerce=int,
         choices=role_id_choices,
         description='用户角色',
@@ -179,7 +179,7 @@ class UserEditForm(FlaskForm):
     parent_id = SelectField(
         '所属上级',
         validators=[],
-        default=default_choice_option,
+        default=default_choice_option_int,
         coerce=int,
         description='所属上级',
         render_kw={

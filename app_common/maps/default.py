@@ -10,6 +10,10 @@
 
 from __future__ import unicode_literals
 
-default_choices = [(-1, '全部')]  # 需要copy, 不要直接引用
+# 整数索引（默认）
+default_choices_int = [(-1, '全部')]  # 需要copy, 不要直接引用
+default_choice_option_int = -1
 
-default_choice_option = -1
+# 字符索引
+default_choices_str = [('', '全部')]  # 需要copy, 不要直接引用
+default_choice_option_str = ''

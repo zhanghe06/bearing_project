@@ -64,6 +64,7 @@ from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
     TYPE_ROLE_MANAGER,
     TYPE_ROLE_SYSTEM,
+    TYPE_ROLE_STOREKEEPER,
 )
 
 
@@ -108,6 +109,33 @@ def on_identity_loaded(sender, identity):
 
     # Add the UserNeed to the identity
     identity.provides.add(UserNeed(current_user.id))
+
+    # 公共权限（用户查询、产品查询、库存查询）
+    # 用户查询
+    identity.provides.add(SectionActionNeed('user', 'search'))
+    # 产品查询
+    identity.provides.add(SectionActionNeed('product', 'search'))
+    # 库存查询
+    identity.provides.add(SectionActionNeed('inventory', 'search'))
+    # 仓库查询
+    identity.provides.add(SectionActionNeed('warehouse', 'search'))
+
+    # 角色 - 系统
+    if current_user.role_id == TYPE_ROLE_SYSTEM:
+        # 版块基本操作权限（系统）
+        # 用户-----------------------------------------------------------------------
+        # 用户创建
+        identity.provides.add(SectionActionNeed('user', 'add'))
+        # 用户统计
+        identity.provides.add(SectionActionNeed('user', 'stats'))
+        # 产品-----------------------------------------------------------------------
+        # 产品创建
+        identity.provides.add(SectionActionNeed('product', 'add'))
+        # 产品统计
+        identity.provides.add(SectionActionNeed('product', 'stats'))
+
+        # 版块明细操作权限（系统）
+        # 系统角色拥有全部版块权限，不区分明细权限
 
     # 角色 - 销售
     if current_user.role_id == TYPE_ROLE_SALES:
@@ -238,12 +266,23 @@ def on_identity_loaded(sender, identity):
                 # 报价审核权限
                 identity.provides.add(SectionActionItemNeed('quote', 'audit', unicode(quote_row.id)))
 
-    # 版块基本操作权限（系统）
-    if current_user.role_id == TYPE_ROLE_SYSTEM:
-        pass
-        # 用户-----------------------------------------------------------------------
-        # 产品-----------------------------------------------------------------------
-        # 系统角色拥有全部版块权限，不区分明细权限
+    # 角色 - 库管
+    if current_user.role_id == TYPE_ROLE_STOREKEEPER:
+        # 库存-----------------------------------------------------------------------
+        # 库存创建
+        identity.provides.add(SectionActionNeed('inventory', 'add'))
+        # 库存统计
+        identity.provides.add(SectionActionNeed('inventory', 'stats'))
+        # 仓库-----------------------------------------------------------------------
+        # 仓库创建
+        identity.provides.add(SectionActionNeed('warehouse', 'add'))
+        # 仓库统计
+        identity.provides.add(SectionActionNeed('warehouse', 'stats'))
+        # 货架-----------------------------------------------------------------------
+        # 货架创建
+        identity.provides.add(SectionActionNeed('rack', 'add'))
+        # 货架统计
+        identity.provides.add(SectionActionNeed('rack', 'stats'))
 
 
 @user_loaded_from_cookie.connect_via(app)

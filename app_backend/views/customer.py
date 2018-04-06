@@ -58,7 +58,7 @@ from app_backend.permissions import (
     CustomerItemEditPermission,
     CustomerItemDelPermission,
 )
-from app_common.maps.default import default_choices, default_choice_option
+from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
 )
@@ -78,7 +78,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_sales_user_list():
-    sales_user_list = copy(default_choices)
+    sales_user_list = copy(default_choices_int)
     user_list = get_user_rows(**{'role_id': TYPE_ROLE_SALES})
     sales_user_list.extend([(0, '-')])
     sales_user_list.extend([(user.id, user.name) for user in user_list])
@@ -116,9 +116,9 @@ def lists(page=1):
         else:
             if form.company_name.data:
                 search_condition.append(Customer.company_name == form.company_name.data)
-            if form.company_type.data != default_choice_option:
+            if form.company_type.data != default_choice_option_int:
                 search_condition.append(Customer.company_type == form.company_type.data)
-            if form.owner_uid.data != default_choice_option:
+            if form.owner_uid.data != default_choice_option_int:
                 search_condition.append(Customer.owner_uid == form.owner_uid.data)
             if form.start_create_time.data:
                 search_condition.append(Customer.create_time >= form.start_create_time.data)

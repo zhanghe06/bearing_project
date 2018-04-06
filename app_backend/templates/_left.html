@@ -13,10 +13,23 @@
                 <!-- /input-group -->
             </li>
             <li>
-                <a href="{{ url_for('index') }}"><i class="fa fa-dashboard fa-fw"></i> {{ _('management center') }}</a>
+                <a href="{{ url_for('index') }}"><i class="fa fa-home fa-fw"></i> {{ _('management center') }}</a>
             </li>
 
-            <li class="active">
+            <li{% if 'product' in request.path %} class="active"{% endif %}>
+                <a id="menu-customer" href="#"><i class="fa fa-gift fa-fw"></i> {{ _('product management') }}<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url_for('product.lists') }}">{{ _('product lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('product.add') }}">{{ _('product add') }}</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li{% if 'customer' in request.path %} class="active"{% endif %}>
                 <a id="menu-customer" href="#"><i class="fa fa-table fa-fw"></i> {{ _('customer management') }}<span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -30,7 +43,6 @@
                         <a href="{{ url_for('customer.stats') }}">{{ _('customer stats') }}</a>
                     </li>
                 </ul>
-                <!-- /.nav-second-level -->
             </li>
             <li{% if 'user' in request.path %} class="active"{% endif %}>
                 <a id="menu-user" href="#"><i class="fa fa-users fa-fw"></i> {{ _('user management') }}<span
@@ -46,8 +58,49 @@
                         <a href="{{ url_for('user.stats') }}">{{ _('user stats') }}</a>
                     </li>
                 </ul>
-                <!-- /.nav-second-level -->
             </li>
+            <li{% if 'quote' in request.path %} class="active"{% endif %}>
+                <a id="menu-quote" href="#"><i class="fa fa-file fa-fw"></i> {{ _('quote management') }}<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url_for('quote.lists') }}">{{ _('quote lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('quote.add') }}">{{ _('quote add') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('quote.stats') }}">{{ _('quote stats') }}</a>
+                    </li>
+                </ul>
+            </li>
+            <li{% if 'warehouse' in request.path %} class="active"{% endif %}>
+                <a id="menu-warehouse" href="#"><i class="fa fa-file fa-fw"></i> {{ _('warehouse management') }}<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url_for('warehouse.lists') }}">{{ _('warehouse lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('warehouse.add') }}">{{ _('warehouse add') }}</a>
+                    </li>
+                </ul>
+            </li>
+{#            <li{% if 'inventory' in request.path %} class="active"{% endif %}>#}
+{#                <a id="menu-inventory" href="#"><i class="fa fa-file fa-fw"></i> {{ _('inventory management') }}<span#}
+{#                        class="fa arrow"></span></a>#}
+{#                <ul class="nav nav-second-level">#}
+{#                    <li>#}
+{#                        <a href="{{ url_for('inventory.lists') }}">{{ _('inventory lists') }}</a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <a href="{{ url_for('inventory.add') }}">{{ _('inventory add') }}</a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <a href="{{ url_for('inventory.stats') }}">{{ _('inventory stats') }}</a>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
             {#            <li{% if 'active' in request.path %} class="active"{% endif %}>#}
             {#                <a id="menu-active" href="#"><i class="fa fa-users fa-fw"></i> 激活管理<span class="fa arrow"></span></a>#}
             {#                <ul class="nav nav-second-level">#}

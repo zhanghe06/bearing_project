@@ -10,6 +10,7 @@
 
 
 from sqlalchemy.inspection import inspect
+from sqlalchemy import distinct
 
 
 class DbInstance(object):
@@ -217,6 +218,17 @@ class DbInstance(object):
             result = model_obj.delete()
             self.db_instance.session.commit()
             return result
+        except Exception as e:
+            self.db_instance.session.rollback()
+            raise e
+
+    def get_distinct_field(self, model_name, field, *args, **kwargs):
+        try:
+            return self.db_instance.session \
+                .query(distinct(getattr(model_name, field)).label(field)) \
+                .filter(*args) \
+                .filter_by(**kwargs) \
+                .all()
         except Exception as e:
             self.db_instance.session.rollback()
             raise e

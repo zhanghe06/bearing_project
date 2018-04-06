@@ -153,3 +153,8 @@ tips默认是不支持换行的, 需要`data-html`和`data-toggle`一起配合
 权限分配
 1. 系统管理角色，拥有用户管理、角色管理的权限；
 2. 普通用户角色，用户产品管理、客户管理，报价管理的权限；
+
+
+## Font Awesome
+
+https://fontawesome.com/icons

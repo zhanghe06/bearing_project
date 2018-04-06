@@ -13,3 +13,9 @@ body {
     left: 0;
     z-index: 1040;
 }
+
+/*面包屑导航*/
+.breadcrumb {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}

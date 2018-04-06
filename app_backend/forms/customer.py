@@ -17,12 +17,12 @@ from six import iteritems
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, IPAddress
-from app_common.maps.default import default_choices, default_choice_option
+from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 
 from copy import copy
 
-company_type_choices = copy(default_choices)
+company_type_choices = copy(default_choices_int)
 company_type_choices.extend(iteritems(TYPE_COMPANY_DICT))
 
 
@@ -45,7 +45,7 @@ class CustomerSearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option,
+        default=default_choice_option_int,
         coerce=int,
         choices=company_type_choices,
         description='公司类型',
@@ -56,7 +56,7 @@ class CustomerSearchForm(FlaskForm):
     )
     owner_uid = SelectField(
         '所属销售',
-        default=default_choice_option,
+        default=default_choice_option_int,
         # validators=[],
         coerce=int,
         description='所属销售',
@@ -202,17 +202,6 @@ class CustomerEditForm(FlaskForm):
         validators=[DataRequired()],
         default=0,
         description='所属销售'
-    )
-    status_delete = IntegerField(
-        '删除状态',
-        validators=[DataRequired()],
-        default=0,
-        description='删除状态'
-    )
-    delete_time = DateField(
-        '删除时间',
-        validators=[DataRequired()],
-        description='删除时间'
     )
     create_time = DateField(
         '创建时间',

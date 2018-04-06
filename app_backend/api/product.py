@@ -95,3 +95,12 @@ def get_product_pagination(page=1, per_page=10, *args, **kwargs):
     """
     rows = db_instance.get_pagination(Product, page, per_page, *args, **kwargs)
     return rows
+
+
+def get_distinct_brand():
+    """
+    获取品牌
+    :return: List
+    """
+    field = 'product_brand'
+    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Product, field))

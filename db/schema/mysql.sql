@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '姓名',
-  `role_id` TINYINT NOT NULL DEFAULT 0 COMMENT '角色（0:默认,1:系统,2:销售,3:经理）',
+  `role_id` TINYINT NOT NULL DEFAULT 0 COMMENT '角色（0:默认,1:系统,2:销售,3:经理,4:库管,5:财务）',
   `parent_id` INT NOT NULL DEFAULT 0 COMMENT '上级用户ID',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
@@ -38,9 +38,8 @@ CREATE TABLE `user_auth` (
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '角色名称（0:默认,1:系统,2:销售,3:经理）',
+  `name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '角色名称（0:默认,1:系统,2:销售,3:经理,4:库管,5:财务）',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '角色备注',
-  `section` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '版块权限(产品,客户,报价,统计,用户,角色,系统)',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -108,8 +107,10 @@ CREATE TABLE `customer_contact` (
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `category_id` INT NOT NULL DEFAULT 0 COMMENT '类别编号',
   `product_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
   `product_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `product_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
@@ -117,8 +118,68 @@ CREATE TABLE `product` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY (`product_model`),
-  KEY (`product_brand`, `product_model`)
+  UNIQUE (`product_brand`, `product_model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品明细';
+
+
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE `category` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '类别名称',
+  `main_id` INT NOT NULL DEFAULT 0 COMMENT '顶级编号',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`main_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品类别';
+
+
+DROP TABLE IF EXISTS `warehouse`;
+CREATE TABLE `warehouse` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '仓库名称',
+  `address` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '仓库地址',
+  `linkman` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '联系人',
+  `tel` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '座机（包含分机）',
+  `fax` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '传真（包含分机）',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='仓库';
+
+
+DROP TABLE IF EXISTS `rack`;
+CREATE TABLE `rack` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `warehouse_id` INT NOT NULL COMMENT '仓库编号',
+  `name` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '货架名称（区-排列层, 例如:A-010201）',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='货架';
+
+
+DROP TABLE IF EXISTS `inventory`;
+CREATE TABLE `inventory` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `product_id` INT NOT NULL COMMENT '产品编号',
+  `warehouse_id` INT NOT NULL COMMENT '仓库编号',
+  `rack_id` INT NOT NULL COMMENT '货架编号',
+  `stock_qty` INT NOT NULL COMMENT '库存数量',
+  `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '库存备注',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存明细';
 
 
 DROP TABLE IF EXISTS `quote`;
@@ -150,8 +211,9 @@ CREATE TABLE `quote_item` (
   `product_id` INT NOT NULL COMMENT '产品ID',
   `product_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
   `product_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `product_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
   `product_note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
-  `quantity` INT NOT NULL DEFAULT 0 COMMENT '订单数量',
+  `quantity` INT NOT NULL DEFAULT 0 COMMENT '报价数量',
   `unit_price` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
