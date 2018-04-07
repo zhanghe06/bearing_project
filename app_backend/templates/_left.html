@@ -75,7 +75,7 @@
                 </ul>
             </li>
             <li{% if 'warehouse' in request.path %} class="active"{% endif %}>
-                <a id="menu-warehouse" href="#"><i class="fa fa-file fa-fw"></i> {{ _('warehouse management') }}<span
+                <a id="menu-warehouse" href="#"><i class="fa fa-cubes fa-fw"></i> {{ _('warehouse management') }}<span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
@@ -83,6 +83,17 @@
                     </li>
                     <li>
                         <a href="{{ url_for('warehouse.add') }}">{{ _('warehouse add') }}</a>
+                    </li>
+                    <li>
+                        <a id="menu-rack" href="#">{{ _('rack management') }} <span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li>
+                                <a href="{{ url_for('rack.lists') }}">{{ _('rack lists') }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('rack.add') }}">{{ _('rack add') }}</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>

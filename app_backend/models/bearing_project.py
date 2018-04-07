@@ -203,7 +203,7 @@ class Warehouse(Base):
     __tablename__ = 'warehouse'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False, server_default=text("''"))
+    name = Column(String(100), nullable=False, unique=True, server_default=text("''"))
     address = Column(String(100), nullable=False, server_default=text("''"))
     linkman = Column(String(20), nullable=False, server_default=text("''"))
     tel = Column(String(20), nullable=False, server_default=text("''"))

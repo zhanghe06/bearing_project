@@ -4,19 +4,20 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
-            <li><a href="javascript:void(0);" onclick="$('#menu-product').trigger('click');">{{ _('product management') }}</a></li>
-            <li class="active">{{ _('product lists') }}</li>
+            <li><a href="javascript:void(0);" onclick="$('#menu-warehouse').trigger('click');">{{ _('warehouse management') }}</a></li>
+            <li><a href="javascript:void(0);" onclick="$('#menu-rack').trigger('click');">{{ _('rack management') }}</a></li>
+            <li class="active">{{ _('rack lists') }}</li>
         </ol>
 
         <form class="form-inline" method="post">
             {{ form.csrf_token }}
-            <div class="form-group{% if form.product_brand.errors %} has-error{% endif %}">
-                {{ form.product_brand.label() }}
-                {{ form.product_brand(class="form-control") }}
+            <div class="form-group{% if form.warehouse_id.errors %} has-error{% endif %}">
+                {{ form.warehouse_id.label() }}
+                {{ form.warehouse_id(class="form-control") }}
             </div>
-            <div class="form-group{% if form.product_model.errors %} has-error{% endif %}">
-                {{ form.product_model.label() }}
-                {{ form.product_model(class="form-control") }}
+            <div class="form-group{% if form.name.errors %} has-error{% endif %}">
+                {{ form.name.label() }}
+                {{ form.name(class="form-control") }}
             </div>
 
             <button type="submit" class="btn btn-primary" name="op" value="0">{{ _('Search') }}</button>
@@ -31,9 +32,8 @@
                 <thead>
                 <tr>
                     <th>编号</th>
-                    <th>产品品牌</th>
-                    <th>产品型号</th>
-                    <th>产品备注</th>
+                    <th>仓库名称</th>
+                    <th>货架名称</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
                     <th>操作</th>
@@ -43,16 +43,18 @@
                 {% for info in pagination.items %}
                     <tr class="text-muted">
                         <td>{{ info.id }}</td>
-                        <td>{{ info.product_brand }}</td>
-                        <td><a href="{{ url_for('product.info', product_id=info.id) }}" rel="tooltip"
-                               title="{{ _('Click details') }}">{{ info.product_model }}</a></td>
-                        <td>{{ info.note }}</td>
+                        <td><a href="{{ url_for('warehouse.info', warehouse_id=info.warehouse_id) }}" rel="tooltip"
+                               title="{{ _('Click details') }}">{{ info.warehouse_id }}</a>
+                        </td>
+                        <td><a href="{{ url_for('rack.info', rack_id=info.id) }}" rel="tooltip"
+                               title="{{ _('Click details') }}">{{ info.name }}</a>
+                        </td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
-                            <a href="{{ url_for('product.edit', product_id=info.id, next=request.path) }}"
+                            <a href="{{ url_for('rack.edit', rack_id=info.id, next=request.path) }}"
                                rel="tooltip" title="{{ _('Edit') }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="product_delete({{ info.id }});" rel="tooltip"
+                            <a href="javascript:void(0);" onclick="rack_delete({{ info.id }});" rel="tooltip"
                                title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
@@ -61,7 +63,7 @@
             </table>
             {# 翻页 #}
             {% from "macros.html" import render_pagination %}
-            {{ render_pagination(pagination, 'product.lists') }}
+            {{ render_pagination(pagination, 'rack.lists') }}
         </div>
     </div>
 
@@ -69,12 +71,12 @@
 
 {% block extra_js %}
     <script>
-        // 客户删除
-        function product_delete(product_id) {
+        // 货架删除
+        function rack_delete(rack_id) {
             if (confirm('删除数据不能恢复，是否确认删除?')) {
-                $.getJSON('{{ url_for('product.ajax_delete') }}',
+                $.getJSON('{{ url_for('rack.ajax_delete') }}',
                     {
-                        product_id: product_id
+                        rack_id: rack_id
                     }, function (data) {
                         if (data.result === true) {
                             alert(data.msg);

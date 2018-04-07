@@ -12,7 +12,6 @@
 from __future__ import unicode_literals
 
 import json
-from copy import copy
 from datetime import datetime
 
 from flask import (
@@ -35,7 +34,7 @@ from app_backend.api.warehouse import (
     get_warehouse_row_by_id,
     add_warehouse,
     edit_warehouse,
-    get_distinct_warehouse,
+    get_warehouse_choices,
     # warehouse_current_stats,
     # warehouse_former_stats,
 )
@@ -56,7 +55,7 @@ from app_backend.permissions import (
     permission_warehouse_section_stats,
     permission_role_stock_keeper,
 )
-from app_common.maps.default import default_choices_str, default_choice_option_str
+from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
 )
@@ -71,13 +70,6 @@ DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 PER_PAGE_BACKEND = app.config.get('PER_PAGE_BACKEND', 20)
 AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
-
-
-def get_warehouse_choices():
-    warehouse_list = copy(default_choices_str)
-    distinct_warehouse = get_distinct_warehouse()
-    warehouse_list.extend([(warehouse, warehouse) for warehouse in distinct_warehouse])
-    return warehouse_list
 
 
 @bp_warehouse.route('/lists.html', methods=['GET', 'POST'])
@@ -97,7 +89,7 @@ def lists(page=1):
 
     # 搜索条件
     form = WarehouseSearchForm(request.form)
-    form.name.choices = get_warehouse_choices()
+    form.id.choices = get_warehouse_choices()
     # app.logger.info('')
 
     search_condition = []
@@ -109,8 +101,8 @@ def lists(page=1):
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.name.data != default_choice_option_str:
-                search_condition.append(Warehouse.name == form.name.data)
+            if form.id.data != default_choice_option_int:
+                search_condition.append(Warehouse.id == form.id.data)
             if form.address.data:
                 search_condition.append(Warehouse.address == form.address.data)
         # 处理导出

@@ -23,18 +23,19 @@ from wtforms.validators import InputRequired, DataRequired, Length, NumberRange,
 
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_choices_str, default_choice_option_str
+from app_common.maps.default import default_choices_int, default_choice_option_int
 
 from copy import copy
 
 
 class WarehouseSearchForm(FlaskForm):
-    name = SelectField(
+    id = SelectField(
         '仓库名称',
-        validators=[],
-        default=default_choice_option_str,
-        # coerce=int,
-        # choices=warehouse_brand_choices,
+        validators=[
+            InputRequired(),  # 可以为0
+        ],
+        default=default_choice_option_int,
+        coerce=int,
         description='仓库名称',
         render_kw={
             'rel': "tooltip",

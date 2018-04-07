@@ -10,9 +10,9 @@
 
         <form class="form-inline" method="post">
             {{ form.csrf_token }}
-            <div class="form-group{% if form.name.errors %} has-error{% endif %}">
-                {{ form.name.label() }}
-                {{ form.name(class="form-control") }}
+            <div class="form-group{% if form.id.errors %} has-error{% endif %}">
+                {{ form.id.label() }}
+                {{ form.id(class="form-control") }}
             </div>
             <div class="form-group{% if form.address.errors %} has-error{% endif %}">
                 {{ form.address.label() }}

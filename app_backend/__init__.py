@@ -99,7 +99,7 @@ from app_backend.views.user_auth import bp_auth
 from app_backend.views.product import bp_product
 from app_backend.views.quote import bp_quote
 from app_backend.views.warehouse import bp_warehouse
-# from app_backend.views.rack import bp_rack
+from app_backend.views.rack import bp_rack
 # from app_backend.views.inventory import bp_inventory
 
 # 注册蓝图
@@ -110,7 +110,7 @@ app.register_blueprint(bp_auth)
 app.register_blueprint(bp_product)
 app.register_blueprint(bp_quote)
 app.register_blueprint(bp_warehouse)
-# app.register_blueprint(bp_rack)
+app.register_blueprint(bp_rack)
 # app.register_blueprint(bp_inventory)
 
 # 导入自定义过滤器
