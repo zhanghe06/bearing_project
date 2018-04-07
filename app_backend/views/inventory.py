@@ -31,32 +31,37 @@ from flask_login import login_required
 from app_backend import app
 from app_backend import excel
 from app_backend.api.warehouse import (
-    get_warehouse_pagination,
-    get_warehouse_row_by_id,
-    add_warehouse,
-    edit_warehouse,
-    get_warehouse_list_choices,
-    # warehouse_current_stats,
-    # warehouse_former_stats,
+    get_warehouse_choices,
 )
-from app_backend.api.warehouse import (
-    get_warehouse_rows,
+from app_backend.api.rack import (
+    get_rack_choices,
+)
+from app_backend.api.inventory import (
+    get_inventory_pagination,
+    get_inventory_row_by_id,
+    add_inventory,
+    edit_inventory,
+    # inventory_current_stats,
+    # inventory_former_stats,
+)
+from app_backend.api.inventory import (
+    get_inventory_rows,
     # get_distinct_brand,
 )
-from app_backend.forms.warehouse import (
-    WarehouseSearchForm,
-    WarehouseAddForm,
-    WarehouseEditForm,
+from app_backend.forms.inventory import (
+    InventorySearchForm,
+    InventoryAddForm,
+    InventoryEditForm,
 )
-from app_backend.models.bearing_project import Warehouse
+from app_backend.models.bearing_project import Inventory
 from app_backend.permissions import (
-    permission_warehouse_section_add,
-    permission_warehouse_section_search,
-    permission_warehouse_section_export,
-    permission_warehouse_section_stats,
+    permission_inventory_section_add,
+    permission_inventory_section_search,
+    permission_inventory_section_export,
+    permission_inventory_section_stats,
     permission_role_stock_keeper,
 )
-from app_common.maps.default import default_choices_str, default_choice_option_str
+from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
 )
@@ -64,7 +69,7 @@ from app_common.maps.type_role import TYPE_ROLE_MANAGER
 from app_common.tools import json_default
 
 # 定义蓝图
-bp_warehouse = Blueprint('warehouse', __name__, url_prefix='/warehouse')
+bp_inventory = Blueprint('inventory', __name__, url_prefix='/inventory')
 
 # 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
@@ -73,31 +78,25 @@ AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
-def get_warehouse_choices():
-    warehouse_list = copy(default_choices_str)
-    distinct_warehouse = get_warehouse_list_choices()
-    warehouse_list.extend([(warehouse, warehouse) for warehouse in distinct_warehouse])
-    return warehouse_list
-
-
-@bp_warehouse.route('/lists.html', methods=['GET', 'POST'])
-@bp_warehouse.route('/lists/<int:page>.html', methods=['GET', 'POST'])
+@bp_inventory.route('/lists.html', methods=['GET', 'POST'])
+@bp_inventory.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
-@permission_warehouse_section_search.require(http_exception=403)
+# @permission_inventory_section_search.require(http_exception=403)
 def lists(page=1):
     """
-    产品列表
+    库存列表
     :param page:
     :return:
     """
-    template_name = 'warehouse/lists.html'
+    template_name = 'inventory/lists.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('warehouse lists')
+    document_info['TITLE'] = _('inventory lists')
 
     # 搜索条件
-    form = WarehouseSearchForm(request.form)
-    form.name.choices = get_warehouse_choices()
+    form = InventorySearchForm(request.form)
+    form.warehouse_id.choices = get_warehouse_choices()
+    form.rack_id.choices = get_rack_choices(form.warehouse_id.data)
     # app.logger.info('')
 
     search_condition = []
@@ -109,26 +108,26 @@ def lists(page=1):
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.name.data != default_choice_option_str:
-                search_condition.append(Warehouse.name == form.name.data)
-            if form.address.data:
-                search_condition.append(Warehouse.address == form.address.data)
+            if form.warehouse_id.data != default_choice_option_int:
+                search_condition.append(Inventory.warehouse_id == form.warehouse_id.data)
+            if form.rack_id.data != default_choice_option_int:
+                search_condition.append(Inventory.rack_id == form.rack_id.data)
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
-            if not permission_warehouse_section_export.can():
+            if not permission_inventory_section_export.can():
                 abort(403)
-            column_names = Warehouse.__table__.columns.keys()
-            query_sets = get_warehouse_rows(*search_condition)
+            column_names = Inventory.__table__.columns.keys()
+            query_sets = get_inventory_rows(*search_condition)
 
             return excel.make_response_from_query_sets(
                 query_sets=query_sets,
                 column_names=column_names,
                 file_type='csv',
-                file_name='%s.csv' % _('warehouse lists')
+                file_name='%s.csv' % _('inventory lists')
             )
     # 翻页数据
-    pagination = get_warehouse_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_inventory_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(
@@ -139,44 +138,44 @@ def lists(page=1):
     )
 
 
-@bp_warehouse.route('/<int:warehouse_id>/info.html')
+@bp_inventory.route('/<int:inventory_id>/info.html')
 @login_required
-def info(warehouse_id):
+def info(inventory_id):
     """
-    产品详情
-    :param warehouse_id:
+    库存详情
+    :param inventory_id:
     :return:
     """
     # 详情数据
-    warehouse_info = get_warehouse_row_by_id(warehouse_id)
+    inventory_info = get_inventory_row_by_id(inventory_id)
     # 检查资源是否存在
-    if not warehouse_info:
+    if not inventory_info:
         abort(404)
     # 检查资源是否删除
-    if warehouse_info.status_delete == STATUS_DEL_OK:
+    if inventory_info.status_delete == STATUS_DEL_OK:
         abort(410)
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('warehouse info')
+    document_info['TITLE'] = _('inventory info')
     # 渲染模板
-    return render_template('warehouse/info.html', warehouse_info=warehouse_info, **document_info)
+    return render_template('inventory/info.html', inventory_info=inventory_info, **document_info)
 
 
-@bp_warehouse.route('/add.html', methods=['GET', 'POST'])
+@bp_inventory.route('/add.html', methods=['GET', 'POST'])
 @login_required
-@permission_warehouse_section_add.require(http_exception=403)
+@permission_inventory_section_add.require(http_exception=403)
 def add():
     """
-    创建产品
+    创建库存
     :return:
     """
-    template_name = 'warehouse/add.html'
+    template_name = 'inventory/add.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('warehouse add')
+    document_info['TITLE'] = _('inventory add')
 
     # 加载创建表单
-    form = WarehouseAddForm(request.form)
+    form = InventoryAddForm(request.form)
 
     # 进入创建页面
     if request.method == 'GET':
@@ -200,20 +199,17 @@ def add():
 
         # 表单校验成功
         current_time = datetime.utcnow()
-        warehouse_data = {
+        inventory_data = {
+            'warehouse_id': form.warehouse_id.data,
             'name': form.name.data,
-            'address': form.address.data,
-            'linkman': form.linkman.data,
-            'tel': form.tel.data,
-            'fax': form.fax.data,
             'create_time': current_time,
             'update_time': current_time,
         }
-        result = add_warehouse(warehouse_data)
+        result = add_inventory(inventory_data)
         # 创建操作成功
         if result:
             flash(_('Add Success'), 'success')
-            return redirect(request.args.get('next') or url_for('warehouse.lists'))
+            return redirect(request.args.get('next') or url_for('inventory.lists'))
         # 创建操作失败
         else:
             flash(_('Add Failure'), 'danger')
@@ -224,44 +220,41 @@ def add():
             )
 
 
-@bp_warehouse.route('/<int:warehouse_id>/edit.html', methods=['GET', 'POST'])
+@bp_inventory.route('/<int:inventory_id>/edit.html', methods=['GET', 'POST'])
 @login_required
 @permission_role_stock_keeper.require(http_exception=403)
-def edit(warehouse_id):
+def edit(inventory_id):
     """
-    产品编辑
+    库存编辑
     """
-    warehouse_info = get_warehouse_row_by_id(warehouse_id)
+    inventory_info = get_inventory_row_by_id(inventory_id)
     # 检查资源是否存在
-    if not warehouse_info:
+    if not inventory_info:
         abort(404)
     # 检查资源是否删除
-    if warehouse_info.status_delete == STATUS_DEL_OK:
+    if inventory_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
-    template_name = 'warehouse/edit.html'
+    template_name = 'inventory/edit.html'
 
     # 加载编辑表单
-    form = WarehouseEditForm(request.form)
+    form = InventoryEditForm(request.form)
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('warehouse edit')
+    document_info['TITLE'] = _('inventory edit')
 
     # 进入编辑页面
     if request.method == 'GET':
         # 表单赋值
-        form.name.data = warehouse_info.name
-        form.address.data = warehouse_info.address
-        form.linkman.data = warehouse_info.linkman
-        form.tel.data = warehouse_info.tel
-        form.fax.data = warehouse_info.fax
-        form.create_time.data = warehouse_info.create_time
-        form.update_time.data = warehouse_info.update_time
+        form.warehouse_id.data = inventory_info.warehouse_id
+        form.name.data = inventory_info.name
+        form.create_time.data = inventory_info.create_time
+        form.update_time.data = inventory_info.update_time
         # 渲染页面
         return render_template(
             template_name,
-            warehouse_id=warehouse_id,
+            inventory_id=inventory_id,
             form=form,
             **document_info
         )
@@ -273,41 +266,38 @@ def edit(warehouse_id):
             flash(_('Edit Failure'), 'danger')
             return render_template(
                 template_name,
-                warehouse_id=warehouse_id,
+                inventory_id=inventory_id,
                 form=form,
                 **document_info
             )
         # 表单校验成功
         current_time = datetime.utcnow()
-        warehouse_data = {
+        inventory_data = {
+            'warehouse_id': form.warehouse_id.data,
             'name': form.name.data,
-            'address': form.address.data,
-            'linkman': form.linkman.data,
-            'tel': form.tel.data,
-            'fax': form.fax.data,
             'update_time': current_time,
         }
-        result = edit_warehouse(warehouse_id, warehouse_data)
+        result = edit_inventory(inventory_id, inventory_data)
         # 编辑操作成功
         if result:
             flash(_('Edit Success'), 'success')
-            return redirect(request.args.get('next') or url_for('warehouse.lists'))
+            return redirect(request.args.get('next') or url_for('inventory.lists'))
         # 编辑操作失败
         else:
             flash(_('Edit Failure'), 'danger')
             return render_template(
                 template_name,
-                warehouse_id=warehouse_id,
+                inventory_id=inventory_id,
                 form=form,
                 **document_info
             )
 
 
-@bp_warehouse.route('/ajax/del', methods=['GET', 'POST'])
+@bp_inventory.route('/ajax/del', methods=['GET', 'POST'])
 @login_required
 def ajax_delete():
     """
-    产品删除
+    库存删除
     :return:
     """
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
@@ -319,8 +309,8 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查请求参数
-    warehouse_id = request.args.get('warehouse_id', 0, type=int)
-    if not warehouse_id:
+    inventory_id = request.args.get('inventory_id', 0, type=int)
+    if not inventory_id:
         ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
         return jsonify(ajax_failure_msg)
 
@@ -329,23 +319,23 @@ def ajax_delete():
         ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
         return jsonify(ajax_failure_msg)
 
-    warehouse_info = get_warehouse_row_by_id(warehouse_id)
+    inventory_info = get_inventory_row_by_id(inventory_id)
     # 检查资源是否存在
-    if not warehouse_info:
+    if not inventory_info:
         ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
         return jsonify(ajax_failure_msg)
     # 检查资源是否删除
-    if warehouse_info.status_delete == STATUS_DEL_OK:
+    if inventory_info.status_delete == STATUS_DEL_OK:
         ajax_success_msg['msg'] = _('Del Success')  # Already deleted
         return jsonify(ajax_success_msg)
 
     current_time = datetime.utcnow()
-    warehouse_data = {
+    inventory_data = {
         'status_delete': STATUS_DEL_OK,
         'delete_time': current_time,
         'update_time': current_time,
     }
-    result = edit_warehouse(warehouse_id, warehouse_data)
+    result = edit_inventory(inventory_id, inventory_data)
     if result:
         ajax_success_msg['msg'] = _('Del Success')
         return jsonify(ajax_success_msg)
@@ -354,19 +344,19 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
 
-# @bp_warehouse.route('/ajax/stats', methods=['GET', 'POST'])
+# @bp_inventory.route('/ajax/stats', methods=['GET', 'POST'])
 # @login_required
 # def ajax_stats():
 #     """
-#     获取产品统计
+#     获取库存统计
 #     :return:
 #     """
 #     time_based = request.args.get('time_based', 'hour')
-#     result_warehouse_current = warehouse_current_stats(time_based)
-#     result_warehouse_former = warehouse_former_stats(time_based)
+#     result_inventory_current = inventory_current_stats(time_based)
+#     result_inventory_former = inventory_former_stats(time_based)
 #
 #     line_chart_data = {
-#         'labels': [label for label, _ in result_warehouse_current],
+#         'labels': [label for label, _ in result_inventory_current],
 #         'datasets': [
 #             {
 #                 'label': '在职',
@@ -375,7 +365,7 @@ def ajax_delete():
 #                 'pointBackgroundColor': 'rgba(220,220,220,1)',
 #                 'pointBorderColor': '#fff',
 #                 'pointBorderWidth': 2,
-#                 'data': [data for _, data in result_warehouse_current]
+#                 'data': [data for _, data in result_inventory_current]
 #             },
 #             {
 #                 'label': '离职',
@@ -384,19 +374,19 @@ def ajax_delete():
 #                 'pointBackgroundColor': 'rgba(151,187,205,1)',
 #                 'pointBorderColor': '#fff',
 #                 'pointBorderWidth': 2,
-#                 'data': [data for _, data in result_warehouse_former]
+#                 'data': [data for _, data in result_inventory_former]
 #             }
 #         ]
 #     }
 #     return json.dumps(line_chart_data, default=json_default)
 #
 #
-# @bp_warehouse.route('/stats.html')
+# @bp_inventory.route('/stats.html')
 # @login_required
-# @permission_warehouse_section_stats.require(http_exception=403)
+# @permission_inventory_section_stats.require(http_exception=403)
 # def stats():
 #     """
-#     产品统计
+#     库存统计
 #     :return:
 #     """
 #     # 统计数据
@@ -405,41 +395,41 @@ def ajax_delete():
 #         abort(404)
 #     # 文档信息
 #     document_info = DOCUMENT_INFO.copy()
-#     document_info['TITLE'] = _('warehouse stats')
+#     document_info['TITLE'] = _('inventory stats')
 #     # 渲染模板
 #     return render_template(
-#         'warehouse/stats.html',
+#         'inventory/stats.html',
 #         time_based=time_based,
 #         **document_info
 #     )
 #
 #
-# @bp_warehouse.route('/<int:warehouse_id>/stats.html')
+# @bp_inventory.route('/<int:inventory_id>/stats.html')
 # @login_required
-# @permission_warehouse_section_stats.require(http_exception=403)
-# def stats_item(warehouse_id):
+# @permission_inventory_section_stats.require(http_exception=403)
+# def stats_item(inventory_id):
 #     """
-#     产品统计明细
-#     :param warehouse_id:
+#     库存统计明细
+#     :param inventory_id:
 #     :return:
 #     """
-#     warehouse_info = get_warehouse_row_by_id(warehouse_id)
+#     inventory_info = get_inventory_row_by_id(inventory_id)
 #     # 检查资源是否存在
-#     if not warehouse_info:
+#     if not inventory_info:
 #         abort(404)
 #     # 检查资源是否删除
-#     if warehouse_info.status_delete == STATUS_DEL_OK:
+#     if inventory_info.status_delete == STATUS_DEL_OK:
 #         abort(410)
 #
 #     # 统计数据
-#     warehouse_stats_item_info = get_warehouse_row_by_id(warehouse_id)
+#     inventory_stats_item_info = get_inventory_row_by_id(inventory_id)
 #     # 文档信息
 #     document_info = DOCUMENT_INFO.copy()
-#     document_info['TITLE'] = _('warehouse stats item')
+#     document_info['TITLE'] = _('inventory stats item')
 #     # 渲染模板
 #     return render_template(
-#         'warehouse/stats_item.html',
-#         warehouse_stats_item_info=warehouse_stats_item_info,
+#         'inventory/stats_item.html',
+#         inventory_stats_item_info=inventory_stats_item_info,
 #         **document_info
 #     )
 

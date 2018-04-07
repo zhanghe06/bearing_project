@@ -14,6 +14,9 @@ import json
 
 from app_backend import app
 from app_backend.api.user import get_user_row_by_id
+from app_backend.api.warehouse import get_warehouse_row_by_id
+from app_backend.api.rack import get_rack_row_by_id
+from app_backend.api.product import get_product_row_by_id
 from app_common.maps.type_auth import TYPE_AUTH_DICT
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 from app_common.maps.type_role import TYPE_ROLE_DICT
@@ -47,6 +50,50 @@ def filter_user_name(user_id):
     """
     user_info = get_user_row_by_id(user_id)
     return user_info.name if user_info else '-'
+
+
+@app.template_filter('warehouse_name')
+def filter_warehouse_name(warehouse_id):
+    """
+    仓库名称
+    :param warehouse_id:
+    :return:
+    """
+    warehouse_info = get_warehouse_row_by_id(warehouse_id)
+    return warehouse_info.name if warehouse_info else '-'
+
+
+@app.template_filter('rack_name')
+def filter_rack_name(rack_id):
+    """
+    货架名称
+    :param rack_id:
+    :return:
+    """
+    rack_info = get_rack_row_by_id(rack_id)
+    return rack_info.name if rack_info else '-'
+
+
+@app.template_filter('product_brand')
+def filter_product_brand(product_id):
+    """
+    产品品牌
+    :param product_id:
+    :return:
+    """
+    product_info = get_product_row_by_id(product_id)
+    return product_info.product_brand if product_info else '-'
+
+
+@app.template_filter('product_model')
+def filter_product_model(product_id):
+    """
+    产品型号
+    :param product_id:
+    :return:
+    """
+    product_info = get_product_row_by_id(product_id)
+    return product_info.product_model if product_info else '-'
 
 
 @app.template_filter('type_auth')

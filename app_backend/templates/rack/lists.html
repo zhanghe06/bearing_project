@@ -44,7 +44,7 @@
                     <tr class="text-muted">
                         <td>{{ info.id }}</td>
                         <td><a href="{{ url_for('warehouse.info', warehouse_id=info.warehouse_id) }}" rel="tooltip"
-                               title="{{ _('Click details') }}">{{ info.warehouse_id }}</a>
+                               title="{{ _('Click details') }}">{{ info.warehouse_id | warehouse_name }}</a>
                         </td>
                         <td><a href="{{ url_for('rack.info', rack_id=info.id) }}" rel="tooltip"
                                title="{{ _('Click details') }}">{{ info.name }}</a>

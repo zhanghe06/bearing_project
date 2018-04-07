@@ -23,31 +23,36 @@ from wtforms.validators import InputRequired, DataRequired, Length, NumberRange,
 
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_choices_int, default_choice_option_str
+from app_common.maps.default import default_choices_int, default_choice_option_int
 
 from copy import copy
 
 
 class InventorySearchForm(FlaskForm):
-    product_brand = SelectField(
-        '产品品牌',
-        validators=[],  # 字符类型，非必填
-        default=default_choice_option_str,
-        description='产品品牌',
+    warehouse_id = SelectField(
+        '仓库名称',
+        validators=[
+            InputRequired(),  # 可以为0
+        ],
+        default=default_choice_option_int,
+        coerce=int,
+        description='仓库名称',
         render_kw={
             'rel': "tooltip",
-            'title': "产品品牌",
+            'title': "仓库名称",
         }
     )
-    product_model = StringField(
-        '产品型号',
-        validators=[],
-        default='',
-        description='产品型号',
+    rack_id = SelectField(
+        '货架名称',
+        validators=[
+            InputRequired(),  # 可以为0
+        ],
+        default=default_choice_option_int,
+        coerce=int,
+        description='货架名称',
         render_kw={
-            'placeholder': '产品型号',
             'rel': "tooltip",
-            'title': "产品型号",
+            'title': "货架名称",
         }
     )
     op = IntegerField(
@@ -60,26 +65,43 @@ class InventorySearchForm(FlaskForm):
 
 
 class InventoryAddForm(FlaskForm):
-    inventory_brand = StringField(
-        '产品品牌',
-        validators=[DataRequired()],
+    product_id = IntegerField(
+        '产品编号',
+        validators=[
+            DataRequired(),
+        ],
         default='',
-        description='产品品牌',
+        description='产品编号',
         render_kw={
-            'placeholder': '产品品牌',
+            'placeholder': '产品编号',
             'rel': "tooltip",
-            'title': "产品品牌",
+            'title': "产品编号",
         }
     )
-    inventory_model = StringField(
-        '产品型号',
-        validators=[],
-        default='',
-        description='产品型号',
+    warehouse_id = SelectField(
+        '仓库名称',
+        validators=[
+            InputRequired(),  # 可以为0
+        ],
+        default=default_choice_option_int,
+        coerce=int,
+        description='仓库名称',
         render_kw={
-            'placeholder': '产品型号',
             'rel': "tooltip",
-            'title': "产品型号",
+            'title': "仓库名称",
+        }
+    )
+    rack_id = SelectField(
+        '货架名称',
+        validators=[
+            InputRequired(),  # 可以为0
+        ],
+        default=default_choice_option_int,
+        coerce=int,
+        description='货架名称',
+        render_kw={
+            'rel': "tooltip",
+            'title': "货架名称",
         }
     )
     note = StringField(

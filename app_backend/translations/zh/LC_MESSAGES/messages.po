@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-07 19:52+0800\n"
+"POT-Creation-Date: 2018-04-08 00:58+0800\n"
 "PO-Revision-Date: 2018-03-19 19:47+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -33,13 +33,12 @@ msgstr "访问页面，请先登录。"
 msgid "management center"
 msgstr "管理中心"
 
-#: templates/_left.html:20 templates/inventory/lists.html:7
-#: templates/product/lists.html:7
+#: templates/_left.html:20 templates/product/lists.html:7
 msgid "product management"
 msgstr "产品管理"
 
-#: templates/_left.html:24 templates/inventory/lists.html:8
-#: templates/product/lists.html:8 views/product.py:95 views/product.py:127
+#: templates/_left.html:24 templates/product/lists.html:8 views/product.py:95
+#: views/product.py:127
 msgid "product lists"
 msgstr "产品列表"
 
@@ -118,12 +117,11 @@ msgid "warehouse management"
 msgstr "仓库管理"
 
 #: templates/_left.html:82 templates/warehouse/lists.html:8
-#: views/inventory.py:96 views/inventory.py:128 views/warehouse.py:88
-#: views/warehouse.py:120
+#: views/warehouse.py:88 views/warehouse.py:120
 msgid "warehouse lists"
 msgstr "仓库列表"
 
-#: templates/_left.html:85 views/inventory.py:176 views/warehouse.py:168
+#: templates/_left.html:85 views/warehouse.py:168
 msgid "warehouse add"
 msgstr "仓库创建"
 
@@ -139,6 +137,19 @@ msgstr "货架列表"
 #: templates/_left.html:94 views/rack.py:171
 msgid "rack add"
 msgstr "货架创建"
+
+#: templates/_left.html:101 templates/inventory/lists.html:7
+msgid "inventory management"
+msgstr "库存管理"
+
+#: templates/_left.html:105 templates/inventory/lists.html:8
+#: views/inventory.py:94 views/inventory.py:127
+msgid "inventory lists"
+msgstr "库存列表"
+
+#: templates/_left.html:108 views/inventory.py:175
+msgid "inventory add"
+msgstr "库存创建"
 
 #: templates/index.html:7
 msgid "management homepage"
@@ -165,18 +176,18 @@ msgstr "导出"
 msgid "Refresh"
 msgstr "刷新"
 
-#: templates/inventory/lists.html:48 templates/product/lists.html:48
+#: templates/inventory/lists.html:53 templates/product/lists.html:48
 #: templates/rack/lists.html:47 templates/rack/lists.html:50
 #: templates/warehouse/lists.html:49
 msgid "Click details"
 msgstr "点击详情"
 
-#: templates/inventory/lists.html:54 templates/product/lists.html:54
+#: templates/inventory/lists.html:62 templates/product/lists.html:54
 #: templates/rack/lists.html:56 templates/warehouse/lists.html:59
 msgid "Edit"
 msgstr "编辑"
 
-#: templates/inventory/lists.html:56 templates/product/lists.html:56
+#: templates/inventory/lists.html:64 templates/product/lists.html:56
 #: templates/rack/lists.html:58 templates/warehouse/lists.html:61
 msgid "Delete"
 msgstr "删除"
@@ -217,7 +228,7 @@ msgstr "请求过多"
 msgid "Internal Server Error"
 msgstr "内部错误"
 
-#: views/customer.py:112 views/inventory.py:107 views/product.py:106
+#: views/customer.py:112 views/inventory.py:106 views/product.py:106
 #: views/quote.py:113 views/rack.py:102 views/user.py:107 views/warehouse.py:99
 msgid "Search Failure"
 msgstr "查询失败"
@@ -226,15 +237,15 @@ msgstr "查询失败"
 msgid "customer info"
 msgstr "客户信息"
 
-#: views/customer.py:209 views/customer.py:236 views/inventory.py:194
-#: views/inventory.py:219 views/product.py:193 views/product.py:216
+#: views/customer.py:209 views/customer.py:236 views/inventory.py:193
+#: views/inventory.py:215 views/product.py:193 views/product.py:216
 #: views/quote.py:210 views/quote.py:237 views/rack.py:189 views/rack.py:211
 #: views/user.py:204 views/user.py:227 views/warehouse.py:186
 #: views/warehouse.py:211
 msgid "Add Failure"
 msgstr "创建失败"
 
-#: views/customer.py:232 views/inventory.py:215 views/product.py:212
+#: views/customer.py:232 views/inventory.py:211 views/product.py:212
 #: views/quote.py:233 views/rack.py:207 views/user.py:223
 #: views/warehouse.py:207
 msgid "Add Success"
@@ -244,24 +255,24 @@ msgstr "创建成功"
 msgid "customer edit"
 msgstr "客户编辑"
 
-#: views/customer.py:298 views/customer.py:324 views/inventory.py:273
-#: views/inventory.py:297 views/product.py:268 views/product.py:290
+#: views/customer.py:298 views/customer.py:324 views/inventory.py:266
+#: views/inventory.py:287 views/product.py:268 views/product.py:290
 #: views/quote.py:299 views/quote.py:325 views/rack.py:262 views/rack.py:283
 #: views/user.py:283 views/user.py:305 views/warehouse.py:265
 #: views/warehouse.py:289
 msgid "Edit Failure"
 msgstr "编辑失败"
 
-#: views/customer.py:320 views/inventory.py:293 views/product.py:286
+#: views/customer.py:320 views/inventory.py:283 views/product.py:286
 #: views/quote.py:321 views/rack.py:279 views/user.py:301
 #: views/warehouse.py:285
 msgid "Edit Success"
 msgstr "编辑成功"
 
 #: views/customer.py:345 views/customer.py:351 views/customer.py:357
-#: views/customer.py:363 views/customer.py:381 views/inventory.py:318
-#: views/inventory.py:324 views/inventory.py:329 views/inventory.py:335
-#: views/inventory.py:353 views/product.py:311 views/product.py:317
+#: views/customer.py:363 views/customer.py:381 views/inventory.py:308
+#: views/inventory.py:314 views/inventory.py:319 views/inventory.py:325
+#: views/inventory.py:343 views/product.py:311 views/product.py:317
 #: views/product.py:322 views/product.py:328 views/product.py:346
 #: views/quote.py:346 views/quote.py:352 views/quote.py:358 views/quote.py:364
 #: views/quote.py:382 views/rack.py:304 views/rack.py:310 views/rack.py:315
@@ -272,8 +283,8 @@ msgstr "编辑成功"
 msgid "Del Failure"
 msgstr "删除失败"
 
-#: views/customer.py:367 views/customer.py:378 views/inventory.py:339
-#: views/inventory.py:350 views/product.py:332 views/product.py:343
+#: views/customer.py:367 views/customer.py:378 views/inventory.py:329
+#: views/inventory.py:340 views/product.py:332 views/product.py:343
 #: views/quote.py:368 views/quote.py:379 views/rack.py:325 views/rack.py:336
 #: views/user.py:348 views/user.py:359 views/warehouse.py:331
 #: views/warehouse.py:342
@@ -284,13 +295,13 @@ msgstr "删除成功"
 msgid "customer stats item"
 msgstr "客户统计明细"
 
-#: views/inventory.py:160 views/warehouse.py:152
-msgid "warehouse info"
-msgstr "仓库信息"
+#: views/inventory.py:159
+msgid "inventory info"
+msgstr "库存信息"
 
-#: views/inventory.py:249 views/warehouse.py:241
-msgid "warehouse edit"
-msgstr "仓库编辑"
+#: views/inventory.py:245
+msgid "inventory edit"
+msgstr "库存编辑"
 
 #: views/product.py:159
 msgid "product info"
@@ -344,6 +355,14 @@ msgstr "认证失败"
 #: views/user_auth.py:122
 msgid "Auth Success"
 msgstr "认证成功"
+
+#: views/warehouse.py:152
+msgid "warehouse info"
+msgstr "仓库信息"
+
+#: views/warehouse.py:241
+msgid "warehouse edit"
+msgstr "仓库编辑"
 
 #~ msgid "Permission Denied"
 #~ msgstr "暂无权限"

@@ -97,21 +97,18 @@
                     </li>
                 </ul>
             </li>
-{#            <li{% if 'inventory' in request.path %} class="active"{% endif %}>#}
-{#                <a id="menu-inventory" href="#"><i class="fa fa-file fa-fw"></i> {{ _('inventory management') }}<span#}
-{#                        class="fa arrow"></span></a>#}
-{#                <ul class="nav nav-second-level">#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('inventory.lists') }}">{{ _('inventory lists') }}</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('inventory.add') }}">{{ _('inventory add') }}</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="{{ url_for('inventory.stats') }}">{{ _('inventory stats') }}</a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
+            <li{% if 'inventory' in request.path %} class="active"{% endif %}>
+                <a id="menu-inventory" href="#"><i class="fa fa-building fa-fw"></i> {{ _('inventory management') }}<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url_for('inventory.lists') }}">{{ _('inventory lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('inventory.add') }}">{{ _('inventory add') }}</a>
+                    </li>
+                </ul>
+            </li>
             {#            <li{% if 'active' in request.path %} class="active"{% endif %}>#}
             {#                <a id="menu-active" href="#"><i class="fa fa-users fa-fw"></i> 激活管理<span class="fa arrow"></span></a>#}
             {#                <ul class="nav nav-second-level">#}
