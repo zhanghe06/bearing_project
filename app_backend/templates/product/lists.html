@@ -46,7 +46,7 @@
                         <td>{{ info.product_brand }}</td>
                         <td><a href="{{ url_for('product.info', product_id=info.id) }}" rel="tooltip"
                                title="{{ _('Click details') }}">{{ info.product_model }}</a></td>
-                        <td>{{ info.note }}</td>
+                        <td>{{ info.note | default('-', True) }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>

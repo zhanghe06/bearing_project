@@ -5,8 +5,8 @@
 .idea
 .DS_Store
 
-logs/
-!logs/index.html
+#logs/
+#!logs/index.html
 
 # Translations
 *.mo
@@ -17,3 +17,7 @@ download/
 .coverage
 htmlcov/
 .coveralls.yml
+
+# Elasticsearch
+docker/Elasticsearch/data/
+docker/Elasticsearch/logs/

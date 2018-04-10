@@ -36,6 +36,7 @@ pip install requests
 pip install MySQL-python
 pip install PyMongo
 pip install Pillow
+pip install elasticsearch
 pip install six
 pip install future
 ```
@@ -158,3 +159,11 @@ tips默认是不支持换行的, 需要`data-html`和`data-toggle`一起配合
 ## Font Awesome
 
 https://fontawesome.com/icons
+
+
+## 自动补全搜索插件
+
+autocomplete
+
+typeahead
+
