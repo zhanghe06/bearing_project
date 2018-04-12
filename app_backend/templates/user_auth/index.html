@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ g.lang }}">
 
 <head>
     <meta charset="utf-8">
@@ -58,7 +58,7 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">后台登录</h3>
+                    <h3 class="panel-title">{{ _('Sign in to Website') }}</h3>
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal" method="post" action="">
@@ -88,9 +88,9 @@
                                   <img src="{{ url_for('captcha.get_code', code_type='login') }}"
                                        data-html="true" data-toggle="tooltip" data-placement="top"
                                        rel="tooltip"
-                                       title="看不清<br/>换一张"
+                                       title="{{ _('Unsharpness<br/>Change next') }}"
                                        id="captcha_img"
-                                       onclick="refresh_code();">
+                                       onclick="refresh_code();" style="cursor: pointer">
                               </span>
 
                         </div>
@@ -105,15 +105,15 @@
                             <div class="col-sm-12">
                                 <div class="checkbox">
                                     <label>
-                                        {{ form.remember }} 记住登录状态
+                                        {{ form.remember }} {{ _('Remember me') }}
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <button type="submit" class="btn btn-success btn-load btn-block" data-loading-text="登录中"
-                                        autocomplete="off">登录
+                                <button type="submit" class="btn btn-success btn-load btn-block" data-loading-text="{{ _('Signing on') }}"
+                                        autocomplete="off">{{ _('Sign in') }}
                                 </button>
                             </div>
                         </div>

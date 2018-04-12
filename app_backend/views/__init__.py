@@ -299,18 +299,29 @@ def on_user_loaded_from_cookie(sender, user):
 
 @babel.localeselector
 def get_locale():
+    # moment 插件语言映射关系
+    moment_locale_map = {
+        'en': 'en',
+        'zh': 'zh-cn'
+    }
+
     # if a user is logged in, use the locale from the user settings
-    if hasattr(current_user, 'locale'):
+    if hasattr(current_user, 'locale') and current_user.locale:
+        g.lang = current_user.locale
+        g.moment_locale = moment_locale_map.get(current_user.locale)
         return current_user.locale
     # otherwise try to guess the language from the user accept
     # header the browser transmits.  We support de/fr/en in this
     # example.  The best match wins.
-    return request.accept_languages.best_match(['en', 'zh'])
+    lang = request.accept_languages.best_match(['en', 'zh'])
+    g.lang = lang
+    g.moment_locale = moment_locale_map.get(lang)
+    return lang
 
 
 @babel.timezoneselector
 def get_timezone():
-    if hasattr(current_user, 'timezone'):
+    if hasattr(current_user, 'timezone') and current_user.timezone:
         return current_user.timezone
 
 
