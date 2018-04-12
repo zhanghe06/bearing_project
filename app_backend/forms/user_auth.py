@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 import re
 import time
 from flask import session
-from flask_babel import gettext as _
+from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField
 from wtforms.validators import DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, IPAddress

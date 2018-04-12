@@ -104,6 +104,7 @@ pybabel compile -d translations
 - `Babel`插件, 中文为`zh`
 - `Moment`插件, 中文为`zh-cn`
 - `html`标签`lang`属性, 中文为`zh-CN`
+- 由于表单类是在Flask上下文环境外定义的, 需要使用`lazy_gettext`
 
 
 ## 闪现消息
