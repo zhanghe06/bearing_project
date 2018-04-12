@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-12 16:37+0800\n"
+"POT-Creation-Date: 2018-04-13 01:07+0800\n"
 "PO-Revision-Date: 2018-03-19 19:46+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -26,13 +26,55 @@ msgstr "Please log in to access this page."
 msgid "Not a valid choice"
 msgstr "Not a valid choice"
 
+#: forms/user_auth.py:34
+msgid "Captcha Format Error"
+msgstr "Captcha Format Error"
+
+#: forms/user_auth.py:39
+msgid "Captcha Expired"
+msgstr "Captcha Expired"
+
+#: forms/user_auth.py:41
+msgid "Captcha Value Failure"
+msgstr "Captcha Value Failure"
+
+#: forms/user_auth.py:49 forms/user_auth.py:58 forms/user_auth.py:60
+msgid "Username"
+msgstr "Username"
+
+#: forms/user_auth.py:51 forms/user_auth.py:68 forms/user_auth.py:85
+msgid "This field is required."
+msgstr "This field is required."
+
+#: forms/user_auth.py:55 forms/user_auth.py:72
+#, python-format
+msgid "Field must be between %(min)s and %(max)s characters long."
+msgstr "Field must be between %(min)s and %(max)s characters long."
+
+#: forms/user_auth.py:66 forms/user_auth.py:75 forms/user_auth.py:77
+msgid "Password"
+msgstr "Password"
+
+#: forms/user_auth.py:83 forms/user_auth.py:93 forms/user_auth.py:95
+msgid "Captcha"
+msgstr "Captcha"
+
+#: forms/user_auth.py:89
+#, python-format
+msgid "Field must be %(length)s characters long."
+msgstr "Field must be %(length)s characters long."
+
+#: forms/user_auth.py:100 templates/user_auth/index.html:103
+msgid "Remember me"
+msgstr "Remember me"
+
 #: templates/_left.html:16 templates/customer/lists.html:6
 #: templates/customer/stats.html:6 templates/index.html:6
 #: templates/inventory/lists.html:6 templates/inventory/stats.html:6
 #: templates/product/lists.html:6 templates/product/stats.html:6
 #: templates/quote/lists.html:6 templates/quote/stats.html:6
 #: templates/rack/lists.html:6 templates/rack/stats.html:6
-#: templates/system/catalogue.html:13 templates/user/lists.html:6
+#: templates/system/catalogue_import.html:13 templates/user/lists.html:6
 #: templates/user/stats.html:6 templates/warehouse/lists.html:6
 #: templates/warehouse/stats.html:6
 msgid "management center"
@@ -156,14 +198,14 @@ msgstr "inventory lists"
 msgid "inventory add"
 msgstr "inventory add"
 
-#: templates/_left.html:113 templates/system/catalogue.html:15
+#: templates/_left.html:113 templates/system/catalogue_import.html:15
 msgid "system management"
 msgstr "system management"
 
-#: templates/_left.html:117 templates/system/catalogue.html:16
-#: views/system.py:58
-msgid "catalogue upload"
-msgstr "catalogue upload"
+#: templates/_left.html:117 templates/system/catalogue_import.html:16
+#: views/system.py:60
+msgid "catalogue import"
+msgstr "catalogue import"
 
 #: templates/index.html:7
 msgid "management homepage"
@@ -213,67 +255,63 @@ msgstr "Delete"
 msgid "Refresh"
 msgstr "Refresh"
 
-#: templates/system/catalogue.html:31
+#: templates/system/catalogue_import.html:34
 msgid "Upload file"
 msgstr "Upload file"
 
-#: templates/system/catalogue.html:49
+#: templates/system/catalogue_import.html:56
 msgid "Click download"
 msgstr "Click download"
 
-#: templates/user_auth/index.html:61
+#: templates/user_auth/index.html:56
 msgid "Sign in to Website"
 msgstr "Sign in to Website"
 
-#: templates/user_auth/index.html:91
+#: templates/user_auth/index.html:86
 msgid "Unsharpness<br/>Change next"
 msgstr "Unsharpness<br/>Change next"
 
-#: templates/user_auth/index.html:108
-msgid "Remember me"
-msgstr "Remember me"
-
-#: templates/user_auth/index.html:115
+#: templates/user_auth/index.html:110
 msgid "Signing on"
 msgstr "Signing on"
 
-#: templates/user_auth/index.html:116
+#: templates/user_auth/index.html:111
 msgid "Sign in"
 msgstr "Sign in"
 
-#: views/__init__.py:393
+#: views/__init__.py:396
 msgid "Exit Success"
 msgstr "Exit Success"
 
-#: views/__init__.py:441
+#: views/__init__.py:444
 msgid "Unauthorized"
 msgstr "Unauthorized"
 
-#: views/__init__.py:447
+#: views/__init__.py:450
 msgid "Forbidden"
 msgstr "Forbidden"
 
-#: views/__init__.py:455
+#: views/__init__.py:458
 msgid "Not Found"
 msgstr "Not Found"
 
-#: views/__init__.py:461
+#: views/__init__.py:464
 msgid "Method Not Allowed"
 msgstr "Method Not Allowed"
 
-#: views/__init__.py:467
+#: views/__init__.py:470
 msgid "Gone"
 msgstr "Gone"
 
-#: views/__init__.py:473
+#: views/__init__.py:476
 msgid "Request Entity Too Large"
 msgstr "Request Entity Too Large"
 
-#: views/__init__.py:480
+#: views/__init__.py:483
 msgid "Too Many Requests"
 msgstr "Too Many Requests"
 
-#: views/__init__.py:486
+#: views/__init__.py:489
 msgid "Internal Server Error"
 msgstr "Internal Server Error"
 
@@ -401,6 +439,18 @@ msgstr "account login"
 msgid "Auth Failure"
 msgstr "Auth Failure"
 
+#: views/user_auth.py:91
+msgid "Username Error"
+msgstr "Username Error"
+
+#: views/user_auth.py:99
+msgid "Need Verify"
+msgstr "Need Verify"
+
+#: views/user_auth.py:107
+msgid "Password Error"
+msgstr "Password Error"
+
 #: views/user_auth.py:122
 msgid "Auth Success"
 msgstr "Auth Success"
@@ -415,4 +465,7 @@ msgstr "warehouse edit"
 
 #~ msgid "Permission Denied"
 #~ msgstr "Permission Denied"
+
+#~ msgid "catalogue upload"
+#~ msgstr "catalogue upload"
 

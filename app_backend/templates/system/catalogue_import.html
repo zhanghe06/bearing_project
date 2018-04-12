@@ -13,16 +13,19 @@
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
                    onclick="$('#menu-system').trigger('click');">{{ _('system management') }}</a></li>
-            <li class="active">{{ _('catalogue upload') }}</li>
+            <li class="active">{{ _('catalogue import') }}</li>
         </ol>
 
 
         <div class="panel panel-default">
             <div class="panel-body">
                 <blockquote>
-                    <p class="small">文件上传说明<br>
+                    <p class="small">
+                        文件上传说明<br>
+                        导入操作会清空历史数据<br>
                         格式要求: .csv、.xls、.xlsx<br>
-                        大小要求: 4 MB 以下</p>
+                        大小要求: 4 MB 以下
+                    </p>
                 </blockquote>
                 <form class="form-horizontal" method="post" enctype="multipart/form-data">
                     {{ form.csrf_token }}
@@ -41,6 +44,10 @@
                     </div>
                     <!-- The container for the uploaded files -->
                     <div id="files" class="files"></div>
+                    <!-- The container for the import process -->
+                    <div id="import_process"></div>
+                    <!-- The container for the import result -->
+                    <div id="import_result"></div>
                     <!-- The container for the errors -->
                     <div id="errors" class="error text-danger"></div>
                     <br>
@@ -67,14 +74,19 @@
         $(function () {
             'use strict';
             // Change this to the location of your server-side upload handler:
-            var url = '{{ url_for("system.catalogue") }}';
+            var url = '{{ url_for("system.catalogue_import") }}';
             $('#file_upload').fileupload({
                 url: url,
                 dataType: 'json',
                 done: function (e, data) {
                     if (data.result.result === true) {
-                        // console.log(data.result);
-                        $('#files').append(data.result.file.name + '\t' + data.result.file.size);
+                        $('#files').append('<p class="text-info">' + data.result.file_info.name + '\t' + data.result.file_info.size + '</p>');
+
+                        $('#import_process').remove();
+                        var import_result_obj = $('#import_result');
+                        import_result_obj.append('<p class="text-success">清空历史数量: ' + data.result.import_info.delete_count + '</p>');
+                        import_result_obj.append('<p class="text-success">文件记录数量: ' + data.result.import_info.csv_count + '</p>');
+                        import_result_obj.append('<p class="text-success">成功导入数据: ' + data.result.import_info.db_count + '</p>');
                         {#                $.each(data.result.files, function (index, file) {#}
                         {#                    $('<p/>').text(file.name + '\t' + file.size).appendTo('#files');#}
                         {#                });#}
@@ -90,7 +102,6 @@
 
                 },
                 progressall: function (e, data) {
-                    console.log(data);
                     var progress = parseInt(data.loaded / data.total * 100, 10);
                     var progress_bar_obj = $('#progress-bar');
                     progress_bar_obj.text(progress + '%');
@@ -98,6 +109,7 @@
                         'width',
                         progress + '%'
                     );
+                    $('#import_process').append('<p class="text-info">文件上传完成, 正在导入...</p>');
                 }
 
             }).prop('disabled', !$.support.fileInput)

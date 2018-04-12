@@ -258,6 +258,29 @@ class DbInstance(object):
             .order_by(inspect(model_name).primary_key[0].desc()) \
             .paginate(page, per_page, False)
 
+    def delete_table(self, model_name):
+        """
+        清空表（保留结构）
+        :param model_name:
+        :return:
+        """
+        try:
+            model_obj = self.db_instance.session.query(model_name)
+            result = model_obj.delete()
+            self.db_instance.session.commit()
+            return result
+        except Exception as e:
+            self.db_instance.session.rollback()
+            raise e
+
+    def drop_table(self, model_name):
+        """
+        删除表（数据、结构全部清除）
+        :param model_name:
+        :return:
+        """
+        return model_name.__table__.drop(bind=self.db_instance.engine)
+
     def insert_rows(self, model_name, data_list):
         """
         批量插入数据（遇到主键/唯一索引重复，忽略报错，继续执行下一条插入任务）

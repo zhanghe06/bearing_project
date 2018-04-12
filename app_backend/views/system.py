@@ -29,7 +29,9 @@ from flask_babel import gettext as _
 from flask_login import login_required
 
 from app_backend import app
-
+from app_backend.api.catalogue import delete_catalogue_table, count_catalogue
+from app_backend.models.bearing_project import Catalogue
+from app_backend.api.catalogue import add_catalogue
 from app_backend.forms.system import CatalogueUploadForm
 from app_backend.models.bearing_project import Rack
 from app_backend.permissions import (
@@ -48,14 +50,14 @@ AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
-@bp_system.route("/catalogue", methods=['GET', 'POST'])
+@bp_system.route("/catalogue_import", methods=['GET', 'POST'])
 @login_required
 @permission_role_administrator.require(http_exception=403)
-def catalogue():
-    template_name = 'system/catalogue.html'
+def catalogue_import():
+    template_name = 'system/catalogue_import.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('catalogue upload')
+    document_info['TITLE'] = _('catalogue import')
 
     # 加载表单
     form = CatalogueUploadForm(request.form)
@@ -66,9 +68,24 @@ def catalogue():
         try:
             # files = []
             file_item = request.files.get('file')
-            # todo 校验格式
-            # todo 执行导入
-            # csv_data = request.get_array(field_name='file')
+            csv_data = request.get_array(field_name='file')
+            # 校验数据是否有效
+            if len(csv_data) < 3:
+                raise Exception('数据错误')
+            csv_data.pop(0)
+            csv_head = csv_data.pop(0)
+
+            csv_count = len(csv_data)
+
+            column_names = Catalogue.__table__.columns.keys()
+
+            if not set(csv_head).issubset(set(column_names)):
+                raise Exception('数据错误')
+            # 清空历史
+            delete_count = delete_catalogue_table()
+            # 执行导入
+            for item in csv_data:
+                add_catalogue(dict(zip(csv_head, item)))
 
             file_info = {
                 'name': file_item.filename,
@@ -76,9 +93,16 @@ def catalogue():
                 'size': bytes2human(get_file_size(file_item)),
             }
 
+            import_info = {
+                'delete_count': delete_count,
+                'csv_count': csv_count,
+                'db_count': count_catalogue(),
+            }
+
             # files.append(file_info)
 
-            ajax_success_msg['file'] = file_info
+            ajax_success_msg['file_info'] = file_info
+            ajax_success_msg['import_info'] = import_info
             return jsonify(ajax_success_msg)
         except Exception as e:
             ajax_failure_msg['msg'] = e.message

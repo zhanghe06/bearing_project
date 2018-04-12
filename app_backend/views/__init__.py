@@ -123,6 +123,9 @@ def on_identity_loaded(sender, identity):
 
     # 角色 - 系统
     if current_user.role_id == TYPE_ROLE_SYSTEM:
+        # 赋予整体角色权限
+        identity.provides.add(RoleNeed('系统'))
+
         # 版块基本操作权限（系统）
         # 用户-----------------------------------------------------------------------
         # 用户创建

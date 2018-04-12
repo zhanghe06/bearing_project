@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-12 16:37+0800\n"
+"POT-Creation-Date: 2018-04-13 01:07+0800\n"
 "PO-Revision-Date: 2018-03-19 19:47+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -26,13 +26,55 @@ msgstr "访问页面，请先登录。"
 msgid "Not a valid choice"
 msgstr "非法选项"
 
+#: forms/user_auth.py:34
+msgid "Captcha Format Error"
+msgstr "验证码格式错误"
+
+#: forms/user_auth.py:39
+msgid "Captcha Expired"
+msgstr "验证码过期失效"
+
+#: forms/user_auth.py:41
+msgid "Captcha Value Failure"
+msgstr "验证码校验失败"
+
+#: forms/user_auth.py:49 forms/user_auth.py:58 forms/user_auth.py:60
+msgid "Username"
+msgstr "登录账号"
+
+#: forms/user_auth.py:51 forms/user_auth.py:68 forms/user_auth.py:85
+msgid "This field is required."
+msgstr "当前字段必填"
+
+#: forms/user_auth.py:55 forms/user_auth.py:72
+#, python-format
+msgid "Field must be between %(min)s and %(max)s characters long."
+msgstr "当前字段必须 %(min)s - %(max)s 个字符"
+
+#: forms/user_auth.py:66 forms/user_auth.py:75 forms/user_auth.py:77
+msgid "Password"
+msgstr "登录密码"
+
+#: forms/user_auth.py:83 forms/user_auth.py:93 forms/user_auth.py:95
+msgid "Captcha"
+msgstr "验证码"
+
+#: forms/user_auth.py:89
+#, python-format
+msgid "Field must be %(length)s characters long."
+msgstr "当前字段必须 %(length)s 个字符"
+
+#: forms/user_auth.py:100 templates/user_auth/index.html:103
+msgid "Remember me"
+msgstr "记住登录状态"
+
 #: templates/_left.html:16 templates/customer/lists.html:6
 #: templates/customer/stats.html:6 templates/index.html:6
 #: templates/inventory/lists.html:6 templates/inventory/stats.html:6
 #: templates/product/lists.html:6 templates/product/stats.html:6
 #: templates/quote/lists.html:6 templates/quote/stats.html:6
 #: templates/rack/lists.html:6 templates/rack/stats.html:6
-#: templates/system/catalogue.html:13 templates/user/lists.html:6
+#: templates/system/catalogue_import.html:13 templates/user/lists.html:6
 #: templates/user/stats.html:6 templates/warehouse/lists.html:6
 #: templates/warehouse/stats.html:6
 msgid "management center"
@@ -156,14 +198,14 @@ msgstr "库存列表"
 msgid "inventory add"
 msgstr "库存创建"
 
-#: templates/_left.html:113 templates/system/catalogue.html:15
+#: templates/_left.html:113 templates/system/catalogue_import.html:15
 msgid "system management"
 msgstr "系统管理"
 
-#: templates/_left.html:117 templates/system/catalogue.html:16
-#: views/system.py:58
-msgid "catalogue upload"
-msgstr "型录上传"
+#: templates/_left.html:117 templates/system/catalogue_import.html:16
+#: views/system.py:60
+msgid "catalogue import"
+msgstr "型录导入"
 
 #: templates/index.html:7
 msgid "management homepage"
@@ -213,67 +255,63 @@ msgstr "删除"
 msgid "Refresh"
 msgstr "刷新"
 
-#: templates/system/catalogue.html:31
+#: templates/system/catalogue_import.html:34
 msgid "Upload file"
 msgstr "上传文件"
 
-#: templates/system/catalogue.html:49
+#: templates/system/catalogue_import.html:56
 msgid "Click download"
 msgstr "点击下载"
 
-#: templates/user_auth/index.html:61
+#: templates/user_auth/index.html:56
 msgid "Sign in to Website"
 msgstr "登录站点"
 
-#: templates/user_auth/index.html:91
+#: templates/user_auth/index.html:86
 msgid "Unsharpness<br/>Change next"
 msgstr "看不清<br/>换一张"
 
-#: templates/user_auth/index.html:108
-msgid "Remember me"
-msgstr "记住登录状态"
-
-#: templates/user_auth/index.html:115
+#: templates/user_auth/index.html:110
 msgid "Signing on"
 msgstr "登录中"
 
-#: templates/user_auth/index.html:116
+#: templates/user_auth/index.html:111
 msgid "Sign in"
 msgstr "登录"
 
-#: views/__init__.py:393
+#: views/__init__.py:396
 msgid "Exit Success"
 msgstr "退出成功"
 
-#: views/__init__.py:441
+#: views/__init__.py:444
 msgid "Unauthorized"
 msgstr "未被授权"
 
-#: views/__init__.py:447
+#: views/__init__.py:450
 msgid "Forbidden"
 msgstr "禁止访问"
 
-#: views/__init__.py:455
+#: views/__init__.py:458
 msgid "Not Found"
 msgstr "没有找到"
 
-#: views/__init__.py:461
+#: views/__init__.py:464
 msgid "Method Not Allowed"
 msgstr "请求方式不被允许"
 
-#: views/__init__.py:467
+#: views/__init__.py:470
 msgid "Gone"
 msgstr "已被删除"
 
-#: views/__init__.py:473
+#: views/__init__.py:476
 msgid "Request Entity Too Large"
 msgstr "请求过大"
 
-#: views/__init__.py:480
+#: views/__init__.py:483
 msgid "Too Many Requests"
 msgstr "请求过多"
 
-#: views/__init__.py:486
+#: views/__init__.py:489
 msgid "Internal Server Error"
 msgstr "内部错误"
 
@@ -401,6 +439,18 @@ msgstr "账号登录"
 msgid "Auth Failure"
 msgstr "认证失败"
 
+#: views/user_auth.py:91
+msgid "Username Error"
+msgstr "登录账号错误"
+
+#: views/user_auth.py:99
+msgid "Need Verify"
+msgstr "需要认证"
+
+#: views/user_auth.py:107
+msgid "Password Error"
+msgstr "登录密码错误"
+
 #: views/user_auth.py:122
 msgid "Auth Success"
 msgstr "认证成功"
@@ -415,4 +465,7 @@ msgstr "仓库编辑"
 
 #~ msgid "Permission Denied"
 #~ msgstr "暂无权限"
+
+#~ msgid "catalogue upload"
+#~ msgstr "型录上传"
 

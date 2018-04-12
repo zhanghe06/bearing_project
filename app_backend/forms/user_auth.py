@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 import re
 import time
 from flask import session
-
+from flask_babel import gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField
 from wtforms.validators import DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, IPAddress
@@ -31,14 +31,14 @@ class CaptchaValidate(object):
     def __call__(self, form, field):
         data = field.data
         if not self._reg.match(data):
-            raise ValidationError(self.message or '图形验证码格式错误')
+            raise ValidationError(self.message or _('Captcha Format Error'))
 
         code_key = '%s:%s' % ('code_str', 'login')
         code_str = session.pop(code_key, '')
         if not code_str:
-            raise ValidationError(self.message or '图形验证码过期失效')
+            raise ValidationError(self.message or _('Captcha Expired'))
         if code_str.upper() != data.upper():
-            raise ValidationError(self.message or '图形验证码校验错误')
+            raise ValidationError(self.message or _('Captcha Value Failure'))
 
 
 class UserAuthForm(FlaskForm):
@@ -46,46 +46,58 @@ class UserAuthForm(FlaskForm):
     表单(用户登录认证)
     """
     auth_key = StringField(
-        '登录账号',
+        _('Username'),
         validators=[
-            DataRequired('登录账号不能为空'),
-            Length(min=2, max=20, message='登录账号长度不符'),
+            DataRequired(_('This field is required.')),
+            Length(
+                min=2,
+                max=20,
+                message=_('Field must be between %(min)s and %(max)s characters long.', min=2, max=20)
+            ),
         ],
-        description='登录账号，2-20个字符',
+        description=_('Username'),
         render_kw={
-            'placeholder': '登录账号，2-20个字符',
+            'placeholder': _('Username'),
             'minlength': 2,
             'maxlength': 20,
         }
     )
     auth_secret = PasswordField(
-        '登录密码',
+        _('Password'),
         validators=[
-            DataRequired('登录密码不能为空'),
-            Length(min=6, max=20, message='登录密码长度不符'),
+            DataRequired(_('This field is required.')),
+            Length(
+                min=6,
+                max=20,
+                message=_('Field must be between %(min)s and %(max)s characters long.', min=6, max=20)
+            ),
         ],
-        description='登录密码，6-20个字符',
+        description=_('Password'),
         render_kw={
-            'placeholder': '登录密码，6-20个字符',
+            'placeholder': _('Password'),
             'minlength': 6,
             'maxlength': 20,
         }
     )
     captcha = StringField(
-        '图形验证码',
+        _('Captcha'),
         validators=[
-            DataRequired('图形验证码不能为空'),
-            Length(min=4, max=4, message='图形验证码长度不符'),
+            DataRequired(_('This field is required.')),
+            Length(
+                min=4,
+                max=4,
+                message=_('Field must be %(length)s characters long.', length=4)
+            ),
             CaptchaValidate()
         ],
-        description='图形验证码，4个字符',
+        description=_('Captcha'),
         render_kw={
-            'placeholder': '图形验证码，4个字符',
+            'placeholder': _('Captcha'),
             'minlength': 4,
             'maxlength': 4,
         }
     )
-    remember = BooleanField('记住登录状态', default=False)
+    remember = BooleanField(_('Remember me'), default=False)
 
 
 class UserAuthAddForm(FlaskForm):

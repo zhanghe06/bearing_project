@@ -88,7 +88,7 @@ def index():
         }
         user_auth_info = get_user_auth_row(**condition)
         if not user_auth_info:
-            form.auth_key.errors.append('账号错误')
+            form.auth_key.errors.append(_('Username Error'))
             flash(_('Auth Failure'), 'danger')
             return render_template(
                 template_name,
@@ -96,7 +96,7 @@ def index():
                 **document_info
             )
         if user_auth_info.status_verified != STATUS_VERIFIED_OK:
-            form.auth_key.errors.append('账号失效')
+            form.auth_key.errors.append(_('Need Verify'))
             flash(_('Auth Failure'), 'danger')
             return render_template(
                 template_name,
@@ -104,7 +104,7 @@ def index():
                 **document_info
             )
         if user_auth_info.auth_secret != form.auth_secret.data:
-            form.auth_secret.errors.append('密码错误')
+            form.auth_secret.errors.append(_('Password Error'))
             flash(_('Auth Failure'), 'danger')
             return render_template(
                 template_name,

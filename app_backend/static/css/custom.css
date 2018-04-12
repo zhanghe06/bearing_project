@@ -19,3 +19,17 @@ body {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+/*垂直居中*/
+.center-vertical {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+
+.transparent-panel-footer {
+    padding: 10px 15px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
