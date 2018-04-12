@@ -112,12 +112,6 @@ CREATE TABLE `product` (
   `product_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
   `product_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
-  `bore_diameter` DECIMAL(8, 0) NOT NULL DEFAULT '0' COMMENT '内径（mm）',
-  `external_diameter` DECIMAL(8, 0) NOT NULL DEFAULT '0' COMMENT '外径（mm）',
-  `breadth` DECIMAL(8, 0) NOT NULL DEFAULT '0' COMMENT '宽度（mm）',
-  `speed_grease` DECIMAL(8, 0) NOT NULL DEFAULT '0' COMMENT '油脂转速（r/min）',
-  `speed_oil_gas` DECIMAL(8, 0) NOT NULL DEFAULT '0' COMMENT '油气转速（r/min）',
-  `weight` DECIMAL(8, 3) NOT NULL DEFAULT '0.000' COMMENT '重量（kg）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -126,6 +120,43 @@ CREATE TABLE `product` (
   KEY (`product_model`),
   UNIQUE (`product_brand`, `product_model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品明细';
+
+
+DROP TABLE IF EXISTS `catalogue`;
+CREATE TABLE `catalogue` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `product_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
+  `product_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `product_label` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品称号',
+  `product_brand_old` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '历史品牌',
+  `product_model_old` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '历史型号',
+  `product_class` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品类型',
+  `ind` DECIMAL(4, 0) NOT NULL DEFAULT '0' COMMENT '内径（mm）',
+  `oud` DECIMAL(4, 0) NOT NULL DEFAULT '0' COMMENT '外径（mm）',
+  `wid` DECIMAL(4, 0) NOT NULL DEFAULT '0' COMMENT '宽度（mm）',
+  `speed_g` DECIMAL(6, 0) NOT NULL DEFAULT '0' COMMENT '油脂转速（r/min）',
+  `speed_o` DECIMAL(6, 0) NOT NULL DEFAULT '0' COMMENT '油气转速（r/min）',
+  `weight` DECIMAL(8, 3) NOT NULL DEFAULT '0.000' COMMENT '重量（kg）',
+  `serie` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品系列',
+  `accuracy` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '精度等级',
+  `preload` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '预紧等级',
+  `seal` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '密封形式',
+  `angle` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '角度',
+  `r_size` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '滚动体大小（大、中、小）',
+  `r_matel` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '滚动体材料（轴承钢、陶瓷）',
+  `assembly_no` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '配组列数',
+  `assembly_type` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '配组形式',
+  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品备注',
+  `tag` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '产品标签（精密轴承 主轴轴承 高速主轴 高速电机）',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`product_model`),
+  KEY (`product_model_old`),
+  UNIQUE (`product_brand`, `product_model`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品型录';
 
 
 DROP TABLE IF EXISTS `category`;

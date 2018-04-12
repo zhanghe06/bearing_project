@@ -13,6 +13,42 @@ def to_dict(self):
 Base.to_dict = to_dict
 
 
+class Catalogue(Base):
+    __tablename__ = 'catalogue'
+    __table_args__ = (
+        Index('product_brand', 'product_brand', 'product_model', unique=True),
+    )
+
+    id = Column(Integer, primary_key=True)
+    product_brand = Column(String(16), nullable=False, server_default=text("''"))
+    product_model = Column(String(32), nullable=False, index=True, server_default=text("''"))
+    product_label = Column(String(32), nullable=False, server_default=text("''"))
+    product_brand_old = Column(String(16), nullable=False, server_default=text("''"))
+    product_model_old = Column(String(32), nullable=False, index=True, server_default=text("''"))
+    product_class = Column(String(32), nullable=False, server_default=text("''"))
+    ind = Column(Numeric(4, 0), nullable=False, server_default=text("'0'"))
+    oud = Column(Numeric(4, 0), nullable=False, server_default=text("'0'"))
+    wid = Column(Numeric(4, 0), nullable=False, server_default=text("'0'"))
+    speed_g = Column(Numeric(6, 0), nullable=False, server_default=text("'0'"))
+    speed_o = Column(Numeric(6, 0), nullable=False, server_default=text("'0'"))
+    weight = Column(Numeric(8, 3), nullable=False, server_default=text("'0.000'"))
+    serie = Column(String(32), nullable=False, server_default=text("''"))
+    accuracy = Column(String(64), nullable=False, server_default=text("''"))
+    preload = Column(String(64), nullable=False, server_default=text("''"))
+    seal = Column(String(64), nullable=False, server_default=text("''"))
+    angle = Column(String(64), nullable=False, server_default=text("''"))
+    r_size = Column(String(64), nullable=False, server_default=text("''"))
+    r_matel = Column(String(64), nullable=False, server_default=text("''"))
+    assembly_no = Column(String(64), nullable=False, server_default=text("''"))
+    assembly_type = Column(String(64), nullable=False, server_default=text("''"))
+    note = Column(String(64), nullable=False, server_default=text("''"))
+    tag = Column(String(256), nullable=False, server_default=text("''"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
 class Category(Base):
     __tablename__ = 'category'
 

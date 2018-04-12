@@ -86,11 +86,12 @@ def before_request():
     """
     当前用户信息
     """
+    pass
     # g.user = current_user
-    if current_user.is_authenticated:
-        session['status_login'] = True
-    else:
-        session['status_login'] = False
+    # if current_user.is_authenticated:
+    #     session['status_login'] = True
+    # else:
+    #     session['status_login'] = False
 
 
 @identity_loaded.connect_via(app)
@@ -296,24 +297,21 @@ def on_user_loaded_from_cookie(sender, user):
     identity_changed.send(app, identity=Identity(user.id))
 
 
-# @babel.localeselector
-# def get_locale():
-#     return 'zh_Hans_CN'
-#     # if a user is logged in, use the locale from the user settings
-#     user = getattr(g, 'user', None)
-#     if user is not None:
-#         return user.locale
-#     # otherwise try to guess the language from the user accept
-#     # header the browser transmits.  We support de/fr/en in this
-#     # example.  The best match wins.
-#     return request.accept_languages.best_match(['de', 'fr', 'en'])
-#
-#
-# @babel.timezoneselector
-# def get_timezone():
-#     user = getattr(g, 'user', None)
-#     if user is not None:
-#         return user.timezone
+@babel.localeselector
+def get_locale():
+    # if a user is logged in, use the locale from the user settings
+    if hasattr(current_user, 'locale'):
+        return current_user.locale
+    # otherwise try to guess the language from the user accept
+    # header the browser transmits.  We support de/fr/en in this
+    # example.  The best match wins.
+    return request.accept_languages.best_match(['en', 'zh'])
+
+
+@babel.timezoneselector
+def get_timezone():
+    if hasattr(current_user, 'timezone'):
+        return current_user.timezone
 
 
 @app.route('/favicon.ico')

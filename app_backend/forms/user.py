@@ -98,9 +98,7 @@ class UserSearchForm(FlaskForm):
     )
     op = IntegerField(
         '操作',
-        validators=[
-            InputRequired(),  # 可以为0
-        ],
+        validators=[],
         default=0,
     )
 

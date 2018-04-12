@@ -38,6 +38,7 @@ from app_backend.api.rack import (
     get_rack_row_by_id,
     add_rack,
     edit_rack,
+    get_rack_choices,
     # rack_current_stats,
     # rack_former_stats,
 )
@@ -338,6 +339,18 @@ def ajax_delete():
     else:
         ajax_failure_msg['msg'] = _('Del Failure')
         return jsonify(ajax_failure_msg)
+
+
+@bp_rack.route('/ajax/get_rack_choices', methods=['GET', 'POST'])
+@login_required
+def ajax_get_rack_choices():
+    """
+    货架选项
+    :return:
+    """
+    warehouse_id = request.args.get('warehouse_id', 0, type=int)
+    rack_choices = get_rack_choices(warehouse_id)
+    return jsonify(rack_choices)
 
 
 # @bp_rack.route('/ajax/stats', methods=['GET', 'POST'])

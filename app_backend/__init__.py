@@ -101,6 +101,7 @@ from app_backend.views.quote import bp_quote
 from app_backend.views.warehouse import bp_warehouse
 from app_backend.views.rack import bp_rack
 from app_backend.views.inventory import bp_inventory
+from app_backend.views.system import bp_system
 
 # 注册蓝图
 app.register_blueprint(bp_captcha)
@@ -112,6 +113,7 @@ app.register_blueprint(bp_quote)
 app.register_blueprint(bp_warehouse)
 app.register_blueprint(bp_rack)
 app.register_blueprint(bp_inventory)
+app.register_blueprint(bp_system)
 
 # 导入自定义过滤器
 from app_backend import filters

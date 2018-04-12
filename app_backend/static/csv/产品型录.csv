@@ -1,0 +1,7 @@
+产品品牌,产品型号,产品称号,历史品牌,历史型号,产品类型,内径d,外径D,宽度B,油脂转速,油气转速,质量KG,产品系列,精度等级,预紧等级,密封形式,角度,滚动体大小,滚动体材料,配组列数,配组形式,说明,标签
+product_brand,product_model,product_label,product_brand_old,product_model_old,product_class,ind,oud,wid,speed_g,speed_o,weight,serie,accuracy,preload,seal,angle,r_size,r_matel,assembly_no,assembly_type,note,tag
+SKF,706CEGA/P4A,706CEGA/P4A,SNFA,VEX67CE1UL,角接触球轴承,6,17,6,140000,220000,0.006,70,P4A,轻,开式,15,中,轴承钢,单列,万能自由配组,,精密轴承 主轴轴承 高速主轴 高速电机
+SKF,707CEGA/P4A,707CEGA/P4A,SNFA,VEX77CE1UL,角接触球轴承,7,19,6,127000,190000,0.007,70,P4A,轻,开式,15,中,轴承钢,单列,万能自由配组,,精密轴承 主轴轴承 高速主轴 高速电机
+SKF,708CEGA/P4A,708CEGA/P4A,SNFA,VEX87CE1UL,角接触球轴承,8,22,7,109000,165000,0.012,70,P4A,轻,开式,15,中,轴承钢,单列,万能自由配组,,精密轴承 主轴轴承 高速主轴 高速电机
+SKF,709CEGA/P4A,709CEGA/P4A,SNFA,VEX97CE1UL,角接触球轴承,9,24,7,98000,150000,0.014,70,P4A,轻,开式,15,中,轴承钢,单列,万能自由配组,,精密轴承 主轴轴承 高速主轴 高速电机
+SKF,7000CEGA/P4A,7000CEGA/P4A,SNFA,VEX107CE1UL,角接触球轴承,10,26,8,90000,140000,0.019,70,P4A,轻,开式,15,中,轴承钢,单列,万能自由配组,,精密轴承 主轴轴承 高速主轴 高速电机

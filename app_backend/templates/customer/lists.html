@@ -60,7 +60,7 @@
                     <tr class="text-muted">
                         <td>{{ info.id }}</td>
                         <td><a href="{{ url_for('customer.info', customer_id=info.id) }}" rel="tooltip"
-                               title="点击详情">{{ info.company_name }}</a></td>
+                               title="{{ _('Click details') }}">{{ info.company_name }}</a></td>
                         <td>{{ info.company_address }}</td>
                         <td>{{ info.company_site }}</td>
                         <td>{{ info.company_tel }}</td>
@@ -71,9 +71,9 @@
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
                             <a href="{{ url_for('customer.edit', customer_id=info.id, next=request.path) }}"
-                               rel="tooltip" title="编辑"><span class="glyphicon glyphicon-pencil"></span></a>
+                               rel="tooltip" title="{{ _('Edit') }}"><span class="glyphicon glyphicon-pencil"></span></a>
                             <a href="javascript:void(0);" onclick="customer_delete({{ info.id }});" rel="tooltip"
-                               title="删除"><span class="glyphicon glyphicon-trash"></span></a>
+                               title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
                 {% endfor %}
