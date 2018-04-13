@@ -19,6 +19,7 @@ from flask_moment import Moment
 from flask_oauthlib.client import OAuth
 from flask_principal import Principal
 import flask_excel as excel
+from flask_socketio import SocketIO
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_babel import Babel, gettext as _
@@ -60,6 +61,8 @@ principals = Principal(app)
 babel = Babel(app)
 
 excel.init_excel(app)
+
+socketio = SocketIO(app)
 
 # 第三方开放授权登录
 oauth = OAuth(app)
@@ -104,6 +107,7 @@ from app_backend.views.warehouse import bp_warehouse
 from app_backend.views.rack import bp_rack
 from app_backend.views.inventory import bp_inventory
 from app_backend.views.system import bp_system
+from app_backend.views.socket_io import bp_socket_io
 
 # 注册蓝图
 app.register_blueprint(bp_captcha)
@@ -116,6 +120,7 @@ app.register_blueprint(bp_warehouse)
 app.register_blueprint(bp_rack)
 app.register_blueprint(bp_inventory)
 app.register_blueprint(bp_system)
+app.register_blueprint(bp_socket_io)
 
 # 导入自定义过滤器
 from app_backend import filters

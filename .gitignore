@@ -5,8 +5,8 @@
 .idea
 .DS_Store
 
-#logs/
-#!logs/index.html
+logs/
+!logs/index.html
 
 # Translations
 *.mo
@@ -20,4 +20,4 @@ htmlcov/
 
 # Elasticsearch
 docker/Elasticsearch/data/
-docker/Elasticsearch/logs/
+# docker/Elasticsearch/logs/

@@ -5,21 +5,51 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="/">{{ PROJECT_NAME }}</a>
+    <a class="navbar-brand" href="{{ url_for('index') }}">{{ PROJECT_NAME }}</a>
 </div>
 <!-- /.navbar-header -->
 
 <ul class="nav navbar-top-links navbar-right">
+    <li class="dropdown messages-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-envelope-o"></i>
+            {{ _('Up-to-date Messages') }} <span class="label label-success">0</span>
+        </a>
+        <ul class="dropdown-menu" id="socket-messages">
+            <li class="message">
+                <a href="#">
+                    <h4>
+                        Support Team
+                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                    </h4>
+                    <p>Why not buy a new awesome theme?</p>
+                </a>
+            </li>
+            <li class="message">
+                <a href="#">
+                    <h4>
+                        Support Team
+                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                    </h4>
+                    <p>Why not buy a new awesome theme?</p>
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="text-center"><a href="#"><i class="fa fa-envelope-o"></i> {{ _('See All Messages') }}</a></li>
+        </ul>
+    </li>
+
     <!-- /.dropdown -->
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <i class="fa fa-user fa-fw"></i> {{ current_user.name }} [{{ current_user.role_id | type_role }}] <i class="fa fa-caret-down"></i>
+            <i class="fa fa-user fa-fw"></i> {{ current_user.name }} [{{ current_user.role_id | type_role }}] <i
+                class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu">
-            <li><a href="{{ url_for('home') }}"><i class="fa fa-user fa-fw"></i> 个人中心</a>
+            <li><a href="{{ url_for('home') }}"><i class="fa fa-user fa-fw"></i> {{ _('personal information') }}</a>
             </li>
             <li class="divider"></li>
-            <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
+            <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out fa-fw"></i> {{ _('Sign out') }}</a>
             </li>
         </ul>
         <!-- /.dropdown-user -->

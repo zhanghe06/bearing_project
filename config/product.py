@@ -60,6 +60,7 @@ SQLALCHEMY_POOL_TIMEOUT = 10  # 默认 10秒
 SQLALCHEMY_POOL_RECYCLE = 500  # 配置要小于 数据库配置 wait_timeout
 SQLALCHEMY_ECHO = False
 
+
 # 缓存，队列
 REDIS = {
     'host': HOST_IP,

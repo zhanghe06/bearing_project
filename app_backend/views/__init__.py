@@ -14,6 +14,7 @@ import os
 from datetime import datetime
 import json
 import traceback
+import user_agents
 
 from flask import current_app, Response
 from sqlalchemy.exc import OperationalError
@@ -70,6 +71,12 @@ from app_common.maps.type_role import (
 
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 
+# moment 插件语言映射关系
+moment_locale_map = {
+    'en': 'en',
+    'zh': 'zh-cn'
+}
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -86,7 +93,11 @@ def before_request():
     """
     当前用户信息
     """
-    pass
+    lang = request.accept_languages.best_match(['en', 'zh'])
+    g.lang = lang
+    g.moment_locale = moment_locale_map.get(lang)
+    g.user_agent = user_agents.parse(str(request.user_agent))
+
     # g.user = current_user
     # if current_user.is_authenticated:
     #     session['status_login'] = True
@@ -302,12 +313,6 @@ def on_user_loaded_from_cookie(sender, user):
 
 @babel.localeselector
 def get_locale():
-    # moment 插件语言映射关系
-    moment_locale_map = {
-        'en': 'en',
-        'zh': 'zh-cn'
-    }
-
     # if a user is logged in, use the locale from the user settings
     if hasattr(current_user, 'locale') and current_user.locale:
         g.lang = current_user.locale
@@ -316,10 +321,7 @@ def get_locale():
     # otherwise try to guess the language from the user accept
     # header the browser transmits.  We support de/fr/en in this
     # example.  The best match wins.
-    lang = request.accept_languages.best_match(['en', 'zh'])
-    g.lang = lang
-    g.moment_locale = moment_locale_map.get(lang)
-    return lang
+    return g.lang
 
 
 @babel.timezoneselector
@@ -360,18 +362,18 @@ def index():
     # return "Hello, World!"
     # return str(current_user.__dict__)
     document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('management homepage')
     return render_template('index.html', **document_info)
 
 
 @app.route('/home.html')
-# @login_required
+@login_required
 def home():
     """
     个人中心
     """
-    return "home"
-    # return str(current_user.__dict__)
     document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('personal information')
     return render_template('home.html', **document_info)
 
 
@@ -407,36 +409,36 @@ def test_permission_role_administrator():
     return Response('Only if you are admin')
 
 
-@app.route('/stream/')
-def stream():
-    """
-    流式响应
-    http://0.0.0.0:8010/stream/
-    :return:
-    """
-    import time
-
-    def gen():
-        for c in 'Hello world!':
-            yield c
-            time.sleep(0.5)
-    return Response(gen())
-
-
-@app.route('/stream_with_context/')
-def stream_with_context():
-    """
-    http://0.0.0.0:8010/stream_with_context/?name=Administrator
-    :return:
-    """
-    import time
-    from flask import stream_with_context, request, Response
-
-    def generate():
-        for i in 'Hello %s!' % (request.args.get('name', '')):
-            time.sleep(0.5)
-            yield i
-    return Response(stream_with_context(generate()))
+# @app.route('/stream/')
+# def stream():
+#     """
+#     流式响应
+#     http://0.0.0.0:8010/stream/
+#     :return:
+#     """
+#     import time
+#
+#     def gen():
+#         for c in 'Hello world!':
+#             yield c
+#             time.sleep(0.5)
+#     return Response(gen())
+#
+#
+# @app.route('/stream_with_context/')
+# def stream_with_context():
+#     """
+#     http://0.0.0.0:8010/stream_with_context/?name=Administrator
+#     :return:
+#     """
+#     import time
+#     from flask import stream_with_context, request, Response
+#
+#     def generate():
+#         for i in 'Hello %s!' % (request.args.get('name', '')):
+#             time.sleep(0.2)
+#             yield i
+#     return Response(stream_with_context(generate()))
 
 
 @app.errorhandler(401)

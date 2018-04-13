@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ g.lang }}">
-
+<html lang="{{ g.lang | default('en', True) }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -10,12 +9,12 @@
     <meta name="renderer" content="webkit">
     <meta name="format-detection" content="telephone=no,email=no">
     <meta name="browsermode" content="application">
-    <meta name="application-name" content="{{ APP_NAME }}">
+    <meta name="application-name" content="{{ APP_NAME | default('') }}">
     <meta http-equiv="Cache-Control" content="no-siteapp">
-    <meta name="keywords" content="{{ KEYWORDS }}">
-    <meta name="description" content="{{ DESCRIPTION }}">
-    <meta name="author" content="{{ AUTHOR }}">
-    <title>{{ TITLE }} - {{ PROJECT_NAME }}</title>
+    <meta name="keywords" content="{{ KEYWORDS | default('') }}">
+    <meta name="description" content="{{ DESCRIPTION | default('') }}">
+    <meta name="author" content="{{ AUTHOR | default('') }}">
+    <title>{% if TITLE %}{{ TITLE | default('') }} - {% endif %}{{ PROJECT_NAME | default('') }}</title>
     <!-- Bootstrap -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
@@ -33,13 +32,10 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 
 <body>
-
     <div id="wrapper">
-
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <!-- 头部导航 -->
@@ -64,32 +60,29 @@
             {% endwith %}
             </div>
             {% block content %}{% endblock %}
-
             <!-- /.container-fluid -->
         </div>
         <!-- /#page-wrapper -->
-
     </div>
     <!-- /#wrapper -->
 
     <!-- jQuery -->
     <script src="{{ url_for('static', filename='js/jquery-1.11.3.min.js') }}"></script>
-
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
     <!-- Metis Menu Plugin JavaScript -->
     <script src="{{ url_for('static', filename='plugin/metisMenu/metisMenu.min.js') }}"></script>
     <script src="{{ url_for('static', filename='plugin/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js') }}"></script>
-
     <!-- Chart Plugin JavaScript -->
     <script src="{{ url_for('static', filename='plugin/Chart.js-2.6.0/dist/Chart.min.js') }}"></script>
-
+    <!-- Moment Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='plugin/moment-2.18.1/min/moment-with-locales.min.js') }}"></script>
+    <!-- SocketIO Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='plugin/socket.io-client-2.1.0/dist/socket.io.js') }}"></script>
     <!-- Custom Theme JavaScript -->
     <script src="{{ url_for('static', filename='js/sb-admin-2.js') }}"></script>
     <script src="{{ url_for('static', filename='js/custom.js', v='1.5.20') }}"></script>
 
-    <script src="{{ url_for('static', filename='plugin/moment-2.18.1/min/moment-with-locales.min.js') }}"></script>
     <script>
         moment.locale("{{ g.moment_locale }}");
         function flask_moment_render(elem) {
@@ -110,6 +103,25 @@
         }
         $(document).ready(function () {
             flask_moment_render_all();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            var socket = io.connect('https://' + document.domain + ':' + location.port + '/msg');
+            socket.on('s_res', function(msg) {
+                $('#socket-messages').prepend('<li class="message">\n' +
+                    '                <a href="#">\n' +
+                    '                    <h4>\n' + msg.data +
+                    '                        <small><i class="fa fa-clock-o"></i> 5 mins</small>\n' +
+                    '                    </h4>\n' +
+                    '                    <p>Why not buy a new awesome theme?</p>\n' +
+                    '                </a>\n' +
+                    '            </li>');
+                // $('#socket-messages').children('.message');
+                // $('#socket-messages').children('.message').length;
+                // $(selector).nextAll().remove();
+            });
         });
     </script>
 

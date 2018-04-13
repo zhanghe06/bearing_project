@@ -9,6 +9,7 @@
 - [ ] 订单管理
 - [ ] 库存管理
 - [ ] 会话管理
+- [ ] 消息管理
 
 系统依赖
 - Nginx
@@ -31,6 +32,8 @@ pip install Flask-Babel
 pip install Flask-Moment
 pip install sqlacodegen
 pip install gunicorn
+pip install gevent
+pip install Flask-SocketIO
 pip install supervisor
 pip install redis
 pip install requests
@@ -38,6 +41,7 @@ pip install MySQL-python
 pip install PyMongo
 pip install Pillow
 pip install elasticsearch
+pip install user-agents
 pip install six
 pip install future
 ```
@@ -169,3 +173,54 @@ autocomplete
 
 typeahead
 
+
+## 会话管理
+
+user-agents, User Agents 解析库
+
+https://pypi.python.org/pypi/user-agents/
+
+
+## 性能调优
+
+Redis
+
+`info` 查看 `connected_clients`
+
+`client list` 查看客户端连接情况
+
+```
+127.0.0.1:6379> INFO Clients
+# Clients
+connected_clients:72
+client_longest_output_list:0
+client_biggest_input_buf:0
+blocked_clients:0
+
+127.0.0.1:6379> CLIENT LIST
+...
+
+127.0.0.1:6379> CONFIG GET timeout
+1) "timeout"
+2) "0"
+```
+
+## 消息推送
+
+方案一、Flask-SSE
+
+基于`redis`通过订阅发布实现
+```
+pip install gevent
+pip install Flask-SSE
+```
+缺点: 项目停止维护、redis连接过多、消息推送导致用户退出登录（待查）
+
+
+方案二、Flask-SocketIO
+
+推荐、项目活跃
+
+https://github.com/miguelgrinberg/Flask-SocketIO
+
+https://blog.miguelgrinberg.com/post/easy-websockets-with-flask-and-gevent
