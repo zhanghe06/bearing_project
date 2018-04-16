@@ -395,7 +395,7 @@ def logout():
     # Tell Flask-Principal the user is anonymous
     identity_changed.send(app, identity=AnonymousIdentity())
 
-    flash(_('Exit Success'), 'info')
+    flash(_('Exit Success'), 'success')
     return redirect(url_for('auth.index'))
 
 

@@ -223,4 +223,10 @@ pip install Flask-SSE
 
 https://github.com/miguelgrinberg/Flask-SocketIO
 
+https://flask-socketio.readthedocs.io/en/latest
+
 https://blog.miguelgrinberg.com/post/easy-websockets-with-flask-and-gevent
+
+
+## JQuery 注意动态加载元素事件绑定
+

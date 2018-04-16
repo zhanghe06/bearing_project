@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="renderer" content="webkit">
@@ -21,10 +22,11 @@
     <!-- Plugin -->
     <link href="{{ url_for('static', filename='plugin/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='plugin/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='plugin/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='plugin/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css') }}"
+          rel="stylesheet">
     <!-- Custom -->
     <link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/custom.css', v='1.5.20') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.css', v='1.5.22') }}" rel="stylesheet">
     {% block extra_css %}{% endblock %}
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,97 +37,144 @@
 </head>
 
 <body>
-    <div id="wrapper">
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <!-- 头部导航 -->
-            {% include "_top.html" %}
-            <!-- 左侧导航 -->
-            {% include "_left.html" %}
-        </nav>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <!-- 头部导航 -->
+        {% include "_top.html" %}
+        <!-- 左侧导航 -->
+        {% include "_left.html" %}
+    </nav>
 
-        <!-- Page Content -->
-        <div id="page-wrapper">
-            <div class="container-fluid">
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
             {# 闪现消息 success info warning danger #}
             {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {{ message }}
-                </div>
-            {% endfor %}
-            {% endif %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
             {% endwith %}
-            </div>
-            {% block content %}{% endblock %}
-            <!-- /.container-fluid -->
         </div>
-        <!-- /#page-wrapper -->
+        {% block content %}{% endblock %}
+        <!-- /.container-fluid -->
     </div>
-    <!-- /#wrapper -->
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="{{ url_for('static', filename='js/jquery-1.11.3.min.js') }}"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="{{ url_for('static', filename='plugin/metisMenu/metisMenu.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='plugin/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js') }}"></script>
-    <!-- Chart Plugin JavaScript -->
-    <script src="{{ url_for('static', filename='plugin/Chart.js-2.6.0/dist/Chart.min.js') }}"></script>
-    <!-- Moment Plugin JavaScript -->
-    <script src="{{ url_for('static', filename='plugin/moment-2.18.1/min/moment-with-locales.min.js') }}"></script>
-    <!-- SocketIO Plugin JavaScript -->
-    <script src="{{ url_for('static', filename='plugin/socket.io-client-2.1.0/dist/socket.io.js') }}"></script>
-    <!-- Custom Theme JavaScript -->
-    <script src="{{ url_for('static', filename='js/sb-admin-2.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/custom.js', v='1.5.20') }}"></script>
 
-    <script>
-        moment.locale("{{ g.moment_locale }}");
-        function flask_moment_render(elem) {
-            $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'));
-            $(elem).removeClass('flask-moment').show();
-        }
-        function flask_moment_render_all() {
-            $('.flask-moment').each(function () {
-                flask_moment_render(this);
-                if ($(this).data('refresh')) {
-                    (function (elem, interval) {
-                        setInterval(function () {
-                            flask_moment_render(elem)
-                        }, interval);
-                    })(this, $(this).data('refresh'));
-                }
-            })
-        }
-        $(document).ready(function () {
-            flask_moment_render_all();
-        });
-    </script>
+{% raw %}
+<!-- The template to display message -->
+<script id="template-message" type="text/x-tmpl">
+<li class="message">
+    <a href="javascript:void(0);" class="alert alert-dismissible" style="margin-bottom: 0;">
+        <button type="button" class="close message-close" data-dismiss="alert" aria-hidden="true"><span class="label label-danger">&times;</span></button>
+        <p style="margin-right: 1em">
+            <strong>{%=o.title%}</strong>
+            <span class="text-muted"><i class="fa fa-clock-o"></i> {%=o.time%}</span>
+        </p>
+        <p>{%=o.info%}</p>
+    </a>
+</li>
+</script>
+{% endraw %}
 
-    <script>
-        $(document).ready(function(){
-            var socket = io.connect('https://' + document.domain + ':' + location.port + '/msg');
-            socket.on('s_res', function(msg) {
-                $('#socket-messages').prepend('<li class="message">\n' +
-                    '                <a href="#">\n' +
-                    '                    <h4>\n' + msg.data +
-                    '                        <small><i class="fa fa-clock-o"></i> 5 mins</small>\n' +
-                    '                    </h4>\n' +
-                    '                    <p>Why not buy a new awesome theme?</p>\n' +
-                    '                </a>\n' +
-                    '            </li>');
-                // $('#socket-messages').children('.message');
-                // $('#socket-messages').children('.message').length;
-                // $(selector).nextAll().remove();
-            });
-        });
-    </script>
 
-    {% block extra_js %}{% endblock %}
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='js/jquery-1.11.3.min.js') }}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="{{ url_for('static', filename='plugin/metisMenu/metisMenu.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugin/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js') }}"></script>
+<!-- Chart Plugin JavaScript -->
+<script src="{{ url_for('static', filename='plugin/Chart.js-2.6.0/dist/Chart.min.js') }}"></script>
+<!-- Moment Plugin JavaScript -->
+<script src="{{ url_for('static', filename='plugin/moment-2.18.1/min/moment-with-locales.min.js') }}"></script>
+<!-- SocketIO Plugin JavaScript -->
+<script src="{{ url_for('static', filename='plugin/socket.io-client-2.1.0/dist/socket.io.js') }}"></script>
+<!-- Templates plugin JavaScript -->
+<script src="{{ url_for('static', filename='plugin/JavaScript-Templates-3.11.0/js/tmpl.min.js') }}"></script>
+<!-- Custom Theme JavaScript -->
+<script src="{{ url_for('static', filename='js/sb-admin-2.js') }}"></script>
+<script src="{{ url_for('static', filename='js/custom.js', v='1.5.22') }}"></script>
+
+<script>
+  moment.locale('{{ g.moment_locale }}')
+
+  function flask_moment_render (elem) {
+    $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'))
+    $(elem).removeClass('flask-moment').show()
+  }
+
+  function flask_moment_render_all () {
+    $('.flask-moment').each(function () {
+      flask_moment_render(this)
+      if ($(this).data('refresh')) {
+        (function (elem, interval) {
+          setInterval(function () {
+            flask_moment_render(elem)
+          }, interval)
+        })(this, $(this).data('refresh'))
+      }
+    })
+  }
+
+  $(document).ready(function () {
+    flask_moment_render_all()
+  })
+</script>
+
+<script>
+  $(document).ready(function () {
+
+    //下拉框查询组件点击查询栏时不关闭下拉框
+    var body_obj = $('body')
+    body_obj.on('click', '[data-stopPropagation]', function (e) {
+      e.stopPropagation()
+    })
+
+    // 初始化消息数量
+    $('#total-msg-count').html($('#socket-messages').find('.message').length)
+
+    var socket = io.connect('https://' + document.domain + ':' + location.port + '/msg')
+    socket.on('s_res', function (msg) {
+      //console.log(msg)
+      var msg_menu_obj = $('.messages-menu')
+      if (!msg_menu_obj.hasClass('open')){
+        msg_menu_obj.toggleClass('open')
+      }
+      var socket_msg_obj = $('#socket-messages')
+      //socket_msg_obj.prepend(tmpl("template-message", msg))
+      socket_msg_obj.prepend(msg)
+      flask_moment_render_all()
+      $('#total-msg-count').html(socket_msg_obj.find('.message').length)
+    })
+
+    body_obj.on('click', '.message-close', function(){
+      $(this).parent().parent().fadeTo('slow', 0.01, function () {//fade
+        $(this).slideUp('slow', function () {//slide up
+          $(this).remove()//then remove from the DOM
+          $('#total-msg-count').html($('#socket-messages').find('.message').length)
+        })
+      })
+    })
+
+    body_obj.on('click', '.message-close-all', function(){
+      $('.message-close').each(function () {
+        $(this).click()
+      })
+    })
+  })
+</script>
+
+{% block extra_js %}{% endblock %}
 </body>
 
 </html>

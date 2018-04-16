@@ -99,9 +99,9 @@ $(function() {
 
 /**
  * 闪现消息
- * 成功消息自动关闭（alert-success）
- * 其余类型消息不动（alert-warning,alert-danger,alert-info）
+ * 通知类型自动关闭（alert-success,alert-warning,alert-danger）
+ * 消息类型保持不动（alert-info）
  */
-$(".alert").fadeTo(3500, 500).slideUp(500, function(){
-    $(".alert").slideUp(500);
+$(".alert-success,.alert-warning,.alert-danger").fadeTo(3500, 500).slideUp(500, function(){
+    $(this).slideUp(500);
 });

@@ -1,0 +1,10 @@
+<li class="message">
+    <a href="javascript:void(0);" class="alert alert-dismissible" style="margin-bottom: 0;">
+        <button type="button" class="close message-close" data-dismiss="alert" aria-hidden="true"><span class="label label-danger">&times;</span></button>
+        <p style="margin-right: 1em">
+            <strong>{{ title }}</strong>
+            <span class="text-muted"><i class="fa fa-clock-o"></i> {{ moment(time).format('HH:mm') }}</span>
+        </p>
+        <p>{{ info }}</p>
+    </a>
+</li>

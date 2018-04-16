@@ -8,11 +8,13 @@
 @time: 2018-04-13 23:32
 """
 
+from __future__ import unicode_literals
 from flask import Blueprint
 from flask import render_template
 from flask_socketio import send, emit
-
-
+from copy import copy
+from datetime import datetime
+from flask_babel import gettext as _
 from flask_login import (
     user_logged_in,
     user_logged_out,
@@ -26,6 +28,12 @@ bp_socket_io = Blueprint('socket_io', __name__, url_prefix='/socket_io')
 
 
 SOCKET_IO_NAMESPACE = '/msg'
+
+SOCKET_IO_INFO = {
+    'title': '',
+    'info': '',
+    'time': '',
+}
 
 
 @socketio.on('event_audit', namespace=SOCKET_IO_NAMESPACE)
@@ -64,9 +72,17 @@ def on_user_logged_in(sender, user):
     :param user:
     :return:
     """
+    if not hasattr(user, 'name'):
+        return
+    socket_io_info = SOCKET_IO_INFO.copy()
+    socket_io_info['title'] = _('User logged in')
+    socket_io_info['info'] = _('User [%(user_name)s] has logged in', user_name=user.name)
+    # socket_io_info['time'] = datetime.utcnow().strftime('%H:%M')
+    socket_io_info['time'] = datetime.utcnow()
     emit(
         's_res',
-        {'data': '%s user logged in' % user.id},
+        render_template('_msg.html', **socket_io_info),
+        # socket_io_info,
         namespace=SOCKET_IO_NAMESPACE,
         broadcast=True
     )
@@ -81,9 +97,16 @@ def on_user_loaded_from_cookie(sender, user):
     :param user:
     :return:
     """
+    if not hasattr(user, 'name'):
+        return
+    socket_io_info = SOCKET_IO_INFO.copy()
+    socket_io_info['title'] = _('User logged in')
+    socket_io_info['info'] = _('User [%(user_name)s] has logged in', user_name=user.name)
+    socket_io_info['time'] = datetime.utcnow()
     emit(
         's_res',
-        {'data': '%s user logged in' % user.id},
+        render_template('_msg.html', **socket_io_info),
+        # socket_io_info,
         namespace=SOCKET_IO_NAMESPACE,
         broadcast=True
     )
@@ -98,9 +121,16 @@ def on_user_logged_out(sender, user):
     :param user:
     :return:
     """
+    if not hasattr(user, 'name'):
+        return
+    socket_io_info = SOCKET_IO_INFO.copy()
+    socket_io_info['title'] = _('User logged out')
+    socket_io_info['info'] = _('User [%(user_name)s] has logged out', user_name=user.name)
+    socket_io_info['time'] = datetime.utcnow()
     emit(
         's_res',
-        {'data': '%s user logged out' % user.id},
+        render_template('_msg.html', **socket_io_info),
+        # socket_io_info,
         namespace=SOCKET_IO_NAMESPACE,
         broadcast=True
     )
