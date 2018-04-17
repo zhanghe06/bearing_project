@@ -38,7 +38,6 @@ pip install sqlacodegen
 pip install gunicorn
 pip install gevent
 pip install Flask-SocketIO
-pip install supervisor
 pip install redis
 pip install requests
 pip install mysqlclient
@@ -48,6 +47,26 @@ pip install elasticsearch
 pip install user-agents
 pip install six
 pip install future
+pip install supervisor      # 当前主版本3只支持py2，将来主版本4(未发布)会支持py3
+```
+因当前`supervisor`不支持`python3`，故在`requirements.txt`中将其去掉
+
+
+## 项目演示
+python2
+```
+virtualenv bearing.env
+source env_develop.sh
+pip install -r requirements.txt
+python run_backend.py
+```
+
+python3
+```
+virtualenv bearing.env -p python3
+source env_develop.sh
+pip install -r requirements.txt
+python run_backend.py
 ```
 
 
