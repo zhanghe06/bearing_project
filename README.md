@@ -41,7 +41,7 @@ pip install Flask-SocketIO
 pip install supervisor
 pip install redis
 pip install requests
-pip install MySQL-python
+pip install mysqlclient
 pip install PyMongo
 pip install Pillow
 pip install elasticsearch
@@ -257,3 +257,10 @@ ctx.push()
 [when-scattering-flask-models-runtimeerror-application-not-registered-on-db-w](https://stackoverflow.com/questions/19437883/when-scattering-flask-models-runtimeerror-application-not-registered-on-db-w)
 
 [flask-create-app-and-setup-unittest](https://stackoverflow.com/questions/48353929/flask-create-app-and-setup-unittest)
+
+
+## 关于 mysql python 客户端的选择
+
+https://pypi.org/project/mysqlclient/
+
+`mysqlclient`在`MySQL-python`的基础上，新增了对`py3`的支持并修复了一些bug
