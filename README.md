@@ -230,3 +230,27 @@ https://blog.miguelgrinberg.com/post/easy-websockets-with-flask-and-gevent
 
 ## JQuery 注意动态加载元素事件绑定
 
+直接在动态元素上绑定事件无法实现, 需要通过以下形式在父元素或`body`上绑定事件
+```
+$('body').on('click', '.class-name', function(){
+  $('.sub-class-name').each(function () {
+    $(this).click()
+  })
+})
+```
+
+
+## 关于 cli 模式下的上下文管理
+
+cli 模式下, 需要加入如下代码
+```
+ctx = app.app_context()
+ctx.push()
+```
+
+参考:
+
+https://stackoverflow.com/questions/19437883/when-scattering-flask-models-runtimeerror-application-not-registered-on-db-w
+
+https://stackoverflow.com/questions/48353929/flask-create-app-and-setup-unittest/
+

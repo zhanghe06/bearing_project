@@ -31,13 +31,15 @@ class ES(object):
     def refresh_index(self, index):
         return self.es_client.indices.refresh(index=index)
 
-    def search_fulltext(self, index, doc_type, field, keywords):
+    def search_fulltext(self, index, doc_type, field, keywords, query_from=0, size=0):
         """
         全文检索
         :param index:
         :param doc_type:
         :param field:
         :param keywords:
+        :param query_from:
+        :param size:
         :return:
         """
         query_body = {
@@ -50,6 +52,11 @@ class ES(object):
                 }
             }
         }
+        # 翻页
+        if query_from:
+            query_body['from'] = query_from
+        if size:
+            query_body['size'] = size
 
         query_data = {
             'total': 0,

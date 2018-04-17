@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-13 01:07+0800\n"
+"POT-Creation-Date: 2018-04-17 22:47+0800\n"
 "PO-Revision-Date: 2018-03-19 19:47+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
 
-#: __init__.py:42
+#: __init__.py:43
 msgid "Please log in to access this page."
 msgstr "访问页面，请先登录。"
 
@@ -64,7 +64,7 @@ msgstr "验证码"
 msgid "Field must be %(length)s characters long."
 msgstr "当前字段必须 %(length)s 个字符"
 
-#: forms/user_auth.py:100 templates/user_auth/index.html:103
+#: forms/user_auth.py:100 templates/user_auth/index.html:101
 msgid "Remember me"
 msgstr "记住登录状态"
 
@@ -207,13 +207,37 @@ msgstr "系统管理"
 msgid "catalogue import"
 msgstr "型录导入"
 
-#: templates/index.html:7
-msgid "management homepage"
-msgstr "管理主页"
+#: templates/_modal_agreement.html:7
+msgid "Agreement"
+msgstr "注册协议"
 
-#: templates/index.html:10
+#: templates/_modal_forgot_password.html:7
+msgid "Forgot Password"
+msgstr "忘记密码"
+
+#: templates/_top.html:16
+msgid "Up-to-date Messages"
+msgstr "最新消息"
+
+#: templates/_top.html:31
+msgid "Emptying all the messages"
+msgstr "清空消息"
+
+#: templates/_top.html:43 templates/home.html:7 views/__init__.py:376
+msgid "personal information"
+msgstr "个人信息"
+
+#: templates/_top.html:46
+msgid "Sign out"
+msgstr "退出登录"
+
+#: templates/home.html:10 templates/index.html:10
 msgid "Welcome"
 msgstr "欢迎光临"
+
+#: templates/index.html:7 views/__init__.py:365
+msgid "management homepage"
+msgstr "管理主页"
 
 #: templates/customer/lists.html:34 templates/inventory/lists.html:22
 #: templates/product/lists.html:22 templates/quote/lists.html:34
@@ -263,60 +287,65 @@ msgstr "上传文件"
 msgid "Click download"
 msgstr "点击下载"
 
-#: templates/user_auth/index.html:56
+#: templates/user_auth/index.html:54
 msgid "Sign in to Website"
 msgstr "登录站点"
 
-#: templates/user_auth/index.html:86
+#: templates/user_auth/index.html:84
 msgid "Unsharpness<br/>Change next"
 msgstr "看不清<br/>换一张"
 
-#: templates/user_auth/index.html:110
+#: templates/user_auth/index.html:108
 msgid "Signing on"
 msgstr "登录中"
 
-#: templates/user_auth/index.html:111
+#: templates/user_auth/index.html:109
 msgid "Sign in"
 msgstr "登录"
 
-#: views/__init__.py:396
+#: views/__init__.py:398
 msgid "Exit Success"
 msgstr "退出成功"
 
-#: views/__init__.py:444
+#: views/__init__.py:446
 msgid "Unauthorized"
 msgstr "未被授权"
 
-#: views/__init__.py:450
+#: views/__init__.py:452
 msgid "Forbidden"
 msgstr "禁止访问"
 
-#: views/__init__.py:458
+#: views/__init__.py:460
 msgid "Not Found"
 msgstr "没有找到"
 
-#: views/__init__.py:464
+#: views/__init__.py:466
 msgid "Method Not Allowed"
 msgstr "请求方式不被允许"
 
-#: views/__init__.py:470
+#: views/__init__.py:472
 msgid "Gone"
 msgstr "已被删除"
 
-#: views/__init__.py:476
+#: views/__init__.py:478
 msgid "Request Entity Too Large"
 msgstr "请求过大"
 
-#: views/__init__.py:483
+#: views/__init__.py:485
 msgid "Too Many Requests"
 msgstr "请求过多"
 
-#: views/__init__.py:489
+#: views/__init__.py:491
 msgid "Internal Server Error"
 msgstr "内部错误"
 
-#: views/customer.py:112 views/inventory.py:106 views/product.py:106
-#: views/quote.py:113 views/rack.py:103 views/user.py:107 views/warehouse.py:99
+#: views/catalogue.py:95 views/catalogue.py:127
+msgid "catalogue lists"
+msgstr "型录列表"
+
+#: views/catalogue.py:106 views/customer.py:112 views/inventory.py:106
+#: views/product.py:106 views/quote.py:113 views/rack.py:103 views/user.py:107
+#: views/warehouse.py:99
 msgid "Search Failure"
 msgstr "查询失败"
 
@@ -417,6 +446,24 @@ msgstr "货架信息"
 #: views/rack.py:242
 msgid "rack edit"
 msgstr "货架编辑"
+
+#: views/socket_io.py:78 views/socket_io.py:103
+msgid "User logged in"
+msgstr "用户登录"
+
+#: views/socket_io.py:79 views/socket_io.py:104
+#, python-format
+msgid "User [%(user_name)s] has logged in"
+msgstr "用户 [%(user_name)s] 已经登录"
+
+#: views/socket_io.py:127
+msgid "User logged out"
+msgstr "用户退出"
+
+#: views/socket_io.py:128
+#, python-format
+msgid "User [%(user_name)s] has logged out"
+msgstr "用户 [%(user_name)s] 已经退出"
 
 #: views/user.py:170
 msgid "user info"

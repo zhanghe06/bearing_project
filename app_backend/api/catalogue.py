@@ -52,6 +52,18 @@ def get_catalogue_rows(*args, **kwargs):
     return db_instance.get_rows(Catalogue, *args, **kwargs)
 
 
+def get_catalogue_limit_rows_by_last_id(last_pk_id, limit_num, *args, **kwargs):
+    """
+    通过最后一个主键 id 获取最新信息列表
+    :param last_pk_id:
+    :param limit_num:
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    return db_instance.get_limit_rows_by_last_id(Catalogue, last_pk_id, limit_num, *args, **kwargs)
+
+
 def add_catalogue(catalogue_data):
     """
     添加信息

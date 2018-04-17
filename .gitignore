@@ -21,3 +21,6 @@ htmlcov/
 # Elasticsearch
 docker/Elasticsearch/data/
 # docker/Elasticsearch/logs/
+
+# InfluxDB
+docker/InfluxDB/data/
