@@ -1,5 +1,8 @@
 ## 轴承行业 - 最佳实践
 
+[![Build Status](https://travis-ci.org/zhanghe06/bearing_project.svg?branch=master)](https://travis-ci.org/zhanghe06/bearing_project)
+[![Coverage Status](https://coveralls.io/repos/github/zhanghe06/bearing_project/badge.svg?branch=master)](https://coveralls.io/github/zhanghe06/bearing_project?branch=master)
+
 项目目标
 
 - [ ] 客户管理
@@ -8,8 +11,9 @@
 - [ ] 报价管理
 - [ ] 订单管理
 - [ ] 库存管理
-- [ ] 会话管理
-- [ ] 消息管理
+- [X] 会话管理
+- [X] 消息管理
+- [ ] 操作日志
 
 系统依赖
 - Nginx
@@ -250,7 +254,6 @@ ctx.push()
 
 参考:
 
-https://stackoverflow.com/questions/19437883/when-scattering-flask-models-runtimeerror-application-not-registered-on-db-w
+[when-scattering-flask-models-runtimeerror-application-not-registered-on-db-w](https://stackoverflow.com/questions/19437883/when-scattering-flask-models-runtimeerror-application-not-registered-on-db-w)
 
-https://stackoverflow.com/questions/48353929/flask-create-app-and-setup-unittest/
-
+[flask-create-app-and-setup-unittest](https://stackoverflow.com/questions/48353929/flask-create-app-and-setup-unittest)
