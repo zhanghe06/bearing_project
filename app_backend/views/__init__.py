@@ -69,6 +69,7 @@ from app_common.maps.type_role import (
 )
 
 
+# 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 
 # moment 插件语言映射关系

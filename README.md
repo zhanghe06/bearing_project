@@ -14,6 +14,8 @@
 - [X] 会话管理
 - [X] 消息管理
 - [ ] 操作日志
+- [ ] 系统日志
+- [ ] 服务监控
 
 系统依赖
 - Nginx
@@ -36,7 +38,7 @@ pip install Flask-Babel
 pip install Flask-Moment
 pip install sqlacodegen
 pip install gunicorn
-pip install gevent
+pip install eventlet
 pip install Flask-SocketIO
 pip install redis
 pip install requests
@@ -283,3 +285,19 @@ ctx.push()
 https://pypi.org/project/mysqlclient/
 
 `mysqlclient`在`MySQL-python`的基础上，新增了对`py3`的支持并修复了一些bug
+
+
+## 系统日志 和 服务监控
+
+
+
+## eventlet VS gevent
+
+```
+import eventlet
+eventlet.monkey_patch()
+```
+```
+from gevent import monkey
+monkey.patch_all()
+```

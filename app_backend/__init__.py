@@ -10,6 +10,9 @@
 
 from __future__ import unicode_literals
 
+import eventlet
+eventlet.monkey_patch()
+
 from logging.config import dictConfig
 from config import current_config
 
@@ -62,7 +65,8 @@ babel = Babel(app)
 
 excel.init_excel(app)
 
-socketio = SocketIO(app)
+socketio = SocketIO()
+socketio.init_app(app, async_mode='eventlet', message_queue=app.config['REDIS_URL'])
 
 # 第三方开放授权登录
 oauth = OAuth(app)

@@ -68,6 +68,10 @@ REDIS = {
     # 'password': '123456'  # redis-cli AUTH 123456
 }
 
+REDIS_URL = 'redis://:%s@%s' % (REDIS['password'], REDIS['host']) \
+    if REDIS.get('password') else 'redis://%s' % REDIS['host']
+
+
 DOCUMENT_INFO = {
     'TITLE': '',        # 标题
     'KEYWORDS': '',     # 关键词
