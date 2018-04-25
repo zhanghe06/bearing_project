@@ -491,3 +491,30 @@ def too_many_requests(error):
 def internal_server_error(error):
     flash(_('Internal Server Error'), 'warning')
     return render_template('http_exception/500.html'), 500
+
+
+@app.route('/client_info.html')
+def client_info():
+    """
+    客户端信息
+    """
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('client information')
+    request.headers.get('X-Forwarded-For', request.remote_addr)
+    env_info = {
+        'x_forwarded_for': request.headers.get('X-Forwarded-For'),
+        'x_real_ip': request.headers.get('X-Real-IP'),
+        'remote_addr': request.remote_addr,
+        'cookies': request.cookies,
+    }
+    return render_template('client_info.html', env_info=env_info, **document_info)
+
+
+@app.route('/server_info.html')
+def server_info():
+    """
+    服务端信息
+    """
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('server information')
+    return render_template('server_info.html', **document_info)

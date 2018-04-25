@@ -4,7 +4,7 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: import_es.py
+@file: import_es_catalogue.py
 @time: 2018-04-16 22:23
 """
 
@@ -28,7 +28,7 @@ def import_catalogue():
     import_count = 0
 
     index = 'catalogue'
-    doc_type = 'skf'
+    doc_type = 'bearing'
     mapping = {
         'properties': {
             'product_brand': {
@@ -41,7 +41,7 @@ def import_catalogue():
             },
             'product_label': {
                 'type': 'text',
-                'analyzer': 'ik_max_word',
+                'analyzer': 'ik_smart',
             },
             'product_brand_old': {
                 'type': 'text',
@@ -110,6 +110,8 @@ def import_catalogue():
         }
     }
 
+    if es.exists_index(index):
+        es.delete_index(index)
     es.create_index(index)
     es.create_mapping(index, doc_type, mapping)
     while 1:

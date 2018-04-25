@@ -61,7 +61,7 @@ from app_backend.permissions import (
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
-)
+    STATUS_DEL_NO)
 from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
 )
@@ -105,7 +105,9 @@ def lists(page=1):
     form.owner_uid.choices = get_sales_user_list()
     # app.logger.info('')
 
-    search_condition = []
+    search_condition = [
+        Customer.status_delete == STATUS_DEL_NO,
+    ]
     if request.method == 'POST':
         # 表单校验失败
         if not form.validate_on_submit():
@@ -272,6 +274,7 @@ def edit(customer_id):
     # 进入编辑页面
     if request.method == 'GET':
         # 表单赋值
+        form.id.data = customer_info.id
         form.company_name.data = customer_info.company_name
         form.company_address.data = customer_info.company_address
         form.company_site.data = customer_info.company_site
@@ -279,8 +282,6 @@ def edit(customer_id):
         form.company_fax.data = customer_info.company_fax
         form.company_type.data = customer_info.company_type
         form.owner_uid.data = customer_info.owner_uid
-        form.status_delete.data = customer_info.status_delete
-        form.delete_time.data = customer_info.delete_time
         form.create_time.data = customer_info.create_time
         form.update_time.data = customer_info.update_time
         # 渲染页面
@@ -294,7 +295,7 @@ def edit(customer_id):
     # 处理编辑请求
     if request.method == 'POST':
         # 表单校验失败
-        if not form.validate_on_submit():
+        if customer_id != form.id.data or not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
             return render_template(
                 template_name,

@@ -16,8 +16,11 @@ class ES(object):
     def __init__(self, es_client):
         self.es_client = es_client  # type: Elasticsearch
 
+    def exists_index(self, index):
+        return self.es_client.indices.exists(index=index)
+
     def delete_index(self, index):
-        return self.es_client.indices.delete(index=index) if self.es_client.indices.exists(index=index) else None
+        return self.es_client.indices.delete(index=index)
 
     def create_index(self, index):
         return self.es_client.indices.create(index=index)
@@ -25,8 +28,8 @@ class ES(object):
     def create_mapping(self, index, doc_type, body):
         return self.es_client.indices.put_mapping(doc_type=doc_type, body=body, index=index)
 
-    def add_index(self, index, doc_type, body, id=None):
-        return self.es_client.index(index=index, doc_type=doc_type, body=body, id=id)
+    def add_index(self, index, doc_type, body, index_id=None):
+        return self.es_client.index(index=index, doc_type=doc_type, body=body, id=index_id)
 
     def refresh_index(self, index):
         return self.es_client.indices.refresh(index=index)
@@ -48,6 +51,7 @@ class ES(object):
                 'pre_tags': ['<span class="text-primary">'],
                 'post_tags': ['</span>'],
                 'fields': {
+                    'id': {},
                     field: {}
                 }
             }
@@ -65,5 +69,9 @@ class ES(object):
     
         es_res = self.es_client.search(index=index, doc_type=doc_type, body=query_body)
         query_data['total'] = es_res['hits']['total']
-        query_data['data'] = map(lambda x: {'label': x['highlight'][field][0], 'value': x['_source'][field]}, es_res['hits']['hits'])
+        query_data['data'] = map(lambda x: {
+            'label': x['highlight'][field][0],
+            'value': x['_source'][field],
+            'id': x['_id'],
+        }, es_res['hits']['hits'])
         return query_data

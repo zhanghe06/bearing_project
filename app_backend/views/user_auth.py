@@ -33,7 +33,7 @@ from app_backend.api.user_auth import get_user_auth_row
 from app_backend.forms.user_auth import UserAuthForm
 from app_common.maps.status_verified import STATUS_VERIFIED_OK
 from app_common.maps.type_auth import TYPE_AUTH_ACCOUNT
-
+from app_common.tools.date_time import get_tc
 from flask_babel import gettext as _, ngettext
 
 bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -68,6 +68,7 @@ def index():
         return render_template(
             template_name,
             form=form,
+            t=get_tc(),
             **document_info
         )
     # 处理认证
@@ -78,6 +79,7 @@ def index():
             return render_template(
                 template_name,
                 form=form,
+                t=get_tc(),
                 **document_info
             )
         # 表单校验成功
@@ -93,6 +95,7 @@ def index():
             return render_template(
                 template_name,
                 form=form,
+                t=get_tc(),
                 **document_info
             )
         if user_auth_info.status_verified != STATUS_VERIFIED_OK:
@@ -101,6 +104,7 @@ def index():
             return render_template(
                 template_name,
                 form=form,
+                t=get_tc(),
                 **document_info
             )
         if user_auth_info.auth_secret != form.auth_secret.data:
@@ -109,6 +113,7 @@ def index():
             return render_template(
                 template_name,
                 form=form,
+                t=get_tc(),
                 **document_info
             )
 

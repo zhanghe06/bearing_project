@@ -164,6 +164,15 @@ class CustomerEditForm(FlaskForm):
     """
     编辑表单（字段默认选项需要去除）
     """
+    id = IntegerField(
+        '客户编号',
+        validators=[
+            DataRequired(),
+        ],
+        render_kw={
+            'type': 'hidden',
+        }
+    )
     company_name = StringField(
         '公司名称',
         validators=[DataRequired(), Length(max=100)],

@@ -32,11 +32,13 @@ class IndexTest(unittest.TestCase):
         :return:
         """
 
-        res_delete_index = self.es.delete_index(self.index)
-        self.assertEqual(
-            res_delete_index,
-            {u'acknowledged': True}
-        )
+        exists_status = self.es.exists_index(self.index)
+        if exists_status:
+            res_delete_index = self.es.delete_index(self.index)
+            self.assertEqual(
+                res_delete_index,
+                {u'acknowledged': True}
+            )
 
         res_create_index = self.es.create_index(self.index)
         self.assertEqual(
@@ -49,6 +51,7 @@ class IndexTest(unittest.TestCase):
                 'content': {
                     'type': 'text',
                     'analyzer': 'ik_max_word',
+                    'search_analyzer': 'ik_max_word'
                 }
             }
         }

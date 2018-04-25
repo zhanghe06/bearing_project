@@ -88,6 +88,15 @@ class RackAddForm(FlaskForm):
 
 
 class RackEditForm(FlaskForm):
+    id = IntegerField(
+        '货架编号',
+        validators=[
+            DataRequired(),
+        ],
+        render_kw={
+            'type': 'hidden',
+        }
+    )
     warehouse_id = SelectField(
         '仓库名称',
         validators=[

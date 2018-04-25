@@ -15,6 +15,15 @@ import calendar
 from datetime import datetime, timedelta, date
 
 
+def get_tc():
+    """
+    获取13位字符串时间戳
+    :return:
+    """
+    tc = str('%13d' % (time.time() * 1000))
+    return tc
+
+
 def get_current_day_time_ends():
     """
     获取当天开始结束时刻

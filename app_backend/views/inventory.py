@@ -64,7 +64,7 @@ from app_backend.permissions import (
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
-)
+    STATUS_DEL_NO)
 from app_common.maps.type_role import TYPE_ROLE_MANAGER
 from app_common.tools import json_default
 
@@ -99,7 +99,9 @@ def lists(page=1):
     form.rack_id.choices = get_rack_choices(form.warehouse_id.data)
     # app.logger.info('')
 
-    search_condition = []
+    search_condition = [
+        Inventory.status_delete == STATUS_DEL_NO,
+    ]
     if request.method == 'POST':
         # 表单校验失败
         if not form.validate_on_submit():

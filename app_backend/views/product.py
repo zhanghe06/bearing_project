@@ -58,7 +58,7 @@ from app_backend.permissions import (
 from app_common.maps.default import default_choices_str, default_choice_option_str
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
-)
+    STATUS_DEL_NO)
 from app_common.maps.type_role import TYPE_ROLE_MANAGER
 from app_common.tools import json_default
 
@@ -99,7 +99,9 @@ def lists(page=1):
     form.product_brand.choices = get_product_brand_choices()
     # app.logger.info('')
 
-    search_condition = []
+    search_condition = [
+        Product.status_delete == STATUS_DEL_NO,
+    ]
     if request.method == 'POST':
         # 表单校验失败
         if not form.validate_on_submit():
@@ -248,6 +250,7 @@ def edit(product_id):
     # 进入编辑页面
     if request.method == 'GET':
         # 表单赋值
+        form.id.data = product_info.id
         form.product_brand.data = product_info.product_brand
         form.product_model.data = product_info.product_model
         form.note.data = product_info.note
@@ -264,7 +267,7 @@ def edit(product_id):
     # 处理编辑请求
     if request.method == 'POST':
         # 表单校验失败
-        if not form.validate_on_submit():
+        if product_id != form.id.data or not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
             return render_template(
                 template_name,

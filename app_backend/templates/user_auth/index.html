@@ -78,7 +78,7 @@
                             {{ form.captcha(class="form-control") }}
 
                             <span class="input-group-addon" id="basic-addon2" style="padding: 0;border: 0">
-                                  <img src="{{ url_for('captcha.get_code', code_type='login') }}"
+                                  <img src="{{ url_for('captcha.get_code', code_type='login', t=t) }}"
                                        data-html="true" data-toggle="tooltip" data-placement="top"
                                        rel="tooltip"
                                        title="{{ _('Unsharpness<br/>Change next') }}"

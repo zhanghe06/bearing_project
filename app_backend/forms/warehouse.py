@@ -152,6 +152,15 @@ class WarehouseAddForm(FlaskForm):
 
 
 class WarehouseEditForm(FlaskForm):
+    id = IntegerField(
+        '仓库编号',
+        validators=[
+            DataRequired(),
+        ],
+        render_kw={
+            'type': 'hidden',
+        }
+    )
     name = StringField(
         '仓库名称',
         validators=[DataRequired()],

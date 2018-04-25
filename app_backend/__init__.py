@@ -46,7 +46,7 @@ login_manager.login_view = 'auth.index'
 login_manager.login_message = _('Please log in to access this page.')
 login_manager.login_message_category = 'warning'   # 设置消息分类
 login_manager.localize_callback = _             # 设置翻译回调
-login_manager.session_protection = "strong"     # 设置安全等级（basic、strong、None）
+login_manager.session_protection = 'basic'     # 设置安全等级（basic、strong、None）
 # 用户电脑的标识（基本上是 IP 地址和 User Agent 的 MD5 hash 值）
 # basic 模式下，如果该标识未匹配，会话会简单地被标记为非活 跃的，且任何需要活跃登入的东西会强制用户重新验证。
 # strong模式下，如果该标识未匹配，整个会话（记住的令牌如果存在，则同样）被删除。

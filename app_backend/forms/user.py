@@ -149,6 +149,15 @@ class UserEditForm(FlaskForm):
     """
     编辑表单（字段默认选项需要去除）
     """
+    id = IntegerField(
+        '用户编号',
+        validators=[
+            DataRequired(),
+        ],
+        render_kw={
+            'type': 'hidden',
+        }
+    )
     name = StringField(
         '用户名称',
         validators=[],

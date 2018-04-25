@@ -8,7 +8,6 @@
 @time: 2018-04-06 18:23
 """
 
-
 from copy import copy
 from datetime import datetime
 from sqlalchemy.sql import func
@@ -141,3 +140,22 @@ def insert_rows(data_list):
     :return:
     """
     return db_instance.insert_rows(Catalogue, data_list)
+
+
+def get_catalogue_choices(product_model_keywords):
+    """
+    获取选项
+    :return:
+    """
+
+    from app_backend.clients.client_es import es_client
+    from app_common.libs.es import ES
+
+    es = ES(es_client)
+
+    es.search_fulltext(index, doc_type, field, keywords, query_from=0, size=0)
+
+    warehouse_choices = copy(default_choices_int)
+    warehouse_list = map(lambda x: (getattr(x, 'id'), getattr(x, 'name')), db_instance.get_rows(Warehouse))
+    warehouse_choices.extend(warehouse_list)
+    return warehouse_choices

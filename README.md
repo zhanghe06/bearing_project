@@ -6,7 +6,7 @@
 项目目标
 
 - [ ] 客户管理
-- [ ] 产品管理
+- [X] 产品管理
 - [ ] 员工管理
 - [ ] 报价管理
 - [ ] 订单管理
@@ -205,6 +205,8 @@ user-agents, User Agents 解析库
 
 https://pypi.python.org/pypi/user-agents/
 
+Nginx 负载均衡模式, 当设置 login_manager.session_protection = 'strong', chrome 浏览器 Disa cache 时, 会话会断开
+
 
 ## 性能调优
 
@@ -301,3 +303,22 @@ eventlet.monkey_patch()
 from gevent import monkey
 monkey.patch_all()
 ```
+
+
+## Nginx
+
+如果前端有CDN内容分发存在, ip_hash方式就没有意义了
+
+## ES IK 热词更新
+
+```
+<!--用户可以在这里配置远程扩展字典 -->
+<entry key="remote_ext_dict">location</entry>
+<!--用户可以在这里配置远程扩展停止词字典-->
+<entry key="remote_ext_stopwords">location</entry>
+```
+
+1. 该 http 请求需要返回两个头部(header)，一个是 Last-Modified，一个是 ETag，这两者都是字符串类型，只要有一个发生变化，该插件就会去抓取新的分词进而更新词库。
+2. 该 http 请求返回的内容格式是一行一个分词，换行符用 \n 即可。
+
+满足上面两点要求就可以实现热更新分词了，不需要重启 ES 实例。

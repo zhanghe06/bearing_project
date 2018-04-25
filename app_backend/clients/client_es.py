@@ -10,6 +10,12 @@
 
 
 from elasticsearch import Elasticsearch
+from app_backend import app
 
+# app.config['']
+# es_client = Elasticsearch(
+#     ['192.168.4.1'],
+#     http_auth=('elastic', 'changeme'),
+# )
 
 es_client = Elasticsearch()
