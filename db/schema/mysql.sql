@@ -8,7 +8,7 @@ use bearing_project;
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '姓名',
+  `name` VARCHAR(20) BINARY NOT NULL DEFAULT '' COMMENT '姓名',
   `role_id` TINYINT NOT NULL DEFAULT 0 COMMENT '角色（0:默认,1:系统,2:销售,3:经理,4:库管,5:财务）',
   `parent_id` INT NOT NULL DEFAULT 0 COMMENT '上级用户ID',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
@@ -24,8 +24,8 @@ CREATE TABLE `user_auth` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
   `type_auth` TINYINT NOT NULL DEFAULT 0 COMMENT '认证类型（0:账号,1:邮箱,2:手机,3:QQ,4:微信,5:微博）',
-  `auth_key` VARCHAR(60) NOT NULL DEFAULT '' COMMENT '授权账号（账号;邮箱;手机;第三方登陆，这里是openid）',
-  `auth_secret` VARCHAR(60) NOT NULL DEFAULT '' COMMENT '密码凭证（密码;token）',
+  `auth_key` VARCHAR(60) BINARY NOT NULL DEFAULT '' COMMENT '授权账号（账号;邮箱;手机;第三方登陆，这里是openid）',
+  `auth_secret` VARCHAR(60) BINARY NOT NULL DEFAULT '' COMMENT '密码凭证（密码;token）',
   `status_verified` TINYINT NOT NULL DEFAULT 0 COMMENT '认证状态（0:未认证,1:已认证）',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -102,6 +102,63 @@ CREATE TABLE `customer_contact` (
   PRIMARY KEY (`id`),
   KEY (`cid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户联系方式';
+
+
+DROP TABLE IF EXISTS `supplier`;
+CREATE TABLE `supplier` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司名称',
+  `company_address` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司地址',
+  `company_site` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司官网',
+  `company_tel` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司电话',
+  `company_fax` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司传真',
+  `company_type` TINYINT NOT NULL DEFAULT 0 COMMENT '公司类型（0:未知,1:中间商2:终端）',
+  `owner_uid` INT NOT NULL DEFAULT 0 COMMENT '所属用户ID（未分配为0）',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应厂商';
+
+
+DROP TABLE IF EXISTS `supplier_invoice`;
+CREATE TABLE `supplier_invoice` (
+  `cid` INT NOT NULL,
+  `company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司名称',
+  `company_tax_id` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '单位税号',
+  `company_address` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '单位地址',
+  `company_tel` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司电话',
+  `company_bank_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '开户银行',
+  `company_bank_account` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '银行账号',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应厂商开票资料';
+
+
+DROP TABLE IF EXISTS `supplier_contact`;
+CREATE TABLE `supplier_contact` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `cid` INT NOT NULL DEFAULT 0 COMMENT '客户ID',
+  `name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '姓名',
+  `salutation` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '称呼',
+  `mobile` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '手机',
+  `tel` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '座机（包含分机）',
+  `fax` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '传真（包含分机）',
+  `department` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '部门（采购、技术、销售、仓库、经理）',
+  `address` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '地址（办公地点、仓库地址）',
+  `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '备注',
+  `status_default` TINYINT NOT NULL DEFAULT 0 COMMENT '默认状态（0:未默认,1:已默认）',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应厂商联系方式';
 
 
 DROP TABLE IF EXISTS `product`;
@@ -226,11 +283,16 @@ CREATE TABLE `quote` (
   `uid` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
   `cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
   `contact_id` INT NOT NULL COMMENT '联系方式ID',
-  `amount` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '订单总额',
+  `amount_product` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '产品金额',
+  `amount_shipping` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '运费金额',
+  `amount_adjustment` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '调整金额',
+  `amount_quote` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '报价总额',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '报价备注',
+  `status_tax` TINYINT NOT NULL DEFAULT 0 COMMENT '含税状态（0:不含税,1:已含税）',
   `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
   `status_order` TINYINT NOT NULL DEFAULT 0 COMMENT '订单状态（0:待下单,1:下单成功,2:下单失败）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `expiry_date` DATE NOT NULL COMMENT '有效日期（中间商:可设置默认7天;终端用户:可根据情况延长）',
   `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
   `order_time` TIMESTAMP NULL COMMENT '下单时间（成功、失败）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
@@ -261,3 +323,73 @@ CREATE TABLE `quote_item` (
   KEY (`quote_id`),
   KEY (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报价明细';
+
+
+DROP TABLE IF EXISTS `sales_orders`;
+CREATE TABLE `sales_orders` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `uid` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
+  `cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`uid`),
+  KEY (`cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='销售订单';
+
+
+DROP TABLE IF EXISTS `buyer_orders`;
+CREATE TABLE `buyer_orders` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `uid` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
+  `cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`uid`),
+  KEY (`cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购订单';
+
+
+DROP TABLE IF EXISTS `delivery`;
+CREATE TABLE `delivery` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `sales_order_id` INT DEFAULT 0 COMMENT '销售订单ID',
+  `customer_cid` INT DEFAULT 0 COMMENT '客户公司ID',
+  `type_delivery` TINYINT NOT NULL DEFAULT 0 COMMENT '出货类型（0:正常销售,1:赠送样品,2:盘亏,3:拆卸,4:损耗报废）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
+  `status_confirm` TINYINT NOT NULL DEFAULT 0 COMMENT '确认状态（0:待确认,1:确认成功,2:确认失败）',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
+  `confirm_time` TIMESTAMP NULL COMMENT '确认时间（成功、失败）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`sales_order_id`),
+  KEY (`customer_cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='出货清单';
+
+
+DROP TABLE IF EXISTS `purchase`;
+CREATE TABLE `purchase` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `buyer_order_id` INT DEFAULT 0 COMMENT '销售订单ID',
+  `supplier_cid` INT DEFAULT 0 COMMENT '供应厂商ID',
+  `type_purchase` TINYINT NOT NULL DEFAULT 0 COMMENT '进货类型（0:正常采购,1:获赠样品,2:盘盈,3:组装）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
+  `status_confirm` TINYINT NOT NULL DEFAULT 0 COMMENT '确认状态（0:待确认,1:确认成功,2:确认失败）',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
+  `confirm_time` TIMESTAMP NULL COMMENT '确认时间（成功、失败）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`buyer_order_id`),
+  KEY (`supplier_cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='进货清单';

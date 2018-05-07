@@ -1,10 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-quote').trigger('click')">{{ _('quote management') }}</a></li>
+            <li class="active">{{ _('quote info') }}</li>
+        </ol>
+        <tr class="text-muted">
+            <td>{{ quote_info.id }}</td>
+            <td>{{ quote_info.uid | user_name }}</td>
+            <td>{{ quote_info.cid | customer_company_name }}</td>
+            <td>{{ quote_info.status_audit | status_audit }}</td>
+            <td>{{ quote_info.status_order | status_order }}</td>
+            <td>{{ quote_info.amount_quote }}</td>
+            <td>{{ quote_info.note }}</td>
+            <td>{{ moment(quote_info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+            <td>{{ moment(quote_info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+            <td>
+                <a href="{{ url_for('quote.preview', quote_id=quote_info.id, next=request.path) }}"
+                   rel="tooltip" title="{{ _('Print') }}" target="_blank"><span
+                        class="glyphicon glyphicon-print"></span></a>
+                <a href="{{ url_for('quote.edit', quote_id=quote_info.id, next=request.path) }}"
+                   rel="tooltip" title="{{ _('Edit') }}"><span
+                        class="glyphicon glyphicon-pencil"></span></a>
+            </td>
+        </tr>
+
+        <hr/>
+
+        <div class="table-responsive">
+            {#         <table class="table table-striped">#}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>{{ _('quote id') }}</th>
+                    <th>{{ _('product id') }}</th>
+                    <th>{{ _('product brand') }}</th>
+                    <th>{{ _('product model') }}</th>
+                    <th>{{ _('product sku') }}</th>
+                    <th>{{ _('quantity') }}</th>
+                    <th>{{ _('unit_price') }}</th>
+                    <th>{{ _('create time') }}</th>
+                    <th>{{ _('update time') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for info in quote_items %}
+                    <tr class="text-muted">
+                        <td>{{ info.quote_id }}</td>
+                        <td>{{ info.product_id }}</td>
+                        <td>{{ info.product_brand }}</td>
+                        <td>{{ info.product_model }}</td>
+                        <td>{{ info.product_sku }}</td>
+                        <td>{{ info.quantity }}</td>
+                        <td>{{ info.unit_price }}</td>
+                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                        <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}

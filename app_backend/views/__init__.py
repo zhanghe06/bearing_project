@@ -188,6 +188,20 @@ def on_identity_loaded(sender, identity):
             identity.provides.add(SectionActionItemNeed('customer', 'del', unicode(customer_row.id)))
             # 客户打印权限
             identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
+        # 报价-----------------------------------------------------------------------
+        quote_rows_condition = {
+            'uid': current_user.id
+        }
+        quote_rows = get_quote_rows(**quote_rows_condition)
+        for quote_row in quote_rows:
+            # 报价读取权限
+            identity.provides.add(SectionActionItemNeed('quote', 'get', unicode(quote_row.id)))
+            # 报价编辑权限
+            identity.provides.add(SectionActionItemNeed('quote', 'edit', unicode(quote_row.id)))
+            # 报价删除权限
+            identity.provides.add(SectionActionItemNeed('quote', 'del', unicode(quote_row.id)))
+            # 报价打印权限
+            identity.provides.add(SectionActionItemNeed('quote', 'print', unicode(quote_row.id)))
 
     # 角色 - 经理
     if current_user.role_id == TYPE_ROLE_MANAGER:

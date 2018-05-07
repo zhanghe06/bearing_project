@@ -11,6 +11,7 @@
 - [ ] 报价管理
 - [ ] 订单管理
 - [ ] 库存管理
+- [ ] 财务管理
 - [X] 会话管理
 - [X] 消息管理
 - [ ] 操作日志
@@ -289,6 +290,22 @@ https://pypi.org/project/mysqlclient/
 `mysqlclient`在`MySQL-python`的基础上，新增了对`py3`的支持并修复了一些bug
 
 
+## MySQL 字段区分大小写
+
+字符型字段默认是不区分大小写，若想区分，需要指定 BINARY
+
+为登录账号、密码字段设置大小写敏感
+```
+`auth_key` VARCHAR(60) BINARY
+`auth_secret` VARCHAR(60) BINARY
+```
+或
+```
+`auth_key` VARBINARY(60)
+`auth_secret` VARBINARY(60)
+```
+
+
 ## 系统日志 和 服务监控
 
 
@@ -322,3 +339,9 @@ monkey.patch_all()
 2. 该 http 请求返回的内容格式是一行一个分词，换行符用 \n 即可。
 
 满足上面两点要求就可以实现热更新分词了，不需要重启 ES 实例。
+
+
+## WTForms FieldList
+
+http://wtforms.readthedocs.io/en/1.0.5/fields.html#wtforms.fields.FieldList
+

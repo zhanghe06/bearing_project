@@ -4,23 +4,20 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
-            <li><a href="javascript:void(0);" onclick="$('#menu-quote').trigger('click');">{{ _('quote management') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-quote').trigger('click')">{{ _('quote management') }}</a></li>
             <li class="active">{{ _('quote lists') }}</li>
         </ol>
 
-        <form class="form-inline" method="post">
+        <form class="form-inline" id="search_form" method="post">
             {{ form.csrf_token }}
-            <div class="form-group{% if form.company_name.errors %} has-error{% endif %}">
-                {{ form.company_name.label() }}
-                {{ form.company_name(class="form-control") }}
+            <div class="form-group{% if form.uid.errors %} has-error{% endif %}">
+                {{ form.uid.label() }}
+                {{ form.uid(class="form-control") }}
             </div>
-            <div class="form-group{% if form.company_type.errors %} has-error{% endif %}">
-                {{ form.company_type.label() }}
-                {{ form.company_type(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.owner_uid.errors %} has-error{% endif %}">
-                {{ form.owner_uid.label() }}
-                {{ form.owner_uid(class="form-control") }}
+            <div class="form-group{% if form.cid.errors %} has-error{% endif %}">
+                {{ form.cid.label() }}
+                {{ form.cid(class="form-control") }}
             </div>
             <div class="form-group{% if form.start_create_time.errors %} has-error{% endif %}">
                 {{ form.start_create_time.label() }}
@@ -42,38 +39,40 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>编号</th>
-                    <th>公司名称</th>
-                    <th>公司地址</th>
-                    <th>公司官网</th>
-                    <th>公司电话</th>
-                    <th>公司传真</th>
-                    <th>公司类型</th>
-                    <th>所属销售</th>
-                    <th>创建时间</th>
-                    <th>更新时间</th>
-                    <th>操作</th>
+                    <th>{{ _('quote id') }}</th>
+                    <th>{{ _('quote user') }}</th>
+                    <th>{{ _('customer company') }}</th>
+                    <th>{{ _('audit status') }}</th>
+                    <th>{{ _('order status') }}</th>
+                    <th>{{ _('quote amount') }}</th>
+                    <th>{{ _('quote note') }}</th>
+                    <th>{{ _('create time') }}</th>
+                    <th>{{ _('update time') }}</th>
+                    <th>{{ _('operation') }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for info in pagination.items %}
                     <tr class="text-muted">
                         <td>{{ info.id }}</td>
+                        <td>{{ info.uid | user_name }}</td>
+                        <td>{{ info.cid | customer_company_name }}</td>
+                        <td>{{ info.status_audit | status_audit }}</td>
+                        <td>{{ info.status_order | status_order }}</td>
                         <td><a href="{{ url_for('quote.info', quote_id=info.id) }}" rel="tooltip"
-                               title="点击详情">{{ info.company_name }}</a></td>
-                        <td>{{ info.company_address }}</td>
-                        <td>{{ info.company_site }}</td>
-                        <td>{{ info.company_tel }}</td>
-                        <td>{{ info.company_fax }}</td>
-                        <td>{{ info.company_type | type_company }}</td>
-                        <td>{{ info.owner_uid | user_name }}</td>
+                               title="{{ _('Click details') }}">{{ info.amount_quote }}</a></td>
+                        <td>{{ info.note }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
+                            <a href="{{ url_for('quote.preview', quote_id=info.id, next=request.path) }}"
+                               rel="tooltip" title="{{ _('Print') }}" target="_blank"><span
+                                    class="glyphicon glyphicon-print"></span></a>
                             <a href="{{ url_for('quote.edit', quote_id=info.id, next=request.path) }}"
-                               rel="tooltip" title="编辑"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="quote_delete({{ info.id }});" rel="tooltip"
-                               title="删除"><span class="glyphicon glyphicon-trash"></span></a>
+                               rel="tooltip" title="{{ _('Edit') }}"><span
+                                    class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="javascript:void(0);" onclick="quote_delete({{ info.id }})" rel="tooltip"
+                               title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -89,22 +88,32 @@
 
 {% block extra_js %}
     <script>
-        // 客户删除
-        function quote_delete(quote_id) {
-            if (confirm('删除数据不能恢复，是否确认删除?')) {
-                $.getJSON('{{ url_for('quote.ajax_delete') }}',
-                    {
-                        quote_id: quote_id
-                    }, function (data) {
-                        if (data.result === true) {
-                            alert(data.msg);
-                        } else {
-                            alert(data.msg);
-                        }
-                        window.location.reload();
-                    });
-                return false;
-            }
+      // 报价删除
+      function quote_delete (quote_id) {
+        if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
+          $.getJSON('{{ url_for('quote.ajax_delete') }}',
+            {
+              quote_id: quote_id
+            }, function (data) {
+              if (data.result === true) {
+                alert(data.msg)
+              } else {
+                alert(data.msg)
+              }
+              window.location.reload()
+            })
+          return false
         }
+      }
+
+      $(function () {
+        //搜索表单
+
+        //级联选择
+        $('#uid').change(function () {
+          $('#cid').get(0).selectedIndex = 0
+          $('#search_form').submit()
+        })
+      })
     </script>
 {% endblock %}

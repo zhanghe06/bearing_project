@@ -10,10 +10,13 @@
 
 from __future__ import unicode_literals
 
+from flask_babel import lazy_gettext as _
+
+
 # 整数索引（默认）
-default_choices_int = [(-1, '全部')]  # 需要copy, 不要直接引用
+default_choices_int = [(-1, _('All'))]  # 需要copy, 不要直接引用
 default_choice_option_int = -1
 
 # 字符索引
-default_choices_str = [('', '全部')]  # 需要copy, 不要直接引用
+default_choices_str = [('', _('All'))]  # 需要copy, 不要直接引用
 default_choice_option_str = ''

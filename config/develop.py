@@ -10,6 +10,8 @@
 
 from __future__ import unicode_literals
 
+from flask_babel import lazy_gettext as _
+
 import os
 from datetime import timedelta
 
@@ -19,6 +21,8 @@ DEBUG = True
 
 CSRF_ENABLED = True
 SECRET_KEY = '\x03\xabjR\xbbg\x82\x0b{\x96f\xca\xa8\xbdM\xb0x\xdbK%\xf2\x07\r\x8c'
+
+PREFERRED_URL_SCHEME = 'https'
 
 
 # 会话配置
@@ -55,9 +59,10 @@ SQLALCHEMY_DATABASE_URI_MYSQL = \
 SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI_MYSQL
 # SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # 打开自动提交 官方已经移除(http://flask-sqlalchemy.pocoo.org/2.1/changelog/#version-2-0)
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_POOL_SIZE = 5  # 默认 pool_size=5
-SQLALCHEMY_POOL_TIMEOUT = 10  # 默认 10秒
-SQLALCHEMY_POOL_RECYCLE = 500  # 配置要小于 数据库配置 wait_timeout
+SQLALCHEMY_POOL_SIZE = 5        # 默认 pool_size=5
+SQLALCHEMY_MAX_OVERFLOW = 10    # 默认 10 连接池达到最大值后可以创建的连接数
+SQLALCHEMY_POOL_TIMEOUT = 10    # 默认 10秒
+SQLALCHEMY_POOL_RECYCLE = 500   # 配置要小于 数据库配置 wait_timeout
 SQLALCHEMY_ECHO = False
 
 
@@ -77,9 +82,9 @@ DOCUMENT_INFO = {
     'KEYWORDS': '',     # 关键词
     'DESCRIPTION': '',  # 描述
     'AUTHOR': '',       # 作者
-    'PROJECT_NAME': '网站名称',
+    'PROJECT_NAME': _('Website Name'),  # 网站名称
     'ICP_CODE': '沪ICP备12024750号',
-    'APP_NAME': '应用名称',
+    'APP_NAME': _('App Name'),  # 应用名称
 }
 
 PER_PAGE_FRONTEND = 20

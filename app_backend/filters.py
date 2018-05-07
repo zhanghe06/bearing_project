@@ -13,6 +13,7 @@ from __future__ import unicode_literals
 import json
 
 from app_backend import app
+from app_backend.api.customer import get_customer_row_by_id
 from app_backend.api.user import get_user_row_by_id
 from app_backend.api.warehouse import get_warehouse_row_by_id
 from app_backend.api.rack import get_rack_row_by_id
@@ -20,6 +21,8 @@ from app_backend.api.product import get_product_row_by_id
 from app_common.maps.type_auth import TYPE_AUTH_DICT
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 from app_common.maps.type_role import TYPE_ROLE_DICT
+from app_common.maps.status_audit import STATUS_AUDIT_DICT
+from app_common.maps.status_order import STATUS_ORDER_DICT
 from app_backend.clients.client_redis import redis_client
 
 
@@ -50,6 +53,17 @@ def filter_user_name(user_id):
     """
     user_info = get_user_row_by_id(user_id)
     return user_info.name if user_info else '-'
+
+
+@app.template_filter('customer_company_name')
+def filter_customer_company_name(customer_id):
+    """
+    客户公司名称
+    :param customer_id:
+    :return:
+    """
+    customer_info = get_customer_row_by_id(customer_id)
+    return customer_info.company_name if customer_info else '-'
 
 
 @app.template_filter('warehouse_name')
@@ -124,3 +138,23 @@ def filter_type_role(role_id):
     :return:
     """
     return TYPE_ROLE_DICT.get(role_id, '')
+
+
+@app.template_filter('status_audit')
+def filter_status_audit(status_audit_id):
+    """
+    审核状态
+    :param status_audit_id:
+    :return:
+    """
+    return STATUS_AUDIT_DICT.get(status_audit_id, '')
+
+
+@app.template_filter('status_order')
+def filter_status_order(status_order_id):
+    """
+    订单状态
+    :param status_order_id:
+    :return:
+    """
+    return STATUS_ORDER_DICT.get(status_order_id, '')

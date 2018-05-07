@@ -9,14 +9,18 @@
 """
 
 
-def func():
-    pass
+from app_common.libs.mysql_orm_op import DbInstance
+from app_backend.models.bearing_project import QuoteItem
+from app_backend import db
+
+db_instance = DbInstance(db)
 
 
-class Main(object):
-    def __init__(self):
-        pass
-
-
-if __name__ == '__main__':
-    pass
+def get_quote_item_rows(*args, **kwargs):
+    """
+    获取列表
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    return db_instance.get_rows(QuoteItem, *args, **kwargs)

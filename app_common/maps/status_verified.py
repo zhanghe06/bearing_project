@@ -11,11 +11,14 @@
 
 from __future__ import unicode_literals
 
+from flask_babel import lazy_gettext as _
+
+
 # 认证状态（0:未认证，1:已认证）
 STATUS_VERIFIED_NO = 0
 STATUS_VERIFIED_OK = 1
 
 STATUS_VERIFIED_DICT = {
-    0: '未认证',
-    1: '已认证',
+    0: _('Not Verified'),  # 未认证
+    1: _('Verified'),  # 已认证
 }

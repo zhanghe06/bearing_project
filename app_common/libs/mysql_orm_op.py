@@ -51,19 +51,6 @@ class DbInstance(object):
             .filter_by(**kwargs) \
             .first()
 
-    def get_rows_by_ids(self, model_class, pk_ids):
-        """
-        通过一组 ids 获取信息列表
-        :param model_class:
-        :param pk_ids:
-        :return: list
-        """
-        model_pk = inspect(model_class).primary_key[0]
-        return self.db_instance.session \
-            .query(model_class) \
-            .filter(model_pk.in_(pk_ids)) \
-            .all()
-
     def get_rows(self, model_class, *args, **kwargs):
         """
         获取列表信息
@@ -84,6 +71,19 @@ class DbInstance(object):
             .query(model_class) \
             .filter(*args) \
             .filter_by(**kwargs) \
+            .all()
+
+    def get_rows_by_ids(self, model_class, pk_ids):
+        """
+        通过一组 ids 获取信息列表
+        :param model_class:
+        :param pk_ids:
+        :return: list
+        """
+        model_pk = inspect(model_class).primary_key[0]
+        return self.db_instance.session \
+            .query(model_class) \
+            .filter(model_pk.in_(pk_ids)) \
             .all()
 
     def get_limit_rows_by_last_id(self, model_class, last_pk_id, limit_num, *args, **kwargs):

@@ -49,6 +49,15 @@ def get_customer_rows(*args, **kwargs):
     return db_instance.get_rows(Customer, *args, **kwargs)
 
 
+def get_customer_rows_by_ids(pk_ids):
+    """
+    通过一组 ids 获取信息列表
+    :param pk_ids:
+    :return:
+    """
+    return db_instance.get_rows_by_ids(Customer, pk_ids)
+
+
 def add_customer(customer_data):
     """
     添加信息

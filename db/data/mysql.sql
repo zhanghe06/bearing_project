@@ -49,7 +49,7 @@ INSERT INTO `product` VALUES (2, 0, 'SKF', '7012CEGA/P4A', 'Pcs', '', 0, NULL, '
 
 -- 插入报价汇总信息
 TRUNCATE TABLE `quote`;
-INSERT INTO `quote` VALUES (1, 1, 1, 1, '1000.00', '', 0, 0, 0, NULL, NULL, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `quote` VALUES (1, 1, 1, 1, '1000.00', '10.00', '0.00', '1000.00', '', 1, 0, 0, 0, '2018-03-21', NULL, NULL, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
 
 
 -- 插入报价明细信息

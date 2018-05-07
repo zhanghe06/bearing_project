@@ -74,7 +74,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 def get_product_brand_choices():
     product_brand_list = copy(default_choices_str)
-    distinct_brand = get_distinct_brand()
+    distinct_brand = get_distinct_brand(status_delete=STATUS_DEL_NO)
     product_brand_list.extend([(brand, brand) for brand in distinct_brand])
     return product_brand_list
 

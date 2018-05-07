@@ -9,11 +9,16 @@
 """
 
 
+from copy import copy
 from datetime import datetime
 from sqlalchemy.sql import func
 from app_backend import db
+from app_backend.api.customer import get_customer_rows_by_ids
+from app_backend.api.user import get_user_rows_by_ids
 from app_common.libs.mysql_orm_op import DbInstance
 from app_backend.models.bearing_project import Quote
+from app_common.maps.default import default_choices_int
+from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 from app_common.maps.status_order import STATUS_ORDER_OK
@@ -238,3 +243,41 @@ def quote_order_stats(time_based='hour'):
             .all()
         result.update(dict(rows))
         return [(months_zerofill[i], result[month]) for i, month in enumerate(months)]
+
+
+def get_distinct_quote_uid(*args, **kwargs):
+    """
+    获取用户
+    :param args:
+    :param kwargs:
+    :return: List
+    """
+    field = 'uid'
+    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Quote, field, *args, **kwargs))
+
+
+def get_distinct_quote_cid(*args, **kwargs):
+    """
+    获取客户
+    :param args:
+    :param kwargs:
+    :return: List
+    """
+    field = 'cid'
+    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Quote, field, *args, **kwargs))
+
+
+def get_quote_user_list_choices():
+    quote_user_list = copy(default_choices_int)
+    uid_list = get_distinct_quote_uid(status_delete=STATUS_DEL_NO)
+    user_rows = get_user_rows_by_ids(uid_list)
+    quote_user_list.extend([(user.id, user.name) for user in user_rows])
+    return quote_user_list
+
+
+def get_quote_customer_list_choices(uid):
+    quote_user_list = copy(default_choices_int)
+    cid_list = get_distinct_quote_cid(status_delete=STATUS_DEL_NO, uid=uid)
+    customer_rows = get_customer_rows_by_ids(cid_list)
+    quote_user_list.extend([(customer.id, customer.company_name) for customer in customer_rows])
+    return quote_user_list

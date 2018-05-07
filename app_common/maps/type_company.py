@@ -10,13 +10,16 @@
 
 from __future__ import unicode_literals
 
-# 认证类型（0:未知,1:中间商2:终端）
+from flask_babel import lazy_gettext as _
+
+
+# 认证类型（0:未知,1:中间商2:最终用户）
 TYPE_COMPANY_DEFAULT = 0
 TYPE_COMPANY_MIDDLEMAN = 1
 TYPE_COMPANY_END_USER = 2
 
 TYPE_COMPANY_DICT = {
-    0: '未知',
-    1: '中间商',
-    2: '终端用户',
+    0: _('Unknown'),  # 未知
+    1: _('Middle Man'),  # 中间商
+    2: _('Final User'),  # 最终用户
 }

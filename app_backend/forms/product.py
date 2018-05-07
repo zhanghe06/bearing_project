@@ -10,7 +10,7 @@
 
 from __future__ import unicode_literals
 
-from flask_babel import gettext as _
+from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, IntegerField, SelectField
 from wtforms.validators import DataRequired, ValidationError
@@ -60,28 +60,28 @@ class ProductSearchForm(FlaskForm):
     搜索表单
     """
     product_brand = SelectField(
-        '产品品牌',
+        _('product brand'),
         validators=[],  # 字符类型，非必填
         default=default_choice_option_str,
-        description='产品品牌',
+        description=_('product brand'),
         render_kw={
-            'rel': "tooltip",
-            'title': "产品品牌",
+            'rel': 'tooltip',
+            'title': _('product brand'),
         }
     )
     product_model = StringField(
-        '产品型号',
+        _('product model'),
         validators=[],
         default='',
-        description='产品型号',
+        description=_('product model'),
         render_kw={
-            'placeholder': '产品型号',
-            'rel': "tooltip",
-            'title': "产品型号",
+            'placeholder': _('product model'),
+            'rel': 'tooltip',
+            'title': _('product model'),
         }
     )
     op = IntegerField(
-        '操作',
+        _('operation'),
         validators=[],
         default=0,
     )
@@ -92,20 +92,20 @@ class ProductAddForm(FlaskForm):
     创建表单
     """
     product_brand = StringField(
-        '产品品牌',
+        _('product brand'),
         validators=[
             DataRequired(),
         ],
         default='',
         description='产品品牌（例如：SKF、FAG、NSK...）',
         render_kw={
-            'placeholder': '产品品牌',
-            'rel': "tooltip",
-            'title': "产品品牌",
+            'placeholder': _('product brand'),
+            'rel': 'tooltip',
+            'title': _('product brand'),
         }
     )
     product_model = StringField(
-        '产品型号',
+        _('product model'),
         validators=[
             DataRequired(),
             AddProductModelRepeatValidate(),
@@ -113,20 +113,20 @@ class ProductAddForm(FlaskForm):
         default='',
         description='产品型号（例如：7008CEGA/HCP4A）',
         render_kw={
-            'placeholder': '产品型号',
-            'rel': "tooltip",
-            'title': "产品型号",
+            'placeholder': _('product model'),
+            'rel': 'tooltip',
+            'title': _('product model'),
         }
     )
     note = StringField(
-        '产品备注',
+        _('product note'),
         validators=[],
         default='',
         description='产品备注（例如：最小起订量12个）',
         render_kw={
-            'placeholder': '产品备注',
-            'rel': "tooltip",
-            'title': "产品备注",
+            'placeholder': _('product note'),
+            'rel': 'tooltip',
+            'title': _('product note'),
         }
     )
 
@@ -136,7 +136,7 @@ class ProductEditForm(FlaskForm):
     编辑表单
     """
     id = IntegerField(
-        '产品编号',
+        _('product id'),
         validators=[
             DataRequired(),
         ],
@@ -145,47 +145,47 @@ class ProductEditForm(FlaskForm):
         }
     )
     product_brand = StringField(
-        '产品品牌',
+        _('product brand'),
         validators=[
             DataRequired(),
         ],
         description='产品品牌（例如：SKF、FAG、NSK...）',
         render_kw={
-            'placeholder': '产品品牌',
-            'rel': "tooltip",
-            'title': "产品品牌",
+            'placeholder': _('product brand'),
+            'rel': 'tooltip',
+            'title': _('product brand'),
         }
     )
     product_model = StringField(
-        '产品型号',
+        _('product model'),
         validators=[
             DataRequired(),
             EditProductModelRepeatValidate(),
         ],
         description='产品型号（例如：7008CEGA/HCP4A）',
         render_kw={
-            'placeholder': '产品型号',
-            'rel': "tooltip",
-            'title': "产品型号",
+            'placeholder': _('product model'),
+            'rel': 'tooltip',
+            'title': _('product model'),
         }
     )
     note = StringField(
-        '产品备注',
+        _('product note'),
         validators=[],
         description='产品备注（例如：最小起订量12个）',
         render_kw={
-            'placeholder': '产品备注',
-            'rel': "tooltip",
-            'title': "产品备注",
+            'placeholder': _('product note'),
+            'rel': 'tooltip',
+            'title': _('product note'),
         }
     )
     create_time = DateField(
-        '创建时间',
+        _('create time'),
         validators=[],
-        description='创建时间',
+        description=_('create time'),
     )
     update_time = DateField(
-        '更新时间',
+        _('update time'),
         validators=[],
-        description='更新时间',
+        description=_('update time'),
     )

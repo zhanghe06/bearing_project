@@ -49,6 +49,15 @@ def get_user_rows(*args, **kwargs):
     return db_instance.get_rows(User, *args, **kwargs)
 
 
+def get_user_rows_by_ids(pk_ids):
+    """
+    通过一组 ids 获取信息列表
+    :param pk_ids:
+    :return:
+    """
+    return db_instance.get_rows_by_ids(User, pk_ids)
+
+
 def add_user(user_data):
     """
     添加信息

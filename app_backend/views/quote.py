@@ -12,7 +12,6 @@
 from __future__ import unicode_literals
 
 import json
-from copy import copy
 from datetime import datetime
 
 from flask import (
@@ -26,8 +25,8 @@ from flask import (
     Blueprint,
 )
 from flask_babel import gettext as _
-from flask_login import login_required
-
+from flask_login import login_required, current_user
+from app_backend.forms.quote import QuoteItemForm
 from app_backend import (
     app,
     excel,
@@ -38,12 +37,14 @@ from app_backend.api.quote import (
     add_quote,
     edit_quote,
     get_quote_rows,
+    get_distinct_quote_uid,
+    get_distinct_quote_cid,
     quote_total_stats,
     quote_order_stats,
-)
-from app_backend.api.user import (
-    get_user_rows
-)
+    get_quote_user_list_choices, get_quote_customer_list_choices)
+
+from app_backend.api.quote_item import get_quote_item_rows
+from wtforms.fields import FieldList, FormField
 from app_backend.forms.quote import (
     QuoteSearchForm,
     QuoteAddForm,
@@ -78,14 +79,6 @@ AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
-def get_sales_user_list():
-    sales_user_list = copy(default_choices_int)
-    user_list = get_user_rows(**{'role_id': TYPE_ROLE_SALES})
-    sales_user_list.extend([(0, '-')])
-    sales_user_list.extend([(user.id, user.name) for user in user_list])
-    return sales_user_list
-
-
 @bp_quote.route('/lists.html', methods=['GET', 'POST'])
 @bp_quote.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
@@ -103,7 +96,8 @@ def lists(page=1):
 
     # 搜索条件
     form = QuoteSearchForm(request.form)
-    form.quote_brand.choices = get_sales_user_list()
+    form.uid.choices = get_quote_user_list_choices()
+    form.cid.choices = get_quote_customer_list_choices(form.uid.data)
     # app.logger.info('')
 
     search_condition = [
@@ -117,12 +111,10 @@ def lists(page=1):
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.company_name.data:
-                search_condition.append(Quote.company_name == form.company_name.data)
-            if form.company_type.data != default_choice_option_int:
-                search_condition.append(Quote.company_type == form.company_type.data)
-            if form.owner_uid.data != default_choice_option_int:
-                search_condition.append(Quote.owner_uid == form.owner_uid.data)
+            if form.uid.data != default_choice_option_int:
+                search_condition.append(Quote.uid == form.uid.data)
+            if form.cid.data != default_choice_option_int:
+                search_condition.append(Quote.cid == form.cid.data)
             if form.start_create_time.data:
                 search_condition.append(Quote.create_time >= form.start_create_time.data)
             if form.end_create_time.data:
@@ -173,11 +165,23 @@ def info(quote_id):
     # 检查资源是否删除
     if quote_info.status_delete == STATUS_DEL_OK:
         abort(410)
+
+    template_name = 'quote/info.html'
+
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('quote info')
+
+    # 获取明细
+    quote_items = get_quote_item_rows(quote_id=quote_id)
+
     # 渲染模板
-    return render_template('quote/info.html', quote_info=quote_info, **document_info)
+    return render_template(
+        template_name,
+        quote_info=quote_info,
+        quote_items=quote_items,
+        **document_info
+    )
 
 
 @bp_quote.route('/add.html', methods=['GET', 'POST'])
@@ -195,6 +199,9 @@ def add():
 
     # 加载创建表单
     form = QuoteAddForm(request.form)
+    form.uid.choices = get_quote_user_list_choices()
+    form.uid.data = current_user.id
+    form.cid.choices = get_quote_customer_list_choices(current_user.id)
 
     # 进入创建页面
     if request.method == 'GET':
@@ -217,16 +224,15 @@ def add():
             )
 
         # 表单校验成功
+        # todo 事务
+
+        # 明细保存
+        # 总表保存
+
         current_time = datetime.utcnow()
         quote_data = {
-            'company_name': form.company_name.data,
-            'company_address': form.company_address.data,
-            'company_site': form.company_site.data,
-            'company_tel': form.company_tel.data,
-            'company_fax': form.company_fax.data,
-            'company_type': form.company_type.data,
-            'owner_uid': form.owner_uid.data,
-            'create_time': current_time,
+            'uid': form.uid.data,
+            'cid': form.cid.data,
             'update_time': current_time,
         }
         result = add_quote(quote_data)
@@ -267,6 +273,8 @@ def edit(quote_id):
 
     # 加载编辑表单
     form = QuoteEditForm(request.form)
+    form.uid.choices = get_quote_user_list_choices()
+    form.cid.choices = get_quote_customer_list_choices(current_user.id)
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -274,18 +282,26 @@ def edit(quote_id):
 
     # 进入编辑页面
     if request.method == 'GET':
+        # 获取明细
+        quote_items = get_quote_item_rows(quote_id=quote_id)
         # 表单赋值
-        form.company_name.data = quote_info.company_name
-        form.company_address.data = quote_info.company_address
-        form.company_site.data = quote_info.company_site
-        form.company_tel.data = quote_info.company_tel
-        form.company_fax.data = quote_info.company_fax
-        form.company_type.data = quote_info.company_type
-        form.owner_uid.data = quote_info.owner_uid
-        form.status_delete.data = quote_info.status_delete
-        form.delete_time.data = quote_info.delete_time
-        form.create_time.data = quote_info.create_time
-        form.update_time.data = quote_info.update_time
+        form.uid.data = quote_info.uid
+        form.cid.data = quote_info.cid
+        # form.quote_items = quote_items
+        while len(form.quote_items) > 0:
+            form.quote_items.pop_entry()
+        for quote_item in quote_items:
+            quote_item_form = QuoteItemForm()
+            quote_item_form.id = quote_item.id
+            quote_item_form.quote_id = quote_item.quote_id
+            quote_item_form.product_id = quote_item.product_id
+            quote_item_form.product_brand = quote_item.product_brand
+            quote_item_form.product_model = quote_item.product_model
+            quote_item_form.product_sku = quote_item.product_sku
+            quote_item_form.product_note = quote_item.product_note
+            quote_item_form.quantity = quote_item.quantity
+            quote_item_form.unit_price = quote_item.unit_price
+            form.quote_items.append_entry(quote_item_form)
         # 渲染页面
         return render_template(
             template_name,
@@ -299,6 +315,7 @@ def edit(quote_id):
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
+            flash(form.errors, 'danger')
             return render_template(
                 template_name,
                 quote_id=quote_id,
@@ -306,15 +323,15 @@ def edit(quote_id):
                 **document_info
             )
         # 表单校验成功
+        # todo 事务
+
+        # 明细保存
+        # 总表保存
+
         current_time = datetime.utcnow()
         quote_data = {
-            'company_name': form.company_name.data,
-            'company_address': form.company_address.data,
-            'company_site': form.company_site.data,
-            'company_tel': form.company_tel.data,
-            'company_fax': form.company_fax.data,
-            'company_type': form.company_type.data,
-            'owner_uid': form.owner_uid.data,
+            'uid': form.uid.data,
+            'cid': form.cid.data,
             'update_time': current_time,
         }
         result = edit_quote(quote_id, quote_data)
@@ -331,6 +348,22 @@ def edit(quote_id):
                 form=form,
                 **document_info
             )
+
+
+@bp_quote.route('/<int:quote_id>/preview.html')
+@login_required
+def preview(quote_id):
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('quote edit')
+
+    template_name = 'quote/preview.html'
+
+    return render_template(
+        template_name,
+        quote_id=quote_id,
+        **document_info
+    )
 
 
 @bp_quote.route('/ajax/del', methods=['GET', 'POST'])

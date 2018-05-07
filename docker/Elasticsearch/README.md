@@ -107,3 +107,25 @@ curl -XGET "http://localhost:9200/catalogue/_analyze?pretty=true" -H 'Content-Ty
   ]
 }
 ```
+
+kibana 分析
+```
+GET /catalogue/_search
+{
+  "query": {
+    "match": {
+      "product_label": "7008 ACD GA / P4A"
+    }
+  },
+  "highlight": {
+    "pre_tags": [
+      """<span class="text-primary">"""
+    ],
+    "post_tags": [
+      "</span>"
+    ],
+    "fields": {
+      "product_label": {}
+    }
+  }
+}```

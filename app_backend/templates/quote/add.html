@@ -1,10 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-quote').trigger('click')">{{ _('quote management') }}</a></li>
+            <li class="active">{{ _('quote add') }}</li>
+        </ol>
+
+        <form class="form-inline" id="search_form" method="post">
+            {{ form.csrf_token }}
+            <div class="form-group{% if form.uid.errors %} has-error{% endif %}">
+                {{ form.uid.label() }}
+                {{ form.uid(class="form-control") }}
+            </div>
+            <div class="form-group{% if form.cid.errors %} has-error{% endif %}">
+                {{ form.cid.label() }}
+                {{ form.cid(class="form-control") }}
+            </div>
+
+            <button type="submit" class="btn btn-success btn-load" data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
+            <button type="reset" class="btn btn-default">{{ _('Reset') }}</button>
+
+        <div class="table-responsive">
+            {#         <table class="table table-striped">#}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>{{ _('#') }}</th>
+                    <th>{{ _('product id') }}</th>
+                    <th>{{ _('product brand') }}</th>
+                    <th>{{ _('product model') }}</th>
+                    <th>{{ _('product sku') }}</th>
+                    <th>{{ _('quantity') }}</th>
+                    <th>{{ _('unit_price') }}</th>
+                    <th>{{ _('Option') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+{#                    <tr class="text-muted">#}
+{#                        <td><span class="input-sm">1</span></td>#}
+{#                        <td><label><input name="product_id" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="product_brand" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="product_model" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="product_sku" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="quantity" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="unit_price" class="form-control input-sm"></label></td>#}
+{#                        <td><span class="input-sm glyphicon glyphicon-plus-sign"></span></td>#}
+{#                    </tr>#}
+{#                    <tr class="text-muted">#}
+{#                        <td><span class="input-sm">2</span></td>#}
+{#                        <td><label><input name="product_id" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="product_brand" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="product_model" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="product_sku" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="quantity" class="form-control input-sm"></label></td>#}
+{#                        <td><label><input name="unit_price" class="form-control input-sm"></label></td>#}
+{#                        <td><span class="input-sm glyphicon glyphicon-minus-sign"></span></td>#}
+{#                    </tr>#}
+                {% for info in form.quote_items %}
+                    <tr class="text-muted">
+                    {{ info.csrf_token }}
+                    {{ info.form.id() }}
+                        <td><span class="form-control input-sm">{{ loop.index }}</span></td>
+                        <td>{{ info.product_id(class="form-control input-sm") }}</td>
+                        <td>{{ info.product_brand(class="form-control input-sm") }}</td>
+                        <td>{{ info.product_model(class="form-control input-sm") }}</td>
+                        <td>{{ info.product_sku(class="form-control input-sm") }}</td>
+                        <td>{{ info.quantity(class="form-control input-sm") }}</td>
+                        <td>{{ info.unit_price(class="form-control input-sm") }}</td>
+                        <td><span class="input-sm glyphicon glyphicon-minus-sign"></span></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        </form>
+
+        <hr/>
+
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}
