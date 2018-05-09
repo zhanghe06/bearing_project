@@ -345,3 +345,13 @@ monkey.patch_all()
 
 http://wtforms.readthedocs.io/en/1.0.5/fields.html#wtforms.fields.FieldList
 
+明细表单如需取消`csrf_token`, 明细表单需要继承`wtforms.Form`, 而不是`flask_wtf.FlaskForm`
+
+或者
+```python
+from flask_wtf import FlaskForm
+class SomeForm(FlaskForm):
+    def __init__(self, *args, **kwargs):
+        kwargs['csrf_enabled'] = False
+        FlaskForm.__init__(self, *args, **kwargs)
+```

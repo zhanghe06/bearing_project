@@ -94,6 +94,10 @@ class QuoteSearchForm(FlaskForm):
 
 
 class QuoteItemForm(FlaskForm):
+    def __init__(self, *args, **kwargs):
+        kwargs['csrf_enabled'] = False  # disable csrf
+        FlaskForm.__init__(self, *args, **kwargs)
+
     id = IntegerField(
         _('product id'),
         validators=[

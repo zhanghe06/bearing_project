@@ -13,5 +13,8 @@ from app_backend import app
 
 
 if __name__ == '__main__':
-    app.debug = app.config['DEBUG']  # 调试模式, DEBUG = True
-    app.run(host='0.0.0.0', port=8060)  # 端口号必须为整型
+    app.run(
+        host=app.config['HOST'],
+        debug=app.config['DEBUG'],
+        port=8060,  # 端口号必须为整型
+    )

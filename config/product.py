@@ -41,11 +41,11 @@ REDIS_SESSION_PREFIX_BACKEND = 's:a:'
 # requests 超时设置
 REQUESTS_TIME_OUT = (30, 30)
 
-HOST_IP = '192.168.4.1'
+HOST = '0.0.0.0'
 
 # 数据库 MySQL
 DB_MYSQL = {
-    'host': HOST_IP,
+    'host': HOST,
     'user': 'root',
     'passwd': '123456',
     'port': 3306,
@@ -68,7 +68,7 @@ SQLALCHEMY_ECHO = False
 
 # 缓存，队列
 REDIS = {
-    'host': HOST_IP,
+    'host': HOST,
     'port': 6379,
     # 'password': '123456'  # redis-cli AUTH 123456
 }

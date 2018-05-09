@@ -61,7 +61,6 @@
 {#                    </tr>#}
                 {% for info in form.quote_items %}
                     <tr class="text-muted">
-                    {{ info.csrf_token }}
                     {{ info.form.id() }}
                         <td><span class="form-control input-sm">{{ loop.index }}</span></td>
                         <td>{{ info.product_id(class="form-control input-sm") }}</td>
