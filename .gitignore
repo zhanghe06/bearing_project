@@ -24,3 +24,7 @@ docker/Elasticsearch/data/
 
 # InfluxDB
 docker/InfluxDB/data/
+
+# MariaDB
+docker/MariaDB/backup/
+docker/MariaDB/data/
