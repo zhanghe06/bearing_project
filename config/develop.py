@@ -20,6 +20,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DEBUG = True
 
 CSRF_ENABLED = True
+
+# >>> import os
+# >>> os.urandom(24)
 SECRET_KEY = '\x03\xabjR\xbbg\x82\x0b{\x96f\xca\xa8\xbdM\xb0x\xdbK%\xf2\x07\r\x8c'
 
 PREFERRED_URL_SCHEME = 'https'

@@ -355,3 +355,19 @@ class SomeForm(FlaskForm):
         kwargs['csrf_enabled'] = False
         FlaskForm.__init__(self, *args, **kwargs)
 ```
+
+
+## 本地事务的幂等性
+
+- select，天生幂等
+- insert，数据库自增主键时不具备幂等
+- 基于主键update，具备幂等，但是带查询的更新除外（形如update t set x = x + 1 where ...)
+- 基于主建delete，具备幂等
+- 非基于主键的udpate/delete操作，需要具体问题具体分析
+
+
+## MariaDB datetime 类型
+
+https://mariadb.com/kb/en/library/datetime/
+
+The supported range is '1000-01-01 00:00:00.000000' to '9999-12-31 23:59:59.999999'

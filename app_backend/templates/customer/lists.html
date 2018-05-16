@@ -42,17 +42,17 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>编号</th>
-                    <th>公司名称</th>
-                    <th>公司地址</th>
-                    <th>公司官网</th>
-                    <th>公司电话</th>
-                    <th>公司传真</th>
-                    <th>公司类型</th>
+                    <th>{{ _('customer id') }}</th>
+                    <th>{{ _('company name') }}</th>
+                    <th>{{ _('company address') }}</th>
+                    <th>{{ _('company site') }}</th>
+                    <th>{{ _('company tel') }}</th>
+                    <th>{{ _('company fax') }}</th>
+                    <th>{{ _('company type') }}</th>
                     <th>所属销售</th>
-                    <th>创建时间</th>
-                    <th>更新时间</th>
-                    <th>操作</th>
+                    <th>{{ _('create time') }}</th>
+                    <th>{{ _('update time') }}</th>
+                    <th>{{ _('operation') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -91,7 +91,7 @@
     <script>
         // 客户删除
         function customer_delete(customer_id) {
-            if (confirm('删除数据不能恢复，是否确认删除?')) {
+            if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
                 $.getJSON('{{ url_for('customer.ajax_delete') }}',
                     {
                         customer_id: customer_id

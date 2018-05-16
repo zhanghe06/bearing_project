@@ -129,3 +129,11 @@ GET /catalogue/_search
     }
   }
 }```
+
+
+内存分配
+
+不要超过内存总量的一半
+不要超过32GB
+
+参考: https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html#compressed_oops

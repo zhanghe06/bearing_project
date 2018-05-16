@@ -28,3 +28,4 @@ docker/InfluxDB/data/
 # MariaDB
 docker/MariaDB/backup/
 docker/MariaDB/data/
+docker/MariaDB/log/
