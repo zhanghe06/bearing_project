@@ -16,6 +16,7 @@ import time
 from flask import session
 from six import iteritems
 from datetime import datetime, timedelta
+from flask_babel import lazy_gettext as _
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
@@ -30,28 +31,28 @@ from copy import copy
 
 class CatalogueSearchForm(FlaskForm):
     product_brand = SelectField(
-        '产品品牌',
+        _('product brand'),
         validators=[],  # 字符类型，非必填
         default=default_choice_option_str,
-        description='产品品牌',
+        description=_('product brand'),
         render_kw={
-            'rel': "tooltip",
-            'title': "产品品牌",
+            'rel': 'tooltip',
+            'title': _('product brand'),
         }
     )
     product_model = StringField(
-        '产品型号',
+        _('product model'),
         validators=[],
         default='',
-        description='产品型号',
+        description=_('product model'),
         render_kw={
-            'placeholder': '产品型号',
-            'rel': "tooltip",
-            'title': "产品型号",
+            'placeholder': _('product model'),
+            'rel': 'tooltip',
+            'title': _('product model'),
         }
     )
     op = IntegerField(
-        '操作',
+        _('Option'),
         validators=[],
         default=0,
     )

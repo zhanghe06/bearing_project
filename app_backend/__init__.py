@@ -106,7 +106,7 @@ from app_backend.views.customer import bp_customer
 from app_backend.views.user import bp_user
 from app_backend.views.user_auth import bp_auth
 from app_backend.views.product import bp_product
-from app_backend.views.quote import bp_quote
+from app_backend.views.quotation import bp_quote
 from app_backend.views.warehouse import bp_warehouse
 from app_backend.views.rack import bp_rack
 from app_backend.views.inventory import bp_inventory

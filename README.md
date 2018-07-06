@@ -343,7 +343,7 @@ monkey.patch_all()
 
 ## WTForms FieldList
 
-http://wtforms.readthedocs.io/en/1.0.5/fields.html#wtforms.fields.FieldList
+http://wtforms.readthedocs.io/en/stable/fields.html#wtforms.fields.FieldList
 
 明细表单如需取消`csrf_token`, 明细表单需要继承`wtforms.Form`, 而不是`flask_wtf.FlaskForm`
 
@@ -371,3 +371,8 @@ class SomeForm(FlaskForm):
 https://mariadb.com/kb/en/library/datetime/
 
 The supported range is '1000-01-01 00:00:00.000000' to '9999-12-31 23:59:59.999999'
+
+
+## Lazy Loading
+
+http://docs.jinkan.org/docs/flask/patterns/lazyloading.html

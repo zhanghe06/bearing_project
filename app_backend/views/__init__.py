@@ -49,7 +49,7 @@ from flask_login import (
 from app_backend.api.login_user import get_login_user_row_by_id
 from app_backend.api.user import get_user_rows
 from app_backend.api.customer import get_customer_rows
-from app_backend.api.quote import get_quote_rows
+from app_backend.api.quotation import get_quote_rows
 from app_backend.api.role import get_role_row_by_id
 
 from app_backend import app, oauth_github, oauth_qq, oauth_weibo

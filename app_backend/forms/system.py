@@ -16,6 +16,7 @@ import time
 from flask import session
 from six import iteritems
 from datetime import datetime, timedelta
+from flask_babel import lazy_gettext as _
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, FileField
@@ -30,11 +31,11 @@ from copy import copy
 
 class CatalogueUploadForm(FlaskForm):
     file = FileField(
-        '产品型录',
+        _('catalogue'),
         validators=[],
-        description='产品型录',
+        description=_('catalogue'),
         render_kw={
-            'rel': "tooltip",
-            'title': "产品型录",
+            'rel': 'tooltip',
+            'title': _('catalogue'),
         }
     )

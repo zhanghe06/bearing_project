@@ -4,7 +4,7 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: quote_item.py
+@file: quotation_item.py
 @time: 2018-03-16 10:00
 """
 

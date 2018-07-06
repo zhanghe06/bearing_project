@@ -13,6 +13,7 @@ from __future__ import unicode_literals
 import time
 from datetime import datetime, timedelta
 from six import iteritems
+from flask_babel import lazy_gettext as _
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
@@ -31,66 +32,66 @@ class CustomerSearchForm(FlaskForm):
     搜索表单
     """
     company_name = StringField(
-        '公司名称',
+        _('company name'),
         validators=[],
-        description='公司类型',
+        description=_('company name'),
         render_kw={
-            'placeholder': '公司名称',
-            'rel': "tooltip",
-            'title': "公司名称",
+            'placeholder': _('company name'),
+            'rel': 'tooltip',
+            'title': _('company name'),
         }
     )
     company_type = SelectField(
-        '公司类型',
+        _('company type'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
         choices=company_type_choices,
-        description='公司类型',
+        description=_('company type'),
         render_kw={
-            'rel': "tooltip",
-            'title': "公司类型",
+            'rel': 'tooltip',
+            'title': _('company type'),
         }
     )
     owner_uid = SelectField(
-        '所属销售',
+        _('owner uid'),
         default=default_choice_option_int,
         # validators=[],
         coerce=int,
-        description='所属销售',
+        description=_('owner uid'),
         render_kw={
-            'rel': "tooltip",
-            'title': "所属销售",
+            'rel': 'tooltip',
+            'title': _('owner uid'),
         }
     )
     start_create_time = DateField(
-        '开始时间',
+        _('start time'),
         validators=[],
         default=datetime.utcnow() - timedelta(days=30),
-        description='创建开始时间',
+        description=_('start time'),
         render_kw={
-            'placeholder': '创建开始时间',
+            'placeholder': _('start time'),
             'type': 'date',
-            'rel': "tooltip",
-            'title': "创建开始时间",
+            'rel': 'tooltip',
+            'title': _('start time'),
         }
     )
     end_create_time = DateField(
-        '结束时间',
+        _('end time'),
         validators=[],
         default=datetime.utcnow(),
-        description='创建结束时间',
+        description=_('end time'),
         render_kw={
-            'placeholder': '创建结束时间',
+            'placeholder': _('end time'),
             'type': 'date',
-            'rel': "tooltip",
-            'title': "创建结束时间",
+            'rel': 'tooltip',
+            'title': _('end time'),
         }
     )
     op = IntegerField(
-        '操作',
+        _('Option'),
         validators=[],
         default=0,
     )
@@ -101,62 +102,62 @@ class CustomerAddForm(FlaskForm):
     创建表单（字段一般带有默认选项）
     """
     company_name = StringField(
-        '公司名称',
+        _('company name'),
         validators=[DataRequired(), Length(max=100)],
         description='公司名称，最大长度100字符'
     )
     company_address = StringField(
-        '公司地址',
+        _('company address'),
         validators=[DataRequired(), Length(max=100)],
         description='公司地址，最大长度100字符'
     )
     company_site = StringField(
-        '公司官网',
+        _('company site'),
         validators=[DataRequired(), Length(max=100)],
         description='公司官网，最大长度100字符'
     )
     company_tel = StringField(
-        '公司电话',
+        _('company tel'),
         validators=[DataRequired(), Length(max=100)],
         description='公司电话，最大长度100字符'
     )
     company_fax = StringField(
-        '公司传真',
+        _('company fax'),
         validators=[DataRequired(), Length(max=100)],
         description='公司传真，最大长度100字符'
     )
     company_type = IntegerField(
-        '公司类型',
+        _('company type'),
         validators=[DataRequired()],
         default=0,
-        description='公司类型'
+        description=_('company type')
     )
     owner_uid = IntegerField(
-        '所属销售',
+        _('owner uid'),
         validators=[DataRequired()],
         default=0,
-        description='所属销售'
+        description=_('owner uid')
     )
     status_delete = IntegerField(
-        '删除状态',
+        _('delete status'),
         validators=[DataRequired()],
         default=0,
-        description='删除状态'
+        description=_('delete status')
     )
     delete_time = DateField(
-        '删除时间',
+        _('delete time'),
         validators=[DataRequired()],
-        description='删除时间'
+        description=_('delete time')
     )
     create_time = DateField(
-        '创建时间',
+        _('create time'),
         validators=[DataRequired()],
-        description='创建时间'
+        description=_('create time')
     )
     update_time = DateField(
-        '更新时间',
+        _('update time'),
         validators=[DataRequired()],
-        description='更新时间'
+        description=_('update time')
     )
 
 
@@ -165,7 +166,7 @@ class CustomerEditForm(FlaskForm):
     编辑表单（字段默认选项需要去除）
     """
     id = IntegerField(
-        '客户编号',
+        _('customer id'),
         validators=[
             DataRequired(),
         ],
@@ -174,49 +175,49 @@ class CustomerEditForm(FlaskForm):
         }
     )
     company_name = StringField(
-        '公司名称',
+        _('company name'),
         validators=[DataRequired(), Length(max=100)],
         description='公司名称，最大长度100字符'
     )
     company_address = StringField(
-        '公司地址',
+        _('company address'),
         validators=[DataRequired(), Length(max=100)],
         description='公司地址，最大长度100字符'
     )
     company_site = StringField(
-        '公司官网',
+        _('company site'),
         validators=[DataRequired(), Length(max=100)],
         description='公司官网，最大长度100字符'
     )
     company_tel = StringField(
-        '公司电话',
+        _('company tel'),
         validators=[DataRequired(), Length(max=100)],
         description='公司电话，最大长度100字符'
     )
     company_fax = StringField(
-        '公司传真',
+        _('company fax'),
         validators=[DataRequired(), Length(max=100)],
         description='公司传真，最大长度100字符'
     )
     company_type = IntegerField(
-        '公司类型',
+        _('company type'),
         validators=[DataRequired()],
         default=0,
-        description='公司类型'
+        description=_('company type')
     )
     owner_uid = IntegerField(
-        '所属销售',
+        _('owner uid'),
         validators=[DataRequired()],
         default=0,
-        description='所属销售'
+        description=_('owner uid')
     )
     create_time = DateField(
-        '创建时间',
+        _('create time'),
         validators=[DataRequired()],
-        description='创建时间'
+        description=_('create time')
     )
     update_time = DateField(
-        '更新时间',
+        _('update time'),
         validators=[DataRequired()],
-        description='更新时间'
+        description=_('update time')
     )

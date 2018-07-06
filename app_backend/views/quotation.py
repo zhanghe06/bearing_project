@@ -4,7 +4,7 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: quote.py
+@file: quotation.py
 @time: 2018-03-16 09:59
 """
 
@@ -26,12 +26,13 @@ from flask import (
 )
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
-from app_backend.forms.quote import QuoteItemForm
+
+from app_backend.forms.quotation import QuoteItemForm
 from app_backend import (
     app,
     excel,
 )
-from app_backend.api.quote import (
+from app_backend.api.quotation import (
     get_quote_pagination,
     get_quote_row_by_id,
     add_quote,
@@ -43,9 +44,9 @@ from app_backend.api.quote import (
     quote_order_stats,
     get_quote_user_list_choices, get_quote_customer_list_choices)
 
-from app_backend.api.quote_item import get_quote_item_rows
+from app_backend.api.quotation_item import get_quote_item_rows
 from wtforms.fields import FieldList, FormField
-from app_backend.forms.quote import (
+from app_backend.forms.quotation import (
     QuoteSearchForm,
     QuoteAddForm,
     QuoteEditForm,
@@ -89,7 +90,7 @@ def lists(page=1):
     :param page:
     :return:
     """
-    template_name = 'quote/lists.html'
+    template_name = 'quotation/lists.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('quote lists')
@@ -166,7 +167,7 @@ def info(quote_id):
     if quote_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
-    template_name = 'quote/info.html'
+    template_name = 'quotation/info.html'
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -192,7 +193,7 @@ def add():
     创建报价
     :return:
     """
-    template_name = 'quote/add.html'
+    template_name = 'quotation/add.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('quote add')
@@ -269,7 +270,7 @@ def edit(quote_id):
     if quote_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
-    template_name = 'quote/edit.html'
+    template_name = 'quotation/edit.html'
 
     # 加载编辑表单
     form = QuoteEditForm(request.form)
@@ -312,10 +313,40 @@ def edit(quote_id):
 
     # 处理编辑请求
     if request.method == 'POST':
+        # 增删数据行不需要校验表单
+
+        # 新增一行
+        if form.data_line_add.data is not None:
+            if form.quote_items.max_entries and len(form.quote_items.entries) >= form.quote_items.max_entries:
+                flash('最多创建%s条记录' % form.quote_items.max_entries, 'danger')
+            else:
+                form.quote_items.append_entry()
+
+            return render_template(
+                template_name,
+                quote_id=quote_id,
+                form=form,
+                **document_info
+            )
+        # 删除一行
+        if form.data_line_del.data is not None:
+            if form.quote_items.min_entries and len(form.quote_items.entries) <= form.quote_items.min_entries:
+                flash('最少保留%s条记录' % form.quote_items.min_entries, 'danger')
+            else:
+                data_line_index = form.data_line_del.data
+                form.quote_items.entries.pop(data_line_index)
+
+            return render_template(
+                template_name,
+                quote_id=quote_id,
+                form=form,
+                **document_info
+            )
+
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
-            flash(form.errors, 'danger')
+            # flash(form.quote_items.errors, 'danger')
             return render_template(
                 template_name,
                 quote_id=quote_id,
@@ -357,7 +388,7 @@ def preview(quote_id):
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('quote edit')
 
-    template_name = 'quote/preview.html'
+    template_name = 'quotation/preview.html'
 
     return render_template(
         template_name,

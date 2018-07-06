@@ -16,6 +16,7 @@ import time
 from flask import session
 from six import iteritems
 from datetime import datetime, timedelta
+from flask_babel import lazy_gettext as _
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
@@ -30,33 +31,33 @@ from copy import copy
 
 class InventorySearchForm(FlaskForm):
     warehouse_id = SelectField(
-        '仓库名称',
+        _('warehouse name'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
-        description='仓库名称',
+        description=_('warehouse name'),
         render_kw={
-            'rel': "tooltip",
-            'title': "仓库名称",
+            'rel': 'tooltip',
+            'title': _('warehouse name'),
         }
     )
     rack_id = SelectField(
-        '货架名称',
+        _('rack name'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
-        description='货架名称',
+        description=_('rack name'),
         render_kw={
-            'rel': "tooltip",
-            'title': "货架名称",
+            'rel': 'tooltip',
+            'title': _('rack name'),
         }
     )
     op = IntegerField(
-        '操作',
+        _('Option'),
         validators=[],
         default=0,
     )
@@ -64,53 +65,53 @@ class InventorySearchForm(FlaskForm):
 
 class InventoryAddForm(FlaskForm):
     product_id = IntegerField(
-        '产品编号',
+        _('product id'),
         validators=[
             DataRequired(),
         ],
         default='',
-        description='产品编号',
+        description=_('product id'),
         render_kw={
-            'placeholder': '产品编号',
-            'rel': "tooltip",
-            'title': "产品编号",
+            'placeholder': _('product id'),
+            'rel': 'tooltip',
+            'title': _('product id'),
         }
     )
     warehouse_id = SelectField(
-        '仓库名称',
+        _('warehouse name'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
-        description='仓库名称',
+        description=_('warehouse name'),
         render_kw={
-            'rel': "tooltip",
-            'title': "仓库名称",
+            'rel': 'tooltip',
+            'title': _('warehouse name'),
         }
     )
     rack_id = SelectField(
-        '货架名称',
+        _('rack name'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
-        description='货架名称',
+        description=_('rack name'),
         render_kw={
-            'rel': "tooltip",
-            'title': "货架名称",
+            'rel': 'tooltip',
+            'title': _('rack name'),
         }
     )
     note = StringField(
-        '产品评论',
+        _('note'),
         validators=[],
         default='',
-        description='产品评论',
+        description=_('note'),
         render_kw={
-            'placeholder': '产品评论',
-            'rel': "tooltip",
-            'title': "产品评论",
+            'placeholder': _('note'),
+            'rel': 'tooltip',
+            'title': _('note'),
         }
     )
 

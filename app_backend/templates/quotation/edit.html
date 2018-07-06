@@ -22,6 +22,7 @@
 
             <button type="submit" class="btn btn-success btn-load" data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
             <button type="reset" class="btn btn-default">{{ _('Reset') }}</button>
+{#            <button type="submit" class="btn btn-primary" name="data_line_add" value="1">新增</button>#}
 
         <div class="table-responsive">
             {#         <table class="table table-striped">#}
@@ -63,13 +64,29 @@
                     <tr class="text-muted">
                     {{ info.form.id() }}
                         <td><span class="form-control input-sm">{{ loop.index }}</span></td>
-                        <td>{{ info.product_id(class="form-control input-sm") }}</td>
-                        <td>{{ info.product_brand(class="form-control input-sm") }}</td>
-                        <td>{{ info.product_model(class="form-control input-sm") }}</td>
-                        <td>{{ info.product_sku(class="form-control input-sm") }}</td>
-                        <td>{{ info.quantity(class="form-control input-sm") }}</td>
-                        <td>{{ info.unit_price(class="form-control input-sm") }}</td>
-                        <td><span class="input-sm glyphicon glyphicon-minus-sign"></span></td>
+                        <td{% if info.product_id.errors %} class="has-error"{% endif %}>
+                            {{ info.product_id(class="form-control input-sm", title=info.product_id.errors|join(', ')) }}
+                        </td>
+                        <td{% if info.product_brand.errors %} class="has-error"{% endif %}>
+                            {{ info.product_brand(class="form-control input-sm", title=info.product_brand.errors|join(', ')) }}
+                        </td>
+                        <td{% if info.product_model.errors %} class="has-error"{% endif %}>
+                            {{ info.product_model(class="form-control input-sm", title=info.product_model.errors|join(', ')) }}
+                        </td>
+                        <td{% if info.product_sku.errors %} class="has-error"{% endif %}>
+                            {{ info.product_sku(class="form-control input-sm", title=info.product_sku.errors|join(', ')) }}
+                        </td>
+                        <td{% if info.quantity.errors %} class="has-error"{% endif %}>
+                            {{ info.quantity(class="form-control input-sm", title=info.quantity.errors|join(', ')) }}
+                        </td>
+                        <td{% if info.unit_price.errors %} class="has-error"{% endif %}>
+                            {{ info.unit_price(class="form-control input-sm", title=info.unit_price.errors|join(', ')) }}
+                        </td>
+{#                        <td><span class="input-sm glyphicon glyphicon-minus-sign"></span></td>#}
+                        <td>
+                            <button type="submit" class="input-sm glyphicon glyphicon-plus" name="data_line_add" value="{{ loop.index0 }}" rel="tooltip" title="{{ _('Add') }}"></button>
+                            <button type="submit" class="input-sm glyphicon glyphicon-minus" name="data_line_del" value="{{ loop.index0 }}" rel="tooltip" title="{{ _('Delete') }}"></button>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

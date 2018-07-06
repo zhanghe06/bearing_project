@@ -16,6 +16,7 @@ import time
 from flask import session
 from six import iteritems
 from datetime import datetime, timedelta
+from flask_babel import lazy_gettext as _
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
@@ -37,67 +38,67 @@ class UserSearchForm(FlaskForm):
     """
 
     name = StringField(
-        '用户名称',
+        _('user name'),
         validators=[],
         default='',
-        description='用户名称',
+        description=_('user name'),
         render_kw={
-            'placeholder': '用户名称',
-            'rel': "tooltip",
-            'title': "用户名称",
+            'placeholder': _('user name'),
+            'rel': 'tooltip',
+            'title': _('user name'),
         }
     )
     role_id = SelectField(
-        '用户角色',
+        _('user role'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
         choices=role_id_choices,
-        description='用户角色',
+        description=_('user role'),
         render_kw={
-            'rel': "tooltip",
-            'title': "用户角色",
+            'rel': 'tooltip',
+            'title': _('user role'),
         }
     )
     parent_id = SelectField(
-        '所属上级',
+        _('user leader'),
         validators=[],
         default=default_choice_option_int,
         coerce=int,
-        description='所属上级',
+        description=_('user leader'),
         render_kw={
-            'rel': "tooltip",
-            'title': "所属上级",
+            'rel': 'tooltip',
+            'title': _('user leader'),
         }
     )
     start_create_time = DateField(
-        '开始时间',
+        _('start time'),
         validators=[],
         default=datetime.utcnow() - timedelta(days=30),
-        description='创建开始时间',
+        description=_('start time'),
         render_kw={
-            'placeholder': '创建开始时间',
+            'placeholder': _('start time'),
             'type': 'date',
-            'rel': "tooltip",
-            'title': "创建开始时间",
+            'rel': 'tooltip',
+            'title': _('start time'),
         }
     )
     end_create_time = DateField(
-        '结束时间',
+        _('end time'),
         validators=[],
         default=datetime.utcnow(),
-        description='创建结束时间',
+        description=_('end time'),
         render_kw={
-            'placeholder': '创建结束时间',
+            'placeholder': _('end time'),
             'type': 'date',
-            'rel': "tooltip",
-            'title': "创建结束时间",
+            'rel': 'tooltip',
+            'title': _('end time'),
         }
     )
     op = IntegerField(
-        '操作',
+        _('Option'),
         validators=[],
         default=0,
     )
@@ -108,39 +109,39 @@ class UserAddForm(FlaskForm):
     创建表单（字段一般带有默认选项）
     """
     name = StringField(
-        '用户名称',
+        _('user name'),
         validators=[],
         default='',
-        description='用户名称',
+        description=_('user name'),
         render_kw={
-            'placeholder': '用户名称',
-            'rel': "tooltip",
-            'title': "用户名称",
+            'placeholder': _('user name'),
+            'rel': 'tooltip',
+            'title': _('user name'),
         }
     )
     role_id = SelectField(
-        '用户角色',
+        _('user role'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
         choices=role_id_choices,
-        description='用户角色',
+        description=_('user role'),
         render_kw={
-            'rel': "tooltip",
-            'title': "用户角色",
+            'rel': 'tooltip',
+            'title': _('user role'),
         }
     )
     parent_id = SelectField(
-        '所属上级',
+        _('user leader'),
         validators=[],
         default=default_choice_option_int,
         coerce=int,
-        description='所属上级',
+        description=_('user leader'),
         render_kw={
-            'rel': "tooltip",
-            'title': "所属上级",
+            'rel': 'tooltip',
+            'title': _('user leader'),
         }
     )
 
@@ -150,7 +151,7 @@ class UserEditForm(FlaskForm):
     编辑表单（字段默认选项需要去除）
     """
     id = IntegerField(
-        '用户编号',
+        _('user id'),
         validators=[
             DataRequired(),
         ],
@@ -159,48 +160,48 @@ class UserEditForm(FlaskForm):
         }
     )
     name = StringField(
-        '用户名称',
+        _('user name'),
         validators=[],
         default='',
-        description='用户名称',
+        description=_('user name'),
         render_kw={
-            'placeholder': '用户名称',
-            'rel': "tooltip",
-            'title': "用户名称",
+            'placeholder': _('user name'),
+            'rel': 'tooltip',
+            'title': _('user name'),
         }
     )
     role_id = SelectField(
-        '用户角色',
+        _('user role'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
         choices=role_id_choices,
-        description='用户角色',
+        description=_('user role'),
         render_kw={
-            'rel': "tooltip",
-            'title': "用户角色",
+            'rel': 'tooltip',
+            'title': _('user role'),
         }
     )
     parent_id = SelectField(
-        '所属上级',
+        _('user leader'),
         validators=[],
         default=default_choice_option_int,
         coerce=int,
-        description='所属上级',
+        description=_('user leader'),
         render_kw={
-            'rel': "tooltip",
-            'title': "所属上级",
+            'rel': 'tooltip',
+            'title': _('user leader'),
         }
     )
     create_time = DateField(
-        '创建时间',
+        _('create time'),
         validators=[DataRequired()],
-        description='创建时间'
+        description=_('create time')
     )
     update_time = DateField(
-        '更新时间',
+        _('update time'),
         validators=[DataRequired()],
-        description='更新时间'
+        description=_('update time')
     )

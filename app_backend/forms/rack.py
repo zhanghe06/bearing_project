@@ -16,6 +16,7 @@ import time
 from flask import session
 from six import iteritems
 from datetime import datetime, timedelta
+from flask_babel import lazy_gettext as _
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
@@ -30,31 +31,31 @@ from copy import copy
 
 class RackSearchForm(FlaskForm):
     warehouse_id = SelectField(
-        '仓库名称',
+        _('warehouse name'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
-        description='仓库名称',
+        description=_('warehouse name'),
         render_kw={
-            'rel': "tooltip",
-            'title': "仓库名称",
+            'rel': 'tooltip',
+            'title': _('warehouse name'),
         }
     )
     name = StringField(
-        '货架名称',
+        _('rack name'),
         validators=[],
         default='',
-        description='货架名称',
+        description=_('rack name'),
         render_kw={
-            'placeholder': '货架名称',
-            'rel': "tooltip",
-            'title': "货架名称",
+            'placeholder': _('rack name'),
+            'rel': 'tooltip',
+            'title': _('rack name'),
         }
     )
     op = IntegerField(
-        '操作',
+        _('Option'),
         validators=[],
         default=0,
     )
@@ -62,34 +63,34 @@ class RackSearchForm(FlaskForm):
 
 class RackAddForm(FlaskForm):
     warehouse_id = SelectField(
-        '仓库名称',
+        _('warehouse name'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
-        description='仓库名称',
+        description=_('warehouse name'),
         render_kw={
-            'rel': "tooltip",
-            'title': "仓库名称",
+            'rel': 'tooltip',
+            'title': _('warehouse name'),
         }
     )
     name = StringField(
-        '货架名称',
+        _('rack name'),
         validators=[],
         default='',
-        description='货架名称',
+        description=_('rack name'),
         render_kw={
-            'placeholder': '货架名称',
-            'rel': "tooltip",
-            'title': "货架名称",
+            'placeholder': _('rack name'),
+            'rel': 'tooltip',
+            'title': _('rack name'),
         }
     )
 
 
 class RackEditForm(FlaskForm):
     id = IntegerField(
-        '货架编号',
+        _('rack id'),
         validators=[
             DataRequired(),
         ],
@@ -98,36 +99,36 @@ class RackEditForm(FlaskForm):
         }
     )
     warehouse_id = SelectField(
-        '仓库名称',
+        _('warehouse name'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
-        description='仓库名称',
+        description=_('warehouse name'),
         render_kw={
-            'rel': "tooltip",
-            'title': "仓库名称",
+            'rel': 'tooltip',
+            'title': _('warehouse name'),
         }
     )
     name = StringField(
-        '货架名称',
+        _('rack name'),
         validators=[],
         default='',
-        description='货架名称',
+        description=_('rack name'),
         render_kw={
-            'placeholder': '货架名称',
-            'rel': "tooltip",
-            'title': "货架名称",
+            'placeholder': _('rack name'),
+            'rel': 'tooltip',
+            'title': _('rack name'),
         }
     )
     create_time = DateField(
-        '创建时间',
+        _('create time'),
         validators=[DataRequired()],
-        description='创建时间'
+        description=_('create time')
     )
     update_time = DateField(
-        '更新时间',
+        _('update time'),
         validators=[DataRequired()],
-        description='更新时间'
+        description=_('update time')
     )

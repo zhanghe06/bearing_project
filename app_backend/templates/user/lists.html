@@ -60,7 +60,7 @@
                                title="{{ _('Click details') }}">{{ info.name }}</a></td>
                         <td>{{ info.role_id | type_role }}</td>
                         <td>{{ info.parent_id | user_name }}</td>
-                        <td>{% if info.id | status_online %}<span class="label label-success">Online</span>{% else %}<span class="label label-default">Offline</span>{% endif %}</td>
+                        <td>{% if info.id | status_online %}<span class="label label-success">{{ _('Online') }}</span>{% else %}<span class="label label-default">{{ _('Offline') }}</span>{% endif %}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>

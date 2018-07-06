@@ -4,7 +4,7 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: quote.py
+@file: quotation.py
 @time: 2018-04-05 22:37
 """
 
@@ -129,66 +129,68 @@ class QuoteItemForm(FlaskForm):
         }
     )
     product_brand = StringField(
-        '产品品牌',
+        _('product brand'),
         validators=[],
         default='',
-        description='产品品牌',
+        description=_('product brand'),
         render_kw={
-            'placeholder': '产品品牌',
-            'rel': "tooltip",
-            'title': "产品品牌",
+            'placeholder': _('product brand'),
+            'rel': 'tooltip',
+            'title': _('product brand'),
         }
     )
     product_model = StringField(
-        '产品型号',
+        _('product model'),
         validators=[],
         default='',
-        description='产品型号',
+        description=_('product model'),
         render_kw={
-            'placeholder': '产品型号',
-            'rel': "tooltip",
-            'title': "产品型号",
+            'placeholder': _('product model'),
+            'rel': 'tooltip',
+            'title': _('product model'),
         }
     )
     product_sku = StringField(
-        '单位',
+        _('product sku'),
         validators=[],
-        description='单位',
+        description=_('product sku'),
         render_kw={
-            'placeholder': '单位',
-            'rel': "tooltip",
-            'title': "单位",
+            'placeholder': _('product sku'),
+            'rel': 'tooltip',
+            'title': _('product sku'),
         }
     )
     quantity = IntegerField(
-        '数量',
+        _('quantity'),
         validators=[],
-        description='数量',
+        description=_('quantity'),
         render_kw={
-            'placeholder': '数量',
-            'rel': "tooltip",
-            'title': "数量",
+            'placeholder': _('quantity'),
+            'rel': 'tooltip',
+            'title': _('quantity'),
+            'type': 'number',
         }
     )
     unit_price = DecimalField(
-        '单价',
+        _('unit price'),
         validators=[],
-        description='单价',
+        description=_('unit price'),
         render_kw={
-            'placeholder': '单价',
-            'rel': "tooltip",
-            'title': "单价",
+            'placeholder': _('unit price'),
+            'rel': 'tooltip',
+            'title': _('unit price'),
+            'type': 'number',
         }
     )
     note = StringField(
-        '产品评论',
+        _('note'),
         validators=[],
         default='',
-        description='产品评论',
+        description=_('note'),
         render_kw={
-            'placeholder': '产品评论',
-            'rel': "tooltip",
-            'title': "产品评论",
+            'placeholder': _('note'),
+            'rel': 'tooltip',
+            'title': _('note'),
         }
     )
 
@@ -222,7 +224,11 @@ class QuoteAddForm(FlaskForm):
             'title': _('customer company'),
         }
     )
-    quote_items = FieldList(FormField(QuoteItemForm), label='报价明细', min_entries=1)
+    quote_items = FieldList(
+        FormField(QuoteItemForm),
+        label='报价明细',
+        min_entries=1,
+    )
 
 
 class QuoteEditForm(FlaskForm):
@@ -254,5 +260,16 @@ class QuoteEditForm(FlaskForm):
             'title': _('customer company'),
         }
     )
-    quote_items = FieldList(FormField(QuoteItemForm), label='报价明细', min_entries=1)
-
+    data_line_add = IntegerField(
+        '数据行新增',
+        validators=[],
+    )
+    data_line_del = IntegerField(
+        '数据行删除',
+        validators=[],
+    )
+    quote_items = FieldList(
+        FormField(QuoteItemForm),
+        label='报价明细',
+        min_entries=1,
+    )
