@@ -276,6 +276,7 @@ def get_quote_user_list_choices():
 
 
 def get_quote_customer_list_choices(uid):
+    # todo 移动到客户模块
     quote_user_list = copy(default_choices_int)
     cid_list = get_distinct_quote_cid(status_delete=STATUS_DEL_NO, uid=uid)
     customer_rows = get_customer_rows_by_ids(cid_list)

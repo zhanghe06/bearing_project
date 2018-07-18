@@ -19,61 +19,64 @@
                 {{ form.cid.label() }}
                 {{ form.cid(class="form-control") }}
             </div>
+            <div class="form-group{% if form.contact_id.errors %} has-error{% endif %}">
+                {{ form.contact_id.label() }}
+                {{ form.contact_id(class="form-control") }}
+            </div>
 
-            <button type="submit" class="btn btn-success btn-load" data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
+            <button type="submit" class="btn btn-success btn-load"
+                    data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
             <button type="reset" class="btn btn-default">{{ _('Reset') }}</button>
 
-        <div class="table-responsive">
-            {#         <table class="table table-striped">#}
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>{{ _('#') }}</th>
-                    <th>{{ _('product id') }}</th>
-                    <th>{{ _('product brand') }}</th>
-                    <th>{{ _('product model') }}</th>
-                    <th>{{ _('product sku') }}</th>
-                    <th>{{ _('quantity') }}</th>
-                    <th>{{ _('unit_price') }}</th>
-                    <th>{{ _('Option') }}</th>
-                </tr>
-                </thead>
-                <tbody>
-{#                    <tr class="text-muted">#}
-{#                        <td><span class="input-sm">1</span></td>#}
-{#                        <td><label><input name="product_id" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="product_brand" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="product_model" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="product_sku" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="quantity" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="unit_price" class="form-control input-sm"></label></td>#}
-{#                        <td><span class="input-sm glyphicon glyphicon-plus-sign"></span></td>#}
-{#                    </tr>#}
-{#                    <tr class="text-muted">#}
-{#                        <td><span class="input-sm">2</span></td>#}
-{#                        <td><label><input name="product_id" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="product_brand" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="product_model" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="product_sku" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="quantity" class="form-control input-sm"></label></td>#}
-{#                        <td><label><input name="unit_price" class="form-control input-sm"></label></td>#}
-{#                        <td><span class="input-sm glyphicon glyphicon-minus-sign"></span></td>#}
-{#                    </tr>#}
-                {% for info in form.quote_items %}
-                    <tr class="text-muted">
-                        <td><span class="form-control input-sm">{{ loop.index }}</span></td>
-                        <td>{{ info.product_id(class="form-control input-sm") }}</td>
-                        <td>{{ info.product_brand(class="form-control input-sm") }}</td>
-                        <td>{{ info.product_model(class="form-control input-sm") }}</td>
-                        <td>{{ info.product_sku(class="form-control input-sm") }}</td>
-                        <td>{{ info.quantity(class="form-control input-sm") }}</td>
-                        <td>{{ info.unit_price(class="form-control input-sm") }}</td>
-                        <td><span class="input-sm glyphicon glyphicon-minus-sign"></span></td>
+            <div class="table-responsive">
+                {#         <table class="table table-striped">#}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>{{ _('#') }}</th>
+                        <th>{{ _('product id') }}</th>
+                        <th>{{ _('product brand') }}</th>
+                        <th>{{ _('product model') }}</th>
+                        <th>{{ _('product sku') }}</th>
+                        <th>{{ _('quantity') }}</th>
+                        <th>{{ _('unit_price') }}</th>
+                        <th>{{ _('Option') }}</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+
+                    {% for info in form.quote_items %}
+                        <tr class="text-muted">
+                            <td><span class="form-control input-sm">{{ loop.index }}</span></td>
+                            <td{% if info.product_id.errors %} class="has-error"{% endif %}>
+                                {{ info.product_id(class="form-control input-sm", title=info.product_id.errors|join(', ')) }}
+                            </td>
+                            <td{% if info.product_brand.errors %} class="has-error"{% endif %}>
+                                {{ info.product_brand(class="form-control input-sm", title=info.product_brand.errors|join(', ')) }}
+                            </td>
+                            <td{% if info.product_model.errors %} class="has-error"{% endif %}>
+                                {{ info.product_model(class="form-control input-sm", title=info.product_model.errors|join(', ')) }}
+                            </td>
+                            <td{% if info.product_sku.errors %} class="has-error"{% endif %}>
+                                {{ info.product_sku(class="form-control input-sm", title=info.product_sku.errors|join(', ')) }}
+                            </td>
+                            <td{% if info.quantity.errors %} class="has-error"{% endif %}>
+                                {{ info.quantity(class="form-control input-sm", title=info.quantity.errors|join(', ')) }}
+                            </td>
+                            <td{% if info.unit_price.errors %} class="has-error"{% endif %}>
+                                {{ info.unit_price(class="form-control input-sm", title=info.unit_price.errors|join(', ')) }}
+                            </td>
+                            <td>
+                                <button type="submit" class="input-sm glyphicon glyphicon-plus" name="data_line_add"
+                                        value="{{ loop.index0 }}" rel="tooltip" title="{{ _('Add') }}"></button>
+                                <button type="submit" class="input-sm glyphicon glyphicon-minus" name="data_line_del"
+                                        value="{{ loop.index0 }}" rel="tooltip" title="{{ _('Delete') }}"></button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
 
         </form>

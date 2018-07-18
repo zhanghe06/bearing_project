@@ -27,7 +27,7 @@ from flask import (
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
 
-from app_backend.forms.quotation import QuoteItemForm
+from app_backend.forms.quotation import QuoteItemEditForm
 from app_backend import (
     app,
     excel,
@@ -44,7 +44,7 @@ from app_backend.api.quotation import (
     quote_order_stats,
     get_quote_user_list_choices, get_quote_customer_list_choices)
 
-from app_backend.api.quotation_item import get_quote_item_rows
+from app_backend.api.quotation_item import get_quote_item_rows, add_quote_item, edit_quote_item, delete_quote_item
 from wtforms.fields import FieldList, FormField
 from app_backend.forms.quotation import (
     QuoteSearchForm,
@@ -215,6 +215,33 @@ def add():
 
     # 处理创建请求
     if request.method == 'POST':
+
+        # 表单新增空行
+        if form.data_line_add.data is not None:
+            if form.quote_items.max_entries and len(form.quote_items.entries) >= form.quote_items.max_entries:
+                flash('最多创建%s条记录' % form.quote_items.max_entries, 'danger')
+            else:
+                form.quote_items.append_entry()
+
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
+        # 表单删除一行
+        if form.data_line_del.data is not None:
+            if form.quote_items.min_entries and len(form.quote_items.entries) <= form.quote_items.min_entries:
+                flash('最少保留%s条记录' % form.quote_items.min_entries, 'danger')
+            else:
+                data_line_index = form.data_line_del.data
+                form.quote_items.entries.pop(data_line_index)
+
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
+
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Add Failure'), 'danger')
@@ -225,18 +252,42 @@ def add():
             )
 
         # 表单校验成功
+
+        quote_data = {
+            'uid': form.uid.data,
+            'cid': form.cid.data,
+        }
+        quote_id = add_quote(quote_data)
+
+        amount_quote = 0
+        for quote_item in form.quote_items.entries:
+
+            quote_item_data = {
+                'quote_id': quote_id,
+                'product_id': quote_item.form.product_id.data,
+                'product_brand': quote_item.form.product_brand.data,
+                'product_model': quote_item.form.product_model.data,
+                'product_sku': quote_item.form.product_sku.data,
+                'quantity': quote_item.form.quantity.data,
+                'unit_price': quote_item.form.unit_price.data,
+            }
+
+            # 新增
+            add_quote_item(quote_item_data)
+            amount_quote += quote_item_data['quantity'] * quote_item_data['unit_price']
+
+        quote_data = {
+            'amount_quote': amount_quote,
+        }
+        result = edit_quote(quote_id, quote_data)
+
+
         # todo 事务
 
         # 明细保存
         # 总表保存
 
-        current_time = datetime.utcnow()
-        quote_data = {
-            'uid': form.uid.data,
-            'cid': form.cid.data,
-            'update_time': current_time,
-        }
-        result = add_quote(quote_data)
+
         # 创建操作成功
         if result:
             flash(_('Add Success'), 'success')
@@ -292,7 +343,7 @@ def edit(quote_id):
         while len(form.quote_items) > 0:
             form.quote_items.pop_entry()
         for quote_item in quote_items:
-            quote_item_form = QuoteItemForm()
+            quote_item_form = QuoteItemEditForm()
             quote_item_form.id = quote_item.id
             quote_item_form.quote_id = quote_item.quote_id
             quote_item_form.product_id = quote_item.product_id
@@ -315,7 +366,7 @@ def edit(quote_id):
     if request.method == 'POST':
         # 增删数据行不需要校验表单
 
-        # 新增一行
+        # 表单新增空行
         if form.data_line_add.data is not None:
             if form.quote_items.max_entries and len(form.quote_items.entries) >= form.quote_items.max_entries:
                 flash('最多创建%s条记录' % form.quote_items.max_entries, 'danger')
@@ -328,7 +379,7 @@ def edit(quote_id):
                 form=form,
                 **document_info
             )
-        # 删除一行
+        # 表单删除一行
         if form.data_line_del.data is not None:
             if form.quote_items.min_entries and len(form.quote_items.entries) <= form.quote_items.min_entries:
                 flash('最少保留%s条记录' % form.quote_items.min_entries, 'danger')
@@ -346,7 +397,7 @@ def edit(quote_id):
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
-            # flash(form.quote_items.errors, 'danger')
+            flash(form.quote_items.errors, 'danger')
             return render_template(
                 template_name,
                 quote_id=quote_id,
@@ -354,18 +405,50 @@ def edit(quote_id):
                 **document_info
             )
         # 表单校验成功
-        # todo 事务
 
-        # 明细保存
-        # 总表保存
+        # 获取明细
+        quote_items = get_quote_item_rows(quote_id=quote_id)
+        quote_items_ids = [item.id for item in quote_items]
 
-        current_time = datetime.utcnow()
+        # 数据新增、数据删除、数据修改
+
+        quote_items_ids_new = []
+        amount_quote = 0
+        for quote_item in form.quote_items.entries:
+            # 错误
+            if quote_item.form.id.data and quote_item.form.id.data not in quote_items_ids:
+                continue
+
+            quote_item_data = {
+                'quote_id': quote_id,
+                'product_id': quote_item.form.product_id.data,
+                'product_brand': quote_item.form.product_brand.data,
+                'product_model': quote_item.form.product_model.data,
+                'product_sku': quote_item.form.product_sku.data,
+                'quantity': quote_item.form.quantity.data,
+                'unit_price': quote_item.form.unit_price.data,
+            }
+
+            # 新增
+            if not quote_item.form.id.data:
+                add_quote_item(quote_item_data)
+                amount_quote += quote_item_data['quantity'] * quote_item_data['unit_price']
+                continue
+            # 修改
+            edit_quote_item(quote_item.form.id.data, quote_item_data)
+            amount_quote += quote_item_data['quantity'] * quote_item_data['unit_price']
+            quote_items_ids_new.append(quote_item.form.id.data)
+        # 删除
+        quote_items_ids_del = list(set(quote_items_ids) - set(quote_items_ids_new))
+        for quote_items_id in quote_items_ids_del:
+            delete_quote_item(quote_items_id)
+
+        # 更新总价
         quote_data = {
-            'uid': form.uid.data,
-            'cid': form.cid.data,
-            'update_time': current_time,
+            'amount_quote': amount_quote,
         }
         result = edit_quote(quote_id, quote_data)
+
         # 编辑操作成功
         if result:
             flash(_('Edit Success'), 'success')

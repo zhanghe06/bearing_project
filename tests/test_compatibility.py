@@ -27,7 +27,7 @@ class CompatibilityTest(unittest.TestCase):
 
     def test_urljoin(self):
         """
-        测试索引
+        测试 urljoin
         :return:
         """
         self.assertEqual(

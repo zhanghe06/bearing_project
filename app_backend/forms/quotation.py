@@ -93,20 +93,11 @@ class QuoteSearchForm(FlaskForm):
     )
 
 
-class QuoteItemForm(FlaskForm):
+class QuoteItemAddForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         kwargs['csrf_enabled'] = False  # disable csrf
         FlaskForm.__init__(self, *args, **kwargs)
 
-    id = IntegerField(
-        _('product id'),
-        validators=[
-            DataRequired(),
-        ],
-        render_kw={
-            'type': 'hidden',
-        }
-    )
     quote_id = IntegerField(
         _('quote id'),
         validators=[
@@ -195,15 +186,27 @@ class QuoteItemForm(FlaskForm):
     )
 
 
+class QuoteItemEditForm(QuoteItemAddForm):
+
+    id = IntegerField(
+        _('product id'),
+        validators=[
+            InputRequired(),
+        ],
+        default=0,
+        render_kw={
+            'type': 'hidden',
+        }
+    )
+
+
 class QuoteAddForm(FlaskForm):
     uid = SelectField(
         _('quote user'),
         validators=[
-            InputRequired(),  # 可以为0
+            DataRequired(),
         ],
-        # default=default_choice_option_int,
         coerce=int,
-        # choices=quote_brand_choices,
         description=_('quote user'),
         render_kw={
             'rel': 'tooltip',
@@ -213,51 +216,27 @@ class QuoteAddForm(FlaskForm):
     cid = SelectField(
         _('customer company'),
         validators=[
-            InputRequired(),  # 可以为0
+            DataRequired(),
         ],
         default=default_choice_option_int,
         coerce=int,
-        # choices=quote_brand_choices,
         description=_('customer company'),
         render_kw={
             'rel': 'tooltip',
             'title': _('customer company'),
         }
     )
-    quote_items = FieldList(
-        FormField(QuoteItemForm),
-        label='报价明细',
-        min_entries=1,
-    )
-
-
-class QuoteEditForm(FlaskForm):
-    uid = SelectField(
-        _('quote user'),
+    contact_id = SelectField(
+        _('customer contact'),
         validators=[
-            InputRequired(),  # 可以为0
-        ],
-        # default=default_choice_option_int,
-        coerce=int,
-        # choices=quote_brand_choices,
-        description=_('quote user'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('quote user'),
-        }
-    )
-    cid = SelectField(
-        _('customer company'),
-        validators=[
-            InputRequired(),  # 可以为0
+            InputRequired(),
         ],
         default=default_choice_option_int,
         coerce=int,
-        # choices=quote_brand_choices,
-        description=_('customer company'),
+        description=_('customer contact'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer company'),
+            'title': _('customer contact'),
         }
     )
     data_line_add = IntegerField(
@@ -269,7 +248,62 @@ class QuoteEditForm(FlaskForm):
         validators=[],
     )
     quote_items = FieldList(
-        FormField(QuoteItemForm),
+        FormField(QuoteItemAddForm),
+        label='报价明细',
+        min_entries=1,
+    )
+
+
+class QuoteEditForm(FlaskForm):
+    uid = SelectField(
+        _('quote user'),
+        validators=[],
+        # default=default_choice_option_int,
+        coerce=int,
+        # choices=quote_brand_choices,
+        description=_('quote user'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('quote user'),
+            'readonly': 'readonly',
+        }
+    )
+    cid = SelectField(
+        _('customer company'),
+        validators=[],
+        default=default_choice_option_int,
+        coerce=int,
+        # choices=quote_brand_choices,
+        description=_('customer company'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('customer company'),
+            'readonly': 'readonly',
+        }
+    )
+    contact_id = SelectField(
+        _('customer contact'),
+        validators=[
+            InputRequired(),
+        ],
+        default=default_choice_option_int,
+        coerce=int,
+        description=_('customer contact'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('customer contact'),
+        }
+    )
+    data_line_add = IntegerField(
+        '数据行新增',
+        validators=[],
+    )
+    data_line_del = IntegerField(
+        '数据行删除',
+        validators=[],
+    )
+    quote_items = FieldList(
+        FormField(QuoteItemEditForm),
         label='报价明细',
         min_entries=1,
     )

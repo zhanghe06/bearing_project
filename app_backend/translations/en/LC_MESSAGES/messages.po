@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-06 19:28+0800\n"
+"POT-Creation-Date: 2018-07-17 15:20+0800\n"
 "PO-Revision-Date: 2018-05-03 13:57+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -32,11 +32,11 @@ msgstr "Not a valid choice"
 #: app_backend/forms/product.py:95 app_backend/forms/product.py:102
 #: app_backend/forms/product.py:104 app_backend/forms/product.py:148
 #: app_backend/forms/product.py:154 app_backend/forms/product.py:156
-#: app_backend/forms/quotation.py:132 app_backend/forms/quotation.py:135
-#: app_backend/forms/quotation.py:137 app_backend/forms/quotation.py:139
+#: app_backend/forms/quotation.py:133 app_backend/forms/quotation.py:136
+#: app_backend/forms/quotation.py:138 app_backend/forms/quotation.py:140
 #: app_backend/templates/product/lists.html:34
-#: app_backend/templates/quotation/add.html:33
-#: app_backend/templates/quotation/edit.html:34
+#: app_backend/templates/quotation/add.html:38
+#: app_backend/templates/quotation/edit.html:39
 #: app_backend/templates/quotation/info.html:40
 msgid "product brand"
 msgstr "product brand"
@@ -48,11 +48,11 @@ msgstr "product brand"
 #: app_backend/forms/product.py:108 app_backend/forms/product.py:116
 #: app_backend/forms/product.py:118 app_backend/forms/product.py:160
 #: app_backend/forms/product.py:167 app_backend/forms/product.py:169
-#: app_backend/forms/quotation.py:143 app_backend/forms/quotation.py:146
-#: app_backend/forms/quotation.py:148 app_backend/forms/quotation.py:150
+#: app_backend/forms/quotation.py:144 app_backend/forms/quotation.py:147
+#: app_backend/forms/quotation.py:149 app_backend/forms/quotation.py:151
 #: app_backend/templates/product/lists.html:35
-#: app_backend/templates/quotation/add.html:34
-#: app_backend/templates/quotation/edit.html:35
+#: app_backend/templates/quotation/add.html:39
+#: app_backend/templates/quotation/edit.html:40
 #: app_backend/templates/quotation/info.html:41
 msgid "product model"
 msgstr "product model"
@@ -60,8 +60,8 @@ msgstr "product model"
 #: app_backend/forms/catalogue.py:55 app_backend/forms/customer.py:94
 #: app_backend/forms/inventory.py:60 app_backend/forms/rack.py:58
 #: app_backend/forms/user.py:101 app_backend/forms/warehouse.py:91
-#: app_backend/templates/quotation/add.html:38
-#: app_backend/templates/quotation/edit.html:39
+#: app_backend/templates/quotation/add.html:43
+#: app_backend/templates/quotation/edit.html:44
 msgid "Option"
 msgstr "Option"
 
@@ -190,20 +190,20 @@ msgstr "rack name"
 
 #: app_backend/forms/inventory.py:68 app_backend/forms/inventory.py:73
 #: app_backend/forms/inventory.py:75 app_backend/forms/inventory.py:77
-#: app_backend/forms/product.py:139 app_backend/forms/quotation.py:102
-#: app_backend/forms/quotation.py:121 app_backend/forms/quotation.py:126
-#: app_backend/forms/quotation.py:128
+#: app_backend/forms/product.py:139 app_backend/forms/quotation.py:122
+#: app_backend/forms/quotation.py:127 app_backend/forms/quotation.py:129
+#: app_backend/forms/quotation.py:202
 #: app_backend/templates/product/lists.html:33
-#: app_backend/templates/quotation/add.html:32
-#: app_backend/templates/quotation/edit.html:33
+#: app_backend/templates/quotation/add.html:37
+#: app_backend/templates/quotation/edit.html:38
 #: app_backend/templates/quotation/info.html:39
 msgid "product id"
 msgstr "product id"
 
 #: app_backend/forms/inventory.py:107 app_backend/forms/inventory.py:110
 #: app_backend/forms/inventory.py:112 app_backend/forms/inventory.py:114
-#: app_backend/forms/quotation.py:186 app_backend/forms/quotation.py:189
-#: app_backend/forms/quotation.py:191 app_backend/forms/quotation.py:193
+#: app_backend/forms/quotation.py:187 app_backend/forms/quotation.py:190
+#: app_backend/forms/quotation.py:192 app_backend/forms/quotation.py:194
 msgid "note"
 msgstr "note"
 
@@ -227,50 +227,56 @@ msgid "product note"
 msgstr "product note"
 
 #: app_backend/forms/quotation.py:38 app_backend/forms/quotation.py:45
-#: app_backend/forms/quotation.py:48 app_backend/forms/quotation.py:200
-#: app_backend/forms/quotation.py:207 app_backend/forms/quotation.py:210
-#: app_backend/forms/quotation.py:236 app_backend/forms/quotation.py:243
-#: app_backend/forms/quotation.py:246
+#: app_backend/forms/quotation.py:48 app_backend/forms/quotation.py:215
+#: app_backend/forms/quotation.py:220 app_backend/forms/quotation.py:223
+#: app_backend/forms/quotation.py:269 app_backend/forms/quotation.py:274
+#: app_backend/forms/quotation.py:277
 #: app_backend/templates/quotation/lists.html:43
 msgid "quote user"
 msgstr "quote user"
 
 #: app_backend/forms/quotation.py:52 app_backend/forms/quotation.py:59
-#: app_backend/forms/quotation.py:62 app_backend/forms/quotation.py:214
-#: app_backend/forms/quotation.py:221 app_backend/forms/quotation.py:224
-#: app_backend/forms/quotation.py:250 app_backend/forms/quotation.py:257
-#: app_backend/forms/quotation.py:260
+#: app_backend/forms/quotation.py:62 app_backend/forms/quotation.py:227
+#: app_backend/forms/quotation.py:233 app_backend/forms/quotation.py:236
+#: app_backend/forms/quotation.py:282 app_backend/forms/quotation.py:287
+#: app_backend/forms/quotation.py:290
 #: app_backend/templates/quotation/lists.html:44
 msgid "customer company"
 msgstr "customer company"
 
-#: app_backend/forms/quotation.py:111 app_backend/forms/quotation.py:115
-#: app_backend/forms/quotation.py:117
+#: app_backend/forms/quotation.py:112 app_backend/forms/quotation.py:116
+#: app_backend/forms/quotation.py:118
 #: app_backend/templates/quotation/info.html:38
 #: app_backend/templates/quotation/lists.html:42
 msgid "quote id"
 msgstr "quote id"
 
-#: app_backend/forms/quotation.py:154 app_backend/forms/quotation.py:156
-#: app_backend/forms/quotation.py:158 app_backend/forms/quotation.py:160
-#: app_backend/templates/quotation/add.html:35
-#: app_backend/templates/quotation/edit.html:36
+#: app_backend/forms/quotation.py:155 app_backend/forms/quotation.py:157
+#: app_backend/forms/quotation.py:159 app_backend/forms/quotation.py:161
+#: app_backend/templates/quotation/add.html:40
+#: app_backend/templates/quotation/edit.html:41
 #: app_backend/templates/quotation/info.html:42
 msgid "product sku"
 msgstr "product sku"
 
-#: app_backend/forms/quotation.py:164 app_backend/forms/quotation.py:166
-#: app_backend/forms/quotation.py:168 app_backend/forms/quotation.py:170
-#: app_backend/templates/quotation/add.html:36
-#: app_backend/templates/quotation/edit.html:37
+#: app_backend/forms/quotation.py:165 app_backend/forms/quotation.py:167
+#: app_backend/forms/quotation.py:169 app_backend/forms/quotation.py:171
+#: app_backend/templates/quotation/add.html:41
+#: app_backend/templates/quotation/edit.html:42
 #: app_backend/templates/quotation/info.html:43
 msgid "quantity"
 msgstr "quantity"
 
-#: app_backend/forms/quotation.py:175 app_backend/forms/quotation.py:177
-#: app_backend/forms/quotation.py:179 app_backend/forms/quotation.py:181
+#: app_backend/forms/quotation.py:176 app_backend/forms/quotation.py:178
+#: app_backend/forms/quotation.py:180 app_backend/forms/quotation.py:182
 msgid "unit price"
 msgstr "unit price"
+
+#: app_backend/forms/quotation.py:240 app_backend/forms/quotation.py:246
+#: app_backend/forms/quotation.py:249 app_backend/forms/quotation.py:295
+#: app_backend/forms/quotation.py:301 app_backend/forms/quotation.py:304
+msgid "customer contact"
+msgstr "customer contact"
 
 #: app_backend/forms/rack.py:93
 msgid "rack id"
@@ -435,10 +441,13 @@ msgstr "customer management"
 #: app_backend/templates/_left.html:37
 #: app_backend/templates/customer/lists.html:8
 #: app_backend/views/customer.py:101 app_backend/views/customer.py:141
+#: app_backend/views/customer_contact.py:102
+#: app_backend/views/customer_contact.py:142
 msgid "customer lists"
 msgstr "customer lists"
 
 #: app_backend/templates/_left.html:40 app_backend/views/customer.py:193
+#: app_backend/views/customer_contact.py:194
 msgid "customer add"
 msgstr "customer add"
 
@@ -461,31 +470,67 @@ msgstr "customer add"
 #: app_backend/templates/warehouse/stats.html:8
 #: app_backend/templates/warehouse/stats.html:37
 #: app_backend/templates/warehouse/stats.html:73
-#: app_backend/views/customer.py:437
+#: app_backend/views/customer.py:437 app_backend/views/customer_contact.py:438
 msgid "customer stats"
 msgstr "customer stats"
 
-#: app_backend/templates/_left.html:48 app_backend/templates/user/lists.html:7
+#: app_backend/templates/_left.html:46 app_backend/templates/_left.html:72
+msgid "address management"
+msgstr "address management"
+
+#: app_backend/templates/_left.html:49
+msgid "customer contact lists"
+msgstr "customer contact lists"
+
+#: app_backend/templates/_left.html:52
+msgid "customer contact add"
+msgstr "customer contact add"
+
+#: app_backend/templates/_left.html:59
+msgid "supplier management"
+msgstr "supplier management"
+
+#: app_backend/templates/_left.html:63
+msgid "supplier lists"
+msgstr "supplier lists"
+
+#: app_backend/templates/_left.html:66
+msgid "supplier add"
+msgstr "supplier add"
+
+#: app_backend/templates/_left.html:69
+msgid "supplier stats"
+msgstr "supplier stats"
+
+#: app_backend/templates/_left.html:75
+msgid "supplier contact lists"
+msgstr "supplier contact lists"
+
+#: app_backend/templates/_left.html:78
+msgid "supplier contact add"
+msgstr "supplier contact add"
+
+#: app_backend/templates/_left.html:85 app_backend/templates/user/lists.html:7
 #: app_backend/templates/user/stats.html:7
 msgid "user management"
 msgstr "user management"
 
-#: app_backend/templates/_left.html:52 app_backend/templates/user/lists.html:8
+#: app_backend/templates/_left.html:89 app_backend/templates/user/lists.html:8
 #: app_backend/views/user.py:96 app_backend/views/user.py:136
 msgid "user lists"
 msgstr "user lists"
 
-#: app_backend/templates/_left.html:55 app_backend/views/user.py:188
+#: app_backend/templates/_left.html:92 app_backend/views/user.py:188
 msgid "user add"
 msgstr "user add"
 
-#: app_backend/templates/_left.html:58 app_backend/templates/user/stats.html:8
+#: app_backend/templates/_left.html:95 app_backend/templates/user/stats.html:8
 #: app_backend/templates/user/stats.html:37
 #: app_backend/templates/user/stats.html:73 app_backend/views/user.py:419
 msgid "user stats"
 msgstr "user stats"
 
-#: app_backend/templates/_left.html:63
+#: app_backend/templates/_left.html:100
 #: app_backend/templates/quotation/add.html:8
 #: app_backend/templates/quotation/edit.html:8
 #: app_backend/templates/quotation/info.html:8
@@ -494,71 +539,127 @@ msgstr "user stats"
 msgid "quote management"
 msgstr "quote management"
 
-#: app_backend/templates/_left.html:67
+#: app_backend/templates/_left.html:104
 #: app_backend/templates/quotation/lists.html:9
 #: app_backend/views/quotation.py:96 app_backend/views/quotation.py:135
 msgid "quote lists"
 msgstr "quote lists"
 
-#: app_backend/templates/_left.html:70
+#: app_backend/templates/_left.html:107
 #: app_backend/templates/quotation/add.html:9
 #: app_backend/views/quotation.py:199
 msgid "quote add"
 msgstr "quote add"
 
-#: app_backend/templates/_left.html:73 app_backend/views/quotation.py:503
+#: app_backend/templates/_left.html:110 app_backend/views/quotation.py:586
 msgid "quote stats"
 msgstr "quote stats"
 
-#: app_backend/templates/_left.html:78 app_backend/templates/rack/lists.html:7
+#: app_backend/templates/_left.html:115
+msgid "sales orders management"
+msgstr "sales orders management"
+
+#: app_backend/templates/_left.html:119
+msgid "sales orders lists"
+msgstr "sales orders lists"
+
+#: app_backend/templates/_left.html:122
+msgid "sales orders add"
+msgstr "sales orders add"
+
+#: app_backend/templates/_left.html:125
+msgid "sales orders stats"
+msgstr "sales orders stats"
+
+#: app_backend/templates/_left.html:130
+msgid "buyer orders management"
+msgstr "buyer orders management"
+
+#: app_backend/templates/_left.html:134
+msgid "buyer orders lists"
+msgstr "buyer orders lists"
+
+#: app_backend/templates/_left.html:137
+msgid "buyer orders add"
+msgstr "buyer orders add"
+
+#: app_backend/templates/_left.html:140
+msgid "buyer orders stats"
+msgstr "buyer orders stats"
+
+#: app_backend/templates/_left.html:145 app_backend/templates/rack/lists.html:7
 #: app_backend/templates/warehouse/lists.html:7
 msgid "warehouse management"
 msgstr "warehouse management"
 
-#: app_backend/templates/_left.html:82
+#: app_backend/templates/_left.html:149
 #: app_backend/templates/warehouse/lists.html:8
 #: app_backend/views/warehouse.py:88 app_backend/views/warehouse.py:122
 msgid "warehouse lists"
 msgstr "warehouse lists"
 
-#: app_backend/templates/_left.html:85 app_backend/views/warehouse.py:170
+#: app_backend/templates/_left.html:152 app_backend/views/warehouse.py:170
 msgid "warehouse add"
 msgstr "warehouse add"
 
-#: app_backend/templates/_left.html:88 app_backend/templates/rack/lists.html:8
+#: app_backend/templates/_left.html:155 app_backend/templates/rack/lists.html:8
 msgid "rack management"
 msgstr "rack management"
 
-#: app_backend/templates/_left.html:91 app_backend/templates/rack/lists.html:9
+#: app_backend/templates/_left.html:158 app_backend/templates/rack/lists.html:9
 #: app_backend/views/rack.py:92 app_backend/views/rack.py:126
 msgid "rack lists"
 msgstr "rack lists"
 
-#: app_backend/templates/_left.html:94 app_backend/views/rack.py:174
+#: app_backend/templates/_left.html:161 app_backend/views/rack.py:174
 msgid "rack add"
 msgstr "rack add"
 
-#: app_backend/templates/_left.html:101
+#: app_backend/templates/_left.html:168
 #: app_backend/templates/inventory/lists.html:7
 msgid "inventory management"
 msgstr "inventory management"
 
-#: app_backend/templates/_left.html:105
+#: app_backend/templates/_left.html:172
 #: app_backend/templates/inventory/lists.html:8
 #: app_backend/views/inventory.py:94 app_backend/views/inventory.py:129
 msgid "inventory lists"
 msgstr "inventory lists"
 
-#: app_backend/templates/_left.html:108 app_backend/views/inventory.py:177
+#: app_backend/templates/_left.html:175 app_backend/views/inventory.py:177
 msgid "inventory add"
 msgstr "inventory add"
 
-#: app_backend/templates/_left.html:113
+#: app_backend/templates/_left.html:178
+msgid "purchase management"
+msgstr "purchase management"
+
+#: app_backend/templates/_left.html:181
+msgid "purchase lists"
+msgstr "purchase lists"
+
+#: app_backend/templates/_left.html:184
+msgid "purchase add"
+msgstr "purchase add"
+
+#: app_backend/templates/_left.html:189
+msgid "delivery management"
+msgstr "delivery management"
+
+#: app_backend/templates/_left.html:192
+msgid "delivery lists"
+msgstr "delivery lists"
+
+#: app_backend/templates/_left.html:195
+msgid "delivery add"
+msgstr "delivery add"
+
+#: app_backend/templates/_left.html:202
 #: app_backend/templates/system/catalogue_import.html:15
 msgid "system management"
 msgstr "system management"
 
-#: app_backend/templates/_left.html:117
+#: app_backend/templates/_left.html:206
 #: app_backend/templates/system/catalogue_import.html:16
 #: app_backend/views/system.py:60
 msgid "catalogue import"
@@ -652,7 +753,8 @@ msgstr "Edit"
 #: app_backend/templates/customer/lists.html:76
 #: app_backend/templates/inventory/lists.html:64
 #: app_backend/templates/product/lists.html:56
-#: app_backend/templates/quotation/edit.html:88
+#: app_backend/templates/quotation/add.html:73
+#: app_backend/templates/quotation/edit.html:74
 #: app_backend/templates/quotation/lists.html:75
 #: app_backend/templates/rack/lists.html:58
 #: app_backend/templates/user/lists.html:70
@@ -679,22 +781,22 @@ msgstr "Refresh"
 
 #: app_backend/templates/product/add.html:46
 #: app_backend/templates/product/edit.html:69
-#: app_backend/templates/quotation/add.html:23
-#: app_backend/templates/quotation/edit.html:23
+#: app_backend/templates/quotation/add.html:28
+#: app_backend/templates/quotation/edit.html:28
 msgid "Submitting"
 msgstr "Submitting"
 
 #: app_backend/templates/product/add.html:46
 #: app_backend/templates/product/edit.html:69
-#: app_backend/templates/quotation/add.html:23
-#: app_backend/templates/quotation/edit.html:23
+#: app_backend/templates/quotation/add.html:28
+#: app_backend/templates/quotation/edit.html:28
 msgid "Submit"
 msgstr "Submit"
 
 #: app_backend/templates/product/add.html:47
 #: app_backend/templates/product/edit.html:70
-#: app_backend/templates/quotation/add.html:24
-#: app_backend/templates/quotation/edit.html:24
+#: app_backend/templates/quotation/add.html:29
+#: app_backend/templates/quotation/edit.html:29
 msgid "Reset"
 msgstr "Reset"
 
@@ -707,25 +809,26 @@ msgstr "Go Back"
 msgid "product edit"
 msgstr "product edit"
 
-#: app_backend/templates/quotation/add.html:31
-#: app_backend/templates/quotation/edit.html:32
+#: app_backend/templates/quotation/add.html:36
+#: app_backend/templates/quotation/edit.html:37
 msgid "#"
 msgstr "#"
 
-#: app_backend/templates/quotation/add.html:37
-#: app_backend/templates/quotation/edit.html:38
+#: app_backend/templates/quotation/add.html:42
+#: app_backend/templates/quotation/edit.html:43
 #: app_backend/templates/quotation/info.html:44
 msgid "unit_price"
 msgstr "unit_price"
 
-#: app_backend/templates/quotation/edit.html:9
-#: app_backend/views/quotation.py:282 app_backend/views/quotation.py:389
-msgid "quote edit"
-msgstr "quote edit"
-
-#: app_backend/templates/quotation/edit.html:87
+#: app_backend/templates/quotation/add.html:71
+#: app_backend/templates/quotation/edit.html:72
 msgid "Add"
 msgstr "Add"
+
+#: app_backend/templates/quotation/edit.html:9
+#: app_backend/views/quotation.py:333 app_backend/views/quotation.py:472
+msgid "quote edit"
+msgstr "quote edit"
 
 #: app_backend/templates/quotation/info.html:9
 #: app_backend/templates/quotation/info2.html:8
@@ -831,64 +934,73 @@ msgid "catalogue lists"
 msgstr "catalogue lists"
 
 #: app_backend/views/catalogue.py:106 app_backend/views/customer.py:114
-#: app_backend/views/inventory.py:108 app_backend/views/product.py:108
-#: app_backend/views/quotation.py:110 app_backend/views/rack.py:105
-#: app_backend/views/user.py:109 app_backend/views/warehouse.py:101
+#: app_backend/views/customer_contact.py:115 app_backend/views/inventory.py:108
+#: app_backend/views/product.py:108 app_backend/views/quotation.py:110
+#: app_backend/views/rack.py:105 app_backend/views/user.py:109
+#: app_backend/views/warehouse.py:101
 msgid "Search Failure"
 msgstr "Search Failure"
 
-#: app_backend/views/customer.py:177
+#: app_backend/views/customer.py:177 app_backend/views/customer_contact.py:178
 msgid "customer info"
 msgstr "customer info"
 
 #: app_backend/views/customer.py:211 app_backend/views/customer.py:238
-#: app_backend/views/inventory.py:195 app_backend/views/inventory.py:217
-#: app_backend/views/product.py:195 app_backend/views/product.py:218
-#: app_backend/views/quotation.py:220 app_backend/views/quotation.py:246
-#: app_backend/views/rack.py:192 app_backend/views/rack.py:214
-#: app_backend/views/user.py:206 app_backend/views/user.py:229
-#: app_backend/views/warehouse.py:188 app_backend/views/warehouse.py:213
+#: app_backend/views/customer_contact.py:212
+#: app_backend/views/customer_contact.py:239 app_backend/views/inventory.py:195
+#: app_backend/views/inventory.py:217 app_backend/views/product.py:195
+#: app_backend/views/product.py:218 app_backend/views/quotation.py:247
+#: app_backend/views/quotation.py:297 app_backend/views/rack.py:192
+#: app_backend/views/rack.py:214 app_backend/views/user.py:206
+#: app_backend/views/user.py:229 app_backend/views/warehouse.py:188
+#: app_backend/views/warehouse.py:213
 msgid "Add Failure"
 msgstr "Add Failure"
 
-#: app_backend/views/customer.py:234 app_backend/views/inventory.py:213
-#: app_backend/views/product.py:214 app_backend/views/quotation.py:242
-#: app_backend/views/rack.py:210 app_backend/views/user.py:225
-#: app_backend/views/warehouse.py:209
+#: app_backend/views/customer.py:234 app_backend/views/customer_contact.py:235
+#: app_backend/views/inventory.py:213 app_backend/views/product.py:214
+#: app_backend/views/quotation.py:293 app_backend/views/rack.py:210
+#: app_backend/views/user.py:225 app_backend/views/warehouse.py:209
 msgid "Add Success"
 msgstr "Add Success"
 
-#: app_backend/views/customer.py:272
+#: app_backend/views/customer.py:272 app_backend/views/customer_contact.py:273
 msgid "customer edit"
 msgstr "customer edit"
 
 #: app_backend/views/customer.py:299 app_backend/views/customer.py:325
-#: app_backend/views/inventory.py:268 app_backend/views/inventory.py:289
-#: app_backend/views/product.py:271 app_backend/views/product.py:293
-#: app_backend/views/quotation.py:348 app_backend/views/quotation.py:375
-#: app_backend/views/rack.py:265 app_backend/views/rack.py:286
-#: app_backend/views/user.py:285 app_backend/views/user.py:307
-#: app_backend/views/warehouse.py:267 app_backend/views/warehouse.py:291
+#: app_backend/views/customer_contact.py:300
+#: app_backend/views/customer_contact.py:326 app_backend/views/inventory.py:268
+#: app_backend/views/inventory.py:289 app_backend/views/product.py:271
+#: app_backend/views/product.py:293 app_backend/views/quotation.py:399
+#: app_backend/views/quotation.py:458 app_backend/views/rack.py:265
+#: app_backend/views/rack.py:286 app_backend/views/user.py:285
+#: app_backend/views/user.py:307 app_backend/views/warehouse.py:267
+#: app_backend/views/warehouse.py:291
 msgid "Edit Failure"
 msgstr "Edit Failure"
 
-#: app_backend/views/customer.py:321 app_backend/views/inventory.py:285
-#: app_backend/views/product.py:289 app_backend/views/quotation.py:371
-#: app_backend/views/rack.py:282 app_backend/views/user.py:303
-#: app_backend/views/warehouse.py:287
+#: app_backend/views/customer.py:321 app_backend/views/customer_contact.py:322
+#: app_backend/views/inventory.py:285 app_backend/views/product.py:289
+#: app_backend/views/quotation.py:454 app_backend/views/rack.py:282
+#: app_backend/views/user.py:303 app_backend/views/warehouse.py:287
 msgid "Edit Success"
 msgstr "Edit Success"
 
 #: app_backend/views/customer.py:346 app_backend/views/customer.py:352
 #: app_backend/views/customer.py:358 app_backend/views/customer.py:364
-#: app_backend/views/customer.py:382 app_backend/views/inventory.py:310
+#: app_backend/views/customer.py:382 app_backend/views/customer_contact.py:347
+#: app_backend/views/customer_contact.py:353
+#: app_backend/views/customer_contact.py:359
+#: app_backend/views/customer_contact.py:365
+#: app_backend/views/customer_contact.py:383 app_backend/views/inventory.py:310
 #: app_backend/views/inventory.py:316 app_backend/views/inventory.py:321
 #: app_backend/views/inventory.py:327 app_backend/views/inventory.py:345
 #: app_backend/views/product.py:314 app_backend/views/product.py:320
 #: app_backend/views/product.py:325 app_backend/views/product.py:331
-#: app_backend/views/product.py:349 app_backend/views/quotation.py:412
-#: app_backend/views/quotation.py:418 app_backend/views/quotation.py:424
-#: app_backend/views/quotation.py:430 app_backend/views/quotation.py:448
+#: app_backend/views/product.py:349 app_backend/views/quotation.py:495
+#: app_backend/views/quotation.py:501 app_backend/views/quotation.py:507
+#: app_backend/views/quotation.py:513 app_backend/views/quotation.py:531
 #: app_backend/views/rack.py:307 app_backend/views/rack.py:313
 #: app_backend/views/rack.py:318 app_backend/views/rack.py:324
 #: app_backend/views/rack.py:342 app_backend/views/user.py:328
@@ -901,16 +1013,18 @@ msgid "Del Failure"
 msgstr "Del Failure"
 
 #: app_backend/views/customer.py:368 app_backend/views/customer.py:379
-#: app_backend/views/inventory.py:331 app_backend/views/inventory.py:342
-#: app_backend/views/product.py:335 app_backend/views/product.py:346
-#: app_backend/views/quotation.py:434 app_backend/views/quotation.py:445
-#: app_backend/views/rack.py:328 app_backend/views/rack.py:339
-#: app_backend/views/user.py:350 app_backend/views/user.py:361
-#: app_backend/views/warehouse.py:333 app_backend/views/warehouse.py:344
+#: app_backend/views/customer_contact.py:369
+#: app_backend/views/customer_contact.py:380 app_backend/views/inventory.py:331
+#: app_backend/views/inventory.py:342 app_backend/views/product.py:335
+#: app_backend/views/product.py:346 app_backend/views/quotation.py:517
+#: app_backend/views/quotation.py:528 app_backend/views/rack.py:328
+#: app_backend/views/rack.py:339 app_backend/views/user.py:350
+#: app_backend/views/user.py:361 app_backend/views/warehouse.py:333
+#: app_backend/views/warehouse.py:344
 msgid "Del Success"
 msgstr "Del Success"
 
-#: app_backend/views/customer.py:467
+#: app_backend/views/customer.py:467 app_backend/views/customer_contact.py:468
 msgid "customer stats item"
 msgstr "customer stats item"
 
@@ -926,7 +1040,7 @@ msgstr "inventory edit"
 msgid "product info"
 msgstr "product info"
 
-#: app_backend/views/quotation.py:533
+#: app_backend/views/quotation.py:616
 msgid "quote stats item"
 msgstr "quote stats item"
 

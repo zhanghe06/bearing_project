@@ -24,3 +24,34 @@ def get_quote_item_rows(*args, **kwargs):
     :return:
     """
     return db_instance.get_rows(QuoteItem, *args, **kwargs)
+
+
+def add_quote_item(quote_item_data):
+    """
+    添加信息
+    :param quote_item_data:
+    :return: None/Value of user.id
+    :except:
+    """
+    return db_instance.add(QuoteItem, quote_item_data)
+
+
+def edit_quote_item(quote_item_id, quote_item_data):
+    """
+    修改信息
+    :param quote_item_id:
+    :param quote_item_data:
+    :return: Number of affected rows (Example: 0/1)
+    :except:
+    """
+    return db_instance.edit(QuoteItem, quote_item_id, quote_item_data)
+
+
+def delete_quote_item(quote_item_id):
+    """
+    删除信息
+    :param quote_item_id:
+    :return: Number of affected rows (Example: 0/1)
+    :except:
+    """
+    return db_instance.delete(QuoteItem, quote_item_id)

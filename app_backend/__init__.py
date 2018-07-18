@@ -103,26 +103,44 @@ from app_backend import views
 
 from app_backend.views.captcha import bp_captcha
 from app_backend.views.customer import bp_customer
+from app_backend.views.customer_contact import bp_customer_contact
+from app_backend.views.customer_invoice import bp_customer_invoice
+from app_backend.views.supplier import bp_supplier
+from app_backend.views.supplier_contact import bp_supplier_contact
+from app_backend.views.supplier_invoice import bp_supplier_invoice
 from app_backend.views.user import bp_user
 from app_backend.views.user_auth import bp_auth
 from app_backend.views.product import bp_product
 from app_backend.views.quotation import bp_quote
+from app_backend.views.orders_buyer import bp_buyer_orders
+from app_backend.views.orders_sales import bp_sales_orders
 from app_backend.views.warehouse import bp_warehouse
 from app_backend.views.rack import bp_rack
 from app_backend.views.inventory import bp_inventory
+from app_backend.views.purchase import bp_purchase
+from app_backend.views.delivery import bp_delivery
 from app_backend.views.system import bp_system
 from app_backend.views.socket_io import bp_socket_io
 
 # 注册蓝图
 app.register_blueprint(bp_captcha)
 app.register_blueprint(bp_customer)
+app.register_blueprint(bp_customer_contact)
+app.register_blueprint(bp_customer_invoice)
+app.register_blueprint(bp_supplier)
+app.register_blueprint(bp_supplier_contact)
+app.register_blueprint(bp_supplier_invoice)
 app.register_blueprint(bp_user)
 app.register_blueprint(bp_auth)
 app.register_blueprint(bp_product)
 app.register_blueprint(bp_quote)
+app.register_blueprint(bp_buyer_orders)
+app.register_blueprint(bp_sales_orders)
 app.register_blueprint(bp_warehouse)
 app.register_blueprint(bp_rack)
 app.register_blueprint(bp_inventory)
+app.register_blueprint(bp_purchase)
+app.register_blueprint(bp_delivery)
 app.register_blueprint(bp_system)
 app.register_blueprint(bp_socket_io)
 

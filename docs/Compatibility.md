@@ -50,3 +50,19 @@ from future.builtins import input
 # PY3(items)
 from six import iteritems, iterkeys, itervalues
 ```
+
+```python
+import six
+
+# six.string_types = (str, unicode)
+# six.integer_types = (int, long)
+# six.class_types = (type, types.ClassType)
+# six.text_type = unicode
+# six.binary_type = str
+
+# six.b
+# six.u
+
+# def b(s: str) -> binary_type: ...
+# def u(s: str) -> text_type: ...
+```

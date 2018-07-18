@@ -47,7 +47,7 @@ def get_code(code_type):
     session[code_key] = code_str
     # 返回验证码图片
     buf = StringIO()
-    code_img.save(buf, 'JPEG', quality=70)
+    code_img.save(buf, 'JPEG', quality=100)
     buf_str = buf.getvalue()
     response = make_response(buf_str)
     response.headers['Content-Type'] = 'image/jpeg'
