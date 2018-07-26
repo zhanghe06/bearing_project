@@ -161,33 +161,33 @@ CREATE TABLE `supplier_contact` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应厂商联系方式';
 
 
-DROP TABLE IF EXISTS `product`;
-CREATE TABLE `product` (
+DROP TABLE IF EXISTS `production`;
+CREATE TABLE `production` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `category_id` INT NOT NULL DEFAULT 0 COMMENT '类别编号',
-  `product_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
-  `product_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
-  `product_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
+  `production_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
+  `production_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `production_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY (`product_model`),
-  UNIQUE (`product_brand`, `product_model`)
+  KEY (`production_model`),
+  UNIQUE (`production_brand`, `production_model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品明细';
 
 
 DROP TABLE IF EXISTS `catalogue`;
 CREATE TABLE `catalogue` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `product_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
-  `product_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
-  `product_label` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品称号',
-  `product_brand_old` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '历史品牌',
-  `product_model_old` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '历史型号',
-  `product_class` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品类型',
+  `production_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
+  `production_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `production_label` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品称号',
+  `production_brand_old` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '历史品牌',
+  `production_model_old` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '历史型号',
+  `production_class` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品类型',
   `ind` DECIMAL(4, 0) NOT NULL DEFAULT '0' COMMENT '内径（mm）',
   `oud` DECIMAL(4, 0) NOT NULL DEFAULT '0' COMMENT '外径（mm）',
   `wid` DECIMAL(4, 0) NOT NULL DEFAULT '0' COMMENT '宽度（mm）',
@@ -210,9 +210,9 @@ CREATE TABLE `catalogue` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY (`product_model`),
-  KEY (`product_model_old`),
-  UNIQUE (`product_brand`, `product_model`)
+  KEY (`production_model`),
+  KEY (`production_model_old`),
+  UNIQUE (`production_brand`, `production_model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品型录';
 
 
@@ -263,7 +263,7 @@ CREATE TABLE `rack` (
 DROP TABLE IF EXISTS `inventory`;
 CREATE TABLE `inventory` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `product_id` INT NOT NULL COMMENT '产品编号',
+  `production_id` INT NOT NULL COMMENT '产品编号',
   `warehouse_id` INT NOT NULL COMMENT '仓库编号',
   `rack_id` INT NOT NULL COMMENT '货架编号',
   `stock_qty` INT NOT NULL COMMENT '库存数量',
@@ -273,20 +273,20 @@ CREATE TABLE `inventory` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY (`product_id`)
+  KEY (`production_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存明细';
 
 
-DROP TABLE IF EXISTS `quote`;
-CREATE TABLE `quote` (
+DROP TABLE IF EXISTS `quotation`;
+CREATE TABLE `quotation` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uid` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
   `cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
   `contact_id` INT NOT NULL COMMENT '联系方式ID',
-  `amount_product` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '产品金额',
+  `amount_production` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '产品金额',
   `amount_shipping` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '运费金额',
   `amount_adjustment` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '调整金额',
-  `amount_quote` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '报价总额',
+  `amount_quotation` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '报价总额',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '报价备注',
   `status_tax` TINYINT NOT NULL DEFAULT 0 COMMENT '含税状态（0:不含税,1:已含税）',
   `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
@@ -304,24 +304,24 @@ CREATE TABLE `quote` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报价总表';
 
 
-DROP TABLE IF EXISTS `quote_item`;
-CREATE TABLE `quote_item` (
+DROP TABLE IF EXISTS `quotation_items`;
+CREATE TABLE `quotation_items` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `quote_id` INT NOT NULL COMMENT '报价总表ID',
-  `product_id` INT NOT NULL COMMENT '产品ID',
-  `product_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
-  `product_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
-  `product_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
-  `product_note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
-  `quantity` INT NOT NULL DEFAULT 0 COMMENT '报价数量',
+  `quotation_id` INT NOT NULL COMMENT '报价总表ID',
+  `production_id` INT NOT NULL COMMENT '产品ID',
+  `production_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
+  `production_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `production_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
+  `production_note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
+  `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
   `unit_price` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY (`quote_id`),
-  KEY (`product_id`)
+  KEY (`quotation_id`),
+  KEY (`production_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报价明细';
 
 
@@ -330,7 +330,20 @@ CREATE TABLE `sales_orders` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uid` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
   `cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
+  `contact_id` INT NOT NULL COMMENT '联系方式ID',
+  `amount_production` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '产品金额',
+  `amount_shipping` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '运费金额',
+  `amount_adjustment` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '调整金额',
+  `amount_order` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '订单总额',
+  `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '订单备注',
+  `status_tax` TINYINT NOT NULL DEFAULT 0 COMMENT '含税状态（0:不含税,1:已含税）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
+  `status_effect` TINYINT NOT NULL DEFAULT 0 COMMENT '生效状态（0:待生效,1:已生效,2:未生效）',
+  `status_completion` TINYINT NOT NULL DEFAULT 0 COMMENT '完成状态（0:待完成,1:已完成,2:已中止）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
+  `effect_time` TIMESTAMP NULL COMMENT '生效时间（通过、失败）',
+  `completion_time` TIMESTAMP NULL COMMENT '完成时间（完成、中止）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -340,12 +353,46 @@ CREATE TABLE `sales_orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='销售订单';
 
 
+DROP TABLE IF EXISTS `sales_order_items`;
+CREATE TABLE `sales_order_items` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `sales_order_id` INT NOT NULL COMMENT '销售订单ID',
+  `production_id` INT NOT NULL COMMENT '产品ID',
+  `production_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
+  `production_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `production_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
+  `production_note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
+  `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
+  `unit_price` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`sales_order_id`),
+  KEY (`production_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='销售订单明细';
+
+
 DROP TABLE IF EXISTS `buyer_orders`;
 CREATE TABLE `buyer_orders` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uid` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
   `cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
+  `contact_id` INT NOT NULL COMMENT '联系方式ID',
+  `amount_production` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '产品金额',
+  `amount_shipping` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '运费金额',
+  `amount_adjustment` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '调整金额',
+  `amount_order` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '订单总额',
+  `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '订单备注',
+  `status_tax` TINYINT NOT NULL DEFAULT 0 COMMENT '含税状态（0:不含税,1:已含税）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
+  `status_effect` TINYINT NOT NULL DEFAULT 0 COMMENT '生效状态（0:待生效,1:已生效,2:未生效）',
+  `status_completion` TINYINT NOT NULL DEFAULT 0 COMMENT '完成状态（0:待完成,1:已完成,2:已中止）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
+  `effect_time` TIMESTAMP NULL COMMENT '生效时间（通过、失败）',
+  `completion_time` TIMESTAMP NULL COMMENT '完成时间（完成、中止）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -355,12 +402,37 @@ CREATE TABLE `buyer_orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购订单';
 
 
+DROP TABLE IF EXISTS `buyer_order_items`;
+CREATE TABLE `buyer_order_items` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `buyer_order_id` INT NOT NULL COMMENT '采购订单ID',
+  `production_id` INT NOT NULL COMMENT '产品ID',
+  `production_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
+  `production_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `production_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
+  `production_note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
+  `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
+  `unit_price` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`buyer_order_id`),
+  KEY (`production_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购订单明细';
+
+
 DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE `delivery` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `sales_order_id` INT DEFAULT 0 COMMENT '销售订单ID',
   `customer_cid` INT DEFAULT 0 COMMENT '客户公司ID',
   `type_delivery` TINYINT NOT NULL DEFAULT 0 COMMENT '出货类型（0:正常销售,1:赠送样品,2:盘亏,3:拆卸,4:损耗报废）',
+  `amount_production` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '产品金额',
+  `amount_shipping` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '运费金额',
+  `amount_adjustment` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '调整金额',
+  `amount_delivery` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '出货总额',
   `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
   `status_confirm` TINYINT NOT NULL DEFAULT 0 COMMENT '确认状态（0:待确认,1:确认成功,2:确认失败）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
@@ -375,10 +447,33 @@ CREATE TABLE `delivery` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='出货清单';
 
 
+DROP TABLE IF EXISTS `delivery_items`;
+CREATE TABLE `delivery_items` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `delivery_id` INT NOT NULL COMMENT '出货清单ID',
+  `sales_order_id` INT DEFAULT 0 COMMENT '销售订单ID',
+  `production_id` INT NOT NULL COMMENT '产品ID',
+  `production_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
+  `production_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `production_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
+  `production_note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
+  `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
+  `unit_price` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`delivery_id`),
+  KEY (`sales_order_id`),
+  KEY (`production_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='出货清单明细';
+
+
 DROP TABLE IF EXISTS `purchase`;
 CREATE TABLE `purchase` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `buyer_order_id` INT DEFAULT 0 COMMENT '销售订单ID',
+  `buyer_order_id` INT DEFAULT 0 COMMENT '采购订单ID',
   `supplier_cid` INT DEFAULT 0 COMMENT '供应厂商ID',
   `type_purchase` TINYINT NOT NULL DEFAULT 0 COMMENT '进货类型（0:正常采购,1:获赠样品,2:盘盈,3:组装）',
   `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
@@ -393,3 +488,26 @@ CREATE TABLE `purchase` (
   KEY (`buyer_order_id`),
   KEY (`supplier_cid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='进货清单';
+
+
+DROP TABLE IF EXISTS `purchase_items`;
+CREATE TABLE `purchase_items` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `purchase_id` INT NOT NULL COMMENT '进货清单ID',
+  `buyer_order_id` INT DEFAULT 0 COMMENT '采购订单ID',
+  `production_id` INT NOT NULL COMMENT '产品ID',
+  `production_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
+  `production_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `production_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
+  `production_note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '型号备注',
+  `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
+  `unit_price` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`purchase_id`),
+  KEY (`buyer_order_id`),
+  KEY (`production_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='进货清单明细';

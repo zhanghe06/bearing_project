@@ -16,7 +16,7 @@ from app_backend import db
 from app_backend.api.customer import get_customer_rows_by_ids
 from app_backend.api.user import get_user_rows_by_ids
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import Quote
+from app_backend.models.bearing_project import Quotation
 from app_common.maps.default import default_choices_int
 from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
@@ -26,67 +26,85 @@ from app_common.maps.status_order import STATUS_ORDER_OK
 db_instance = DbInstance(db)
 
 
-def get_quote_row_by_id(quote_id):
+def get_quotation_row_by_id(quotation_id):
     """
     通过 id 获取信息
-    :param quote_id:
+    :param quotation_id:
     :return: None/object
     """
-    return db_instance.get_row_by_id(Quote, quote_id)
+    return db_instance.get_row_by_id(Quotation, quotation_id)
 
 
-def get_quote_row(*args, **kwargs):
+def get_quotation_row(*args, **kwargs):
     """
     获取信息
     :param args:
     :param kwargs:
     :return: None/object
     """
-    return db_instance.get_row(Quote, *args, **kwargs)
+    return db_instance.get_row(Quotation, *args, **kwargs)
 
 
-def get_quote_rows(*args, **kwargs):
+def get_quotation_rows(*args, **kwargs):
     """
     获取列表
     :param args:
     :param kwargs:
     :return:
     """
-    return db_instance.get_rows(Quote, *args, **kwargs)
+    return db_instance.get_rows(Quotation, *args, **kwargs)
 
 
-def add_quote(quote_data):
+def add_quotation(quotation_data):
     """
     添加信息
-    :param quote_data:
+    :param quotation_data:
     :return: None/Value of user.id
     :except:
     """
-    return db_instance.add(Quote, quote_data)
+    return db_instance.add(Quotation, quotation_data)
 
 
-def edit_quote(quote_id, quote_data):
+def edit_quotation(quotation_id, quotation_data):
     """
     修改信息
-    :param quote_id:
-    :param quote_data:
+    :param quotation_id:
+    :param quotation_data:
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.edit(Quote, quote_id, quote_data)
+    return db_instance.edit(Quotation, quotation_id, quotation_data)
 
 
-def delete_quote(quote_id):
+def delete_quotation(quotation_id):
     """
     删除信息
-    :param quote_id:
+    :param quotation_id:
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.delete(Quote, quote_id)
+    return db_instance.delete(Quotation, quotation_id)
 
 
-def get_quote_pagination(page=1, per_page=10, *args, **kwargs):
+def delete_quotation_table():
+    """
+    清空表
+    :return:
+    """
+    return db_instance.delete_table(Quotation)
+
+
+def count_quotation(*args, **kwargs):
+    """
+    计数
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    return db_instance.count(Quotation, *args, **kwargs)
+
+
+def get_quotation_pagination(page=1, per_page=10, *args, **kwargs):
     """
     获取列表（分页）
     Usage:
@@ -103,11 +121,11 @@ def get_quote_pagination(page=1, per_page=10, *args, **kwargs):
     :param kwargs:
     :return:
     """
-    rows = db_instance.get_pagination(Quote, page, per_page, *args, **kwargs)
+    rows = db_instance.get_pagination(Quotation, page, per_page, *args, **kwargs)
     return rows
 
 
-def quote_total_stats(time_based='hour'):
+def quotation_total_stats(time_based='hour'):
     """
     报价总量统计
     :return:
@@ -121,12 +139,12 @@ def quote_total_stats(time_based='hour'):
         result = dict(zip(hours, [0] * len(hours)))
         condition.extend(
             [
-                Quote.create_time >= time_local_to_utc(start_time),
-                Quote.create_time <= time_local_to_utc(end_time)
+                Quotation.create_time >= time_local_to_utc(start_time),
+                Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
         rows = db.session \
-            .query(func.hour(Quote.create_time).label('hour'), func.count(Quote.id)) \
+            .query(func.hour(Quotation.create_time).label('hour'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('hour') \
             .limit(len(hours)) \
@@ -142,12 +160,12 @@ def quote_total_stats(time_based='hour'):
         result = dict(zip(days, [0] * len(days)))
         condition.extend(
             [
-                Quote.create_time >= time_local_to_utc(start_time),
-                Quote.create_time <= time_local_to_utc(end_time)
+                Quotation.create_time >= time_local_to_utc(start_time),
+                Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
         rows = db.session \
-            .query(func.day(Quote.create_time).label('date'), func.count(Quote.id)) \
+            .query(func.day(Quotation.create_time).label('date'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('date') \
             .limit(len(days)) \
@@ -162,12 +180,12 @@ def quote_total_stats(time_based='hour'):
         result = dict(zip(months, [0] * len(months)))
         condition.extend(
             [
-                Quote.create_time >= time_local_to_utc(start_time),
-                Quote.create_time <= time_local_to_utc(end_time)
+                Quotation.create_time >= time_local_to_utc(start_time),
+                Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
         rows = db.session \
-            .query(func.month(Quote.create_time).label('month'), func.count(Quote.id)) \
+            .query(func.month(Quotation.create_time).label('month'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('month') \
             .limit(len(months)) \
@@ -176,12 +194,12 @@ def quote_total_stats(time_based='hour'):
         return [(months_zerofill[i], result[month]) for i, month in enumerate(months)]
 
 
-def quote_order_stats(time_based='hour'):
+def quotation_order_stats(time_based='hour'):
     """
     报价成交统计
     :return:
     """
-    condition = [Quote.status_order == STATUS_ORDER_OK]
+    condition = [Quotation.status_order == STATUS_ORDER_OK]
     # 按小时统计
     if time_based == 'hour':
         start_time, end_time = get_current_day_time_ends()
@@ -190,12 +208,12 @@ def quote_order_stats(time_based='hour'):
         result = dict(zip(hours, [0] * len(hours)))
         condition.extend(
             [
-                Quote.create_time >= time_local_to_utc(start_time),
-                Quote.create_time <= time_local_to_utc(end_time)
+                Quotation.create_time >= time_local_to_utc(start_time),
+                Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
         rows = db.session \
-            .query(func.hour(Quote.create_time).label('hour'), func.count(Quote.id)) \
+            .query(func.hour(Quotation.create_time).label('hour'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('hour') \
             .limit(len(hours)) \
@@ -211,12 +229,12 @@ def quote_order_stats(time_based='hour'):
         result = dict(zip(days, [0] * len(days)))
         condition.extend(
             [
-                Quote.create_time >= time_local_to_utc(start_time),
-                Quote.create_time <= time_local_to_utc(end_time)
+                Quotation.create_time >= time_local_to_utc(start_time),
+                Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
         rows = db.session \
-            .query(func.day(Quote.create_time).label('date'), func.count(Quote.id)) \
+            .query(func.day(Quotation.create_time).label('date'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('date') \
             .limit(len(days)) \
@@ -231,12 +249,12 @@ def quote_order_stats(time_based='hour'):
         result = dict(zip(months, [0] * len(months)))
         condition.extend(
             [
-                Quote.create_time >= time_local_to_utc(start_time),
-                Quote.create_time <= time_local_to_utc(end_time)
+                Quotation.create_time >= time_local_to_utc(start_time),
+                Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
         rows = db.session \
-            .query(func.month(Quote.create_time).label('month'), func.count(Quote.id)) \
+            .query(func.month(Quotation.create_time).label('month'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('month') \
             .limit(len(months)) \
@@ -245,7 +263,7 @@ def quote_order_stats(time_based='hour'):
         return [(months_zerofill[i], result[month]) for i, month in enumerate(months)]
 
 
-def get_distinct_quote_uid(*args, **kwargs):
+def get_distinct_quotation_uid(*args, **kwargs):
     """
     获取用户
     :param args:
@@ -253,10 +271,10 @@ def get_distinct_quote_uid(*args, **kwargs):
     :return: List
     """
     field = 'uid'
-    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Quote, field, *args, **kwargs))
+    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Quotation, field, *args, **kwargs))
 
 
-def get_distinct_quote_cid(*args, **kwargs):
+def get_distinct_quotation_cid(*args, **kwargs):
     """
     获取客户
     :param args:
@@ -264,21 +282,21 @@ def get_distinct_quote_cid(*args, **kwargs):
     :return: List
     """
     field = 'cid'
-    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Quote, field, *args, **kwargs))
+    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Quotation, field, *args, **kwargs))
 
 
-def get_quote_user_list_choices():
-    quote_user_list = copy(default_choices_int)
-    uid_list = get_distinct_quote_uid(status_delete=STATUS_DEL_NO)
+def get_quotation_user_list_choices():
+    quotation_user_list = copy(default_choices_int)
+    uid_list = get_distinct_quotation_uid(status_delete=STATUS_DEL_NO)
     user_rows = get_user_rows_by_ids(uid_list)
-    quote_user_list.extend([(user.id, user.name) for user in user_rows])
-    return quote_user_list
+    quotation_user_list.extend([(user.id, user.name) for user in user_rows])
+    return quotation_user_list
 
 
-def get_quote_customer_list_choices(uid):
+def get_quotation_customer_list_choices(uid):
     # todo 移动到客户模块
-    quote_user_list = copy(default_choices_int)
-    cid_list = get_distinct_quote_cid(status_delete=STATUS_DEL_NO, uid=uid)
+    quotation_user_list = copy(default_choices_int)
+    cid_list = get_distinct_quotation_cid(status_delete=STATUS_DEL_NO, uid=uid)
     customer_rows = get_customer_rows_by_ids(cid_list)
-    quote_user_list.extend([(customer.id, customer.company_name) for customer in customer_rows])
-    return quote_user_list
+    quotation_user_list.extend([(customer.id, customer.company_name) for customer in customer_rows])
+    return quotation_user_list

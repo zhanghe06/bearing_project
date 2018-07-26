@@ -27,39 +27,39 @@ from flask import (
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
 
-from app_backend.forms.quotation import QuoteItemEditForm
+from app_backend.forms.quotation import QuotationItemEditForm
 from app_backend import (
     app,
     excel,
 )
 from app_backend.api.quotation import (
-    get_quote_pagination,
-    get_quote_row_by_id,
-    add_quote,
-    edit_quote,
-    get_quote_rows,
-    get_distinct_quote_uid,
-    get_distinct_quote_cid,
-    quote_total_stats,
-    quote_order_stats,
-    get_quote_user_list_choices, get_quote_customer_list_choices)
+    get_quotation_pagination,
+    get_quotation_row_by_id,
+    add_quotation,
+    edit_quotation,
+    get_quotation_rows,
+    get_distinct_quotation_uid,
+    get_distinct_quotation_cid,
+    quotation_total_stats,
+    quotation_order_stats,
+    get_quotation_user_list_choices, get_quotation_customer_list_choices)
 
-from app_backend.api.quotation_item import get_quote_item_rows, add_quote_item, edit_quote_item, delete_quote_item
+from app_backend.api.quotation_item import get_quotation_item_rows, add_quotation_item, edit_quotation_item, delete_quotation_item
 from wtforms.fields import FieldList, FormField
 from app_backend.forms.quotation import (
-    QuoteSearchForm,
-    QuoteAddForm,
-    QuoteEditForm,
+    QuotationSearchForm,
+    QuotationAddForm,
+    QuotationEditForm,
 )
-from app_backend.models.bearing_project import Quote
+from app_backend.models.bearing_project import Quotation
 from app_backend.permissions import (
-    permission_quote_section_add,
-    permission_quote_section_search,
-    permission_quote_section_export,
-    permission_quote_section_stats,
-    QuoteItemGetPermission,
-    QuoteItemEditPermission,
-    QuoteItemDelPermission,
+    permission_quotation_section_add,
+    permission_quotation_section_search,
+    permission_quotation_section_export,
+    permission_quotation_section_stats,
+    QuotationItemGetPermission,
+    QuotationItemEditPermission,
+    QuotationItemDelPermission,
 )
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
@@ -71,7 +71,7 @@ from app_common.maps.type_role import (
 from app_common.tools import json_default
 
 # 定义蓝图
-bp_quote = Blueprint('quote', __name__, url_prefix='/quote')
+bp_quotation = Blueprint('quotation', __name__, url_prefix='/quotation')
 
 # 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
@@ -80,10 +80,10 @@ AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
-@bp_quote.route('/lists.html', methods=['GET', 'POST'])
-@bp_quote.route('/lists/<int:page>.html', methods=['GET', 'POST'])
+@bp_quotation.route('/lists.html', methods=['GET', 'POST'])
+@bp_quotation.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
-@permission_quote_section_search.require(http_exception=403)
+@permission_quotation_section_search.require(http_exception=403)
 def lists(page=1):
     """
     报价列表
@@ -93,16 +93,16 @@ def lists(page=1):
     template_name = 'quotation/lists.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quote lists')
+    document_info['TITLE'] = _('quotation lists')
 
     # 搜索条件
-    form = QuoteSearchForm(request.form)
-    form.uid.choices = get_quote_user_list_choices()
-    form.cid.choices = get_quote_customer_list_choices(form.uid.data)
+    form = QuotationSearchForm(request.form)
+    form.uid.choices = get_quotation_user_list_choices()
+    form.cid.choices = get_quotation_customer_list_choices(form.uid.data)
     # app.logger.info('')
 
     search_condition = [
-        Quote.status_delete == STATUS_DEL_NO,
+        Quotation.status_delete == STATUS_DEL_NO,
     ]
     if request.method == 'POST':
         # 表单校验失败
@@ -113,29 +113,29 @@ def lists(page=1):
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
             if form.uid.data != default_choice_option_int:
-                search_condition.append(Quote.uid == form.uid.data)
+                search_condition.append(Quotation.uid == form.uid.data)
             if form.cid.data != default_choice_option_int:
-                search_condition.append(Quote.cid == form.cid.data)
+                search_condition.append(Quotation.cid == form.cid.data)
             if form.start_create_time.data:
-                search_condition.append(Quote.create_time >= form.start_create_time.data)
+                search_condition.append(Quotation.create_time >= form.start_create_time.data)
             if form.end_create_time.data:
-                search_condition.append(Quote.create_time <= form.end_create_time.data)
+                search_condition.append(Quotation.create_time <= form.end_create_time.data)
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
-            if not permission_quote_section_export.can():
+            if not permission_quotation_section_export.can():
                 abort(403)
-            column_names = Quote.__table__.columns.keys()
-            query_sets = get_quote_rows(*search_condition)
+            column_names = Quotation.__table__.columns.keys()
+            query_sets = get_quotation_rows(*search_condition)
 
             return excel.make_response_from_query_sets(
                 query_sets=query_sets,
                 column_names=column_names,
                 file_type='csv',
-                file_name='%s.csv' % _('quote lists')
+                file_name='%s.csv' % _('quotation lists')
             )
     # 翻页数据
-    pagination = get_quote_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_quotation_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(
@@ -146,48 +146,48 @@ def lists(page=1):
     )
 
 
-@bp_quote.route('/<int:quote_id>/info.html')
+@bp_quotation.route('/<int:quotation_id>/info.html')
 @login_required
-def info(quote_id):
+def info(quotation_id):
     """
     报价详情
-    :param quote_id:
+    :param quotation_id:
     :return:
     """
     # 检查读取权限
-    quote_item_get_permission = QuoteItemGetPermission(quote_id)
-    if not quote_item_get_permission.can():
+    quotation_item_get_permission = QuotationItemGetPermission(quotation_id)
+    if not quotation_item_get_permission.can():
         abort(403)
     # 详情数据
-    quote_info = get_quote_row_by_id(quote_id)
+    quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
-    if not quote_info:
+    if not quotation_info:
         abort(404)
     # 检查资源是否删除
-    if quote_info.status_delete == STATUS_DEL_OK:
+    if quotation_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
     template_name = 'quotation/info.html'
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quote info')
+    document_info['TITLE'] = _('quotation info')
 
     # 获取明细
-    quote_items = get_quote_item_rows(quote_id=quote_id)
+    quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
 
     # 渲染模板
     return render_template(
         template_name,
-        quote_info=quote_info,
-        quote_items=quote_items,
+        quotation_info=quotation_info,
+        quotation_items=quotation_items,
         **document_info
     )
 
 
-@bp_quote.route('/add.html', methods=['GET', 'POST'])
+@bp_quotation.route('/add.html', methods=['GET', 'POST'])
 @login_required
-@permission_quote_section_add.require(http_exception=403)
+@permission_quotation_section_add.require(http_exception=403)
 def add():
     """
     创建报价
@@ -196,13 +196,13 @@ def add():
     template_name = 'quotation/add.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quote add')
+    document_info['TITLE'] = _('quotation add')
 
     # 加载创建表单
-    form = QuoteAddForm(request.form)
-    form.uid.choices = get_quote_user_list_choices()
+    form = QuotationAddForm(request.form)
+    form.uid.choices = get_quotation_user_list_choices()
     form.uid.data = current_user.id
-    form.cid.choices = get_quote_customer_list_choices(current_user.id)
+    form.cid.choices = get_quotation_customer_list_choices(current_user.id)
 
     # 进入创建页面
     if request.method == 'GET':
@@ -218,10 +218,10 @@ def add():
 
         # 表单新增空行
         if form.data_line_add.data is not None:
-            if form.quote_items.max_entries and len(form.quote_items.entries) >= form.quote_items.max_entries:
-                flash('最多创建%s条记录' % form.quote_items.max_entries, 'danger')
+            if form.quotation_items.max_entries and len(form.quotation_items.entries) >= form.quotation_items.max_entries:
+                flash('最多创建%s条记录' % form.quotation_items.max_entries, 'danger')
             else:
-                form.quote_items.append_entry()
+                form.quotation_items.append_entry()
 
             return render_template(
                 template_name,
@@ -230,11 +230,11 @@ def add():
             )
         # 表单删除一行
         if form.data_line_del.data is not None:
-            if form.quote_items.min_entries and len(form.quote_items.entries) <= form.quote_items.min_entries:
-                flash('最少保留%s条记录' % form.quote_items.min_entries, 'danger')
+            if form.quotation_items.min_entries and len(form.quotation_items.entries) <= form.quotation_items.min_entries:
+                flash('最少保留%s条记录' % form.quotation_items.min_entries, 'danger')
             else:
                 data_line_index = form.data_line_del.data
-                form.quote_items.entries.pop(data_line_index)
+                form.quotation_items.entries.pop(data_line_index)
 
             return render_template(
                 template_name,
@@ -253,33 +253,33 @@ def add():
 
         # 表单校验成功
 
-        quote_data = {
+        quotation_data = {
             'uid': form.uid.data,
             'cid': form.cid.data,
         }
-        quote_id = add_quote(quote_data)
+        quotation_id = add_quotation(quotation_data)
 
-        amount_quote = 0
-        for quote_item in form.quote_items.entries:
+        amount_quotation = 0
+        for quotation_item in form.quotation_items.entries:
 
-            quote_item_data = {
-                'quote_id': quote_id,
-                'product_id': quote_item.form.product_id.data,
-                'product_brand': quote_item.form.product_brand.data,
-                'product_model': quote_item.form.product_model.data,
-                'product_sku': quote_item.form.product_sku.data,
-                'quantity': quote_item.form.quantity.data,
-                'unit_price': quote_item.form.unit_price.data,
+            quotation_item_data = {
+                'quotation_id': quotation_id,
+                'product_id': quotation_item.form.product_id.data,
+                'product_brand': quotation_item.form.product_brand.data,
+                'product_model': quotation_item.form.product_model.data,
+                'product_sku': quotation_item.form.product_sku.data,
+                'quantity': quotation_item.form.quantity.data,
+                'unit_price': quotation_item.form.unit_price.data,
             }
 
             # 新增
-            add_quote_item(quote_item_data)
-            amount_quote += quote_item_data['quantity'] * quote_item_data['unit_price']
+            add_quotation_item(quotation_item_data)
+            amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
 
-        quote_data = {
-            'amount_quote': amount_quote,
+        quotation_data = {
+            'amount_quotation': amount_quotation,
         }
-        result = edit_quote(quote_id, quote_data)
+        result = edit_quotation(quotation_id, quotation_data)
 
 
         # todo 事务
@@ -291,7 +291,7 @@ def add():
         # 创建操作成功
         if result:
             flash(_('Add Success'), 'success')
-            return redirect(request.args.get('next') or url_for('quote.lists'))
+            return redirect(request.args.get('next') or url_for('quotation.lists'))
         # 创建操作失败
         else:
             flash(_('Add Failure'), 'danger')
@@ -302,62 +302,62 @@ def add():
             )
 
 
-@bp_quote.route('/<int:quote_id>/edit.html', methods=['GET', 'POST'])
+@bp_quotation.route('/<int:quotation_id>/edit.html', methods=['GET', 'POST'])
 @login_required
-def edit(quote_id):
+def edit(quotation_id):
     """
     报价编辑
     """
     # 检查编辑权限
-    quote_item_edit_permission = QuoteItemEditPermission(quote_id)
-    if not quote_item_edit_permission.can():
+    quotation_item_edit_permission = QuotationItemEditPermission(quotation_id)
+    if not quotation_item_edit_permission.can():
         abort(403)
 
-    quote_info = get_quote_row_by_id(quote_id)
+    quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
-    if not quote_info:
+    if not quotation_info:
         abort(404)
     # 检查资源是否删除
-    if quote_info.status_delete == STATUS_DEL_OK:
+    if quotation_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
     template_name = 'quotation/edit.html'
 
     # 加载编辑表单
-    form = QuoteEditForm(request.form)
-    form.uid.choices = get_quote_user_list_choices()
-    form.cid.choices = get_quote_customer_list_choices(current_user.id)
+    form = QuotationEditForm(request.form)
+    form.uid.choices = get_quotation_user_list_choices()
+    form.cid.choices = get_quotation_customer_list_choices(current_user.id)
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quote edit')
+    document_info['TITLE'] = _('quotation edit')
 
     # 进入编辑页面
     if request.method == 'GET':
         # 获取明细
-        quote_items = get_quote_item_rows(quote_id=quote_id)
+        quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
         # 表单赋值
-        form.uid.data = quote_info.uid
-        form.cid.data = quote_info.cid
-        # form.quote_items = quote_items
-        while len(form.quote_items) > 0:
-            form.quote_items.pop_entry()
-        for quote_item in quote_items:
-            quote_item_form = QuoteItemEditForm()
-            quote_item_form.id = quote_item.id
-            quote_item_form.quote_id = quote_item.quote_id
-            quote_item_form.product_id = quote_item.product_id
-            quote_item_form.product_brand = quote_item.product_brand
-            quote_item_form.product_model = quote_item.product_model
-            quote_item_form.product_sku = quote_item.product_sku
-            quote_item_form.product_note = quote_item.product_note
-            quote_item_form.quantity = quote_item.quantity
-            quote_item_form.unit_price = quote_item.unit_price
-            form.quote_items.append_entry(quote_item_form)
+        form.uid.data = quotation_info.uid
+        form.cid.data = quotation_info.cid
+        # form.quotation_items = quotation_items
+        while len(form.quotation_items) > 0:
+            form.quotation_items.pop_entry()
+        for quotation_item in quotation_items:
+            quotation_item_form = QuotationItemEditForm()
+            quotation_item_form.id = quotation_item.id
+            quotation_item_form.quotation_id = quotation_item.quotation_id
+            quotation_item_form.product_id = quotation_item.product_id
+            quotation_item_form.product_brand = quotation_item.product_brand
+            quotation_item_form.product_model = quotation_item.product_model
+            quotation_item_form.product_sku = quotation_item.product_sku
+            quotation_item_form.product_note = quotation_item.product_note
+            quotation_item_form.quantity = quotation_item.quantity
+            quotation_item_form.unit_price = quotation_item.unit_price
+            form.quotation_items.append_entry(quotation_item_form)
         # 渲染页面
         return render_template(
             template_name,
-            quote_id=quote_id,
+            quotation_id=quotation_id,
             form=form,
             **document_info
         )
@@ -368,28 +368,28 @@ def edit(quote_id):
 
         # 表单新增空行
         if form.data_line_add.data is not None:
-            if form.quote_items.max_entries and len(form.quote_items.entries) >= form.quote_items.max_entries:
-                flash('最多创建%s条记录' % form.quote_items.max_entries, 'danger')
+            if form.quotation_items.max_entries and len(form.quotation_items.entries) >= form.quotation_items.max_entries:
+                flash('最多创建%s条记录' % form.quotation_items.max_entries, 'danger')
             else:
-                form.quote_items.append_entry()
+                form.quotation_items.append_entry()
 
             return render_template(
                 template_name,
-                quote_id=quote_id,
+                quotation_id=quotation_id,
                 form=form,
                 **document_info
             )
         # 表单删除一行
         if form.data_line_del.data is not None:
-            if form.quote_items.min_entries and len(form.quote_items.entries) <= form.quote_items.min_entries:
-                flash('最少保留%s条记录' % form.quote_items.min_entries, 'danger')
+            if form.quotation_items.min_entries and len(form.quotation_items.entries) <= form.quotation_items.min_entries:
+                flash('最少保留%s条记录' % form.quotation_items.min_entries, 'danger')
             else:
                 data_line_index = form.data_line_del.data
-                form.quote_items.entries.pop(data_line_index)
+                form.quotation_items.entries.pop(data_line_index)
 
             return render_template(
                 template_name,
-                quote_id=quote_id,
+                quotation_id=quotation_id,
                 form=form,
                 **document_info
             )
@@ -397,90 +397,90 @@ def edit(quote_id):
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
-            flash(form.quote_items.errors, 'danger')
+            flash(form.quotation_items.errors, 'danger')
             return render_template(
                 template_name,
-                quote_id=quote_id,
+                quotation_id=quotation_id,
                 form=form,
                 **document_info
             )
         # 表单校验成功
 
         # 获取明细
-        quote_items = get_quote_item_rows(quote_id=quote_id)
-        quote_items_ids = [item.id for item in quote_items]
+        quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
+        quotation_items_ids = [item.id for item in quotation_items]
 
         # 数据新增、数据删除、数据修改
 
-        quote_items_ids_new = []
-        amount_quote = 0
-        for quote_item in form.quote_items.entries:
+        quotation_items_ids_new = []
+        amount_quotation = 0
+        for quotation_item in form.quotation_items.entries:
             # 错误
-            if quote_item.form.id.data and quote_item.form.id.data not in quote_items_ids:
+            if quotation_item.form.id.data and quotation_item.form.id.data not in quotation_items_ids:
                 continue
 
-            quote_item_data = {
-                'quote_id': quote_id,
-                'product_id': quote_item.form.product_id.data,
-                'product_brand': quote_item.form.product_brand.data,
-                'product_model': quote_item.form.product_model.data,
-                'product_sku': quote_item.form.product_sku.data,
-                'quantity': quote_item.form.quantity.data,
-                'unit_price': quote_item.form.unit_price.data,
+            quotation_item_data = {
+                'quotation_id': quotation_id,
+                'product_id': quotation_item.form.product_id.data,
+                'product_brand': quotation_item.form.product_brand.data,
+                'product_model': quotation_item.form.product_model.data,
+                'product_sku': quotation_item.form.product_sku.data,
+                'quantity': quotation_item.form.quantity.data,
+                'unit_price': quotation_item.form.unit_price.data,
             }
 
             # 新增
-            if not quote_item.form.id.data:
-                add_quote_item(quote_item_data)
-                amount_quote += quote_item_data['quantity'] * quote_item_data['unit_price']
+            if not quotation_item.form.id.data:
+                add_quotation_item(quotation_item_data)
+                amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
                 continue
             # 修改
-            edit_quote_item(quote_item.form.id.data, quote_item_data)
-            amount_quote += quote_item_data['quantity'] * quote_item_data['unit_price']
-            quote_items_ids_new.append(quote_item.form.id.data)
+            edit_quotation_item(quotation_item.form.id.data, quotation_item_data)
+            amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
+            quotation_items_ids_new.append(quotation_item.form.id.data)
         # 删除
-        quote_items_ids_del = list(set(quote_items_ids) - set(quote_items_ids_new))
-        for quote_items_id in quote_items_ids_del:
-            delete_quote_item(quote_items_id)
+        quotation_items_ids_del = list(set(quotation_items_ids) - set(quotation_items_ids_new))
+        for quotation_items_id in quotation_items_ids_del:
+            delete_quotation_item(quotation_items_id)
 
         # 更新总价
-        quote_data = {
-            'amount_quote': amount_quote,
+        quotation_data = {
+            'amount_quotation': amount_quotation,
         }
-        result = edit_quote(quote_id, quote_data)
+        result = edit_quotation(quotation_id, quotation_data)
 
         # 编辑操作成功
         if result:
             flash(_('Edit Success'), 'success')
-            return redirect(request.args.get('next') or url_for('quote.lists'))
+            return redirect(request.args.get('next') or url_for('quotation.lists'))
         # 编辑操作失败
         else:
             flash(_('Edit Failure'), 'danger')
             return render_template(
                 template_name,
-                quote_id=quote_id,
+                quotation_id=quotation_id,
                 form=form,
                 **document_info
             )
 
 
-@bp_quote.route('/<int:quote_id>/preview.html')
+@bp_quotation.route('/<int:quotation_id>/preview.html')
 @login_required
-def preview(quote_id):
+def preview(quotation_id):
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quote edit')
+    document_info['TITLE'] = _('quotation edit')
 
     template_name = 'quotation/preview.html'
 
     return render_template(
         template_name,
-        quote_id=quote_id,
+        quotation_id=quotation_id,
         **document_info
     )
 
 
-@bp_quote.route('/ajax/del', methods=['GET', 'POST'])
+@bp_quotation.route('/ajax/del', methods=['GET', 'POST'])
 @login_required
 def ajax_delete():
     """
@@ -496,34 +496,34 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查请求参数
-    quote_id = request.args.get('quote_id', 0, type=int)
-    if not quote_id:
+    quotation_id = request.args.get('quotation_id', 0, type=int)
+    if not quotation_id:
         ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
-    quote_item_del_permission = QuoteItemDelPermission(quote_id)
-    if not quote_item_del_permission.can():
+    quotation_item_del_permission = QuotationItemDelPermission(quotation_id)
+    if not quotation_item_del_permission.can():
         ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
         return jsonify(ajax_failure_msg)
 
-    quote_info = get_quote_row_by_id(quote_id)
+    quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
-    if not quote_info:
+    if not quotation_info:
         ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
         return jsonify(ajax_failure_msg)
     # 检查资源是否删除
-    if quote_info.status_delete == STATUS_DEL_OK:
+    if quotation_info.status_delete == STATUS_DEL_OK:
         ajax_success_msg['msg'] = _('Del Success')  # Already deleted
         return jsonify(ajax_success_msg)
 
     current_time = datetime.utcnow()
-    quote_data = {
+    quotation_data = {
         'status_delete': STATUS_DEL_OK,
         'delete_time': current_time,
         'update_time': current_time,
     }
-    result = edit_quote(quote_id, quote_data)
+    result = edit_quotation(quotation_id, quotation_data)
     if result:
         ajax_success_msg['msg'] = _('Del Success')
         return jsonify(ajax_success_msg)
@@ -532,7 +532,7 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
 
-@bp_quote.route('/ajax/stats', methods=['GET', 'POST'])
+@bp_quotation.route('/ajax/stats', methods=['GET', 'POST'])
 @login_required
 def ajax_stats():
     """
@@ -540,11 +540,11 @@ def ajax_stats():
     :return:
     """
     time_based = request.args.get('time_based', 'hour')
-    result_quote_middleman = quote_middleman_stats(time_based)
-    result_quote_end_user = quote_end_user_stats(time_based)
+    result_quotation_middleman = quotation_middleman_stats(time_based)
+    result_quotation_end_user = quotation_end_user_stats(time_based)
 
     line_chart_data = {
-        'labels': [label for label, _ in result_quote_middleman],
+        'labels': [label for label, _ in result_quotation_middleman],
         'datasets': [
             {
                 'label': '同行',
@@ -553,7 +553,7 @@ def ajax_stats():
                 'pointBackgroundColor': 'rgba(220,220,220,1)',
                 'pointBorderColor': '#fff',
                 'pointBorderWidth': 2,
-                'data': [data for _, data in result_quote_middleman]
+                'data': [data for _, data in result_quotation_middleman]
             },
             {
                 'label': '终端',
@@ -562,16 +562,16 @@ def ajax_stats():
                 'pointBackgroundColor': 'rgba(151,187,205,1)',
                 'pointBorderColor': '#fff',
                 'pointBorderWidth': 2,
-                'data': [data for _, data in result_quote_end_user]
+                'data': [data for _, data in result_quotation_end_user]
             }
         ]
     }
     return json.dumps(line_chart_data, default=json_default)
 
 
-@bp_quote.route('/stats.html')
+@bp_quotation.route('/stats.html')
 @login_required
-@permission_quote_section_stats.require(http_exception=403)
+@permission_quotation_section_stats.require(http_exception=403)
 def stats():
     """
     报价统计
@@ -583,40 +583,40 @@ def stats():
         abort(404)
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quote stats')
+    document_info['TITLE'] = _('quotation stats')
     # 渲染模板
     return render_template(
-        'quote/stats.html',
+        'quotation/stats.html',
         time_based=time_based,
         **document_info
     )
 
 
-@bp_quote.route('/<int:quote_id>/stats.html')
+@bp_quotation.route('/<int:quotation_id>/stats.html')
 @login_required
-@permission_quote_section_stats.require(http_exception=403)
-def stats_item(quote_id):
+@permission_quotation_section_stats.require(http_exception=403)
+def stats_item(quotation_id):
     """
     报价统计明细
-    :param quote_id:
+    :param quotation_id:
     :return:
     """
-    quote_info = get_quote_row_by_id(quote_id)
+    quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
-    if not quote_info:
+    if not quotation_info:
         abort(404)
     # 检查资源是否删除
-    if quote_info.status_delete == STATUS_DEL_OK:
+    if quotation_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
     # 统计数据
-    quote_stats_item_info = get_quote_row_by_id(quote_id)
+    quotation_stats_item_info = get_quotation_row_by_id(quotation_id)
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quote stats item')
+    document_info['TITLE'] = _('quotation stats item')
     # 渲染模板
     return render_template(
-        'quote/stats_item.html',
-        quote_stats_item_info=quote_stats_item_info,
+        'quotation/stats_item.html',
+        quotation_stats_item_info=quotation_stats_item_info,
         **document_info
     )

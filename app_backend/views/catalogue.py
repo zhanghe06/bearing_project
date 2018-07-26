@@ -35,17 +35,17 @@ from app_backend.api.catalogue import (
     get_catalogue_row_by_id,
     add_catalogue,
     edit_catalogue,
-    # product_current_stats,
-    # product_former_stats,
+    # production_current_stats,
+    # production_former_stats,
 )
-from app_backend.api.product import (
-    get_product_rows,
+from app_backend.api.production import (
+    get_production_rows,
     get_distinct_brand,
 )
-from app_backend.forms.product import (
-    ProductSearchForm,
-    ProductAddForm,
-    ProductEditForm,
+from app_backend.forms.production import (
+    ProductionSearchForm,
+    ProductionAddForm,
+    ProductionEditForm,
 )
 from app_backend.models.bearing_project import Catalogue
 from app_backend.permissions import (
@@ -72,17 +72,17 @@ AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
-def get_product_brand_choices():
-    product_brand_list = copy(default_choices_str)
+def get_production_brand_choices():
+    production_brand_list = copy(default_choices_str)
     distinct_brand = get_distinct_brand()
-    product_brand_list.extend([(brand, brand) for brand in distinct_brand])
-    return product_brand_list
+    production_brand_list.extend([(brand, brand) for brand in distinct_brand])
+    return production_brand_list
 
 
 @bp_catalogue.route('/lists.html', methods=['GET', 'POST'])
 @bp_catalogue.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
-@permission_product_section_search.require(http_exception=403)
+@permission_production_section_search.require(http_exception=403)
 def lists(page=1):
     """
     产品列表
@@ -95,8 +95,8 @@ def lists(page=1):
     document_info['TITLE'] = _('catalogue lists')
 
     # 搜索条件
-    form = ProductSearchForm(request.form)
-    form.product_brand.choices = get_product_brand_choices()
+    form = ProductionSearchForm(request.form)
+    form.production_brand.choices = get_production_brand_choices()
     # app.logger.info('')
 
     search_condition = []
@@ -108,17 +108,17 @@ def lists(page=1):
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.product_brand.data != default_choice_option_str:
-                search_condition.append(Product.product_brand == form.product_brand.data)
-            if form.product_model.data:
-                search_condition.append(Product.product_model == form.product_model.data)
+            if form.production_brand.data != default_choice_option_str:
+                search_condition.append(Production.production_brand == form.production_brand.data)
+            if form.production_model.data:
+                search_condition.append(Production.production_model == form.production_model.data)
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
-            if not permission_product_section_export.can():
+            if not permission_production_section_export.can():
                 abort(403)
-            column_names = Product.__table__.columns.keys()
-            query_sets = get_product_rows(*search_condition)
+            column_names = Production.__table__.columns.keys()
+            query_sets = get_production_rows(*search_condition)
 
             return excel.make_response_from_query_sets(
                 query_sets=query_sets,

@@ -5,8 +5,8 @@
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
-                   onclick="$('#menu-quote').trigger('click')">{{ _('quote management') }}</a></li>
-            <li class="active">{{ _('quote lists') }}</li>
+                   onclick="$('#menu-quotation').trigger('click')">{{ _('quotation management') }}</a></li>
+            <li class="active">{{ _('quotation lists') }}</li>
         </ol>
 
         <form class="form-inline" id="search_form" method="post">
@@ -39,13 +39,13 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>{{ _('quote id') }}</th>
-                    <th>{{ _('quote user') }}</th>
+                    <th>{{ _('quotation id') }}</th>
+                    <th>{{ _('quotation user') }}</th>
                     <th>{{ _('customer company') }}</th>
                     <th>{{ _('audit status') }}</th>
                     <th>{{ _('order status') }}</th>
-                    <th>{{ _('quote amount') }}</th>
-                    <th>{{ _('quote note') }}</th>
+                    <th>{{ _('quotation amount') }}</th>
+                    <th>{{ _('quotation note') }}</th>
                     <th>{{ _('create time') }}</th>
                     <th>{{ _('update time') }}</th>
                     <th>{{ _('operation') }}</th>
@@ -59,19 +59,19 @@
                         <td>{{ info.cid | customer_company_name }}</td>
                         <td>{{ info.status_audit | status_audit }}</td>
                         <td>{{ info.status_order | status_order }}</td>
-                        <td><a href="{{ url_for('quote.info', quote_id=info.id) }}" rel="tooltip"
-                               title="{{ _('Click details') }}">{{ info.amount_quote }}</a></td>
+                        <td><a href="{{ url_for('quotation.info', quotation_id=info.id) }}" rel="tooltip"
+                               title="{{ _('Click details') }}">{{ info.amount_quotation }}</a></td>
                         <td>{{ info.note }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
-                            <a href="{{ url_for('quote.preview', quote_id=info.id, next=request.path) }}"
+                            <a href="{{ url_for('quotation.preview', quotation_id=info.id, next=request.path) }}"
                                rel="tooltip" title="{{ _('Print') }}" target="_blank"><span
                                     class="glyphicon glyphicon-print"></span></a>
-                            <a href="{{ url_for('quote.edit', quote_id=info.id, next=request.path) }}"
+                            <a href="{{ url_for('quotation.edit', quotation_id=info.id, next=request.path) }}"
                                rel="tooltip" title="{{ _('Edit') }}"><span
                                     class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="quote_delete({{ info.id }})" rel="tooltip"
+                            <a href="javascript:void(0);" onclick="quotation_delete({{ info.id }})" rel="tooltip"
                                title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
@@ -80,7 +80,7 @@
             </table>
             {# 翻页 #}
             {% from "macros.html" import render_pagination %}
-            {{ render_pagination(pagination, 'quote.lists') }}
+            {{ render_pagination(pagination, 'quotation.lists') }}
         </div>
     </div>
 
@@ -89,11 +89,11 @@
 {% block extra_js %}
     <script>
       // 报价删除
-      function quote_delete (quote_id) {
+      function quotation_delete (quotation_id) {
         if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
-          $.getJSON('{{ url_for('quote.ajax_delete') }}',
+          $.getJSON('{{ url_for('quotation.ajax_delete') }}',
             {
-              quote_id: quote_id
+              quotation_id: quotation_id
             }, function (data) {
               if (data.result === true) {
                 alert(data.msg)

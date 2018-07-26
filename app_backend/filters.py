@@ -17,7 +17,7 @@ from app_backend.api.customer import get_customer_row_by_id
 from app_backend.api.user import get_user_row_by_id
 from app_backend.api.warehouse import get_warehouse_row_by_id
 from app_backend.api.rack import get_rack_row_by_id
-from app_backend.api.product import get_product_row_by_id
+from app_backend.api.production import get_production_row_by_id
 from app_common.maps.type_auth import TYPE_AUTH_DICT
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 from app_common.maps.type_role import TYPE_ROLE_DICT
@@ -88,26 +88,26 @@ def filter_rack_name(rack_id):
     return rack_info.name if rack_info else '-'
 
 
-@app.template_filter('product_brand')
-def filter_product_brand(product_id):
+@app.template_filter('production_brand')
+def filter_production_brand(production_id):
     """
     产品品牌
-    :param product_id:
+    :param production_id:
     :return:
     """
-    product_info = get_product_row_by_id(product_id)
-    return product_info.product_brand if product_info else '-'
+    production_info = get_production_row_by_id(production_id)
+    return production_info.production_brand if production_info else '-'
 
 
-@app.template_filter('product_model')
-def filter_product_model(product_id):
+@app.template_filter('production_model')
+def filter_production_model(production_id):
     """
     产品型号
-    :param product_id:
+    :param production_id:
     :return:
     """
-    product_info = get_product_row_by_id(product_id)
-    return product_info.product_model if product_info else '-'
+    production_info = get_production_row_by_id(production_id)
+    return production_info.production_model if production_info else '-'
 
 
 @app.template_filter('type_auth')

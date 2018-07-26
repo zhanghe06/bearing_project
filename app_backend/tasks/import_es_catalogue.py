@@ -9,6 +9,7 @@
 """
 
 from __future__ import unicode_literals
+from __future__ import print_function
 
 from app_backend import app
 from app_backend.api.catalogue import get_catalogue_limit_rows_by_last_id

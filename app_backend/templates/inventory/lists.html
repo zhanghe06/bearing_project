@@ -47,10 +47,10 @@
                 {% for info in pagination.items %}
                     <tr class="text-muted">
                         <td>{{ info.id }}</td>
-                        <td>{{ info.product_id }}</td>
-                        <td>{{ info.product_id | product_brand }}</td>
-                        <td><a href="{{ url_for('product.info', product_id=info.product_id) }}" rel="tooltip"
-                               title="{{ _('Click details') }}">{{ info.product_id | product_model }}</a></td>
+                        <td>{{ info.production_id }}</td>
+                        <td>{{ info.production_id | production_brand }}</td>
+                        <td><a href="{{ url_for('production.info', production_id=info.production_id) }}" rel="tooltip"
+                               title="{{ _('Click details') }}">{{ info.production_id | production_model }}</a></td>
                         <td>{{ info.warehouse_id | warehouse_name }}</td>
                         <td>{{ info.rack_id | rack_name }}</td>
                         <td class="text-right">{{ info.stock_qty }}</td>

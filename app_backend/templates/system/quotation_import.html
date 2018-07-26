@@ -13,7 +13,7 @@
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
                    onclick="$('#menu-system').trigger('click');">{{ _('system management') }}</a></li>
-            <li class="active">{{ _('catalogue import') }}</li>
+            <li class="active">{{ _('quotation import') }}</li>
         </ol>
 
 
@@ -53,7 +53,7 @@
                     <br>
                 </form>
             </div>
-            <div class="panel-footer">{{ _('Reference Format') }}: <a href="{{ url_for('static', filename='csv/产品型录.csv') }}" rel="tooltip" title="{{ _('Click download') }}">{{ _('catalogue record') }}.csv</a>
+            <div class="panel-footer">{{ _('Reference Format') }}: <a href="{{ url_for('static', filename='csv/报价记录.csv') }}" rel="tooltip" title="{{ _('Click download') }}">{{ _('quotation record') }}.csv</a>
             </div>
         </div>
 
@@ -74,7 +74,7 @@
         $(function () {
             'use strict';
             // Change this to the location of your server-side upload handler:
-            var url = '{{ url_for("system.catalogue_import") }}';
+            var url = '{{ url_for("system.quotation_import") }}';
             $('#file_upload').fileupload({
                 url: url,
                 dataType: 'json',
@@ -84,9 +84,9 @@
 
                         $('#import_process').remove();
                         var import_result_obj = $('#import_result');
-                        import_result_obj.append('<p class="text-success">{{ _('Number of historical data that have been emptied') }}: ' + data.result.import_info.delete_count + '</p>');
-                        import_result_obj.append('<p class="text-success">{{ _('Number of file records') }}: ' + data.result.import_info.csv_count + '</p>');
-                        import_result_obj.append('<p class="text-success">{{ _('Number of successful imports') }}: ' + data.result.import_info.db_count + '</p>');
+                        import_result_obj.append('<p class="text-success">清空历史数量: ' + data.result.import_info.delete_count + '</p>');
+                        import_result_obj.append('<p class="text-success">文件记录数量: ' + data.result.import_info.csv_count + '</p>');
+                        import_result_obj.append('<p class="text-success">成功导入数据: ' + data.result.import_info.db_count + '</p>');
                         {#                $.each(data.result.files, function (index, file) {#}
                         {#                    $('<p/>').text(file.name + '\t' + file.size).appendTo('#files');#}
                         {#                });#}
@@ -109,7 +109,7 @@
                         'width',
                         progress + '%'
                     );
-                    $('#import_process').append('<p class="text-info">{{ _('File upload completed') }}, {{ _('importing') }}...</p>');
+                    $('#import_process').append('<p class="text-info">文件上传完成, 正在导入...</p>');
                 }
 
             }).prop('disabled', !$.support.fileInput)

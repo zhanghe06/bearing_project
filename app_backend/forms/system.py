@@ -39,3 +39,15 @@ class CatalogueUploadForm(FlaskForm):
             'title': _('catalogue'),
         }
     )
+
+
+class QuotationUploadForm(FlaskForm):
+    file = FileField(
+        _('quotation'),
+        validators=[],
+        description=_('quotation'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('quotation'),
+        }
+    )

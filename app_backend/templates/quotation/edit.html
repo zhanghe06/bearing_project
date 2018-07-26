@@ -5,8 +5,8 @@
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
-                   onclick="$('#menu-quote').trigger('click')">{{ _('quote management') }}</a></li>
-            <li class="active">{{ _('quote edit') }}</li>
+                   onclick="$('#menu-quotation').trigger('click')">{{ _('quotation management') }}</a></li>
+            <li class="active">{{ _('quotation edit') }}</li>
         </ol>
 
         <form class="form-inline" id="search_form" method="post">
@@ -35,31 +35,31 @@
                     <thead>
                     <tr>
                         <th>{{ _('#') }}</th>
-                        <th>{{ _('product id') }}</th>
-                        <th>{{ _('product brand') }}</th>
-                        <th>{{ _('product model') }}</th>
-                        <th>{{ _('product sku') }}</th>
+                        <th>{{ _('production id') }}</th>
+                        <th>{{ _('production brand') }}</th>
+                        <th>{{ _('production model') }}</th>
+                        <th>{{ _('production sku') }}</th>
                         <th>{{ _('quantity') }}</th>
                         <th>{{ _('unit_price') }}</th>
                         <th>{{ _('Option') }}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for info in form.quote_items %}
+                    {% for info in form.quotation_items %}
                         <tr class="text-muted">
                             {{ info.form.id() }}
                             <td><span class="form-control input-sm">{{ loop.index }}</span></td>
-                            <td{% if info.product_id.errors %} class="has-error"{% endif %}>
-                                {{ info.product_id(class="form-control input-sm", title=info.product_id.errors|join(', ')) }}
+                            <td{% if info.production_id.errors %} class="has-error"{% endif %}>
+                                {{ info.production_id(class="form-control input-sm", title=info.production_id.errors|join(', ')) }}
                             </td>
-                            <td{% if info.product_brand.errors %} class="has-error"{% endif %}>
-                                {{ info.product_brand(class="form-control input-sm", title=info.product_brand.errors|join(', ')) }}
+                            <td{% if info.production_brand.errors %} class="has-error"{% endif %}>
+                                {{ info.production_brand(class="form-control input-sm", title=info.production_brand.errors|join(', ')) }}
                             </td>
-                            <td{% if info.product_model.errors %} class="has-error"{% endif %}>
-                                {{ info.product_model(class="form-control input-sm", title=info.product_model.errors|join(', ')) }}
+                            <td{% if info.production_model.errors %} class="has-error"{% endif %}>
+                                {{ info.production_model(class="form-control input-sm", title=info.production_model.errors|join(', ')) }}
                             </td>
-                            <td{% if info.product_sku.errors %} class="has-error"{% endif %}>
-                                {{ info.product_sku(class="form-control input-sm", title=info.product_sku.errors|join(', ')) }}
+                            <td{% if info.production_sku.errors %} class="has-error"{% endif %}>
+                                {{ info.production_sku(class="form-control input-sm", title=info.production_sku.errors|join(', ')) }}
                             </td>
                             <td{% if info.quantity.errors %} class="has-error"{% endif %}>
                                 {{ info.quantity(class="form-control input-sm", title=info.quantity.errors|join(', ')) }}

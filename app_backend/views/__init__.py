@@ -49,7 +49,7 @@ from flask_login import (
 from app_backend.api.login_user import get_login_user_row_by_id
 from app_backend.api.user import get_user_rows
 from app_backend.api.customer import get_customer_rows
-from app_backend.api.quotation import get_quote_rows
+from app_backend.api.quotation import get_quotation_rows
 from app_backend.api.role import get_role_row_by_id
 
 from app_backend import app, oauth_github, oauth_qq, oauth_weibo
@@ -192,7 +192,7 @@ def on_identity_loaded(sender, identity):
         quote_rows_condition = {
             'uid': current_user.id
         }
-        quote_rows = get_quote_rows(**quote_rows_condition)
+        quote_rows = get_quotation_rows(**quote_rows_condition)
         for quote_row in quote_rows:
             # 报价读取权限
             identity.provides.add(SectionActionItemNeed('quote', 'get', unicode(quote_row.id)))
@@ -246,7 +246,7 @@ def on_identity_loaded(sender, identity):
         quote_rows_condition = {
             'uid': current_user.id
         }
-        quote_rows = get_quote_rows(**quote_rows_condition)
+        quote_rows = get_quotation_rows(**quote_rows_condition)
         for quote_row in quote_rows:
             # 报价读取权限
             identity.provides.add(SectionActionItemNeed('quote', 'get', unicode(quote_row.id)))
@@ -283,7 +283,7 @@ def on_identity_loaded(sender, identity):
             quote_rows_condition = {
                 'uid': sales_item.id
             }
-            quote_rows = get_quote_rows(**quote_rows_condition)
+            quote_rows = get_quotation_rows(**quote_rows_condition)
             for quote_row in quote_rows:
                 # 报价读取权限
                 identity.provides.add(SectionActionItemNeed('quote', 'get', unicode(quote_row.id)))

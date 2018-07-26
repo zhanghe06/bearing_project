@@ -76,13 +76,13 @@ permission_user_section_stats = Permission(UserSectionNeed('stats'))
 
 # -------------------------------------------------------------
 # 产品板块操作权限（创建、查询、导出、统计）
-ProductSectionNeed = partial(SectionActionNeed, 'product')
-ProductSectionNeed.__doc__ = """A need with the section preset to `"product"`."""
+ProductionSectionNeed = partial(SectionActionNeed, 'production')
+ProductionSectionNeed.__doc__ = """A need with the section preset to `"production"`."""
 
-permission_product_section_add = Permission(ProductSectionNeed('add'))
-permission_product_section_search = Permission(ProductSectionNeed('search'))
-permission_product_section_export = Permission(ProductSectionNeed('export'))
-permission_product_section_stats = Permission(ProductSectionNeed('stats'))
+permission_production_section_add = Permission(ProductionSectionNeed('add'))
+permission_production_section_search = Permission(ProductionSectionNeed('search'))
+permission_production_section_export = Permission(ProductionSectionNeed('export'))
+permission_production_section_stats = Permission(ProductionSectionNeed('stats'))
 
 
 # -------------------------------------------------------------
@@ -120,13 +120,13 @@ permission_inventory_section_stats = Permission(InventorySectionNeed('stats'))
 
 # -------------------------------------------------------------
 # 报价板块操作权限（创建、查询、导出、统计）
-QuoteSectionNeed = partial(SectionActionNeed, 'quote')
-QuoteSectionNeed.__doc__ = """A need with the section preset to `"quote"`."""
+QuotationSectionNeed = partial(SectionActionNeed, 'quotation')
+QuotationSectionNeed.__doc__ = """A need with the section preset to `"quotation"`."""
 
-permission_quote_section_add = Permission(QuoteSectionNeed('add'))
-permission_quote_section_search = Permission(QuoteSectionNeed('search'))
-permission_quote_section_export = Permission(QuoteSectionNeed('export'))
-permission_quote_section_stats = Permission(QuoteSectionNeed('stats'))
+permission_quotation_section_add = Permission(QuotationSectionNeed('add'))
+permission_quotation_section_search = Permission(QuotationSectionNeed('search'))
+permission_quotation_section_export = Permission(QuotationSectionNeed('export'))
+permission_quotation_section_stats = Permission(QuotationSectionNeed('stats'))
 
 
 # =============================================================
@@ -208,76 +208,76 @@ class UserItemPrintPermission(Permission):
 
 # # -------------------------------------------------------------
 # # 产品明细操作权限(读取、更新、删除、打印)
-# ProductItemNeed = partial(SectionActionItemNeed, 'product')
-# ProductItemNeed.__doc__ = """A need with the section preset to `"product"`."""
+# ProductionItemNeed = partial(SectionActionItemNeed, 'production')
+# ProductionItemNeed.__doc__ = """A need with the section preset to `"production"`."""
 #
-# ProductItemGetNeed = partial(ProductItemNeed, 'get')
-# ProductItemEditNeed = partial(ProductItemNeed, 'edit')
-# ProductItemDelNeed = partial(ProductItemNeed, 'del')
-# ProductItemPrintNeed = partial(ProductItemNeed, 'print')
-#
-#
-# class ProductItemGetPermission(Permission):
-#     def __init__(self, product_id):
-#         need = ProductItemGetNeed(unicode(product_id))
-#         super(ProductItemGetPermission, self).__init__(need)
+# ProductionItemGetNeed = partial(ProductionItemNeed, 'get')
+# ProductionItemEditNeed = partial(ProductionItemNeed, 'edit')
+# ProductionItemDelNeed = partial(ProductionItemNeed, 'del')
+# ProductionItemPrintNeed = partial(ProductionItemNeed, 'print')
 #
 #
-# class ProductItemEditPermission(Permission):
-#     def __init__(self, product_id):
-#         need = ProductItemEditNeed(unicode(product_id))
-#         super(ProductItemEditPermission, self).__init__(need)
+# class ProductionItemGetPermission(Permission):
+#     def __init__(self, production_id):
+#         need = ProductionItemGetNeed(unicode(production_id))
+#         super(ProductionItemGetPermission, self).__init__(need)
 #
 #
-# class ProductItemDelPermission(Permission):
-#     def __init__(self, product_id):
-#         need = ProductItemDelNeed(unicode(product_id))
-#         super(ProductItemDelPermission, self).__init__(need)
+# class ProductionItemEditPermission(Permission):
+#     def __init__(self, production_id):
+#         need = ProductionItemEditNeed(unicode(production_id))
+#         super(ProductionItemEditPermission, self).__init__(need)
 #
 #
-# class ProductItemPrintPermission(Permission):
-#     def __init__(self, product_id):
-#         need = ProductItemPrintNeed(unicode(product_id))
-#         super(ProductItemPrintPermission, self).__init__(need)
+# class ProductionItemDelPermission(Permission):
+#     def __init__(self, production_id):
+#         need = ProductionItemDelNeed(unicode(production_id))
+#         super(ProductionItemDelPermission, self).__init__(need)
+#
+#
+# class ProductionItemPrintPermission(Permission):
+#     def __init__(self, production_id):
+#         need = ProductionItemPrintNeed(unicode(production_id))
+#         super(ProductionItemPrintPermission, self).__init__(need)
 
 
 # -------------------------------------------------------------
 # 报价明细操作权限（读取、更新、删除、打印、审核）
-QuoteItemNeed = partial(SectionActionItemNeed, 'quote')
-QuoteItemNeed.__doc__ = """A need with the section preset to `"quote"`."""
+QuotationItemNeed = partial(SectionActionItemNeed, 'quotation')
+QuotationItemNeed.__doc__ = """A need with the section preset to `"quotation"`."""
 
-QuoteItemGetNeed = partial(QuoteItemNeed, 'get')
-QuoteItemEditNeed = partial(QuoteItemNeed, 'edit')
-QuoteItemDelNeed = partial(QuoteItemNeed, 'del')
-QuoteItemPrintNeed = partial(QuoteItemNeed, 'print')
-QuoteItemAuditNeed = partial(QuoteItemNeed, 'audit')
-
-
-class QuoteItemGetPermission(Permission):
-    def __init__(self, quote_id):
-        need = QuoteItemGetNeed(unicode(quote_id))
-        super(QuoteItemGetPermission, self).__init__(need)
+QuotationItemGetNeed = partial(QuotationItemNeed, 'get')
+QuotationItemEditNeed = partial(QuotationItemNeed, 'edit')
+QuotationItemDelNeed = partial(QuotationItemNeed, 'del')
+QuotationItemPrintNeed = partial(QuotationItemNeed, 'print')
+QuotationItemAuditNeed = partial(QuotationItemNeed, 'audit')
 
 
-class QuoteItemEditPermission(Permission):
-    def __init__(self, quote_id):
-        need = QuoteItemEditNeed(unicode(quote_id))
-        super(QuoteItemEditPermission, self).__init__(need)
+class QuotationItemGetPermission(Permission):
+    def __init__(self, quotation_id):
+        need = QuotationItemGetNeed(unicode(quotation_id))
+        super(QuotationItemGetPermission, self).__init__(need)
 
 
-class QuoteItemDelPermission(Permission):
-    def __init__(self, quote_id):
-        need = QuoteItemDelNeed(unicode(quote_id))
-        super(QuoteItemDelPermission, self).__init__(need)
+class QuotationItemEditPermission(Permission):
+    def __init__(self, quotation_id):
+        need = QuotationItemEditNeed(unicode(quotation_id))
+        super(QuotationItemEditPermission, self).__init__(need)
 
 
-class QuoteItemPrintPermission(Permission):
-    def __init__(self, quote_id):
-        need = QuoteItemPrintNeed(unicode(quote_id))
-        super(QuoteItemPrintPermission, self).__init__(need)
+class QuotationItemDelPermission(Permission):
+    def __init__(self, quotation_id):
+        need = QuotationItemDelNeed(unicode(quotation_id))
+        super(QuotationItemDelPermission, self).__init__(need)
 
 
-class QuoteItemAuditPermission(Permission):
-    def __init__(self, quote_id):
-        need = QuoteItemAuditNeed(unicode(quote_id))
-        super(QuoteItemAuditPermission, self).__init__(need)
+class QuotationItemPrintPermission(Permission):
+    def __init__(self, quotation_id):
+        need = QuotationItemPrintNeed(unicode(quotation_id))
+        super(QuotationItemPrintPermission, self).__init__(need)
+
+
+class QuotationItemAuditPermission(Permission):
+    def __init__(self, quotation_id):
+        need = QuotationItemAuditNeed(unicode(quotation_id))
+        super(QuotationItemAuditPermission, self).__init__(need)

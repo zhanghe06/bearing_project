@@ -5,24 +5,24 @@
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
-                   onclick="$('#menu-quote').trigger('click')">{{ _('quote management') }}</a></li>
-            <li class="active">{{ _('quote info') }}</li>
+                   onclick="$('#menu-quotation').trigger('click')">{{ _('quotation management') }}</a></li>
+            <li class="active">{{ _('quotation info') }}</li>
         </ol>
         <tr class="text-muted">
-            <td>{{ quote_info.id }}</td>
-            <td>{{ quote_info.uid | user_name }}</td>
-            <td>{{ quote_info.cid | customer_company_name }}</td>
-            <td>{{ quote_info.status_audit | status_audit }}</td>
-            <td>{{ quote_info.status_order | status_order }}</td>
-            <td>{{ quote_info.amount_quote }}</td>
-            <td>{{ quote_info.note }}</td>
-            <td>{{ moment(quote_info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-            <td>{{ moment(quote_info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+            <td>{{ quotation_info.id }}</td>
+            <td>{{ quotation_info.uid | user_name }}</td>
+            <td>{{ quotation_info.cid | customer_company_name }}</td>
+            <td>{{ quotation_info.status_audit | status_audit }}</td>
+            <td>{{ quotation_info.status_order | status_order }}</td>
+            <td>{{ quotation_info.amount_quotation }}</td>
+            <td>{{ quotation_info.note }}</td>
+            <td>{{ moment(quotation_info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+            <td>{{ moment(quotation_info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
             <td>
-                <a href="{{ url_for('quote.preview', quote_id=quote_info.id, next=request.path) }}"
+                <a href="{{ url_for('quotation.preview', quotation_id=quotation_info.id, next=request.path) }}"
                    rel="tooltip" title="{{ _('Print') }}" target="_blank"><span
                         class="glyphicon glyphicon-print"></span></a>
-                <a href="{{ url_for('quote.edit', quote_id=quote_info.id, next=request.path) }}"
+                <a href="{{ url_for('quotation.edit', quotation_id=quotation_info.id, next=request.path) }}"
                    rel="tooltip" title="{{ _('Edit') }}"><span
                         class="glyphicon glyphicon-pencil"></span></a>
             </td>
@@ -35,11 +35,11 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>{{ _('quote id') }}</th>
-                    <th>{{ _('product id') }}</th>
-                    <th>{{ _('product brand') }}</th>
-                    <th>{{ _('product model') }}</th>
-                    <th>{{ _('product sku') }}</th>
+                    <th>{{ _('quotation id') }}</th>
+                    <th>{{ _('production id') }}</th>
+                    <th>{{ _('production brand') }}</th>
+                    <th>{{ _('production model') }}</th>
+                    <th>{{ _('production sku') }}</th>
                     <th>{{ _('quantity') }}</th>
                     <th>{{ _('unit_price') }}</th>
                     <th>{{ _('create time') }}</th>
@@ -47,13 +47,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for info in quote_items %}
+                {% for info in quotation_items %}
                     <tr class="text-muted">
-                        <td>{{ info.quote_id }}</td>
-                        <td>{{ info.product_id }}</td>
-                        <td>{{ info.product_brand }}</td>
-                        <td>{{ info.product_model }}</td>
-                        <td>{{ info.product_sku }}</td>
+                        <td>{{ info.quotation_id }}</td>
+                        <td>{{ info.production_id }}</td>
+                        <td>{{ info.production_brand }}</td>
+                        <td>{{ info.production_model }}</td>
+                        <td>{{ info.production_sku }}</td>
                         <td>{{ info.quantity }}</td>
                         <td>{{ info.unit_price }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>

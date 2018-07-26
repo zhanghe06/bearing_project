@@ -10,48 +10,66 @@
 
 
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import QuoteItem
+from app_backend.models.bearing_project import QuotationItems
 from app_backend import db
 
 db_instance = DbInstance(db)
 
 
-def get_quote_item_rows(*args, **kwargs):
+def get_quotation_item_rows(*args, **kwargs):
     """
     获取列表
     :param args:
     :param kwargs:
     :return:
     """
-    return db_instance.get_rows(QuoteItem, *args, **kwargs)
+    return db_instance.get_rows(QuotationItems, *args, **kwargs)
 
 
-def add_quote_item(quote_item_data):
+def add_quotation_item(quotation_item_data):
     """
     添加信息
-    :param quote_item_data:
+    :param quotation_item_data:
     :return: None/Value of user.id
     :except:
     """
-    return db_instance.add(QuoteItem, quote_item_data)
+    return db_instance.add(QuotationItems, quotation_item_data)
 
 
-def edit_quote_item(quote_item_id, quote_item_data):
+def edit_quotation_item(quotation_item_id, quotation_item_data):
     """
     修改信息
-    :param quote_item_id:
-    :param quote_item_data:
+    :param quotation_item_id:
+    :param quotation_item_data:
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.edit(QuoteItem, quote_item_id, quote_item_data)
+    return db_instance.edit(QuotationItems, quotation_item_id, quotation_item_data)
 
 
-def delete_quote_item(quote_item_id):
+def delete_quotation_item(quotation_item_id):
     """
     删除信息
-    :param quote_item_id:
+    :param quotation_item_id:
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.delete(QuoteItem, quote_item_id)
+    return db_instance.delete(QuotationItems, quotation_item_id)
+
+
+def delete_quotation_item_table():
+    """
+    清空表
+    :return:
+    """
+    return db_instance.delete_table(QuotationItems)
+
+
+def count_quotation_item(*args, **kwargs):
+    """
+    计数
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    return db_instance.count(QuotationItems, *args, **kwargs)

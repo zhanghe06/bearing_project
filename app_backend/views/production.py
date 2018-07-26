@@ -30,29 +30,29 @@ from flask_login import login_required
 
 from app_backend import app
 from app_backend import excel
-from app_backend.api.product import (
-    get_product_pagination,
-    get_product_row_by_id,
-    add_product,
-    edit_product,
-    # product_current_stats,
-    # product_former_stats,
+from app_backend.api.production import (
+    get_production_pagination,
+    get_production_row_by_id,
+    add_production,
+    edit_production,
+    # production_current_stats,
+    # production_former_stats,
 )
-from app_backend.api.product import (
-    get_product_rows,
+from app_backend.api.production import (
+    get_production_rows,
     get_distinct_brand,
 )
-from app_backend.forms.product import (
-    ProductSearchForm,
-    ProductAddForm,
-    ProductEditForm,
+from app_backend.forms.production import (
+    ProductionSearchForm,
+    ProductionAddForm,
+    ProductionEditForm,
 )
-from app_backend.models.bearing_project import Product
+from app_backend.models.bearing_project import Production
 from app_backend.permissions import (
-    permission_product_section_add,
-    permission_product_section_search,
-    permission_product_section_export,
-    permission_product_section_stats,
+    permission_production_section_add,
+    permission_production_section_search,
+    permission_production_section_export,
+    permission_production_section_stats,
     permission_role_administrator,
 )
 from app_common.maps.default import default_choices_str, default_choice_option_str
@@ -63,7 +63,7 @@ from app_common.maps.type_role import TYPE_ROLE_MANAGER
 from app_common.tools import json_default
 
 # 定义蓝图
-bp_product = Blueprint('product', __name__, url_prefix='/product')
+bp_production = Blueprint('production', __name__, url_prefix='/production')
 
 # 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
@@ -72,35 +72,35 @@ AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
-def get_product_brand_choices():
-    product_brand_list = copy(default_choices_str)
+def get_production_brand_choices():
+    production_brand_list = copy(default_choices_str)
     distinct_brand = get_distinct_brand(status_delete=STATUS_DEL_NO)
-    product_brand_list.extend([(brand, brand) for brand in distinct_brand])
-    return product_brand_list
+    production_brand_list.extend([(brand, brand) for brand in distinct_brand])
+    return production_brand_list
 
 
-@bp_product.route('/lists.html', methods=['GET', 'POST'])
-@bp_product.route('/lists/<int:page>.html', methods=['GET', 'POST'])
+@bp_production.route('/lists.html', methods=['GET', 'POST'])
+@bp_production.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
-@permission_product_section_search.require(http_exception=403)
+@permission_production_section_search.require(http_exception=403)
 def lists(page=1):
     """
     产品列表
     :param page:
     :return:
     """
-    template_name = 'product/lists.html'
+    template_name = 'production/lists.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('product lists')
+    document_info['TITLE'] = _('production lists')
 
     # 搜索条件
-    form = ProductSearchForm(request.form)
-    form.product_brand.choices = get_product_brand_choices()
+    form = ProductionSearchForm(request.form)
+    form.production_brand.choices = get_production_brand_choices()
     # app.logger.info('')
 
     search_condition = [
-        Product.status_delete == STATUS_DEL_NO,
+        Production.status_delete == STATUS_DEL_NO,
     ]
     if request.method == 'POST':
         # 表单校验失败
@@ -110,26 +110,26 @@ def lists(page=1):
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.product_brand.data != default_choice_option_str:
-                search_condition.append(Product.product_brand == form.product_brand.data)
-            if form.product_model.data:
-                search_condition.append(Product.product_model == form.product_model.data)
+            if form.production_brand.data != default_choice_option_str:
+                search_condition.append(Production.production_brand == form.production_brand.data)
+            if form.production_model.data:
+                search_condition.append(Production.production_model == form.production_model.data)
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
-            if not permission_product_section_export.can():
+            if not permission_production_section_export.can():
                 abort(403)
-            column_names = Product.__table__.columns.keys()
-            query_sets = get_product_rows(*search_condition)
+            column_names = Production.__table__.columns.keys()
+            query_sets = get_production_rows(*search_condition)
 
             return excel.make_response_from_query_sets(
                 query_sets=query_sets,
                 column_names=column_names,
                 file_type='csv',
-                file_name='%s.csv' % _('product lists')
+                file_name='%s.csv' % _('production lists')
             )
     # 翻页数据
-    pagination = get_product_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_production_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(
@@ -140,44 +140,44 @@ def lists(page=1):
     )
 
 
-@bp_product.route('/<int:product_id>/info.html')
+@bp_production.route('/<int:production_id>/info.html')
 @login_required
-def info(product_id):
+def info(production_id):
     """
     产品详情
-    :param product_id:
+    :param production_id:
     :return:
     """
     # 详情数据
-    product_info = get_product_row_by_id(product_id)
+    production_info = get_production_row_by_id(production_id)
     # 检查资源是否存在
-    if not product_info:
+    if not production_info:
         abort(404)
     # 检查资源是否删除
-    if product_info.status_delete == STATUS_DEL_OK:
+    if production_info.status_delete == STATUS_DEL_OK:
         abort(410)
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('product info')
+    document_info['TITLE'] = _('production info')
     # 渲染模板
-    return render_template('product/info.html', product_info=product_info, **document_info)
+    return render_template('production/info.html', production_info=production_info, **document_info)
 
 
-@bp_product.route('/add.html', methods=['GET', 'POST'])
+@bp_production.route('/add.html', methods=['GET', 'POST'])
 @login_required
-@permission_product_section_add.require(http_exception=403)
+@permission_production_section_add.require(http_exception=403)
 def add():
     """
     创建产品
     :return:
     """
-    template_name = 'product/add.html'
+    template_name = 'production/add.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('product add')
+    document_info['TITLE'] = _('production add')
 
     # 加载创建表单
-    form = ProductAddForm(request.form)
+    form = ProductionAddForm(request.form)
 
     # 进入创建页面
     if request.method == 'GET':
@@ -201,14 +201,14 @@ def add():
 
         # 表单校验成功
         current_time = datetime.utcnow()
-        product_data = {
-            'product_brand': form.product_brand.data,
-            'product_model': form.product_model.data,
+        production_data = {
+            'production_brand': form.production_brand.data,
+            'production_model': form.production_model.data,
             'note': form.note.data,
             'create_time': current_time,
             'update_time': current_time,
         }
-        result = add_product(product_data)
+        result = add_production(production_data)
         # 创建操作成功
         if result:
             flash(_('Add Success'), 'success')
@@ -223,43 +223,43 @@ def add():
             )
 
 
-@bp_product.route('/<int:product_id>/edit.html', methods=['GET', 'POST'])
+@bp_production.route('/<int:production_id>/edit.html', methods=['GET', 'POST'])
 @login_required
 @permission_role_administrator.require(http_exception=403)
-def edit(product_id):
+def edit(production_id):
     """
     产品编辑
     """
-    product_info = get_product_row_by_id(product_id)
+    production_info = get_production_row_by_id(production_id)
     # 检查资源是否存在
-    if not product_info:
+    if not production_info:
         abort(404)
     # 检查资源是否删除
-    if product_info.status_delete == STATUS_DEL_OK:
+    if production_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
-    template_name = 'product/edit.html'
+    template_name = 'production/edit.html'
 
     # 加载编辑表单
-    form = ProductEditForm(request.form)
+    form = ProductionEditForm(request.form)
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('product edit')
+    document_info['TITLE'] = _('production edit')
 
     # 进入编辑页面
     if request.method == 'GET':
         # 表单赋值
-        form.id.data = product_info.id
-        form.product_brand.data = product_info.product_brand
-        form.product_model.data = product_info.product_model
-        form.note.data = product_info.note
-        form.create_time.data = product_info.create_time
-        form.update_time.data = product_info.update_time
+        form.id.data = production_info.id
+        form.production_brand.data = production_info.production_brand
+        form.production_model.data = production_info.production_model
+        form.note.data = production_info.note
+        form.create_time.data = production_info.create_time
+        form.update_time.data = production_info.update_time
         # 渲染页面
         return render_template(
             template_name,
-            product_id=product_id,
+            production_id=production_id,
             form=form,
             **document_info
         )
@@ -267,23 +267,23 @@ def edit(product_id):
     # 处理编辑请求
     if request.method == 'POST':
         # 表单校验失败
-        if product_id != form.id.data or not form.validate_on_submit():
+        if production_id != form.id.data or not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
             return render_template(
                 template_name,
-                product_id=product_id,
+                production_id=production_id,
                 form=form,
                 **document_info
             )
         # 表单校验成功
         current_time = datetime.utcnow()
-        product_data = {
-            'product_brand': form.product_brand.data,
-            'product_model': form.product_model.data,
+        production_data = {
+            'production_brand': form.production_brand.data,
+            'production_model': form.production_model.data,
             'note': form.note.data,
             'update_time': current_time,
         }
-        result = edit_product(product_id, product_data)
+        result = edit_production(production_id, production_data)
         # 编辑操作成功
         if result:
             flash(_('Edit Success'), 'success')
@@ -293,13 +293,13 @@ def edit(product_id):
             flash(_('Edit Failure'), 'danger')
             return render_template(
                 template_name,
-                product_id=product_id,
+                production_id=production_id,
                 form=form,
                 **document_info
             )
 
 
-@bp_product.route('/ajax/del', methods=['GET', 'POST'])
+@bp_production.route('/ajax/del', methods=['GET', 'POST'])
 @login_required
 def ajax_delete():
     """
@@ -315,8 +315,8 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查请求参数
-    product_id = request.args.get('product_id', 0, type=int)
-    if not product_id:
+    production_id = request.args.get('production_id', 0, type=int)
+    if not production_id:
         ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
         return jsonify(ajax_failure_msg)
 
@@ -325,23 +325,23 @@ def ajax_delete():
         ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
         return jsonify(ajax_failure_msg)
 
-    product_info = get_product_row_by_id(product_id)
+    production_info = get_production_row_by_id(production_id)
     # 检查资源是否存在
-    if not product_info:
+    if not production_info:
         ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
         return jsonify(ajax_failure_msg)
     # 检查资源是否删除
-    if product_info.status_delete == STATUS_DEL_OK:
+    if production_info.status_delete == STATUS_DEL_OK:
         ajax_success_msg['msg'] = _('Del Success')  # Already deleted
         return jsonify(ajax_success_msg)
 
     current_time = datetime.utcnow()
-    product_data = {
+    production_data = {
         'status_delete': STATUS_DEL_OK,
         'delete_time': current_time,
         'update_time': current_time,
     }
-    result = edit_product(product_id, product_data)
+    result = edit_production(production_id, production_data)
     if result:
         ajax_success_msg['msg'] = _('Del Success')
         return jsonify(ajax_success_msg)
@@ -350,7 +350,7 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
 
-# @bp_product.route('/ajax/stats', methods=['GET', 'POST'])
+# @bp_production.route('/ajax/stats', methods=['GET', 'POST'])
 # @login_required
 # def ajax_stats():
 #     """
@@ -358,11 +358,11 @@ def ajax_delete():
 #     :return:
 #     """
 #     time_based = request.args.get('time_based', 'hour')
-#     result_product_current = product_current_stats(time_based)
-#     result_product_former = product_former_stats(time_based)
+#     result_production_current = production_current_stats(time_based)
+#     result_production_former = production_former_stats(time_based)
 #
 #     line_chart_data = {
-#         'labels': [label for label, _ in result_product_current],
+#         'labels': [label for label, _ in result_production_current],
 #         'datasets': [
 #             {
 #                 'label': '在职',
@@ -371,7 +371,7 @@ def ajax_delete():
 #                 'pointBackgroundColor': 'rgba(220,220,220,1)',
 #                 'pointBorderColor': '#fff',
 #                 'pointBorderWidth': 2,
-#                 'data': [data for _, data in result_product_current]
+#                 'data': [data for _, data in result_production_current]
 #             },
 #             {
 #                 'label': '离职',
@@ -380,16 +380,16 @@ def ajax_delete():
 #                 'pointBackgroundColor': 'rgba(151,187,205,1)',
 #                 'pointBorderColor': '#fff',
 #                 'pointBorderWidth': 2,
-#                 'data': [data for _, data in result_product_former]
+#                 'data': [data for _, data in result_production_former]
 #             }
 #         ]
 #     }
 #     return json.dumps(line_chart_data, default=json_default)
 #
 #
-# @bp_product.route('/stats.html')
+# @bp_production.route('/stats.html')
 # @login_required
-# @permission_product_section_stats.require(http_exception=403)
+# @permission_production_section_stats.require(http_exception=403)
 # def stats():
 #     """
 #     产品统计
@@ -401,40 +401,40 @@ def ajax_delete():
 #         abort(404)
 #     # 文档信息
 #     document_info = DOCUMENT_INFO.copy()
-#     document_info['TITLE'] = _('product stats')
+#     document_info['TITLE'] = _('production stats')
 #     # 渲染模板
 #     return render_template(
-#         'product/stats.html',
+#         'production/stats.html',
 #         time_based=time_based,
 #         **document_info
 #     )
 #
 #
-# @bp_product.route('/<int:product_id>/stats.html')
+# @bp_production.route('/<int:production_id>/stats.html')
 # @login_required
-# @permission_product_section_stats.require(http_exception=403)
-# def stats_item(product_id):
+# @permission_production_section_stats.require(http_exception=403)
+# def stats_item(production_id):
 #     """
 #     产品统计明细
-#     :param product_id:
+#     :param production_id:
 #     :return:
 #     """
-#     product_info = get_product_row_by_id(product_id)
+#     production_info = get_production_row_by_id(production_id)
 #     # 检查资源是否存在
-#     if not product_info:
+#     if not production_info:
 #         abort(404)
 #     # 检查资源是否删除
-#     if product_info.status_delete == STATUS_DEL_OK:
+#     if production_info.status_delete == STATUS_DEL_OK:
 #         abort(410)
 #
 #     # 统计数据
-#     product_stats_item_info = get_product_row_by_id(product_id)
+#     production_stats_item_info = get_production_row_by_id(production_id)
 #     # 文档信息
 #     document_info = DOCUMENT_INFO.copy()
-#     document_info['TITLE'] = _('product stats item')
+#     document_info['TITLE'] = _('production stats item')
 #     # 渲染模板
 #     return render_template(
-#         'product/stats_item.html',
-#         product_stats_item_info=product_stats_item_info,
+#         'production/stats_item.html',
+#         production_stats_item_info=production_stats_item_info,
 #         **document_info
 #     )

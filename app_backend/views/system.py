@@ -29,11 +29,17 @@ from flask_babel import gettext as _
 from flask_login import login_required
 
 from app_backend import app
+
 from app_backend.api.catalogue import delete_catalogue_table, count_catalogue
 from app_backend.models.bearing_project import Catalogue
 from app_backend.api.catalogue import add_catalogue
 from app_backend.forms.system import CatalogueUploadForm
-from app_backend.models.bearing_project import Rack
+
+from app_backend.api.quotation import delete_quotation_table, count_quotation
+from app_backend.models.bearing_project import Quotation
+from app_backend.api.quotation import add_quotation
+from app_backend.forms.system import QuotationUploadForm
+
 from app_backend.permissions import (
     permission_role_administrator,
 )
@@ -97,6 +103,72 @@ def catalogue_import():
                 'delete_count': delete_count,
                 'csv_count': csv_count,
                 'db_count': count_catalogue(),
+            }
+
+            # files.append(file_info)
+
+            ajax_success_msg['file_info'] = file_info
+            ajax_success_msg['import_info'] = import_info
+            return jsonify(ajax_success_msg)
+        except Exception as e:
+            ajax_failure_msg['msg'] = e.message
+            return jsonify(ajax_failure_msg)
+
+    # 渲染模板
+    return render_template(
+        template_name,
+        form=form,
+        **document_info
+    )
+
+
+@bp_system.route("/quotation_import", methods=['GET', 'POST'])
+@login_required
+@permission_role_administrator.require(http_exception=403)
+def quotation_import():
+    template_name = 'system/quotation_import.html'
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('quotation import')
+
+    # 加载表单
+    form = QuotationUploadForm(request.form)
+
+    if request.method == 'POST':
+        ajax_success_msg = AJAX_SUCCESS_MSG.copy()
+        ajax_failure_msg = AJAX_FAILURE_MSG.copy()
+        try:
+            # files = []
+            file_item = request.files.get('file')
+            csv_data = request.get_array(field_name='file')
+            # 校验数据是否有效
+            if len(csv_data) < 3:
+                raise Exception('数据错误')
+            csv_data.pop(0)
+            csv_head = csv_data.pop(0)
+
+            csv_count = len(csv_data)
+
+            column_names = Quotation.__table__.columns.keys()
+
+            if not set(csv_head).issubset(set(column_names)):
+                raise Exception('数据错误')
+            # 清空历史
+            delete_count = delete_quotation_table()
+            # 执行导入
+            for item in csv_data:
+                add_quotation(dict(zip(csv_head, item)))
+
+            file_info = {
+                'name': file_item.filename,
+                'content_type': file_item.content_type,
+                'size': bytes2human(get_file_size(file_item)),
+            }
+
+            import_info = {
+                'delete_count': delete_count,
+                'csv_count': csv_count,
+                'db_count': count_quotation(),
             }
 
             # files.append(file_info)

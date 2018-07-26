@@ -13,13 +13,44 @@ def to_dict(self):
 Base.to_dict = to_dict
 
 
+class BuyerOrderItems(Base):
+    __tablename__ = 'buyer_order_items'
+
+    id = Column(Integer, primary_key=True)
+    buyer_order_id = Column(Integer, nullable=False, index=True)
+    production_id = Column(Integer, nullable=False, index=True)
+    production_brand = Column(String(16), nullable=False, server_default=text("''"))
+    production_model = Column(String(32), nullable=False, server_default=text("''"))
+    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
+    production_note = Column(String(64), nullable=False, server_default=text("''"))
+    quantity = Column(Integer, nullable=False, server_default=text("'0'"))
+    unit_price = Column(Numeric(8, 2), nullable=False, server_default=text("'0.00'"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
 class BuyerOrders(Base):
     __tablename__ = 'buyer_orders'
 
     id = Column(Integer, primary_key=True)
     uid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
     cid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
+    contact_id = Column(Integer, nullable=False)
+    amount_production = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_shipping = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_adjustment = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_order = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    note = Column(String(256), nullable=False, server_default=text("''"))
+    status_tax = Column(Integer, nullable=False, server_default=text("'0'"))
+    status_audit = Column(Integer, nullable=False, server_default=text("'0'"))
+    status_effect = Column(Integer, nullable=False, server_default=text("'0'"))
+    status_completion = Column(Integer, nullable=False, server_default=text("'0'"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    audit_time = Column(DateTime)
+    effect_time = Column(DateTime)
+    completion_time = Column(DateTime)
     delete_time = Column(DateTime)
     create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
@@ -28,16 +59,16 @@ class BuyerOrders(Base):
 class Catalogue(Base):
     __tablename__ = 'catalogue'
     __table_args__ = (
-        Index('product_brand', 'product_brand', 'product_model', unique=True),
+        Index('production_brand', 'production_brand', 'production_model', unique=True),
     )
 
     id = Column(Integer, primary_key=True)
-    product_brand = Column(String(16), nullable=False, server_default=text("''"))
-    product_model = Column(String(32), nullable=False, index=True, server_default=text("''"))
-    product_label = Column(String(32), nullable=False, server_default=text("''"))
-    product_brand_old = Column(String(16), nullable=False, server_default=text("''"))
-    product_model_old = Column(String(32), nullable=False, index=True, server_default=text("''"))
-    product_class = Column(String(32), nullable=False, server_default=text("''"))
+    production_brand = Column(String(16), nullable=False, server_default=text("''"))
+    production_model = Column(String(32), nullable=False, index=True, server_default=text("''"))
+    production_label = Column(String(32), nullable=False, server_default=text("''"))
+    production_brand_old = Column(String(16), nullable=False, server_default=text("''"))
+    production_model_old = Column(String(32), nullable=False, index=True, server_default=text("''"))
+    production_class = Column(String(32), nullable=False, server_default=text("''"))
     ind = Column(Numeric(4, 0), nullable=False, server_default=text("'0'"))
     oud = Column(Numeric(4, 0), nullable=False, server_default=text("'0'"))
     wid = Column(Numeric(4, 0), nullable=False, server_default=text("'0'"))
@@ -133,6 +164,10 @@ class Delivery(Base):
     sales_order_id = Column(Integer, index=True, server_default=text("'0'"))
     customer_cid = Column(Integer, index=True, server_default=text("'0'"))
     type_delivery = Column(Integer, nullable=False, server_default=text("'0'"))
+    amount_production = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_shipping = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_adjustment = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_delivery = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     status_audit = Column(Integer, nullable=False, server_default=text("'0'"))
     status_confirm = Column(Integer, nullable=False, server_default=text("'0'"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
@@ -143,11 +178,30 @@ class Delivery(Base):
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
+class DeliveryItems(Base):
+    __tablename__ = 'delivery_items'
+
+    id = Column(Integer, primary_key=True)
+    delivery_id = Column(Integer, nullable=False, index=True)
+    sales_order_id = Column(Integer, index=True, server_default=text("'0'"))
+    production_id = Column(Integer, nullable=False, index=True)
+    production_brand = Column(String(16), nullable=False, server_default=text("''"))
+    production_model = Column(String(32), nullable=False, server_default=text("''"))
+    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
+    production_note = Column(String(64), nullable=False, server_default=text("''"))
+    quantity = Column(Integer, nullable=False, server_default=text("'0'"))
+    unit_price = Column(Numeric(8, 2), nullable=False, server_default=text("'0.00'"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
 class Inventory(Base):
     __tablename__ = 'inventory'
 
     id = Column(Integer, primary_key=True)
-    product_id = Column(Integer, nullable=False, index=True)
+    production_id = Column(Integer, nullable=False, index=True)
     warehouse_id = Column(Integer, nullable=False)
     rack_id = Column(Integer, nullable=False)
     stock_qty = Column(Integer, nullable=False)
@@ -158,17 +212,17 @@ class Inventory(Base):
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
-class Product(Base):
-    __tablename__ = 'product'
+class Production(Base):
+    __tablename__ = 'production'
     __table_args__ = (
-        Index('product_brand', 'product_brand', 'product_model', unique=True),
+        Index('production_brand', 'production_brand', 'production_model', unique=True),
     )
 
     id = Column(Integer, primary_key=True)
     category_id = Column(Integer, nullable=False, server_default=text("'0'"))
-    product_brand = Column(String(16), nullable=False, server_default=text("''"))
-    product_model = Column(String(32), nullable=False, index=True, server_default=text("''"))
-    product_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
+    production_brand = Column(String(16), nullable=False, server_default=text("''"))
+    production_model = Column(String(32), nullable=False, index=True, server_default=text("''"))
+    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
     note = Column(String(64), nullable=False, server_default=text("''"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
     delete_time = Column(DateTime)
@@ -182,7 +236,7 @@ class Purchase(Base):
     id = Column(Integer, primary_key=True)
     buyer_order_id = Column(Integer, index=True, server_default=text("'0'"))
     supplier_cid = Column(Integer, index=True, server_default=text("'0'"))
-    type_delivery = Column(Integer, nullable=False, server_default=text("'0'"))
+    type_purchase = Column(Integer, nullable=False, server_default=text("'0'"))
     status_audit = Column(Integer, nullable=False, server_default=text("'0'"))
     status_confirm = Column(Integer, nullable=False, server_default=text("'0'"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
@@ -193,17 +247,36 @@ class Purchase(Base):
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
-class Quote(Base):
-    __tablename__ = 'quote'
+class PurchaseItems(Base):
+    __tablename__ = 'purchase_items'
+
+    id = Column(Integer, primary_key=True)
+    purchase_id = Column(Integer, nullable=False, index=True)
+    buyer_order_id = Column(Integer, index=True, server_default=text("'0'"))
+    production_id = Column(Integer, nullable=False, index=True)
+    production_brand = Column(String(16), nullable=False, server_default=text("''"))
+    production_model = Column(String(32), nullable=False, server_default=text("''"))
+    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
+    production_note = Column(String(64), nullable=False, server_default=text("''"))
+    quantity = Column(Integer, nullable=False, server_default=text("'0'"))
+    unit_price = Column(Numeric(8, 2), nullable=False, server_default=text("'0.00'"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
+class Quotation(Base):
+    __tablename__ = 'quotation'
 
     id = Column(Integer, primary_key=True)
     uid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
     cid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
     contact_id = Column(Integer, nullable=False)
-    amount_product = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_production = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     amount_shipping = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     amount_adjustment = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
-    amount_quote = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_quotation = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     note = Column(String(256), nullable=False, server_default=text("''"))
     status_tax = Column(Integer, nullable=False, server_default=text("'0'"))
     status_audit = Column(Integer, nullable=False, server_default=text("'0'"))
@@ -217,16 +290,16 @@ class Quote(Base):
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
-class QuoteItem(Base):
-    __tablename__ = 'quote_item'
+class QuotationItems(Base):
+    __tablename__ = 'quotation_items'
 
     id = Column(Integer, primary_key=True)
-    quote_id = Column(Integer, nullable=False, index=True)
-    product_id = Column(Integer, nullable=False, index=True)
-    product_brand = Column(String(16), nullable=False, server_default=text("''"))
-    product_model = Column(String(32), nullable=False, server_default=text("''"))
-    product_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
-    product_note = Column(String(64), nullable=False, server_default=text("''"))
+    quotation_id = Column(Integer, nullable=False, index=True)
+    production_id = Column(Integer, nullable=False, index=True)
+    production_brand = Column(String(16), nullable=False, server_default=text("''"))
+    production_model = Column(String(32), nullable=False, server_default=text("''"))
+    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
+    production_note = Column(String(64), nullable=False, server_default=text("''"))
     quantity = Column(Integer, nullable=False, server_default=text("'0'"))
     unit_price = Column(Numeric(8, 2), nullable=False, server_default=text("'0.00'"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
@@ -257,13 +330,44 @@ class Role(Base):
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
+class SalesOrderItems(Base):
+    __tablename__ = 'sales_order_items'
+
+    id = Column(Integer, primary_key=True)
+    sales_order_id = Column(Integer, nullable=False, index=True)
+    production_id = Column(Integer, nullable=False, index=True)
+    production_brand = Column(String(16), nullable=False, server_default=text("''"))
+    production_model = Column(String(32), nullable=False, server_default=text("''"))
+    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
+    production_note = Column(String(64), nullable=False, server_default=text("''"))
+    quantity = Column(Integer, nullable=False, server_default=text("'0'"))
+    unit_price = Column(Numeric(8, 2), nullable=False, server_default=text("'0.00'"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
 class SalesOrders(Base):
     __tablename__ = 'sales_orders'
 
     id = Column(Integer, primary_key=True)
     uid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
     cid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
+    contact_id = Column(Integer, nullable=False)
+    amount_production = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_shipping = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_adjustment = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_order = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    note = Column(String(256), nullable=False, server_default=text("''"))
+    status_tax = Column(Integer, nullable=False, server_default=text("'0'"))
+    status_audit = Column(Integer, nullable=False, server_default=text("'0'"))
+    status_effect = Column(Integer, nullable=False, server_default=text("'0'"))
+    status_completion = Column(Integer, nullable=False, server_default=text("'0'"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    audit_time = Column(DateTime)
+    effect_time = Column(DateTime)
+    completion_time = Column(DateTime)
     delete_time = Column(DateTime)
     create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))

@@ -4,7 +4,7 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: product.py
+@file: production.py
 @time: 2018-04-05 00:54
 """
 
@@ -15,12 +15,12 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, IntegerField, SelectField
 from wtforms.validators import DataRequired, ValidationError
 
-from app_backend.api.product import get_product_row
-from app_backend.models.bearing_project import Product
+from app_backend.api.production import get_production_row
+from app_backend.models.bearing_project import Production
 from app_common.maps.default import default_choice_option_str
 
 
-class AddProductModelRepeatValidate(object):
+class AddProductionModelRepeatValidate(object):
     """
     创建产品型号重复校验
     """
@@ -29,15 +29,15 @@ class AddProductModelRepeatValidate(object):
 
     def __call__(self, form, field):
         condition = [
-            Product.product_brand == form.product_brand.data,
-            Product.product_model == field.data,
+            Production.production_brand == form.production_brand.data,
+            Production.production_model == field.data,
         ]
-        row = get_product_row(*condition)
+        row = get_production_row(*condition)
         if row:
             raise ValidationError(self.message or _('Data duplication'))
 
 
-class EditProductModelRepeatValidate(object):
+class EditProductionModelRepeatValidate(object):
     """
     编辑产品型号重复校验
     (编辑重复校验排除当前产品型号)
@@ -47,37 +47,37 @@ class EditProductModelRepeatValidate(object):
 
     def __call__(self, form, field):
         condition = [
-            Product.product_brand == form.product_brand.data,
-            Product.product_model == field.data,
+            Production.production_brand == form.production_brand.data,
+            Production.production_model == field.data,
         ]
-        row = get_product_row(*condition)
+        row = get_production_row(*condition)
         if row and row.id != form.id.data:
             raise ValidationError(self.message or _('Data duplication'))
 
 
-class ProductSearchForm(FlaskForm):
+class ProductionSearchForm(FlaskForm):
     """
     搜索表单
     """
-    product_brand = SelectField(
-        _('product brand'),
+    production_brand = SelectField(
+        _('production brand'),
         validators=[],  # 字符类型，非必填
         default=default_choice_option_str,
-        description=_('product brand'),
+        description=_('production brand'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('product brand'),
+            'title': _('production brand'),
         }
     )
-    product_model = StringField(
-        _('product model'),
+    production_model = StringField(
+        _('production model'),
         validators=[],
         default='',
-        description=_('product model'),
+        description=_('production model'),
         render_kw={
-            'placeholder': _('product model'),
+            'placeholder': _('production model'),
             'rel': 'tooltip',
-            'title': _('product model'),
+            'title': _('production model'),
         }
     )
     op = IntegerField(
@@ -87,56 +87,56 @@ class ProductSearchForm(FlaskForm):
     )
 
 
-class ProductAddForm(FlaskForm):
+class ProductionAddForm(FlaskForm):
     """
     创建表单
     """
-    product_brand = StringField(
-        _('product brand'),
+    production_brand = StringField(
+        _('production brand'),
         validators=[
             DataRequired(),
         ],
         default='',
         description='产品品牌（例如：SKF、FAG、NSK...）',
         render_kw={
-            'placeholder': _('product brand'),
+            'placeholder': _('production brand'),
             'rel': 'tooltip',
-            'title': _('product brand'),
+            'title': _('production brand'),
         }
     )
-    product_model = StringField(
-        _('product model'),
+    production_model = StringField(
+        _('production model'),
         validators=[
             DataRequired(),
-            AddProductModelRepeatValidate(),
+            AddProductionModelRepeatValidate(),
         ],
         default='',
         description='产品型号（例如：7008CEGA/HCP4A）',
         render_kw={
-            'placeholder': _('product model'),
+            'placeholder': _('production model'),
             'rel': 'tooltip',
-            'title': _('product model'),
+            'title': _('production model'),
         }
     )
     note = StringField(
-        _('product note'),
+        _('production note'),
         validators=[],
         default='',
         description='产品备注（例如：最小起订量12个）',
         render_kw={
-            'placeholder': _('product note'),
+            'placeholder': _('production note'),
             'rel': 'tooltip',
-            'title': _('product note'),
+            'title': _('production note'),
         }
     )
 
 
-class ProductEditForm(FlaskForm):
+class ProductionEditForm(FlaskForm):
     """
     编辑表单
     """
     id = IntegerField(
-        _('product id'),
+        _('production id'),
         validators=[
             DataRequired(),
         ],
@@ -144,39 +144,39 @@ class ProductEditForm(FlaskForm):
             'type': 'hidden',
         }
     )
-    product_brand = StringField(
-        _('product brand'),
+    production_brand = StringField(
+        _('production brand'),
         validators=[
             DataRequired(),
         ],
         description='产品品牌（例如：SKF、FAG、NSK...）',
         render_kw={
-            'placeholder': _('product brand'),
+            'placeholder': _('production brand'),
             'rel': 'tooltip',
-            'title': _('product brand'),
+            'title': _('production brand'),
         }
     )
-    product_model = StringField(
-        _('product model'),
+    production_model = StringField(
+        _('production model'),
         validators=[
             DataRequired(),
-            EditProductModelRepeatValidate(),
+            EditProductionModelRepeatValidate(),
         ],
         description='产品型号（例如：7008CEGA/HCP4A）',
         render_kw={
-            'placeholder': _('product model'),
+            'placeholder': _('production model'),
             'rel': 'tooltip',
-            'title': _('product model'),
+            'title': _('production model'),
         }
     )
     note = StringField(
-        _('product note'),
+        _('production note'),
         validators=[],
         description='产品备注（例如：最小起订量12个）',
         render_kw={
-            'placeholder': _('product note'),
+            'placeholder': _('production note'),
             'rel': 'tooltip',
-            'title': _('product note'),
+            'title': _('production note'),
         }
     )
     create_time = DateField(

@@ -4,19 +4,19 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
-            <li><a href="javascript:void(0);" onclick="$('#menu-product').trigger('click');">{{ _('product management') }}</a></li>
-            <li class="active">{{ _('product lists') }}</li>
+            <li><a href="javascript:void(0);" onclick="$('#menu-production').trigger('click');">{{ _('production management') }}</a></li>
+            <li class="active">{{ _('production lists') }}</li>
         </ol>
 
         <form class="form-inline" method="post">
             {{ form.csrf_token }}
-            <div class="form-group{% if form.product_brand.errors %} has-error{% endif %}">
-                {{ form.product_brand.label() }}
-                {{ form.product_brand(class="form-control") }}
+            <div class="form-group{% if form.production_brand.errors %} has-error{% endif %}">
+                {{ form.production_brand.label() }}
+                {{ form.production_brand(class="form-control") }}
             </div>
-            <div class="form-group{% if form.product_model.errors %} has-error{% endif %}">
-                {{ form.product_model.label() }}
-                {{ form.product_model(class="form-control") }}
+            <div class="form-group{% if form.production_model.errors %} has-error{% endif %}">
+                {{ form.production_model.label() }}
+                {{ form.production_model(class="form-control") }}
             </div>
 
             <button type="submit" class="btn btn-primary" name="op" value="0">{{ _('Search') }}</button>
@@ -30,10 +30,10 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>{{ _('product id') }}</th>
-                    <th>{{ _('product brand') }}</th>
-                    <th>{{ _('product model') }}</th>
-                    <th>{{ _('product note') }}</th>
+                    <th>{{ _('production id') }}</th>
+                    <th>{{ _('production brand') }}</th>
+                    <th>{{ _('production model') }}</th>
+                    <th>{{ _('production note') }}</th>
                     <th>{{ _('create time') }}</th>
                     <th>{{ _('update time') }}</th>
                     <th>{{ _('operation') }}</th>
@@ -43,16 +43,16 @@
                 {% for info in pagination.items %}
                     <tr class="text-muted">
                         <td>{{ info.id }}</td>
-                        <td>{{ info.product_brand }}</td>
-                        <td><a href="{{ url_for('product.info', product_id=info.id) }}" rel="tooltip"
-                               title="{{ _('Click details') }}">{{ info.product_model }}</a></td>
+                        <td>{{ info.production_brand }}</td>
+                        <td><a href="{{ url_for('production.info', production_id=info.id) }}" rel="tooltip"
+                               title="{{ _('Click details') }}">{{ info.production_model }}</a></td>
                         <td>{{ info.note | default('-', True) }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
-                            <a href="{{ url_for('product.edit', product_id=info.id, next=request.path) }}"
+                            <a href="{{ url_for('production.edit', production_id=info.id, next=request.path) }}"
                                rel="tooltip" title="{{ _('Edit') }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="product_delete({{ info.id }});" rel="tooltip"
+                            <a href="javascript:void(0);" onclick="production_delete({{ info.id }});" rel="tooltip"
                                title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
@@ -61,7 +61,7 @@
             </table>
             {# 翻页 #}
             {% from "macros.html" import render_pagination %}
-            {{ render_pagination(pagination, 'product.lists') }}
+            {{ render_pagination(pagination, 'production.lists') }}
         </div>
     </div>
 
@@ -70,11 +70,11 @@
 {% block extra_js %}
     <script>
         // 客户删除
-        function product_delete(product_id) {
+        function production_delete(production_id) {
             if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
-                $.getJSON('{{ url_for('product.ajax_delete') }}',
+                $.getJSON('{{ url_for('production.ajax_delete') }}',
                     {
-                        product_id: product_id
+                        production_id: production_id
                     }, function (data) {
                         if (data.result === true) {
                             alert(data.msg);

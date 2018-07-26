@@ -33,19 +33,19 @@ role_id_choices = copy(default_choices_int)
 role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 
-class QuoteSearchForm(FlaskForm):
+class QuotationSearchForm(FlaskForm):
     uid = SelectField(
-        _('quote user'),
+        _('quotation user'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
-        # choices=quote_brand_choices,
-        description=_('quote user'),
+        # choices=quotation_brand_choices,
+        description=_('quotation user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('quote user'),
+            'title': _('quotation user'),
         }
     )
     cid = SelectField(
@@ -55,7 +55,7 @@ class QuoteSearchForm(FlaskForm):
         ],
         default=default_choice_option_int,
         coerce=int,
-        # choices=quote_brand_choices,
+        # choices=quotation_brand_choices,
         description=_('customer company'),
         render_kw={
             'rel': 'tooltip',
@@ -93,19 +93,19 @@ class QuoteSearchForm(FlaskForm):
     )
 
 
-class QuoteItemAddForm(FlaskForm):
+class QuotationItemAddForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         kwargs['csrf_enabled'] = False  # disable csrf
         FlaskForm.__init__(self, *args, **kwargs)
 
-    quote_id = IntegerField(
-        _('quote id'),
+    quotation_id = IntegerField(
+        _('quotation id'),
         validators=[
         ],
         render_kw={
-            'placeholder': _('quote id'),
+            'placeholder': _('quotation id'),
             'rel': "tooltip",
-            'title': _('quote id'),
+            'title': _('quotation id'),
         }
     )
     product_id = IntegerField(
@@ -186,7 +186,7 @@ class QuoteItemAddForm(FlaskForm):
     )
 
 
-class QuoteItemEditForm(QuoteItemAddForm):
+class QuotationItemEditForm(QuotationItemAddForm):
 
     id = IntegerField(
         _('product id'),
@@ -200,17 +200,17 @@ class QuoteItemEditForm(QuoteItemAddForm):
     )
 
 
-class QuoteAddForm(FlaskForm):
+class QuotationAddForm(FlaskForm):
     uid = SelectField(
-        _('quote user'),
+        _('quotation user'),
         validators=[
             DataRequired(),
         ],
         coerce=int,
-        description=_('quote user'),
+        description=_('quotation user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('quote user'),
+            'title': _('quotation user'),
         }
     )
     cid = SelectField(
@@ -247,24 +247,24 @@ class QuoteAddForm(FlaskForm):
         '数据行删除',
         validators=[],
     )
-    quote_items = FieldList(
-        FormField(QuoteItemAddForm),
+    quotation_items = FieldList(
+        FormField(QuotationItemAddForm),
         label='报价明细',
         min_entries=1,
     )
 
 
-class QuoteEditForm(FlaskForm):
+class QuotationEditForm(FlaskForm):
     uid = SelectField(
-        _('quote user'),
+        _('quotation user'),
         validators=[],
         # default=default_choice_option_int,
         coerce=int,
-        # choices=quote_brand_choices,
-        description=_('quote user'),
+        # choices=quotation_brand_choices,
+        description=_('quotation user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('quote user'),
+            'title': _('quotation user'),
             'readonly': 'readonly',
         }
     )
@@ -273,7 +273,7 @@ class QuoteEditForm(FlaskForm):
         validators=[],
         default=default_choice_option_int,
         coerce=int,
-        # choices=quote_brand_choices,
+        # choices=quotation_brand_choices,
         description=_('customer company'),
         render_kw={
             'rel': 'tooltip',
@@ -302,8 +302,8 @@ class QuoteEditForm(FlaskForm):
         '数据行删除',
         validators=[],
     )
-    quote_items = FieldList(
-        FormField(QuoteItemEditForm),
+    quotation_items = FieldList(
+        FormField(QuotationItemEditForm),
         label='报价明细',
         min_entries=1,
     )

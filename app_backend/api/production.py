@@ -4,79 +4,79 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: product.py
+@file: productionion.py
 @time: 2018-03-16 09:59
 """
 
 
 from app_backend import db
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import Product
+from app_backend.models.bearing_project import Production
 
 db_instance = DbInstance(db)
 
 
-def get_product_row_by_id(product_id):
+def get_production_row_by_id(production_id):
     """
     通过 id 获取信息
-    :param product_id:
+    :param production_id:
     :return: None/object
     """
-    return db_instance.get_row_by_id(Product, product_id)
+    return db_instance.get_row_by_id(Production, production_id)
 
 
-def get_product_row(*args, **kwargs):
+def get_production_row(*args, **kwargs):
     """
     获取信息
     :param args:
     :param kwargs:
     :return: None/object
     """
-    return db_instance.get_row(Product, *args, **kwargs)
+    return db_instance.get_row(Production, *args, **kwargs)
 
 
-def get_product_rows(*args, **kwargs):
+def get_production_rows(*args, **kwargs):
     """
     获取列表
     :param args:
     :param kwargs:
     :return:
     """
-    return db_instance.get_rows(Product, *args, **kwargs)
+    return db_instance.get_rows(Production, *args, **kwargs)
 
 
-def add_product(product_data):
+def add_production(production_data):
     """
     添加信息
-    :param product_data:
+    :param production_data:
     :return: None/Value of user.id
     :except:
     """
-    return db_instance.add(Product, product_data)
+    return db_instance.add(Production, production_data)
 
 
-def edit_product(product_id, product_data):
+def edit_production(production_id, production_data):
     """
     修改信息
-    :param product_id:
-    :param product_data:
+    :param production_id:
+    :param production_data:
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.edit(Product, product_id, product_data)
+    return db_instance.edit(Production, production_id, production_data)
 
 
-def delete_product(product_id):
+def delete_production(production_id):
     """
     删除信息
-    :param product_id:
+    :param production_id:
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.delete(Product, product_id)
+    return db_instance.delete(Production, production_id)
 
 
-def get_product_pagination(page=1, per_page=10, *args, **kwargs):
+def get_production_pagination(page=1, per_page=10, *args, **kwargs):
     """
     获取列表（分页）
     Usage:
@@ -93,7 +93,7 @@ def get_product_pagination(page=1, per_page=10, *args, **kwargs):
     :param kwargs:
     :return:
     """
-    rows = db_instance.get_pagination(Product, page, per_page, *args, **kwargs)
+    rows = db_instance.get_pagination(Production, page, per_page, *args, **kwargs)
     return rows
 
 
@@ -104,5 +104,5 @@ def get_distinct_brand(*args, **kwargs):
     :param kwargs:
     :return: List
     """
-    field = 'product_brand'
-    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Product, field, *args, **kwargs))
+    field = 'production_brand'
+    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Production, field, *args, **kwargs))
