@@ -8,15 +8,11 @@
 @time: 2018-04-14 02:02
 """
 
-
 from blinker import Namespace
-
 
 from app_backend import app
 
-
 _signal = Namespace()
-
 
 signal_quote_auth = _signal.signal('signal_quote_auth')  # 报价审核
 

@@ -1,0 +1,23 @@
+<li class="dropdown messages-menu">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bell"></i>
+        {{ _('Up-to-date Messages') }} <span class="label label-info" id="total-msg-count">0</span>
+    </a>
+    <ul class="dropdown-menu" id="socket-messages" style="padding-top: 0;" data-stopPropagation="true">
+        <li class="message">
+            <a href="javascript:void(0);" class="alert alert-dismissible" style="margin-bottom: 0;">
+                <button type="button" class="close message-close" data-dismiss="alert" aria-hidden="true"><span
+                        class="label label-danger">&times;</span></button>
+                <p style="margin-right: 1em">
+                    <strong>System Notification</strong>
+                    <span class="text-muted"><i class="fa fa-clock-o"></i> 10:00</span>
+                </p>
+                <p>You will see this message until you close it.</p>
+            </a>
+        </li>
+        <li class="divider" style="margin-top: 0;"></li>
+        <li class="text-center message-close-all">
+            <a><i class="fa fa-trash-o"></i> {{ _('Emptying all the messages') }}</a>
+        </li>
+    </ul>
+</li>

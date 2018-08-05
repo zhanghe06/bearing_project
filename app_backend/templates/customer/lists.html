@@ -4,38 +4,53 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
-            <li><a href="javascript:void(0);" onclick="$('#menu-customer').trigger('click');">{{ _('customer management') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-customer').trigger('click')">{{ _('customer management') }}</a></li>
             <li class="active">{{ _('customer lists') }}</li>
         </ol>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingSearch">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                       aria-expanded="true" aria-controls="collapseSearch">
+                        {{ _('Search toolbar') }}
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
+                 aria-labelledby="headingSearch">
+                <div class="panel-body">
+                    <form class="form-inline" method="post">
+                        {{ form.csrf_token }}
+                        <div class="form-group form-group-sm{% if form.company_name.errors %} has-error{% endif %}">
+                            {{ form.company_name.label() }}
+                            {{ form.company_name(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.company_type.errors %} has-error{% endif %}">
+                            {{ form.company_type.label() }}
+                            {{ form.company_type(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.owner_uid.errors %} has-error{% endif %}">
+                            {{ form.owner_uid.label() }}
+                            {{ form.owner_uid(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.start_create_time.errors %} has-error{% endif %}">
+                            {{ form.start_create_time.label() }}
+                            {{ form.start_create_time(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.end_create_time.errors %} has-error{% endif %}">
+                            {{ form.end_create_time.label() }}
+                            {{ form.end_create_time(class="form-control") }}
+                        </div>
 
-        <form class="form-inline" method="post">
-            {{ form.csrf_token }}
-            <div class="form-group{% if form.company_name.errors %} has-error{% endif %}">
-                {{ form.company_name.label() }}
-                {{ form.company_name(class="form-control") }}
+                        <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                value="0">{{ _('Search') }}</button>
+                        <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                value="1">{{ _('Export') }}</button>
+                    </form>
+                </div>
             </div>
-            <div class="form-group{% if form.company_type.errors %} has-error{% endif %}">
-                {{ form.company_type.label() }}
-                {{ form.company_type(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.owner_uid.errors %} has-error{% endif %}">
-                {{ form.owner_uid.label() }}
-                {{ form.owner_uid(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.start_create_time.errors %} has-error{% endif %}">
-                {{ form.start_create_time.label() }}
-                {{ form.start_create_time(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.end_create_time.errors %} has-error{% endif %}">
-                {{ form.end_create_time.label() }}
-                {{ form.end_create_time(class="form-control") }}
-            </div>
-
-            <button type="submit" class="btn btn-primary" name="op" value="0">{{ _('Search') }}</button>
-            <button type="submit" class="btn btn-primary" name="op" value="1">{{ _('Export') }}</button>
-        </form>
-
-        <hr/>
+        </div>
 
         <div class="table-responsive">
             {#         <table class="table table-striped">#}
@@ -43,15 +58,12 @@
                 <thead>
                 <tr>
                     <th>{{ _('customer id') }}</th>
-                    <th>{{ _('company name') }}</th>
-                    <th>{{ _('company address') }}</th>
+                    <th>{{ _('company name') }}<br/>{{ _('company address') }}</th>
                     <th>{{ _('company site') }}</th>
-                    <th>{{ _('company tel') }}</th>
-                    <th>{{ _('company fax') }}</th>
+                    <th>{{ _('company tel') }}<br/>{{ _('company fax') }}</th>
                     <th>{{ _('company type') }}</th>
                     <th>所属销售</th>
-                    <th>{{ _('create time') }}</th>
-                    <th>{{ _('update time') }}</th>
+                    <th>{{ _('create time') }}<br/>{{ _('update time') }}</th>
                     <th>{{ _('operation') }}</th>
                 </tr>
                 </thead>
@@ -60,19 +72,17 @@
                     <tr class="text-muted">
                         <td>{{ info.id }}</td>
                         <td><a href="{{ url_for('customer.info', customer_id=info.id) }}" rel="tooltip"
-                               title="{{ _('Click details') }}">{{ info.company_name }}</a></td>
-                        <td>{{ info.company_address }}</td>
+                               title="{{ _('Click details') }}">{{ info.company_name }}</a><br/>{{ info.company_address }}</td>
                         <td>{{ info.company_site }}</td>
-                        <td>{{ info.company_tel }}</td>
-                        <td>{{ info.company_fax }}</td>
+                        <td>{{ info.company_tel }}<br/>{{ info.company_fax }}</td>
                         <td>{{ info.company_type | type_company }}</td>
                         <td>{{ info.owner_uid | user_name }}</td>
-                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                        <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}<br/>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
                             <a href="{{ url_for('customer.edit', customer_id=info.id, next=request.path) }}"
-                               rel="tooltip" title="{{ _('Edit') }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="customer_delete({{ info.id }});" rel="tooltip"
+                               rel="tooltip" title="{{ _('Edit') }}"><span
+                                    class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="javascript:void(0);" onclick="customer_delete({{ info.id }})" rel="tooltip"
                                title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
@@ -80,8 +90,8 @@
                 </tbody>
             </table>
             {# 翻页 #}
-            {% from "macros.html" import render_pagination %}
-            {{ render_pagination(pagination, 'customer.lists') }}
+            {% from "macros.html" import render_pagination_post %}
+            {{ render_pagination_post(pagination, 'customer.lists') }}
         </div>
     </div>
 
@@ -90,20 +100,20 @@
 {% block extra_js %}
     <script>
         // 客户删除
-        function customer_delete(customer_id) {
+        function customer_delete (customer_id) {
             if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
                 $.getJSON('{{ url_for('customer.ajax_delete') }}',
                     {
                         customer_id: customer_id
                     }, function (data) {
                         if (data.result === true) {
-                            alert(data.msg);
+                            alert(data.msg)
                         } else {
-                            alert(data.msg);
+                            alert(data.msg)
                         }
-                        window.location.reload();
-                    });
-                return false;
+                        window.location.reload()
+                    })
+                return false
             }
         }
     </script>

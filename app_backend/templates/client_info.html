@@ -1,40 +1,40 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container-fluid">
-    <ol class="breadcrumb">
-{#        <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>#}
-        <li class="active">{{ _('client information') }}</li>
-    </ol>
-    <div class="col-md-8 col-sm-offset-2 text-center">
-        <h2 class="sub-header">{{ _('Welcome') }}</h2>
-        <p>
-            {% if g.user_agent.is_pc %}<i class="fa fa-desktop fa-fw"></i>{% endif %}
-            {% if g.user_agent.is_mobile %}<i class="fa fa-mobile fa-fw"></i>{% endif %}
-            {% if g.user_agent.is_tablet %}<i class="fa fa-tablet fa-fw"></i>{% endif %}
-            {{ g.user_agent.os.family }} {{ g.user_agent.os.version_string }}
-        </p>
-        <p>{{ g.user_agent.browser.family }} {{ g.user_agent.browser.version_string }}</p>
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            {#        <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>#}
+            <li class="active">{{ _('client information') }}</li>
+        </ol>
+        <div class="col-md-8 col-sm-offset-2 text-center">
+            <h2 class="sub-header">{{ _('Welcome') }}</h2>
+            <p>
+                {% if g.user_agent.is_pc %}<i class="fa fa-desktop fa-fw"></i>{% endif %}
+                {% if g.user_agent.is_mobile %}<i class="fa fa-mobile fa-fw"></i>{% endif %}
+                {% if g.user_agent.is_tablet %}<i class="fa fa-tablet fa-fw"></i>{% endif %}
+                {{ g.user_agent.os.family }} {{ g.user_agent.os.version_string }}
+            </p>
+            <p>{{ g.user_agent.browser.family }} {{ g.user_agent.browser.version_string }}</p>
 
-        <hr/>
-        <p>X-Forwarded-For: {{ env_info.x_forwarded_for }}</p>
-        <p>X-Real-IP: {{ env_info.x_real_ip }}</p>
-        <p>remote_addr: {{ env_info.remote_addr }}</p>
-        <p>cookies: {{ env_info.cookies }}</p>
-        <hr/>
+            <hr/>
+            <p>X-Forwarded-For: {{ env_info.x_forwarded_for }}</p>
+            <p>X-Real-IP: {{ env_info.x_real_ip }}</p>
+            <p>remote_addr: {{ env_info.remote_addr }}</p>
+            <p>cookies: {{ env_info.cookies }}</p>
+            <hr/>
 
-        <div id="current_time">{{ moment().format('dddd, YYYY-MM-DD, a hh:mm:ss') }}</div>
+            <div id="current_time">{{ moment().format('dddd, YYYY-MM-DD, a hh:mm:ss') }}</div>
+        </div>
     </div>
-</div>
 {% endblock %}
 
 {% block extra_js %}
-<script>
-// 当前时间同步刷新
-var update_time;
-(update_time = function () {
-    $('#current_time').html(moment().format('dddd, YYYY-MM-DD, a hh:mm:ss'));
-})();
-setInterval(update_time, 1000);
-</script>
+    <script>
+        // 当前时间同步刷新
+        var update_time;
+        (update_time = function () {
+            $('#current_time').html(moment().format('dddd, YYYY-MM-DD, a hh:mm:ss'))
+        })()
+        setInterval(update_time, 1000)
+    </script>
 {% endblock %}

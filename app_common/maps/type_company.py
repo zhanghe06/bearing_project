@@ -23,3 +23,5 @@ TYPE_COMPANY_DICT = {
     1: _('Middle Man'),  # 中间商
     2: _('Final User'),  # 最终用户
 }
+
+TYPE_COMPANY_CHOICES = TYPE_COMPANY_DICT.items()

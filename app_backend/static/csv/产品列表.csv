@@ -1,3 +1,3 @@
-id,category_id,product_brand,product_model,product_sku,note,status_delete,delete_time,create_time,update_time
-1,0,SKF,7008CEGA/P4A,Pcs,,0,,2018-03-14T10:00:00,2018-03-14T10:00:00
-2,0,SKF,7012CEGA/P4A,Pcs,,0,,2018-03-14T10:00:00,2018-03-14T10:00:00
+id,category_id,product_brand,product_model,product_sku,note,status_delete,delete_time,create_time        ,update_time
+1 ,0          ,SKF          ,7008CEGA/P4A ,Pcs        ,    ,0            ,           ,2018-03-14T10:00:00,2018-03-14T10:00:00
+2 ,0          ,SKF          ,7012CEGA/P4A ,Pcs        ,    ,0            ,           ,2018-03-14T10:00:00,2018-03-14T10:00:00

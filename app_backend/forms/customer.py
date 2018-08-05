@@ -17,7 +17,8 @@ from flask_babel import lazy_gettext as _
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, IPAddress
+from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
+    IPAddress
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 
@@ -39,6 +40,7 @@ class CustomerSearchForm(FlaskForm):
             'placeholder': _('company name'),
             'rel': 'tooltip',
             'title': _('company name'),
+            'autocomplete': 'off',
         }
     )
     company_type = SelectField(
@@ -95,6 +97,11 @@ class CustomerSearchForm(FlaskForm):
         validators=[],
         default=0,
     )
+    page = IntegerField(
+        _('page'),
+        validators=[],
+        default=1,
+    )
 
 
 class CustomerAddForm(FlaskForm):
@@ -126,37 +133,39 @@ class CustomerAddForm(FlaskForm):
         validators=[DataRequired(), Length(max=100)],
         description='公司传真，最大长度100字符'
     )
-    company_type = IntegerField(
+    company_type = SelectField(
         _('company type'),
-        validators=[DataRequired()],
-        default=0,
+        validators=[InputRequired()],
+        default=default_choice_option_int,
+        coerce=int,
         description=_('company type')
     )
-    owner_uid = IntegerField(
+    owner_uid = SelectField(
         _('owner uid'),
-        validators=[DataRequired()],
-        default=0,
+        validators=[InputRequired()],
+        default=default_choice_option_int,
+        coerce=int,
         description=_('owner uid')
     )
     status_delete = IntegerField(
         _('delete status'),
-        validators=[DataRequired()],
+        validators=[],
         default=0,
         description=_('delete status')
     )
     delete_time = DateField(
         _('delete time'),
-        validators=[DataRequired()],
+        validators=[],
         description=_('delete time')
     )
     create_time = DateField(
         _('create time'),
-        validators=[DataRequired()],
+        validators=[],
         description=_('create time')
     )
     update_time = DateField(
         _('update time'),
-        validators=[DataRequired()],
+        validators=[],
         description=_('update time')
     )
 
@@ -199,25 +208,38 @@ class CustomerEditForm(FlaskForm):
         validators=[DataRequired(), Length(max=100)],
         description='公司传真，最大长度100字符'
     )
-    company_type = IntegerField(
+    company_type = SelectField(
         _('company type'),
-        validators=[DataRequired()],
-        default=0,
+        validators=[InputRequired()],
+        default=default_choice_option_int,
+        coerce=int,
         description=_('company type')
     )
-    owner_uid = IntegerField(
+    owner_uid = SelectField(
         _('owner uid'),
-        validators=[DataRequired()],
-        default=0,
+        validators=[InputRequired()],
+        default=default_choice_option_int,
+        coerce=int,
         description=_('owner uid')
+    )
+    status_delete = IntegerField(
+        _('delete status'),
+        validators=[],
+        default=0,
+        description=_('delete status')
+    )
+    delete_time = DateField(
+        _('delete time'),
+        validators=[],
+        description=_('delete time')
     )
     create_time = DateField(
         _('create time'),
-        validators=[DataRequired()],
+        validators=[],
         description=_('create time')
     )
     update_time = DateField(
         _('update time'),
-        validators=[DataRequired()],
+        validators=[],
         description=_('update time')
     )

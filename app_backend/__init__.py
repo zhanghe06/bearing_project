@@ -11,6 +11,7 @@
 from __future__ import unicode_literals
 
 import eventlet
+
 eventlet.monkey_patch()
 
 from logging.config import dictConfig
@@ -30,7 +31,6 @@ from flask_babel import Babel, gettext as _
 from app_common.libs.redis_session import RedisSessionInterface
 from app_backend.clients.client_redis import redis_client
 
-
 app = Flask(__name__)
 app.config.from_object(current_config)
 app.config['REMEMBER_COOKIE_NAME'] = app.config['REMEMBER_COOKIE_NAME_BACKEND']
@@ -44,9 +44,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)  # setup_app 方法已淘汰
 login_manager.login_view = 'auth.index'
 login_manager.login_message = _('Please log in to access this page.')
-login_manager.login_message_category = 'warning'   # 设置消息分类
-login_manager.localize_callback = _             # 设置翻译回调
-login_manager.session_protection = 'basic'     # 设置安全等级（basic、strong、None）
+login_manager.login_message_category = 'warning'  # 设置消息分类
+login_manager.localize_callback = _  # 设置翻译回调
+login_manager.session_protection = 'basic'  # 设置安全等级（basic、strong、None）
 # 用户电脑的标识（基本上是 IP 地址和 User Agent 的 MD5 hash 值）
 # basic 模式下，如果该标识未匹配，会话会简单地被标记为非活 跃的，且任何需要活跃登入的东西会强制用户重新验证。
 # strong模式下，如果该标识未匹配，整个会话（记住的令牌如果存在，则同样）被删除。
@@ -65,6 +65,7 @@ babel = Babel(app)
 
 excel.init_excel(app)
 
+# SocketIO
 socketio = SocketIO()
 socketio.init_app(app, async_mode='eventlet', message_queue=app.config['REDIS_URL'])
 

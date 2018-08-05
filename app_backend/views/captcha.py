@@ -8,7 +8,6 @@
 @time: 2018-03-17 22:20
 """
 
-
 # from StringIO import StringIO     # PY2
 # from io import StringIO           # PY3
 from six import StringIO

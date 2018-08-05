@@ -4,36 +4,54 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
-            <li><a href="javascript:void(0);" onclick="$('#menu-user').trigger('click');">{{ _('user management') }}</a></li>
+            <li><a href="javascript:void(0);" onclick="$('#menu-user').trigger('click')">{{ _('user management') }}</a>
+            </li>
             <li class="active">{{ _('user lists') }}</li>
         </ol>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingSearch">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                       aria-expanded="true" aria-controls="collapseSearch">
+                        {{ _('Search toolbar') }}
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
+                 aria-labelledby="headingSearch">
+                <div class="panel-body">
+                    <form class="form-inline" method="post">
+                        {{ form.csrf_token }}
+                        <div class="form-group form-group-sm{% if form.name.errors %} has-error{% endif %}">
+                            {{ form.name.label() }}
+                            {{ form.name(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.role_id.errors %} has-error{% endif %}">
+                            {{ form.role_id.label() }}
+                            {{ form.role_id(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.parent_id.errors %} has-error{% endif %}">
+                            {{ form.parent_id.label() }}
+                            {{ form.parent_id(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.start_create_time.errors %} has-error{% endif %}">
+                            {{ form.start_create_time.label() }}
+                            {{ form.start_create_time(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.end_create_time.errors %} has-error{% endif %}">
+                            {{ form.end_create_time.label() }}
+                            {{ form.end_create_time(class="form-control") }}
+                        </div>
 
-        <form class="form-inline" method="post">
-            {{ form.csrf_token }}
-            <div class="form-group{% if form.name.errors %} has-error{% endif %}">
-                {{ form.name.label() }}
-                {{ form.name(class="form-control") }}
+                        <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                value="0">{{ _('Search') }}</button>
+                        <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                value="1">{{ _('Export') }}</button>
+                    </form>
+                </div>
             </div>
-            <div class="form-group{% if form.role_id.errors %} has-error{% endif %}">
-                {{ form.role_id.label() }}
-                {{ form.role_id(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.parent_id.errors %} has-error{% endif %}">
-                {{ form.parent_id.label() }}
-                {{ form.parent_id(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.start_create_time.errors %} has-error{% endif %}">
-                {{ form.start_create_time.label() }}
-                {{ form.start_create_time(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.end_create_time.errors %} has-error{% endif %}">
-                {{ form.end_create_time.label() }}
-                {{ form.end_create_time(class="form-control") }}
-            </div>
+        </div>
 
-            <button type="submit" class="btn btn-primary" name="op" value="0">{{ _('Search') }}</button>
-            <button type="submit" class="btn btn-primary" name="op" value="1">{{ _('Export') }}</button>
-        </form>
 
         <hr/>
 
@@ -60,13 +78,16 @@
                                title="{{ _('Click details') }}">{{ info.name }}</a></td>
                         <td>{{ info.role_id | type_role }}</td>
                         <td>{{ info.parent_id | user_name }}</td>
-                        <td>{% if info.id | status_online %}<span class="label label-success">{{ _('Online') }}</span>{% else %}<span class="label label-default">{{ _('Offline') }}</span>{% endif %}</td>
+                        <td>{% if info.id | status_online %}
+                            <span class="label label-success">{{ _('Online') }}</span>{% else %}
+                            <span class="label label-default">{{ _('Offline') }}</span>{% endif %}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
                             <a href="{{ url_for('user.edit', user_id=info.id, next=request.path) }}"
-                               rel="tooltip" title="{{ _('Edit') }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="user_delete({{ info.id }});" rel="tooltip"
+                               rel="tooltip" title="{{ _('Edit') }}"><span
+                                    class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="javascript:void(0);" onclick="user_delete({{ info.id }})" rel="tooltip"
                                title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
@@ -74,8 +95,8 @@
                 </tbody>
             </table>
             {# 翻页 #}
-            {% from "macros.html" import render_pagination %}
-            {{ render_pagination(pagination, 'user.lists') }}
+            {% from "macros.html" import render_pagination_post %}
+            {{ render_pagination_post(pagination, 'user.lists') }}
         </div>
     </div>
 
@@ -84,20 +105,20 @@
 {% block extra_js %}
     <script>
         // 用户删除
-        function user_delete(user_id) {
+        function user_delete (user_id) {
             if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
                 $.getJSON('{{ url_for('customer.ajax_delete') }}',
                     {
                         user_id: user_id
                     }, function (data) {
                         if (data.result === true) {
-                            alert(data.msg);
+                            alert(data.msg)
                         } else {
-                            alert(data.msg);
+                            alert(data.msg)
                         }
-                        window.location.reload();
-                    });
-                return false;
+                        window.location.reload()
+                    })
+                return false
             }
         }
     </script>

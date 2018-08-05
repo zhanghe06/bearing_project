@@ -8,11 +8,10 @@
 @time: 2018-03-16 09:59
 """
 
-
 from __future__ import unicode_literals
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from flask import (
     request,
@@ -27,6 +26,10 @@ from flask import (
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
 
+from app_backend.api.catalogue import get_catalogue_choices
+from app_backend.api.customer import get_customer_choices, get_customer_row_by_id
+from app_backend.api.user import get_user_choices
+from app_backend.forms.production import ProductionSelectForm
 from app_backend.forms.quotation import QuotationItemEditForm
 from app_backend import (
     app,
@@ -44,7 +47,8 @@ from app_backend.api.quotation import (
     quotation_order_stats,
     get_quotation_user_list_choices, get_quotation_customer_list_choices)
 
-from app_backend.api.quotation_item import get_quotation_item_rows, add_quotation_item, edit_quotation_item, delete_quotation_item
+from app_backend.api.quotation_item import get_quotation_item_rows, add_quotation_item, edit_quotation_item, \
+    delete_quotation_item
 from wtforms.fields import FieldList, FormField
 from app_backend.forms.quotation import (
     QuotationSearchForm,
@@ -200,9 +204,9 @@ def add():
 
     # 加载创建表单
     form = QuotationAddForm(request.form)
-    form.uid.choices = get_quotation_user_list_choices()
+    form.uid.choices = get_user_choices()
     form.uid.data = current_user.id
-    form.cid.choices = get_quotation_customer_list_choices(current_user.id)
+    form.contact_id.choices = default_choices_int
 
     # 进入创建页面
     if request.method == 'GET':
@@ -218,7 +222,8 @@ def add():
 
         # 表单新增空行
         if form.data_line_add.data is not None:
-            if form.quotation_items.max_entries and len(form.quotation_items.entries) >= form.quotation_items.max_entries:
+            if form.quotation_items.max_entries and len(
+                    form.quotation_items.entries) >= form.quotation_items.max_entries:
                 flash('最多创建%s条记录' % form.quotation_items.max_entries, 'danger')
             else:
                 form.quotation_items.append_entry()
@@ -230,7 +235,8 @@ def add():
             )
         # 表单删除一行
         if form.data_line_del.data is not None:
-            if form.quotation_items.min_entries and len(form.quotation_items.entries) <= form.quotation_items.min_entries:
+            if form.quotation_items.min_entries and len(
+                    form.quotation_items.entries) <= form.quotation_items.min_entries:
                 flash('最少保留%s条记录' % form.quotation_items.min_entries, 'danger')
             else:
                 data_line_index = form.data_line_del.data
@@ -245,6 +251,7 @@ def add():
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Add Failure'), 'danger')
+            flash(form.errors, 'danger')
             return render_template(
                 template_name,
                 form=form,
@@ -253,21 +260,28 @@ def add():
 
         # 表单校验成功
 
+        # 创建报价
         quotation_data = {
             'uid': form.uid.data,
             'cid': form.cid.data,
+            'expiry_date': (datetime.utcnow() + timedelta(days=7)).strftime('%Y-%m-%d'),
         }
         quotation_id = add_quotation(quotation_data)
 
         amount_quotation = 0
         for quotation_item in form.quotation_items.entries:
-
             quotation_item_data = {
                 'quotation_id': quotation_id,
-                'product_id': quotation_item.form.product_id.data,
-                'product_brand': quotation_item.form.product_brand.data,
-                'product_model': quotation_item.form.product_model.data,
-                'product_sku': quotation_item.form.product_sku.data,
+                'enquiry_cid': form.cid.data,
+                'enquiry_company_name': get_customer_row_by_id(form.cid.data).company_name,
+                'enquiry_production_model': quotation_item.form.enquiry_production_model.data,
+                'enquiry_quantity': quotation_item.form.enquiry_quantity.data,
+                'production_id': quotation_item.form.production_id.data,
+                'production_brand': quotation_item.form.production_brand.data,
+                'production_model': quotation_item.form.production_model.data,
+                'production_sku': quotation_item.form.production_sku.data,
+                'note': quotation_item.form.note.data,
+                'delivery_time': quotation_item.form.delivery_time.data,
                 'quantity': quotation_item.form.quantity.data,
                 'unit_price': quotation_item.form.unit_price.data,
             }
@@ -276,17 +290,17 @@ def add():
             add_quotation_item(quotation_item_data)
             amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
 
+        # 更新报价
         quotation_data = {
+            'amount_production': amount_quotation,
             'amount_quotation': amount_quotation,
         }
         result = edit_quotation(quotation_id, quotation_data)
-
 
         # todo 事务
 
         # 明细保存
         # 总表保存
-
 
         # 创建操作成功
         if result:
@@ -309,9 +323,9 @@ def edit(quotation_id):
     报价编辑
     """
     # 检查编辑权限
-    quotation_item_edit_permission = QuotationItemEditPermission(quotation_id)
-    if not quotation_item_edit_permission.can():
-        abort(403)
+    # quotation_item_edit_permission = QuotationItemEditPermission(quotation_id)
+    # if not quotation_item_edit_permission.can():
+    #     abort(403)
 
     quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
@@ -325,8 +339,8 @@ def edit(quotation_id):
 
     # 加载编辑表单
     form = QuotationEditForm(request.form)
-    form.uid.choices = get_quotation_user_list_choices()
-    form.cid.choices = get_quotation_customer_list_choices(current_user.id)
+    form.uid.choices = get_user_choices()
+    form.contact_id.choices = default_choices_int
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -339,6 +353,7 @@ def edit(quotation_id):
         # 表单赋值
         form.uid.data = quotation_info.uid
         form.cid.data = quotation_info.cid
+        form.amount_quotation.data = quotation_info.amount_quotation
         # form.quotation_items = quotation_items
         while len(form.quotation_items) > 0:
             form.quotation_items.pop_entry()
@@ -346,11 +361,13 @@ def edit(quotation_id):
             quotation_item_form = QuotationItemEditForm()
             quotation_item_form.id = quotation_item.id
             quotation_item_form.quotation_id = quotation_item.quotation_id
-            quotation_item_form.product_id = quotation_item.product_id
-            quotation_item_form.product_brand = quotation_item.product_brand
-            quotation_item_form.product_model = quotation_item.product_model
-            quotation_item_form.product_sku = quotation_item.product_sku
-            quotation_item_form.product_note = quotation_item.product_note
+            quotation_item_form.enquiry_production_model = quotation_item.enquiry_production_model
+            quotation_item_form.enquiry_quantity = quotation_item.enquiry_quantity
+            quotation_item_form.production_id = quotation_item.production_id
+            quotation_item_form.production_brand = quotation_item.production_brand
+            quotation_item_form.production_model = quotation_item.production_model
+            quotation_item_form.production_sku = quotation_item.production_sku
+            quotation_item_form.note = quotation_item.note
             quotation_item_form.quantity = quotation_item.quantity
             quotation_item_form.unit_price = quotation_item.unit_price
             form.quotation_items.append_entry(quotation_item_form)
@@ -368,7 +385,8 @@ def edit(quotation_id):
 
         # 表单新增空行
         if form.data_line_add.data is not None:
-            if form.quotation_items.max_entries and len(form.quotation_items.entries) >= form.quotation_items.max_entries:
+            if form.quotation_items.max_entries and len(
+                    form.quotation_items.entries) >= form.quotation_items.max_entries:
                 flash('最多创建%s条记录' % form.quotation_items.max_entries, 'danger')
             else:
                 form.quotation_items.append_entry()
@@ -381,7 +399,8 @@ def edit(quotation_id):
             )
         # 表单删除一行
         if form.data_line_del.data is not None:
-            if form.quotation_items.min_entries and len(form.quotation_items.entries) <= form.quotation_items.min_entries:
+            if form.quotation_items.min_entries and len(
+                    form.quotation_items.entries) <= form.quotation_items.min_entries:
                 flash('最少保留%s条记录' % form.quotation_items.min_entries, 'danger')
             else:
                 data_line_index = form.data_line_del.data
@@ -397,6 +416,7 @@ def edit(quotation_id):
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
+            flash(form.errors, 'danger')
             flash(form.quotation_items.errors, 'danger')
             return render_template(
                 template_name,
@@ -421,10 +441,16 @@ def edit(quotation_id):
 
             quotation_item_data = {
                 'quotation_id': quotation_id,
-                'product_id': quotation_item.form.product_id.data,
-                'product_brand': quotation_item.form.product_brand.data,
-                'product_model': quotation_item.form.product_model.data,
-                'product_sku': quotation_item.form.product_sku.data,
+                'enquiry_cid': form.cid.data,
+                'enquiry_company_name': get_customer_row_by_id(form.cid.data).company_name,
+                'enquiry_production_model': quotation_item.form.enquiry_production_model.data,
+                'enquiry_quantity': quotation_item.form.enquiry_quantity.data,
+                'production_id': quotation_item.form.production_id.data,
+                'production_brand': quotation_item.form.production_brand.data,
+                'production_model': quotation_item.form.production_model.data,
+                'production_sku': quotation_item.form.production_sku.data,
+                'note': quotation_item.form.note.data,
+                'delivery_time': quotation_item.form.delivery_time.data,
                 'quantity': quotation_item.form.quantity.data,
                 'unit_price': quotation_item.form.unit_price.data,
             }
@@ -443,8 +469,11 @@ def edit(quotation_id):
         for quotation_items_id in quotation_items_ids_del:
             delete_quotation_item(quotation_items_id)
 
-        # 更新总价
+        # 更新报价
         quotation_data = {
+            'cid': form.cid.data,
+            'uid': form.uid.data,
+            'amount_production': amount_quotation,
             'amount_quotation': amount_quotation,
         }
         result = edit_quotation(quotation_id, quotation_data)

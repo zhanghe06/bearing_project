@@ -48,7 +48,7 @@ class ES(object):
         query_body = {
             'query': {'match': {field: keywords}},
             'highlight': {
-                'pre_tags': ['<span class="text-primary">'],
+                'pre_tags': ['<span class="bg-primary">'],
                 'post_tags': ['</span>'],
                 'fields': {
                     'id': {},
@@ -72,6 +72,7 @@ class ES(object):
         query_data['data'] = map(lambda x: {
             'label': x['highlight'][field][0],
             'value': x['_source'][field],
+            'info': x['_source'],
             'id': x['_id'],
         }, es_res['hits']['hits'])
         return query_data

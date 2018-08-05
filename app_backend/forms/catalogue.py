@@ -8,7 +8,6 @@
 @time: 2018-04-16 21:54
 """
 
-
 from __future__ import unicode_literals
 
 import re
@@ -20,7 +19,8 @@ from flask_babel import lazy_gettext as _
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, IPAddress
+from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
+    IPAddress
 
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 from app_backend.api.user import get_user_rows
@@ -56,4 +56,3 @@ class CatalogueSearchForm(FlaskForm):
         validators=[],
         default=0,
     )
-

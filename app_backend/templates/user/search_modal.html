@@ -1,0 +1,118 @@
+{% extends "layout_modal.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <form method="post">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSearch">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                           aria-expanded="false" aria-controls="collapseSearch">
+                            {{ _('Search toolbar') }}
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSearch" class="panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="headingSearch">
+                    <div class="panel-body">
+                        <div id="user_search_form" class="form-inline">
+                            {{ form.csrf_token }}
+                            <div class="form-group{% if form.name.errors %} has-error{% endif %}">
+                                {{ form.name.label() }}
+                                {{ form.name(class="form-control input-sm") }}
+                            </div>
+                            <div class="form-group{% if form.role_id.errors %} has-error{% endif %}">
+                                {{ form.role_id.label() }}
+                                {{ form.role_id(class="form-control input-sm") }}
+                            </div>
+                            <div class="form-group{% if form.parent_id.errors %} has-error{% endif %}">
+                                {{ form.parent_id.label() }}
+                                {{ form.parent_id(class="form-control input-sm") }}
+                            </div>
+                            <button type="submit" class="btn-sm btn-primary" name="op"
+                                    value="0">{{ _('Search') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                {#         <table class="table table-striped">#}
+                <table class="table table-hover table-condensed items_table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ _('user name') }}</th>
+                        <th>{{ _('role type') }}</th>
+                        <th>所属领导</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for info in pagination.items %}
+                        <tr class="text-muted user_select_tr" style="cursor: pointer">
+                            <td>
+                                <label>
+                                    <input name="user_id" disabled="disabled" title="{{ _('Select') }}"
+                                           rel="tooltip" type="checkbox" value="{{ info.id }}"/>
+                                </label>
+                            </td>
+                            <td>{{ info.name }}
+                                <input name="user_name" disabled="disabled" type="hidden"
+                                       value="{{ info.name }}"/>
+                            </td>
+                            <td>
+                                {{ info.role_id | type_role }}
+                                <input name="role_type" disabled="disabled" type="hidden"
+                                       value="{{ info.role_id }}"/>
+                            </td>
+                            <td>{{ info.parent_id | user_name }}
+                                <input name="user_parent" disabled="disabled" type="hidden" value="{{ info.parent_id }}"/>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {# 翻页 #}
+                {% from "macros.html" import render_pagination_post %}
+                {{ render_pagination_post(pagination, 'user.search') }}
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $(function () {
+            var user_search_form = $('#user_search_form')
+
+            var keywords = $.session.get('user_keywords');
+
+            if (keywords) {
+                user_search_form.find('input[name="company_name"]').val(keywords)
+
+                $('form').submit()
+                $.session.clear()
+            }
+
+            $('.user_select_tr').on('click', function () {
+
+                var current_checkbox = $(this).find('input[name=\'company_id\']')
+
+                if (current_checkbox.prop('checked')) {
+                    $('input[name=\'company_id\']').prop('checked', false)
+                    current_checkbox.prop('checked', false)
+                    $.session.remove('company_id')
+                    $.session.remove('company_name')
+                    $.session.remove('owner_uid')
+                } else {
+                    $('input[name=\'company_id\']').prop('checked', false)
+                    current_checkbox.prop('checked', true)
+                    $.session.set('company_id', $(this).find('input[name=\'company_id\']').val())
+                    $.session.set('company_name', $(this).find('input[name=\'company_name\']').val())
+                    $.session.set('owner_uid', $(this).find('input[name=\'owner_uid\']').val())
+                }
+            })
+        })
+    </script>
+{% endblock %}

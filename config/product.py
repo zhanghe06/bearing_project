@@ -90,8 +90,8 @@ DOCUMENT_INFO = {
     'APP_NAME': _('App Name'),  # 应用名称
 }
 
-PER_PAGE_FRONTEND = 20
-PER_PAGE_BACKEND = 20
+PER_PAGE_FRONTEND = 12
+PER_PAGE_BACKEND = 12
 
 
 BABEL_DEFAULT_LOCALE = 'zh'     # en, zh, zh_Hans_CN

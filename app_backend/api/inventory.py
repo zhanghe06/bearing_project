@@ -8,7 +8,6 @@
 @time: 2018-04-06 12:20
 """
 
-
 from datetime import datetime
 from sqlalchemy.sql import func
 from app_backend import db

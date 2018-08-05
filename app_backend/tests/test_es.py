@@ -8,7 +8,6 @@
 @time: 2018-04-10 21:20
 """
 
-
 from __future__ import unicode_literals
 
 import unittest
@@ -119,4 +118,3 @@ class IndexTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

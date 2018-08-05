@@ -8,7 +8,6 @@
 @time: 2018-03-16 09:59
 """
 
-
 from copy import copy
 from datetime import datetime
 from sqlalchemy.sql import func

@@ -8,7 +8,6 @@
 @time: 2018-03-16 10:03
 """
 
-
 from __future__ import unicode_literals
 
 import json

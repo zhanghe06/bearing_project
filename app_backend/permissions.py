@@ -15,12 +15,11 @@ from functools import partial
 
 from flask_principal import Permission, RoleNeed
 
-
 SectionActionNeed = namedtuple('Need', ['section', 'action'])
 SectionActionItemNeed = namedtuple('ItemNeed', ['section', 'action', 'item_id'])
 
 # -------------------------------------------------------------
-# 角色类型 0:默认,1:系统,2:销售,3:经理,4:库管,5:财务
+# 角色类型 0:默认,1:系统,2:销售,3:经理,4:库管,5:财务,6:采购
 roles = [
     '默认',
     '系统',
@@ -28,6 +27,7 @@ roles = [
     '经理',
     '库管',
     '财务',
+    '采购',
 ]
 
 # 角色权限
@@ -37,7 +37,7 @@ permission_role_sales = Permission(RoleNeed('销售'))
 permission_role_manager = Permission(RoleNeed('经理'))
 permission_role_stock_keeper = Permission(RoleNeed('库管'))
 permission_role_accountant = Permission(RoleNeed('财务'))
-
+permission_role_purchaser = Permission(RoleNeed('采购'))
 
 # =============================================================
 # 板块基本操作权限（创建、查询、导出、统计）与用户的角色身份相关，需关联
@@ -62,7 +62,6 @@ permission_customer_section_search = Permission(CustomerSectionNeed('search'))
 permission_customer_section_export = Permission(CustomerSectionNeed('export'))
 permission_customer_section_stats = Permission(CustomerSectionNeed('stats'))
 
-
 # -------------------------------------------------------------
 # 用户板块操作权限（创建、查询、导出、统计）
 UserSectionNeed = partial(SectionActionNeed, 'user')
@@ -72,7 +71,6 @@ permission_user_section_add = Permission(UserSectionNeed('add'))
 permission_user_section_search = Permission(UserSectionNeed('search'))
 permission_user_section_export = Permission(UserSectionNeed('export'))
 permission_user_section_stats = Permission(UserSectionNeed('stats'))
-
 
 # -------------------------------------------------------------
 # 产品板块操作权限（创建、查询、导出、统计）
@@ -84,7 +82,6 @@ permission_production_section_search = Permission(ProductionSectionNeed('search'
 permission_production_section_export = Permission(ProductionSectionNeed('export'))
 permission_production_section_stats = Permission(ProductionSectionNeed('stats'))
 
-
 # -------------------------------------------------------------
 # 仓库板块操作权限（创建、查询、导出、统计）
 WarehouseSectionNeed = partial(SectionActionNeed, 'warehouse')
@@ -94,7 +91,6 @@ permission_warehouse_section_add = Permission(WarehouseSectionNeed('add'))
 permission_warehouse_section_search = Permission(WarehouseSectionNeed('search'))
 permission_warehouse_section_export = Permission(WarehouseSectionNeed('export'))
 permission_warehouse_section_stats = Permission(WarehouseSectionNeed('stats'))
-
 
 # -------------------------------------------------------------
 # 货架板块操作权限（创建、查询、导出、统计）
@@ -106,7 +102,6 @@ permission_rack_section_search = Permission(RackSectionNeed('search'))
 permission_rack_section_export = Permission(RackSectionNeed('export'))
 permission_rack_section_stats = Permission(RackSectionNeed('stats'))
 
-
 # -------------------------------------------------------------
 # 库存板块操作权限（创建、查询、导出、统计）
 InventorySectionNeed = partial(SectionActionNeed, 'inventory')
@@ -117,7 +112,6 @@ permission_inventory_section_search = Permission(InventorySectionNeed('search'))
 permission_inventory_section_export = Permission(InventorySectionNeed('export'))
 permission_inventory_section_stats = Permission(InventorySectionNeed('stats'))
 
-
 # -------------------------------------------------------------
 # 报价板块操作权限（创建、查询、导出、统计）
 QuotationSectionNeed = partial(SectionActionNeed, 'quotation')
@@ -127,7 +121,6 @@ permission_quotation_section_add = Permission(QuotationSectionNeed('add'))
 permission_quotation_section_search = Permission(QuotationSectionNeed('search'))
 permission_quotation_section_export = Permission(QuotationSectionNeed('export'))
 permission_quotation_section_stats = Permission(QuotationSectionNeed('stats'))
-
 
 # =============================================================
 # 因客户、报价有所有者，明细操作需要校验所有者身份，下面单独配置明细权限

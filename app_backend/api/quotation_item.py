@@ -8,7 +8,6 @@
 @time: 2018-03-16 10:00
 """
 
-
 from app_common.libs.mysql_orm_op import DbInstance
 from app_backend.models.bearing_project import QuotationItems
 from app_backend import db

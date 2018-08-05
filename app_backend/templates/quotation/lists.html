@@ -9,30 +9,46 @@
             <li class="active">{{ _('quotation lists') }}</li>
         </ol>
 
-        <form class="form-inline" id="search_form" method="post">
-            {{ form.csrf_token }}
-            <div class="form-group{% if form.uid.errors %} has-error{% endif %}">
-                {{ form.uid.label() }}
-                {{ form.uid(class="form-control") }}
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingSearch">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                       aria-expanded="true" aria-controls="collapseSearch">
+                        {{ _('Search toolbar') }}
+                    </a>
+                </h4>
             </div>
-            <div class="form-group{% if form.cid.errors %} has-error{% endif %}">
-                {{ form.cid.label() }}
-                {{ form.cid(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.start_create_time.errors %} has-error{% endif %}">
-                {{ form.start_create_time.label() }}
-                {{ form.start_create_time(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.end_create_time.errors %} has-error{% endif %}">
-                {{ form.end_create_time.label() }}
-                {{ form.end_create_time(class="form-control") }}
-            </div>
+            <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
+                 aria-labelledby="headingSearch">
+                <div class="panel-body">
+                    <form class="form-inline" method="post">
+                        {{ form.csrf_token }}
+                        <div class="form-group form-group-sm{% if form.uid.errors %} has-error{% endif %}">
+                            {{ form.uid.label() }}
+                            {{ form.uid(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.cid.errors %} has-error{% endif %}">
+                            {{ form.cid.label() }}
+                            {{ form.cid(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.start_create_time.errors %} has-error{% endif %}">
+                            {{ form.start_create_time.label() }}
+                            {{ form.start_create_time(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.end_create_time.errors %} has-error{% endif %}">
+                            {{ form.end_create_time.label() }}
+                            {{ form.end_create_time(class="form-control") }}
+                        </div>
 
-            <button type="submit" class="btn btn-primary" name="op" value="0">{{ _('Search') }}</button>
-            <button type="submit" class="btn btn-primary" name="op" value="1">{{ _('Export') }}</button>
-        </form>
+                        <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                value="0">{{ _('Search') }}</button>
+                        <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                value="1">{{ _('Export') }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-        <hr/>
 
         <div class="table-responsive">
             {#         <table class="table table-striped">#}
@@ -42,8 +58,8 @@
                     <th>{{ _('quotation id') }}</th>
                     <th>{{ _('quotation user') }}</th>
                     <th>{{ _('customer company') }}</th>
-                    <th>{{ _('audit status') }}</th>
-                    <th>{{ _('order status') }}</th>
+{#                    <th>{{ _('audit status') }}</th>#}
+{#                    <th>{{ _('order status') }}</th>#}
                     <th>{{ _('quotation amount') }}</th>
                     <th>{{ _('quotation note') }}</th>
                     <th>{{ _('create time') }}</th>
@@ -57,30 +73,50 @@
                         <td>{{ info.id }}</td>
                         <td>{{ info.uid | user_name }}</td>
                         <td>{{ info.cid | customer_company_name }}</td>
-                        <td>{{ info.status_audit | status_audit }}</td>
-                        <td>{{ info.status_order | status_order }}</td>
-                        <td><a href="{{ url_for('quotation.info', quotation_id=info.id) }}" rel="tooltip"
-                               title="{{ _('Click details') }}">{{ info.amount_quotation }}</a></td>
+{#                        <td>{{ info.status_audit | status_audit }}</td>#}
+{#                        <td>{{ info.status_order | status_order }}</td>#}
+{#                        <td><a href="{{ url_for('quotation.info', quotation_id=info.id) }}" rel="tooltip"#}
+{#                               title="{{ _('Click details') }}">{{ info.amount_quotation }}</a></td>#}
+                        <td>{{ info.amount_quotation }}</td>
                         <td>{{ info.note }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
-                            <a href="{{ url_for('quotation.preview', quotation_id=info.id, next=request.path) }}"
-                               rel="tooltip" title="{{ _('Print') }}" target="_blank"><span
-                                    class="glyphicon glyphicon-print"></span></a>
-                            <a href="{{ url_for('quotation.edit', quotation_id=info.id, next=request.path) }}"
-                               rel="tooltip" title="{{ _('Edit') }}"><span
-                                    class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="quotation_delete({{ info.id }})" rel="tooltip"
-                               title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
+
+                            <!-- Split button -->
+                            <div class="btn-group btn-group-sm">
+                                <a class="btn btn-default" href="{{ url_for('quotation.edit', quotation_id=info.id, next=request.path) }}">
+                                            <span class="glyphicon glyphicon-pencil"></span> {{ _('Edit') }}
+                                        </a>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a href="javascript:void(0);" onclick="quotation_delete({{ info.id }})">
+                                            <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
+                                        </a>
+                                    </li>
+{#                                    <li role="separator" class="divider"></li>#}
+{#                                    <li>#}
+{#                                        <a href="{{ url_for('quotation.preview', quotation_id=info.id, next=request.path) }}" target="_blank">#}
+{#                                            <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}#}
+{#                                        </a>#}
+{#                                    </li>#}
+                                </ul>
+                            </div>
+
+
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
             {# 翻页 #}
-            {% from "macros.html" import render_pagination %}
-            {{ render_pagination(pagination, 'quotation.lists') }}
+            {% from "macros.html" import render_pagination_post %}
+            {{ render_pagination_post(pagination, 'quotation.lists') }}
         </div>
     </div>
 
@@ -88,32 +124,32 @@
 
 {% block extra_js %}
     <script>
-      // 报价删除
-      function quotation_delete (quotation_id) {
-        if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
-          $.getJSON('{{ url_for('quotation.ajax_delete') }}',
-            {
-              quotation_id: quotation_id
-            }, function (data) {
-              if (data.result === true) {
-                alert(data.msg)
-              } else {
-                alert(data.msg)
-              }
-              window.location.reload()
-            })
-          return false
+        // 报价删除
+        function quotation_delete (quotation_id) {
+            if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
+                $.getJSON('{{ url_for('quotation.ajax_delete') }}',
+                    {
+                        quotation_id: quotation_id
+                    }, function (data) {
+                        if (data.result === true) {
+                            alert(data.msg)
+                        } else {
+                            alert(data.msg)
+                        }
+                        window.location.reload()
+                    })
+                return false
+            }
         }
-      }
 
-      $(function () {
-        //搜索表单
+        $(function () {
+            //搜索表单
 
-        //级联选择
-        $('#uid').change(function () {
-          $('#cid').get(0).selectedIndex = 0
-          $('#search_form').submit()
+            //级联选择
+            $('#uid').change(function () {
+                $('#cid').get(0).selectedIndex = 0
+                $('#search_form').submit()
+            })
         })
-      })
     </script>
 {% endblock %}

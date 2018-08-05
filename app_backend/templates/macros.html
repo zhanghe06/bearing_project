@@ -1,44 +1,92 @@
+<!-- 翻页（get模式） -->
 {% macro render_pagination(pagination, endpoint) %}
     {% if pagination.pages > 0 %}
-    <nav class="text-center">
-        <ul class="pagination">
-            <li>
-                {% if pagination.has_prev %}
-                    <a href="{{ url_for(endpoint, page=pagination.prev_num, **request.args) }}" aria-label="Previous">
-                {% else %}
-                    <a href="javascript:void(0);" aria-label="Previous">
-                {% endif %}
-                <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            {% for page in pagination.iter_pages() %}
-                {% if page %}
-                    {% if page == pagination.page %}
-                        <li class="active">
-                            {% else %}
-                        <li>
+        <nav class="text-center">
+            <ul class="pagination">
+                <li>
+                    {% if pagination.has_prev %}
+                        <a href="{{ url_for(endpoint, page=pagination.prev_num, **request.args) }}"
+                           aria-label="Previous">
+                    {% else %}
+                        <a href="javascript:void(0);" aria-label="Previous">
                     {% endif %}
-                <a href="{{ url_for(endpoint, page=page, **request.args) }}">{{ page }}</a>
+                    <span aria-hidden="true">&laquo;</span>
+                    </a>
                 </li>
-                {% endif %}
-            {% endfor %}
-            <li>
-                {% if pagination.has_next %}
-                    <a href="{{ url_for(endpoint, page=pagination.next_num, **request.args) }}" aria-label="Next">
-                {% else %}
-                    <a href="javascript:void(0);" aria-label="Next">
-                {% endif %}
-                <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+                {% for page in pagination.iter_pages() %}
+                    {% if page %}
+                        {% if page == pagination.page %}
+                            <li class="active">
+                                {% else %}
+                            <li>
+                        {% endif %}
+                    <a href="{{ url_for(endpoint, page=page, **request.args) }}">{{ page }}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                <li>
+                    {% if pagination.has_next %}
+                        <a href="{{ url_for(endpoint, page=pagination.next_num, **request.args) }}" aria-label="Next">
+                    {% else %}
+                        <a href="javascript:void(0);" aria-label="Next">
+                    {% endif %}
+                    <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     {% else %}
-    <section id="nothing">
-        <div class="well well-large text-center">
-            记录为空
-        </div>
-    </section>
+        <section id="nothing">
+            <div class="well well-large text-center">
+                记录为空
+            </div>
+        </section>
+    {% endif %}
+{% endmacro %}
+
+
+<!-- 翻页（post模式） -->
+{% macro render_pagination_post(pagination, endpoint) %}
+    {% if pagination.pages > 0 %}
+        <nav class="text-center">
+            <ul class="pagination">
+                <li>
+                    {% if pagination.has_prev %}
+                        <button class="btn btn-default" name="page" value={{ pagination.prev_num }} aria-label="Previous">
+                    {% else %}
+                        <button class="btn btn-default" type="reset" aria-label="Previous">
+                    {% endif %}
+                    <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+                {% for page in pagination.iter_pages() %}
+                    <li>
+                    {% if page %}
+                        {% if page == pagination.page %}
+                            <button class="btn btn-primary" name="page" value={{ page }} aria-label="Previous">{{ page }}</button>
+                                {% else %}
+                            <button class="btn btn-default" name="page" value={{ page }} aria-label="Previous">{{ page }}</button>
+                        {% endif %}
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                <li>
+                    {% if pagination.has_next %}
+                        <button class="btn btn-default" name="page" value={{ pagination.next_num }} aria-label="Next">
+                    {% else %}
+                        <button class="btn btn-default" type="reset" aria-label="Next">
+                    {% endif %}
+                    <span aria-hidden="true">&raquo;</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    {% else %}
+        <section id="nothing">
+            <div class="well well-large text-center">
+                记录为空
+            </div>
+        </section>
     {% endif %}
 {% endmacro %}
 
@@ -87,7 +135,8 @@
                         <input type="text" class="form-control" placeholder="Search for..." speech x-webkit-speech
                                onwebkitspeechchange="$(this).cloest('form').submit()">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                            <button class="btn btn-default" type="submit"><span
+                                    class="glyphicon glyphicon-search"></span></button>
                         </span>
                     </div>
                 </form>
@@ -102,17 +151,20 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url_for('blog.add') }}"><span class="glyphicon glyphicon-edit"></span>
                                     Add Blog</a></li>
-                                <li><a href="{{ url_for('user.setting') }}"><span class="glyphicon glyphicon-cog"></span>
+                                <li><a href="{{ url_for('user.setting') }}"><span
+                                        class="glyphicon glyphicon-cog"></span>
                                     Setting</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="{{ url_for('auth.logout') }}"><span class="glyphicon glyphicon-log-out"></span>
+                                <li><a href="{{ url_for('auth.logout') }}"><span
+                                        class="glyphicon glyphicon-log-out"></span>
                                     Logout</a></li>
                             </ul>
                         </li>
                     {% else %}
                         <li{% if title == 'reg' %} class="active"{% endif %}><a href="{{ url_for('reg.index') }}"><span
                                 class="glyphicon glyphicon-list-alt"></span> Register</a></li>
-                        <li{% if title == 'login' %} class="active"{% endif %}><a href="{{ url_for('auth.index') }}"><span
+                        <li{% if title == 'login' %} class="active"{% endif %}><a
+                                href="{{ url_for('auth.index') }}"><span
                                 class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     {% endif %}
                 </ul>
@@ -158,7 +210,8 @@
                         <input type="text" class="form-control" placeholder="Search for..." speech x-webkit-speech
                                onwebkitspeechchange="$(this).cloest('form').submit()">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                            <button class="btn btn-default" type="submit"><span
+                                    class="glyphicon glyphicon-search"></span></button>
                         </span>
                     </div>
                 </form>
@@ -173,17 +226,20 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url_for('blog.add') }}"><span class="glyphicon glyphicon-edit"></span>
                                     Add Blog</a></li>
-                                <li><a href="{{ url_for('user.setting') }}"><span class="glyphicon glyphicon-cog"></span>
+                                <li><a href="{{ url_for('user.setting') }}"><span
+                                        class="glyphicon glyphicon-cog"></span>
                                     Setting</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="{{ url_for('auth.logout') }}"><span class="glyphicon glyphicon-log-out"></span>
+                                <li><a href="{{ url_for('auth.logout') }}"><span
+                                        class="glyphicon glyphicon-log-out"></span>
                                     Logout</a></li>
                             </ul>
                         </li>
                     {% else %}
                         <li{% if title == 'reg' %} class="active"{% endif %}><a href="{{ url_for('reg.index') }}"><span
                                 class="glyphicon glyphicon-list-alt"></span> Register</a></li>
-                        <li{% if title == 'login' %} class="active"{% endif %}><a href="{{ url_for('auth.index') }}"><span
+                        <li{% if title == 'login' %} class="active"{% endif %}><a
+                                href="{{ url_for('auth.index') }}"><span
                                 class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     {% endif %}
                 </ul>

@@ -26,7 +26,6 @@ from app_backend import app, socketio
 # 定义蓝图
 bp_socket_io = Blueprint('socket_io', __name__, url_prefix='/socket_io')
 
-
 SOCKET_IO_NAMESPACE = '/msg'
 
 SOCKET_IO_INFO = {

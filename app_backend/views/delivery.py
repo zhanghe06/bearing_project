@@ -8,7 +8,6 @@
 @time: 2018-07-16 17:26
 """
 
-
 from __future__ import unicode_literals
 
 import json
@@ -53,4 +52,3 @@ def lists(page=1):
 @login_required
 def add():
     return jsonify({})
-

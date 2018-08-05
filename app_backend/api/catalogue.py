@@ -142,9 +142,10 @@ def insert_rows(data_list):
     return db_instance.insert_rows(Catalogue, data_list)
 
 
-def get_catalogue_choices(product_model_keywords):
+def get_catalogue_choices(keywords):
     """
     获取选项
+    :param keywords:
     :return:
     """
 
@@ -153,9 +154,17 @@ def get_catalogue_choices(product_model_keywords):
 
     es = ES(es_client)
 
-    es.search_fulltext(index, doc_type, field, keywords, query_from=0, size=0)
+    index = 'catalogue'
+    doc_type = 'bearing'
+    # field = 'product_label'
+    field = 'product_model'
+    # keywords = '7008ACDGA/P4A'
+    query_from = 0
+    size = 0
 
-    warehouse_choices = copy(default_choices_int)
-    warehouse_list = map(lambda x: (getattr(x, 'id'), getattr(x, 'name')), db_instance.get_rows(Warehouse))
-    warehouse_choices.extend(warehouse_list)
-    return warehouse_choices
+    es_result = es.search_fulltext(index, doc_type, field, keywords, query_from, size)
+
+    catalogue_choices = map(lambda x: (
+        x['id'], x['value'], '%s <small class="text-muted">%s</small>' % (x['label'], x['info']['product_brand']),
+        x['info']['product_brand']), es_result['data'])
+    return catalogue_choices

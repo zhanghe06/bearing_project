@@ -8,7 +8,6 @@
 @time: 2018-03-06 00:18
 """
 
-
 from app_backend.models.bearing_project import User
 from flask_login import UserMixin
 

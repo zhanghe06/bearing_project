@@ -1,10 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-customer').trigger('click')">{{ _('customer management') }}</a></li>
+            <li class="active">{{ _('customer add') }}</li>
+        </ol>
+        <div class="col-md-8 col-sm-offset-2">
+            <form class="form-horizontal" method="post" action="">
+                {{ form.csrf_token }}
+                <div class="form-group{% if form.company_name.errors %} has-error{% endif %}">
+                    {{ form.company_name.label(class="col-sm-2 control-label") }}
+                    <div class="col-sm-10">
+                        {{ form.company_name(class="form-control") }}
+                        {% for error in form.company_name.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                        <span class="help-block">{{ form.company_name.description }}</span>
+                    </div>
+                </div>
+                <div class="form-group{% if form.company_address.errors %} has-error{% endif %}">
+                    {{ form.company_address.label(class="col-sm-2 control-label") }}
+                    <div class="col-sm-10">
+                        {{ form.company_address(class="form-control") }}
+                        {% for error in form.company_address.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                        <span class="help-block">{{ form.company_address.description }}</span>
+                    </div>
+                </div>
+                <div class="form-group{% if form.company_site.errors %} has-error{% endif %}">
+                    {{ form.company_site.label(class="col-sm-2 control-label") }}
+                    <div class="col-sm-10">
+                        {{ form.company_site(class="form-control") }}
+                        {% for error in form.company_site.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                        <span class="help-block">{{ form.company_site.description }}</span>
+                    </div>
+                </div>
+                <div class="form-group{% if form.company_tel.errors %} has-error{% endif %}">
+                    {{ form.company_tel.label(class="col-sm-2 control-label") }}
+                    <div class="col-sm-10">
+                        {{ form.company_tel(class="form-control") }}
+                        {% for error in form.company_tel.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                        <span class="help-block">{{ form.company_tel.description }}</span>
+                    </div>
+                </div>
+                <div class="form-group{% if form.company_fax.errors %} has-error{% endif %}">
+                    {{ form.company_fax.label(class="col-sm-2 control-label") }}
+                    <div class="col-sm-10">
+                        {{ form.company_fax(class="form-control") }}
+                        {% for error in form.company_fax.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                        <span class="help-block">{{ form.company_fax.description }}</span>
+                    </div>
+                </div>
+            <div class="form-group{% if form.company_type.errors %} has-error{% endif %}">
+                    {{ form.company_type.label(class="col-sm-2 control-label") }}
+                    <div class="col-sm-10">
+                        {{ form.company_type(class="form-control") }}
+                        {% for error in form.company_type.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                        <span class="help-block">{{ form.company_type.description }}</span>
+                    </div>
+                </div>
+                <div class="form-group{% if form.owner_uid.errors %} has-error{% endif %}">
+                    {{ form.owner_uid.label(class="col-sm-2 control-label") }}
+                    <div class="col-sm-10">
+                        {{ form.owner_uid(class="form-control") }}
+                        {% for error in form.owner_uid.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                        <span class="help-block">{{ form.owner_uid.description }}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success btn-load" data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
+                        <button type="reset" class="btn btn-default">{{ _('Reset') }}</button>
+                        <button class="btn btn-default" onclick="history.back();return false;">{{ _('Go Back') }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

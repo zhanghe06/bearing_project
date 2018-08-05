@@ -246,3 +246,13 @@ def user_former_stats(time_based='hour'):
             .all()
         result.update(dict(rows))
         return [(months_zerofill[i], result[month]) for i, month in enumerate(months)]
+
+
+def get_user_choices():
+    """
+    获取用户选项
+    :return:
+    """
+    uid_list = get_user_rows(status_delete=STATUS_DEL_NO)
+    user_choices = [(user.id, user.name) for user in uid_list]
+    return user_choices

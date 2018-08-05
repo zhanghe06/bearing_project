@@ -23,6 +23,7 @@ class CaptchaValidate(object):
     """
     图形验证码校验
     """
+
     def __init__(self, message=None):
         self.message = message
 
@@ -95,6 +96,7 @@ class UserAuthForm(FlaskForm):
             'placeholder': _('Captcha'),
             'minlength': 4,
             'maxlength': 4,
+            'autocomplete': 'off',
         }
     )
     remember = BooleanField(_('Remember me'), default=False)

@@ -8,7 +8,6 @@
 @time: 2018-03-23 14:52
 """
 
-
 from app_backend import db
 from app_backend.login import LoginUser
 from app_common.libs.mysql_orm_op import DbInstance

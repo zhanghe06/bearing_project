@@ -13,6 +13,7 @@ from sqlalchemy.sql import func
 from app_backend import db
 from app_common.libs.mysql_orm_op import DbInstance
 from app_backend.models.bearing_project import Customer
+from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 from app_common.maps.type_company import TYPE_COMPANY_MIDDLEMAN, TYPE_COMPANY_END_USER
@@ -246,3 +247,13 @@ def customer_end_user_stats(time_based='hour'):
             .all()
         result.update(dict(rows))
         return [(months_zerofill[i], result[month]) for i, month in enumerate(months)]
+
+
+def get_customer_choices():
+    """
+    获取客户选项
+    :return:
+    """
+    customer_list = get_customer_rows(status_delete=STATUS_DEL_NO)
+    customer_choices = [(customer.id, customer.company_name) for customer in customer_list]
+    return customer_choices

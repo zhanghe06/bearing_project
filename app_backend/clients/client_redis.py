@@ -8,7 +8,6 @@
 @time: 2018-03-23 15:06
 """
 
-
 import redis
 
 from config import current_config

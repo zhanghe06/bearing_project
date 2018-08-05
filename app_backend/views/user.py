@@ -147,6 +147,51 @@ def lists(page=1):
     )
 
 
+# @bp_user.route('/search.html', methods=['GET', 'POST'])
+# @login_required
+# @permission_user_section_search.require(http_exception=403)
+# def search():
+#     """
+#     用户搜索
+#     :return:
+#     """
+#     template_name = 'customer/search_modal.html'
+#     # 文档信息
+#     document_info = DOCUMENT_INFO.copy()
+#     document_info['TITLE'] = _('Customer Search')
+#
+#     # 搜索条件
+#     form = UserSearchForm(request.form)
+#     form.owner_uid.choices = get_sales_user_list()
+#     # app.logger.info('')
+#
+#     search_condition = [
+#         Customer.status_delete == STATUS_DEL_NO,
+#     ]
+#     if request.method == 'POST':
+#         # 表单校验失败
+#         if not form.validate_on_submit():
+#             flash(_('Search Failure'), 'danger')
+#             # 单独处理csrf_token
+#             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
+#                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
+#         else:
+#             if form.company_type.data != default_choice_option_int:
+#                 search_condition.append(Customer.company_type == form.company_type.data)
+#             if form.company_name.data:
+#                 search_condition.append(Customer.company_name.like('%%%s%%' % form.company_name.data))
+#     # 翻页数据
+#     pagination = get_customer_pagination(form.page.data, PER_PAGE_BACKEND_MODAL, *search_condition)
+#
+#     # 渲染模板
+#     return render_template(
+#         template_name,
+#         form=form,
+#         pagination=pagination,
+#         **document_info
+#     )
+
+
 @bp_user.route('/<int:user_id>/info.html')
 @login_required
 def info(user_id):
@@ -156,9 +201,9 @@ def info(user_id):
     :return:
     """
     # 检查读取权限
-    user_item_get_permission = UserItemGetPermission(user_id)
-    if not user_item_get_permission.can():
-        abort(403)
+    # user_item_get_permission = UserItemGetPermission(user_id)
+    # if not user_item_get_permission.can():
+    #     abort(403)
     # 详情数据
     user_info = get_user_row_by_id(user_id)
     # 检查资源是否存在
@@ -176,7 +221,7 @@ def info(user_id):
 
 @bp_user.route('/add.html', methods=['GET', 'POST'])
 @login_required
-@permission_user_section_add.require(http_exception=403)
+# @permission_user_section_add.require(http_exception=403)
 def add():
     """
     创建用户
@@ -241,9 +286,9 @@ def edit(user_id):
     用户编辑
     """
     # 检查编辑权限
-    user_item_edit_permission = UserItemEditPermission(user_id)
-    if not user_item_edit_permission.can():
-        abort(403)
+    # user_item_edit_permission = UserItemEditPermission(user_id)
+    # if not user_item_edit_permission.can():
+    #     abort(403)
 
     user_info = get_user_row_by_id(user_id)
     # 检查资源是否存在

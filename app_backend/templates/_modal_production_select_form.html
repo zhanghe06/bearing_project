@@ -1,0 +1,6 @@
+<form class="form-inline" id="product_select_form">
+    <div class="form-group{% if form_modal.production_model.errors %} has-error{% endif %}">
+        {#                        {{ form_modal.production_model.label() }}#}
+        {{ form_modal.production_model(class="form-control") }}
+    </div>
+</form>

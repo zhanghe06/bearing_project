@@ -11,60 +11,96 @@
 
         <form class="form-inline" id="search_form" method="post">
             {{ form.csrf_token }}
+
+            <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
+                {{ form.cid(class="hidden") }}
+                {{ form.company_name.label() }}
+                <div class="input-group">
+                    {{ form.company_name(
+                        class="form-control input-sm",
+                        title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
+                        autocomplete="off"
+                        )
+                    }}
+                    <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
+                          style="top: 0; cursor:pointer;" data-toggle="modal"
+                          data-target="#customer_select_modal"></span>
+                </div>
+            </div>
             <div class="form-group{% if form.uid.errors %} has-error{% endif %}">
                 {{ form.uid.label() }}
-                {{ form.uid(class="form-control") }}
+                {{ form.uid(class="form-control input-sm", title=form.uid.errors|join(', ')) }}
             </div>
-            <div class="form-group{% if form.cid.errors %} has-error{% endif %}">
-                {{ form.cid.label() }}
-                {{ form.cid(class="form-control") }}
-            </div>
-            <div class="form-group{% if form.contact_id.errors %} has-error{% endif %}">
-                {{ form.contact_id.label() }}
-                {{ form.contact_id(class="form-control") }}
+            <div class="form-group{% if form.amount_quotation.errors %} has-error{% endif %}">
+                {{ form.amount_quotation.label() }}
+                {{ form.amount_quotation(class="form-control input-sm", title=form.amount_quotation.errors|join(', ')) }}
             </div>
 
-            <button type="submit" class="btn btn-success btn-load"
+        <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center">
+                <button type="submit" class="btn-sm btn-success btn-load"
                     data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
-            <button type="reset" class="btn btn-default">{{ _('Reset') }}</button>
+                <button type="reset" class="btn-sm btn-default">{{ _('Reset') }}</button>
+            </div>
+        </div>
+        <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
 
             <div class="table-responsive">
-                {#         <table class="table table-striped">#}
-                <table class="table table-hover">
+{#                         <table class="table table-striped">#}
+                <table class="table table-hover table-condensed items_table">
                     <thead>
                     <tr>
                         <th>{{ _('#') }}</th>
-                        <th>{{ _('production id') }}</th>
+                        <th class="bg-warning">{{ _('enquiry production model') }}</th>
+                        <th class="bg-warning">{{ _('enquiry quantity') }}</th>
+                        <th></th>
                         <th>{{ _('production brand') }}</th>
                         <th>{{ _('production model') }}</th>
-                        <th>{{ _('production sku') }}</th>
                         <th>{{ _('quantity') }}</th>
+                        <th>{{ _('production sku') }}</th>
                         <th>{{ _('unit_price') }}</th>
                         <th>{{ _('Option') }}</th>
                     </tr>
                     </thead>
                     <tbody>
-
                     {% for info in form.quotation_items %}
                         <tr class="text-muted">
-                            <td><span class="form-control input-sm">{{ loop.index }}</span></td>
-                            <td{% if info.production_id.errors %} class="has-error"{% endif %}>
-                                {{ info.production_id(class="form-control input-sm", title=info.production_id.errors|join(', ')) }}
+                            <td><span readonly="readonly" class="form-control input-sm">{{ loop.index }}</span></td>
+                            <td class="bg-warning{% if info.enquiry_production_model.errors %} has-error{% endif %}">
+                                {{ info.enquiry_production_model(class="form-control input-sm", title=info.enquiry_production_model.errors|join(', '), style="min-width: 12em;") }}
+                            </td>
+                            <td class="bg-warning{% if info.enquiry_quantity.errors %} has-error{% endif %}">
+                                {{ info.enquiry_quantity(class="form-control input-sm", title=info.enquiry_quantity.errors|join(', '), style="min-width: 4em; max-width: 7em; ") }}
+                            </td>
+                            <td>
+                                {{ info.production_id() }}
                             </td>
                             <td{% if info.production_brand.errors %} class="has-error"{% endif %}>
-                                {{ info.production_brand(class="form-control input-sm", title=info.production_brand.errors|join(', ')) }}
+                                <span style="min-width: 4em;" readonly="readonly" class="form-control input-sm production_brand" title="{{ info.production_brand.errors|join(', ') }}" rel="tooltip">{{ info.production_brand.data }}</span>
+                                {{ info.production_brand(class="hidden production_brand") }}
                             </td>
-                            <td{% if info.production_model.errors %} class="has-error"{% endif %}>
-                                {{ info.production_model(class="form-control input-sm", title=info.production_model.errors|join(', ')) }}
-                            </td>
-                            <td{% if info.production_sku.errors %} class="has-error"{% endif %}>
-                                {{ info.production_sku(class="form-control input-sm", title=info.production_sku.errors|join(', ')) }}
+{#                            <td{% if info.production_brand.errors %} class="has-error"{% endif %}>#}
+{#                                {{ info.production_brand(class="form-control input-sm", title=info.production_brand.errors|join(', ')) }}#}
+{#                            </td>#}
+                            <td class="input-group{% if info.production_id.errors or info.production_model.errors %} has-error{% endif %}">
+                                {{ info.production_model(class="form-control input-sm production_model", title=info.production_id.errors|join(', ') or info.production_model.errors|join(', '), style="min-width: 12em;") }}
+                                <span class="input-group-addon glyphicon glyphicon-option-horizontal production_select_search_btn"
+                                      style="top: 0; cursor:pointer;" data-toggle="modal"
+                                      data-target="#production_select_modal"></span>
                             </td>
                             <td{% if info.quantity.errors %} class="has-error"{% endif %}>
-                                {{ info.quantity(class="form-control input-sm", title=info.quantity.errors|join(', ')) }}
+                                {{ info.quantity(class="form-control input-sm text-right quantity", title=info.quantity.errors|join(', '), style="min-width: 4em; max-width: 7em; ") }}
                             </td>
+                            <td{% if info.production_sku.errors %} class="has-error"{% endif %}>
+                                <span style="min-width: 4em;" readonly="readonly" class="form-control input-sm production_sku" title="{{ info.production_sku.errors|join(', ') }}" rel="tooltip">{{ info.production_sku.data }}</span>
+                                {{ info.production_sku(class="hidden production_sku") }}
+                            </td>
+{#                            <td{% if info.production_sku.errors %} class="has-error"{% endif %}>#}
+{#                                {{ info.production_sku(class="form-control input-sm", title=info.production_sku.errors|join(', ')) }}#}
+{#                            </td>#}
                             <td{% if info.unit_price.errors %} class="has-error"{% endif %}>
-                                {{ info.unit_price(class="form-control input-sm", title=info.unit_price.errors|join(', ')) }}
+                                {{ info.unit_price(class="form-control input-sm text-right", title=info.unit_price.errors|join(', '), style="min-width: 7em;") }}
                             </td>
                             <td>
                                 <button type="submit" class="input-sm glyphicon glyphicon-plus" name="data_line_add"
@@ -77,16 +113,156 @@
                     </tbody>
                 </table>
             </div>
-
-
         </form>
-
         <hr/>
-
     </div>
+
+    <!-- 客户搜索 -->
+    <div class="modal fade" id="customer_select_modal" tabindex="-1" role="dialog" aria-labelledby="customer_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="customer_label">{{ _('Customer Search') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe name="customer_search_iframe" src="" width="100%" height="100%" frameborder="no" marginwidth="0" marginheight="0" allowtransparency="yes" style="min-height: 300px"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Close') }}</button>
+                    <button type="button" class="btn btn-primary" id="customer_select_confirm_btn">{{ _('Submit') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 产品搜索 -->
+    <div class="modal fade" id="production_select_modal" tabindex="-1" role="dialog" aria-labelledby="production_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="production_label">{{ _('Production Search') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe name="production_search_iframe" src="" width="100%" height="100%" frameborder="no" marginwidth="0" marginheight="0" allowtransparency="yes" style="min-height: 300px"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Close') }}</button>
+                    <button type="button" class="btn btn-primary" id="production_select_confirm_btn">{{ _('Submit') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
 
 {% block extra_js %}
+    <script>
+        // 汇总金额
+        function compute_total_amount () {
+            var sum = 0
+            $('tr.text-muted').each(function (i, tr) {
+                var j = 1
+                $(tr).find('input[type=number]').each(function () {
+                    j *= Number(this.value)
+                })
+                sum += j
+            })
 
+            $('#total-amount').html(sum.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
+        }
+
+        $(function () {
+            // 汇总金额
+            // compute_total_amount()
+
+
+            // 客户选择搜索
+            $('.customer_select_search_btn').on('click', function () {
+                var input_group_obj = $(this).parents('div.input-group');
+                var customer_input = input_group_obj.find('input[name="company_name"]');
+                var keywords = customer_input.val();
+                $.session.set('customer_keywords', keywords)
+                if (!keywords){
+                    alert("{{ _('company name is empty') }}");
+                    customer_input.focus()
+                    return false
+                } else {
+                    $('iframe[name="customer_search_iframe"]').attr('src', '{{ url_for("customer.search") }}')
+                }
+            })
+
+            // 客户选择确认
+            $('#customer_select_confirm_btn').on('click', function () {
+                var company_id = $.session.get('company_id')
+                if (!company_id){
+                    alert('{{ _('Please select a customer') }}');
+                    return false;
+                } else {
+                    $("input[name$='cid']").val(company_id)
+                    $("input[name$='company_name']").val($.session.get('company_name'))
+                    $('#customer_select_modal').modal('hide');
+                }
+            })
+
+
+            var tr_edit_obj;
+
+            // 产品选择搜索
+            $('.production_select_search_btn').on('click', function () {
+                tr_edit_obj = $(this).parents('tr');
+                var production_model_input = tr_edit_obj.find("input.production_model");
+                var keywords = production_model_input.val()
+                $.session.set('production_keywords', keywords)
+                if (!keywords){
+                    alert("{{ _('production model is empty') }}");
+                    production_model_input.focus()
+                    return false
+                } else {
+                    $('iframe[name="production_search_iframe"]').attr('src', '{{ url_for("production.search") }}')
+                }
+            })
+
+            // 产品选择确认
+            $('#production_select_confirm_btn').on('click', function () {
+                var production_id = $.session.get('production_id')
+                if (!production_id){
+                    alert('{{ _('Please select a production') }}');
+                    return false;
+                } else {
+                    var production_brand = $.session.get('production_brand')
+                    var production_model = $.session.get('production_model')
+                    var production_sku = $.session.get('production_sku')
+
+                    $(tr_edit_obj).find("input[name$='production_id']").val(production_id)
+
+                    $(tr_edit_obj).find("input.production_brand").val(production_brand)
+                    $(tr_edit_obj).find("input.production_model").val(production_model)
+                    $(tr_edit_obj).find("input.production_sku").val(production_sku)
+
+                    $(tr_edit_obj).find("span.production_brand").text(production_brand)
+                    $(tr_edit_obj).find("span.production_model").text(production_model)
+                    $(tr_edit_obj).find("span.production_sku").text(production_sku)
+                    $('#production_select_modal').modal('hide');
+                }
+            })
+
+            $('#customer_select_modal').on('hidden.bs.modal', function () {
+                $.session.clear();
+            })
+            $('#production_select_modal').on('hidden.bs.modal', function () {
+                $.session.clear();
+            })
+        })
+
+        // 更新数据重新汇总金额
+        $('input[type=number]').on('change', function () {
+            // compute_total_amount()
+        })
+
+    </script>
 {% endblock %}

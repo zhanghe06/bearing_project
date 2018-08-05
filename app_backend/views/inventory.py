@@ -8,7 +8,6 @@
 @time: 2018-04-06 00:59
 """
 
-
 from __future__ import unicode_literals
 
 import json
@@ -345,7 +344,6 @@ def ajax_delete():
         ajax_failure_msg['msg'] = _('Del Failure')
         return jsonify(ajax_failure_msg)
 
-
 # @bp_inventory.route('/ajax/stats', methods=['GET', 'POST'])
 # @login_required
 # def ajax_stats():
@@ -434,4 +432,3 @@ def ajax_delete():
 #         inventory_stats_item_info=inventory_stats_item_info,
 #         **document_info
 #     )
-

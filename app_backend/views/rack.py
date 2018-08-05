@@ -8,7 +8,6 @@
 @time: 2018-04-06 18:22
 """
 
-
 from __future__ import unicode_literals
 
 import json
@@ -354,7 +353,6 @@ def ajax_get_rack_choices():
     rack_choices = get_rack_choices(warehouse_id)
     return jsonify(rack_choices)
 
-
 # @bp_rack.route('/ajax/stats', methods=['GET', 'POST'])
 # @login_required
 # def ajax_stats():
@@ -443,4 +441,3 @@ def ajax_get_rack_choices():
 #         rack_stats_item_info=rack_stats_item_info,
 #         **document_info
 #     )
-

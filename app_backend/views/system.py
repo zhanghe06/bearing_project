@@ -8,7 +8,6 @@
 @time: 2018-04-11 17:34
 """
 
-
 from __future__ import unicode_literals
 
 import json
@@ -43,7 +42,6 @@ from app_backend.forms.system import QuotationUploadForm
 from app_backend.permissions import (
     permission_role_administrator,
 )
-
 
 # 定义蓝图
 from app_common.tools.file import get_file_size, bytes2human

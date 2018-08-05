@@ -68,7 +68,6 @@ from app_common.maps.type_role import (
     TYPE_ROLE_STOREKEEPER,
 )
 
-
 # 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 
@@ -127,7 +126,7 @@ def on_identity_loaded(sender, identity):
     # 用户查询
     identity.provides.add(SectionActionNeed('user', 'search'))
     # 产品查询
-    identity.provides.add(SectionActionNeed('product', 'search'))
+    identity.provides.add(SectionActionNeed('production', 'search'))
     # 库存查询
     identity.provides.add(SectionActionNeed('inventory', 'search'))
     # 仓库查询
@@ -166,11 +165,11 @@ def on_identity_loaded(sender, identity):
         identity.provides.add(SectionActionNeed('customer', 'stats'))
         # 报价-----------------------------------------------------------------------
         # 报价创建
-        identity.provides.add(SectionActionNeed('quote', 'add'))
+        identity.provides.add(SectionActionNeed('quotation', 'add'))
         # 报价查询
-        identity.provides.add(SectionActionNeed('quote', 'search'))
+        identity.provides.add(SectionActionNeed('quotation', 'search'))
         # 报价统计
-        identity.provides.add(SectionActionNeed('quote', 'stats'))
+        identity.provides.add(SectionActionNeed('quotation', 'stats'))
 
         # 版块明细操作权限（销售）
         # （读取、编辑、删除、打印）
@@ -189,19 +188,19 @@ def on_identity_loaded(sender, identity):
             # 客户打印权限
             identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
         # 报价-----------------------------------------------------------------------
-        quote_rows_condition = {
+        quotation_rows_condition = {
             'uid': current_user.id
         }
-        quote_rows = get_quotation_rows(**quote_rows_condition)
-        for quote_row in quote_rows:
+        quotation_rows = get_quotation_rows(**quotation_rows_condition)
+        for quotation_row in quotation_rows:
             # 报价读取权限
-            identity.provides.add(SectionActionItemNeed('quote', 'get', unicode(quote_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'get', unicode(quotation_row.id)))
             # 报价编辑权限
-            identity.provides.add(SectionActionItemNeed('quote', 'edit', unicode(quote_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'edit', unicode(quotation_row.id)))
             # 报价删除权限
-            identity.provides.add(SectionActionItemNeed('quote', 'del', unicode(quote_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'del', unicode(quotation_row.id)))
             # 报价打印权限
-            identity.provides.add(SectionActionItemNeed('quote', 'print', unicode(quote_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'print', unicode(quotation_row.id)))
 
     # 角色 - 经理
     if current_user.role_id == TYPE_ROLE_MANAGER:
@@ -218,13 +217,13 @@ def on_identity_loaded(sender, identity):
         identity.provides.add(SectionActionNeed('customer', 'export'))
         # 报价-----------------------------------------------------------------------
         # 报价创建
-        identity.provides.add(SectionActionNeed('quote', 'add'))
+        identity.provides.add(SectionActionNeed('quotation', 'add'))
         # 报价查询
-        identity.provides.add(SectionActionNeed('quote', 'search'))
+        identity.provides.add(SectionActionNeed('quotation', 'search'))
         # 报价统计
-        identity.provides.add(SectionActionNeed('quote', 'stats'))
+        identity.provides.add(SectionActionNeed('quotation', 'stats'))
         # 报价导出
-        identity.provides.add(SectionActionNeed('quote', 'export'))
+        identity.provides.add(SectionActionNeed('quotation', 'export'))
 
         # 版块明细操作权限（经理）
         # （读取、编辑、删除、打印、审核）
@@ -243,21 +242,21 @@ def on_identity_loaded(sender, identity):
             # 客户打印权限
             identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
         # 报价-----------------------------------------------------------------------
-        quote_rows_condition = {
+        quotation_rows_condition = {
             'uid': current_user.id
         }
-        quote_rows = get_quotation_rows(**quote_rows_condition)
-        for quote_row in quote_rows:
+        quotation_rows = get_quotation_rows(**quotation_rows_condition)
+        for quotation_row in quotation_rows:
             # 报价读取权限
-            identity.provides.add(SectionActionItemNeed('quote', 'get', unicode(quote_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'get', unicode(quotation_row.id)))
             # 报价编辑权限
-            identity.provides.add(SectionActionItemNeed('quote', 'edit', unicode(quote_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'edit', unicode(quotation_row.id)))
             # 报价删除权限
-            identity.provides.add(SectionActionItemNeed('quote', 'del', unicode(quote_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'del', unicode(quotation_row.id)))
             # 报价打印权限
-            identity.provides.add(SectionActionItemNeed('quote', 'print', unicode(quote_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'print', unicode(quotation_row.id)))
             # 报价审核权限
-            identity.provides.add(SectionActionItemNeed('quote', 'audit', unicode(quote_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'audit', unicode(quotation_row.id)))
 
         # 版块明细操作权限 - 所属销售（经理）
         sales_rows_condition = {
@@ -280,21 +279,21 @@ def on_identity_loaded(sender, identity):
                 # 客户打印权限
                 identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
             # 报价-----------------------------------------------------------------------
-            quote_rows_condition = {
+            quotation_rows_condition = {
                 'uid': sales_item.id
             }
-            quote_rows = get_quotation_rows(**quote_rows_condition)
-            for quote_row in quote_rows:
+            quotation_rows = get_quotation_rows(**quotation_rows_condition)
+            for quotation_row in quotation_rows:
                 # 报价读取权限
-                identity.provides.add(SectionActionItemNeed('quote', 'get', unicode(quote_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'get', unicode(quotation_row.id)))
                 # 报价编辑权限
-                identity.provides.add(SectionActionItemNeed('quote', 'edit', unicode(quote_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'edit', unicode(quotation_row.id)))
                 # 报价删除权限
-                identity.provides.add(SectionActionItemNeed('quote', 'del', unicode(quote_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'del', unicode(quotation_row.id)))
                 # 报价打印权限
-                identity.provides.add(SectionActionItemNeed('quote', 'print', unicode(quote_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'print', unicode(quotation_row.id)))
                 # 报价审核权限
-                identity.provides.add(SectionActionItemNeed('quote', 'audit', unicode(quote_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'audit', unicode(quotation_row.id)))
 
     # 角色 - 库管
     if current_user.role_id == TYPE_ROLE_STOREKEEPER:

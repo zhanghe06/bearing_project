@@ -8,13 +8,11 @@
 @time: 2018-04-23 17:30
 """
 
-
 from __future__ import unicode_literals
 
 import json
 from app_backend.clients.client_es import es_client
 from app_common.libs.es import ES
-
 
 es = ES(es_client)
 

@@ -4,86 +4,106 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
-            <li><a href="javascript:void(0);" onclick="$('#menu-production').trigger('click');">{{ _('production management') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-production').trigger('click')">{{ _('production management') }}</a></li>
             <li class="active">{{ _('production lists') }}</li>
         </ol>
+        <form method="post">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSearch">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                           aria-expanded="true" aria-controls="collapseSearch">
+                            {{ _('Search toolbar') }}
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="headingSearch">
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            {{ form.csrf_token }}
+                            <div class="form-group{% if form.production_brand.errors %} has-error{% endif %}">
+                                {{ form.production_brand.label() }}
+                                {{ form.production_brand(class="form-control input-sm") }}
+                            </div>
+                            <div class="form-group{% if form.production_model.errors %} has-error{% endif %}">
+                                {{ form.production_model.label() }}
+                                {{ form.production_model(class="form-control input-sm") }}
+                            </div>
 
-        <form class="form-inline" method="post">
-            {{ form.csrf_token }}
-            <div class="form-group{% if form.production_brand.errors %} has-error{% endif %}">
-                {{ form.production_brand.label() }}
-                {{ form.production_brand(class="form-control") }}
+                            <button type="submit" class="btn-sm btn-primary" name="op"
+                                    value="0">{{ _('Search') }}</button>
+                            <button type="submit" class="btn-sm btn-primary" name="op"
+                                    value="1">{{ _('Export') }}</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group{% if form.production_model.errors %} has-error{% endif %}">
-                {{ form.production_model.label() }}
-                {{ form.production_model(class="form-control") }}
-            </div>
 
-            <button type="submit" class="btn btn-primary" name="op" value="0">{{ _('Search') }}</button>
-            <button type="submit" class="btn btn-primary" name="op" value="1">{{ _('Export') }}</button>
-        </form>
-
-        <hr/>
-
-        <div class="table-responsive">
-            {#         <table class="table table-striped">#}
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>{{ _('production id') }}</th>
-                    <th>{{ _('production brand') }}</th>
-                    <th>{{ _('production model') }}</th>
-                    <th>{{ _('production note') }}</th>
-                    <th>{{ _('create time') }}</th>
-                    <th>{{ _('update time') }}</th>
-                    <th>{{ _('operation') }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for info in pagination.items %}
-                    <tr class="text-muted">
-                        <td>{{ info.id }}</td>
-                        <td>{{ info.production_brand }}</td>
-                        <td><a href="{{ url_for('production.info', production_id=info.id) }}" rel="tooltip"
-                               title="{{ _('Click details') }}">{{ info.production_model }}</a></td>
-                        <td>{{ info.note | default('-', True) }}</td>
-                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                        <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                        <td>
-                            <a href="{{ url_for('production.edit', production_id=info.id, next=request.path) }}"
-                               rel="tooltip" title="{{ _('Edit') }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="production_delete({{ info.id }});" rel="tooltip"
-                               title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
-                        </td>
+            <div class="table-responsive">
+                {#         <table class="table table-striped">#}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ _('production brand') }}</th>
+                        <th>{{ _('production model') }}</th>
+                        <th>{{ _('production sku') }}</th>
+                        <th>{{ _('production note') }}</th>
+                        <th>{{ _('create time') }}</th>
+                        <th>{{ _('update time') }}</th>
+                        <th>{{ _('operation') }}</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            {# 翻页 #}
-            {% from "macros.html" import render_pagination %}
-            {{ render_pagination(pagination, 'production.lists') }}
-        </div>
+                    </thead>
+                    <tbody>
+                    {% for info in pagination.items %}
+                        <tr class="text-muted">
+                            <td>{{ info.id }}</td>
+                            <td>{{ info.production_brand }}</td>
+                            <td><a href="{{ url_for('production.info', production_id=info.id) }}" rel="tooltip"
+                                   title="{{ _('Click details') }}">{{ info.production_model }}</a></td>
+                            <td>{{ info.production_sku }}</td>
+                            <td>{{ info.note | default('-', True) }}</td>
+                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>
+                                <a href="{{ url_for('production.edit', production_id=info.id, next=request.path) }}"
+                                   rel="tooltip" title="{{ _('Edit') }}"><span
+                                        class="glyphicon glyphicon-pencil"></span></a>
+                                <a href="javascript:void(0);" onclick="production_delete({{ info.id }})" rel="tooltip"
+                                   title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {# 翻页 #}
+                {% from "macros.html" import render_pagination_post %}
+                {{ render_pagination_post(pagination, 'production.lists') }}
+            </div>
+        </form>
     </div>
 
 {% endblock %}
 
 {% block extra_js %}
     <script>
-        // 客户删除
-        function production_delete(production_id) {
+        // 产品删除
+        function production_delete (production_id) {
             if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
                 $.getJSON('{{ url_for('production.ajax_delete') }}',
                     {
                         production_id: production_id
                     }, function (data) {
                         if (data.result === true) {
-                            alert(data.msg);
+                            alert(data.msg)
                         } else {
-                            alert(data.msg);
+                            alert(data.msg)
                         }
-                        window.location.reload();
-                    });
-                return false;
+                        window.location.reload()
+                    })
+                return false
             }
         }
     </script>

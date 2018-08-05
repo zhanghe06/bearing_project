@@ -8,10 +8,11 @@
 @time: 2018-03-16 09:59
 """
 
-
 from app_backend import db
 from app_common.libs.mysql_orm_op import DbInstance
 from app_backend.models.bearing_project import Production
+from app_common.maps.default import default_choices_int
+from app_common.maps.status_delete import STATUS_DEL_NO
 
 db_instance = DbInstance(db)
 
@@ -43,6 +44,18 @@ def get_production_rows(*args, **kwargs):
     :return:
     """
     return db_instance.get_rows(Production, *args, **kwargs)
+
+
+def get_production_limit_rows_by_last_id(last_pk_id, limit_num, *args, **kwargs):
+    """
+    通过最后一个主键 id 获取最新信息列表
+    :param last_pk_id:
+    :param limit_num:
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    return db_instance.get_limit_rows_by_last_id(Production, last_pk_id, limit_num, *args, **kwargs)
 
 
 def add_production(production_data):
@@ -106,3 +119,30 @@ def get_distinct_brand(*args, **kwargs):
     """
     field = 'production_brand'
     return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Production, field, *args, **kwargs))
+
+
+def get_production_choices(keywords):
+    """
+    获取选项
+    :param keywords:
+    :return:
+    """
+
+    from app_backend.clients.client_es import es_client
+    from app_common.libs.es import ES
+
+    es = ES(es_client)
+
+    index = 'production'
+    doc_type = 'bearing'
+    field = 'production_model'
+    # keywords = '7008ACDGA/P4A'
+    query_from = 0
+    size = 0
+
+    es_result = es.search_fulltext(index, doc_type, field, keywords, query_from, size)
+
+    catalogue_choices = map(lambda x: (
+        x['id'], x['value'], '%s <small class="text-muted">%s</small>' % (x['label'], x['info']['production_brand']),
+        x['info']['production_brand']), es_result['data'])
+    return catalogue_choices

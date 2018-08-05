@@ -41,8 +41,8 @@ from app_backend.api.customer import (
     customer_end_user_stats,
 )
 from app_backend.api.user import (
-    get_user_rows
-)
+    get_user_rows,
+    get_user_choices)
 from app_backend.forms.customer import (
     CustomerSearchForm,
     CustomerAddForm,
@@ -62,6 +62,7 @@ from app_common.maps.default import default_choices_int, default_choice_option_i
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
+from app_common.maps.type_company import TYPE_COMPANY_CHOICES
 from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
 )
@@ -73,6 +74,7 @@ bp_customer = Blueprint('customer', __name__, url_prefix='/customer')
 # 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 PER_PAGE_BACKEND = app.config.get('PER_PAGE_BACKEND', 20)
+PER_PAGE_BACKEND_MODAL = app.config.get('PER_PAGE_BACKEND_MODAL', 10)
 AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
@@ -152,6 +154,51 @@ def lists(page=1):
     )
 
 
+@bp_customer.route('/search.html', methods=['GET', 'POST'])
+@login_required
+@permission_customer_section_search.require(http_exception=403)
+def search():
+    """
+    客户搜索
+    :return:
+    """
+    template_name = 'customer/search_modal.html'
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('Customer Search')
+
+    # 搜索条件
+    form = CustomerSearchForm(request.form)
+    form.owner_uid.choices = get_sales_user_list()
+    # app.logger.info('')
+
+    search_condition = [
+        Customer.status_delete == STATUS_DEL_NO,
+    ]
+    if request.method == 'POST':
+        # 表单校验失败
+        if not form.validate_on_submit():
+            flash(_('Search Failure'), 'danger')
+            # 单独处理csrf_token
+            if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
+                map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
+        else:
+            if form.company_type.data != default_choice_option_int:
+                search_condition.append(Customer.company_type == form.company_type.data)
+            if form.company_name.data:
+                search_condition.append(Customer.company_name.like('%%%s%%' % form.company_name.data))
+    # 翻页数据
+    pagination = get_customer_pagination(form.page.data, PER_PAGE_BACKEND_MODAL, *search_condition)
+
+    # 渲染模板
+    return render_template(
+        template_name,
+        form=form,
+        pagination=pagination,
+        **document_info
+    )
+
+
 @bp_customer.route('/<int:customer_id>/info.html')
 @login_required
 def info(customer_id):
@@ -181,7 +228,7 @@ def info(customer_id):
 
 @bp_customer.route('/add.html', methods=['GET', 'POST'])
 @login_required
-@permission_customer_section_add.require(http_exception=403)
+# @permission_customer_section_add.require(http_exception=403)
 def add():
     """
     创建客户
@@ -194,6 +241,9 @@ def add():
 
     # 加载创建表单
     form = CustomerAddForm(request.form)
+
+    form.company_type.choices = TYPE_COMPANY_CHOICES
+    form.owner_uid.choices = get_user_choices()
 
     # 进入创建页面
     if request.method == 'GET':
@@ -208,6 +258,7 @@ def add():
     if request.method == 'POST':
         # 表单校验失败
         if not form.validate_on_submit():
+            flash(form.errors, 'danger')
             flash(_('Add Failure'), 'danger')
             return render_template(
                 template_name,
@@ -250,9 +301,9 @@ def edit(customer_id):
     客户编辑
     """
     # 检查编辑权限
-    customer_item_edit_permission = CustomerItemEditPermission(customer_id)
-    if not customer_item_edit_permission.can():
-        abort(403)
+    # customer_item_edit_permission = CustomerItemEditPermission(customer_id)
+    # if not customer_item_edit_permission.can():
+    #     abort(403)
 
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在
@@ -266,6 +317,9 @@ def edit(customer_id):
 
     # 加载编辑表单
     form = CustomerEditForm(request.form)
+
+    form.company_type.choices = TYPE_COMPANY_CHOICES
+    form.owner_uid.choices = get_user_choices()
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -353,10 +407,10 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
-    customer_item_del_permission = CustomerItemDelPermission(customer_id)
-    if not customer_item_del_permission.can():
-        ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
-        return jsonify(ajax_failure_msg)
+    # customer_item_del_permission = CustomerItemDelPermission(customer_id)
+    # if not customer_item_del_permission.can():
+    #     ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
+    #     return jsonify(ajax_failure_msg)
 
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在

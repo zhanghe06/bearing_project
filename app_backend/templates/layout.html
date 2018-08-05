@@ -26,7 +26,7 @@
           rel="stylesheet">
     <!-- Custom -->
     <link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/custom.css', v='1.5.23') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.css', v='1.5.24') }}" rel="stylesheet">
     {% block extra_css %}{% endblock %}
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -82,6 +82,7 @@
         <p>{%=o.info%}</p>
     </a>
 </li>
+
 </script>
 {% endraw %}
 
@@ -93,6 +94,7 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="{{ url_for('static', filename='plugin/metisMenu/metisMenu.min.js') }}"></script>
 <script src="{{ url_for('static', filename='plugin/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugin/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js') }}"></script>
 <!-- Chart Plugin JavaScript -->
 <script src="{{ url_for('static', filename='plugin/Chart.js-2.6.0/dist/Chart.min.js') }}"></script>
 <!-- Moment Plugin JavaScript -->
@@ -101,77 +103,77 @@
 <script src="{{ url_for('static', filename='plugin/socket.io-client-2.1.0/dist/socket.io.js') }}"></script>
 <!-- Templates plugin JavaScript -->
 <script src="{{ url_for('static', filename='plugin/JavaScript-Templates-3.11.0/js/tmpl.min.js') }}"></script>
+<!-- JQuery Session plugin JavaScript -->
+<script src="{{ url_for('static', filename='plugin/JQuery-Session/jquery.session.js') }}"></script>
 <!-- Custom Theme JavaScript -->
 <script src="{{ url_for('static', filename='js/sb-admin-2.js') }}"></script>
-<script src="{{ url_for('static', filename='js/custom.js', v='1.5.23') }}"></script>
+<script src="{{ url_for('static', filename='js/custom.js', v='1.5.24') }}"></script>
 
 <script>
-  moment.locale('{{ g.moment_locale }}')
+    moment.locale('{{ g.moment_locale }}')
 
-  function flask_moment_render (elem) {
-    $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'))
-    $(elem).removeClass('flask-moment').show()
-  }
+    function flask_moment_render (elem) {
+        $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'))
+        $(elem).removeClass('flask-moment').show()
+    }
 
-  function flask_moment_render_all () {
-    $('.flask-moment').each(function () {
-      flask_moment_render(this)
-      if ($(this).data('refresh')) {
-        (function (elem, interval) {
-          setInterval(function () {
-            flask_moment_render(elem)
-          }, interval)
-        })(this, $(this).data('refresh'))
-      }
-    })
-  }
-
-  $(document).ready(function () {
-    flask_moment_render_all()
-  })
-</script>
-
-<script>
-  $(document).ready(function () {
-
-    //下拉框查询组件点击查询栏时不关闭下拉框
-    var body_obj = $('body')
-    body_obj.on('click', '[data-stopPropagation]', function (e) {
-      e.stopPropagation()
-    })
-
-    // 初始化消息数量
-    $('#total-msg-count').html($('#socket-messages').find('.message').length)
-
-    var socket = io.connect('https://' + document.domain + ':' + location.port + '/msg')
-    socket.on('s_res', function (msg) {
-      //console.log(msg)
-      var msg_menu_obj = $('.messages-menu')
-      if (!msg_menu_obj.hasClass('open')){
-        msg_menu_obj.toggleClass('open')
-      }
-      var socket_msg_obj = $('#socket-messages')
-      //socket_msg_obj.prepend(tmpl("template-message", msg))
-      socket_msg_obj.prepend(msg)
-      flask_moment_render_all()
-      $('#total-msg-count').html(socket_msg_obj.find('.message').length)
-    })
-
-    body_obj.on('click', '.message-close', function(){
-      $(this).parent().parent().fadeTo('slow', 0.01, function () {//fade
-        $(this).slideUp('slow', function () {//slide up
-          $(this).remove()//then remove from the DOM
-          $('#total-msg-count').html($('#socket-messages').find('.message').length)
+    function flask_moment_render_all () {
+        $('.flask-moment').each(function () {
+            flask_moment_render(this)
+            if ($(this).data('refresh')) {
+                (function (elem, interval) {
+                    setInterval(function () {
+                        flask_moment_render(elem)
+                    }, interval)
+                })(this, $(this).data('refresh'))
+            }
         })
-      })
-    })
+    }
 
-    body_obj.on('click', '.message-close-all', function(){
-      $('.message-close').each(function () {
-        $(this).click()
-      })
+    $(function () {
+
+        flask_moment_render_all()
+
+        //下拉框查询组件点击查询栏时不关闭下拉框
+        var body_obj = $('body')
+        body_obj.on('click', '[data-stopPropagation]', function (e) {
+            e.stopPropagation()
+        })
+
+
+        // 初始化消息数量
+        $('#total-msg-count').html($('#socket-messages').find('.message').length)
+
+        var socket = io.connect('https://' + document.domain + ':' + location.port + '/msg')
+        socket.on('s_res', function (msg) {
+            //console.log(msg)
+            var msg_menu_obj = $('.messages-menu')
+            if (!msg_menu_obj.hasClass('open')) {
+                msg_menu_obj.toggleClass('open')
+            }
+            var socket_msg_obj = $('#socket-messages')
+            //socket_msg_obj.prepend(tmpl("template-message", msg))
+            socket_msg_obj.prepend(msg)
+            flask_moment_render_all()
+            $('#total-msg-count').html(socket_msg_obj.find('.message').length)
+        })
+
+        body_obj.on('click', '.message-close', function () {
+            $(this).parent().parent().fadeTo('slow', 0.01, function () {//fade
+                $(this).slideUp('slow', function () {//slide up
+                    $(this).remove()//then remove from the DOM
+                    $('#total-msg-count').html($('#socket-messages').find('.message').length)
+                })
+            })
+        })
+
+        body_obj.on('click', '.message-close-all', function () {
+            $('.message-close').each(function () {
+                $(this).click()
+            })
+        })
+
     })
-  })
 </script>
 
 {% block extra_js %}{% endblock %}
