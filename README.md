@@ -356,6 +356,8 @@ class SomeForm(FlaskForm):
         FlaskForm.__init__(self, *args, **kwargs)
 ```
 
+注意: 嵌套表单不能有`name`字段, `form.name`表示嵌套表单明细的名称
+
 
 ## 本地事务的幂等性
 
@@ -376,3 +378,19 @@ The supported range is '1000-01-01 00:00:00.000000' to '9999-12-31 23:59:59.9999
 ## Lazy Loading
 
 http://docs.jinkan.org/docs/flask/patterns/lazyloading.html
+
+
+## 引入的js文件中如果包含`jinja`标签, 需要使用`include`方法
+
+```
+{% block javascript %}
+    <script type="text/javascript">
+        {% include "myscript.js" %}
+    </script>
+    <!-- The contents of myscript.js will be loaded inside the script tag -->
+{% endblock %}
+```
+
+## TODO
+
+- [ ] 联动删除

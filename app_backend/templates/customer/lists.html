@@ -14,6 +14,7 @@
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
                        aria-expanded="true" aria-controls="collapseSearch">
                         {{ _('Search toolbar') }}
+                        <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right" style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip" data-placement="left"></span>
                     </a>
                 </h4>
             </div>
@@ -47,6 +48,8 @@
                                 value="0">{{ _('Search') }}</button>
                         <button type="submit" class="btn btn-primary btn-sm" name="op"
                                 value="1">{{ _('Export') }}</button>
+                        <button type="submit" class="btn-sm btn-danger" name="op"
+                                    value="2">{{ _('Delete') }}</button>
                     </form>
                 </div>
             </div>
@@ -57,7 +60,13 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>{{ _('customer id') }}</th>
+                    <th>
+                        <label>
+                            <input class="select_all" name="customer_ids" title="{{ _('Select All') }}"
+                                   rel="tooltip" type="checkbox" value=""/>
+                            {{ _('Select All') }}
+                        </label>
+                    </th>
                     <th>{{ _('company name') }}<br/>{{ _('company address') }}</th>
                     <th>{{ _('company site') }}</th>
                     <th>{{ _('company tel') }}<br/>{{ _('company fax') }}</th>
@@ -69,8 +78,13 @@
                 </thead>
                 <tbody>
                 {% for info in pagination.items %}
-                    <tr class="text-muted">
-                        <td>{{ info.id }}</td>
+                    <tr class="text-muted item">
+                        <td>
+                            <label>
+                                <input class="select_item" name="customer_id" title="{{ _('Select') }}"
+                                       rel="tooltip" type="checkbox" value="{{ info.id }}"/>
+                            </label>
+                        </td>
                         <td><a href="{{ url_for('customer.info', customer_id=info.id) }}" rel="tooltip"
                                title="{{ _('Click details') }}">{{ info.company_name }}</a><br/>{{ info.company_address }}</td>
                         <td>{{ info.company_site }}</td>
@@ -79,11 +93,24 @@
                         <td>{{ info.owner_uid | user_name }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}<br/>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
-                            <a href="{{ url_for('customer.edit', customer_id=info.id, next=request.path) }}"
-                               rel="tooltip" title="{{ _('Edit') }}"><span
-                                    class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="customer_delete({{ info.id }})" rel="tooltip"
-                               title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
+                            <!-- Split button -->
+                            <div class="btn-group btn-group-sm">
+                                <a class="btn btn-default" href="{{ url_for('customer.edit', customer_id=info.id, next=request.path) }}">
+                                    <span class="glyphicon glyphicon-pencil"></span> {{ _('Edit') }}
+                                </a>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a href="javascript:void(0);" onclick="customer_delete({{ info.id }})">
+                                            <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}
@@ -98,23 +125,23 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script>
-        // 客户删除
-        function customer_delete (customer_id) {
-            if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
-                $.getJSON('{{ url_for('customer.ajax_delete') }}',
-                    {
-                        customer_id: customer_id
-                    }, function (data) {
-                        if (data.result === true) {
-                            alert(data.msg)
-                        } else {
-                            alert(data.msg)
-                        }
-                        window.location.reload()
-                    })
-                return false
-            }
+<script>
+    // 客户删除
+    function customer_delete (customer_id) {
+        if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
+            $.getJSON('{{ url_for('customer.ajax_delete') }}',
+                {
+                    customer_id: customer_id
+                }, function (data) {
+                    if (data.result === true) {
+                        alert(data.msg)
+                    } else {
+                        alert(data.msg)
+                    }
+                    window.location.reload()
+                })
+            return false
         }
-    </script>
+    }
+</script>
 {% endblock %}

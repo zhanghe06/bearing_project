@@ -9,6 +9,7 @@
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
                            aria-expanded="false" aria-controls="collapseSearch">
                             {{ _('Search toolbar') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-full pull-right" style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip" data-placement="left"></span>
                         </a>
                     </h4>
                 </div>
@@ -97,20 +98,20 @@
 
             $('.customer_select_tr').on('click', function () {
 
-                var current_checkbox = $(this).find('input[name=\'company_id\']')
+                var current_checkbox = $(this).find('input[name="company_id"]')
 
                 if (current_checkbox.prop('checked')) {
-                    $('input[name=\'company_id\']').prop('checked', false)
+                    $('input[name="company_id"]').prop('checked', false)
                     current_checkbox.prop('checked', false)
                     $.session.remove('company_id')
                     $.session.remove('company_name')
                     $.session.remove('owner_uid')
                 } else {
-                    $('input[name=\'company_id\']').prop('checked', false)
+                    $('input[name="company_id"]').prop('checked', false)
                     current_checkbox.prop('checked', true)
-                    $.session.set('company_id', $(this).find('input[name=\'company_id\']').val())
-                    $.session.set('company_name', $(this).find('input[name=\'company_name\']').val())
-                    $.session.set('owner_uid', $(this).find('input[name=\'owner_uid\']').val())
+                    $.session.set('company_id', $(this).find('input[name="company_id"]').val())
+                    $.session.set('company_name', $(this).find('input[name="company_name"]').val())
+                    $.session.set('owner_uid', $(this).find('input[name="owner_uid"]').val())
                 }
             })
         })

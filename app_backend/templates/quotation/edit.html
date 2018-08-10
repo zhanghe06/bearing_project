@@ -104,7 +104,7 @@
                             <td{% if info.unit_price.errors %} class="has-error"{% endif %}>
                                 {{ info.unit_price(class="form-control input-sm text-right unit_price", title=info.unit_price.errors|join(', '), style="min-width: 7em;") }}
                             </td>
-                            <td>
+                            <td style="min-width: 6em;">
                                 <button type="submit" class="input-sm glyphicon glyphicon-plus" name="data_line_add"
                                         value="{{ loop.index0 }}" rel="tooltip" title="{{ _('Add') }}"></button>
                                 <button type="submit" class="input-sm glyphicon glyphicon-minus" name="data_line_del"
@@ -120,151 +120,19 @@
     </div>
 
     <!-- 客户搜索 -->
-    <div class="modal fade" id="customer_select_modal" tabindex="-1" role="dialog" aria-labelledby="customer_label">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="customer_label">{{ _('Customer Search') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <iframe name="customer_search_iframe" src="" width="100%" height="100%" frameborder="no" marginwidth="0" marginheight="0" allowtransparency="yes" style="min-height: 300px"></iframe>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Close') }}</button>
-                    <button type="button" class="btn btn-primary" id="customer_select_confirm_btn">{{ _('Submit') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include "modal/customer_select.html" %}
 
     <!-- 产品搜索 -->
-    <div class="modal fade" id="production_select_modal" tabindex="-1" role="dialog" aria-labelledby="production_label">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="production_label">{{ _('Production Search') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <iframe name="production_search_iframe" src="" width="100%" height="100%" frameborder="no" marginwidth="0" marginheight="0" allowtransparency="yes" style="min-height: 300px"></iframe>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Close') }}</button>
-                    <button type="button" class="btn btn-primary" id="production_select_confirm_btn">{{ _('Submit') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include "modal/production_select.html" %}
 
 
 {% endblock %}
 
 {% block extra_js %}
-    <script>
-        // 汇总金额
-        function compute_total_amount () {
-            var sum = 0
-            $('tr.text-muted').each(function (i, tr) {
-                var j = 1
-                $(tr).find('input.quantity,input.unit_price').each(function () {
-                    j *= Number(this.value)
-                })
-                sum += j
-            })
-
-            $('input#amount_quotation').val(sum.toFixed(2).replace(/\d(?=(\d{12})+\.)/g, '$&,'))
-        }
-
-        $(function () {
-            // 汇总金额
-            // compute_total_amount()
-
-
-            // 客户选择搜索
-            $('.customer_select_search_btn').on('click', function () {
-                var input_group_obj = $(this).parents('div.input-group');
-                var customer_input = input_group_obj.find('input[name="company_name"]');
-                var keywords = customer_input.val();
-                $.session.set('customer_keywords', keywords)
-                if (!keywords){
-                    alert("{{ _('company name is empty') }}");
-                    customer_input.focus()
-                    return false
-                } else {
-                    $('iframe[name="customer_search_iframe"]').attr('src', '{{ url_for("customer.search") }}')
-                }
-            })
-
-            // 客户选择确认
-            $('#customer_select_confirm_btn').on('click', function () {
-                var company_id = $.session.get('company_id')
-                if (!company_id){
-                    alert('{{ _('Please select a customer') }}');
-                    return false;
-                } else {
-                    $("input[name$='cid']").val(company_id)
-                    $("input[name$='company_name']").val($.session.get('company_name'))
-                    $('#customer_select_modal').modal('hide');
-                }
-            })
-
-
-            var tr_edit_obj;
-
-            // 产品选择搜索
-            $('.production_select_search_btn').on('click', function () {
-                tr_edit_obj = $(this).parents('tr');
-                var production_model_input = tr_edit_obj.find("input.production_model");
-                var keywords = production_model_input.val()
-                $.session.set('production_keywords', keywords)
-                if (!keywords){
-                    alert("{{ _('production model is empty') }}");
-                    production_model_input.focus()
-                    return false
-                } else {
-                    $('iframe[name="production_search_iframe"]').attr('src', '{{ url_for("production.search") }}')
-                }
-            })
-
-            // 产品选择确认
-            $('#production_select_confirm_btn').on('click', function () {
-                var production_id = $.session.get('production_id')
-                if (!production_id){
-                    alert('{{ _('Please select a production') }}');
-                    return false;
-                } else {
-                    var production_brand = $.session.get('production_brand')
-                    var production_model = $.session.get('production_model')
-                    var production_sku = $.session.get('production_sku')
-
-                    $(tr_edit_obj).find("input[name$='production_id']").val(production_id)
-
-                    $(tr_edit_obj).find("input.production_brand").val(production_brand)
-                    $(tr_edit_obj).find("input.production_model").val(production_model)
-                    $(tr_edit_obj).find("input.production_sku").val(production_sku)
-
-                    $(tr_edit_obj).find("span.production_brand").text(production_brand)
-                    $(tr_edit_obj).find("span.production_model").text(production_model)
-                    $(tr_edit_obj).find("span.production_sku").text(production_sku)
-                    $('#production_select_modal').modal('hide');
-                }
-            })
-
-            $('#customer_select_modal').on('hidden.bs.modal', function () {
-                $.session.clear();
-            })
-            $('#production_select_modal').on('hidden.bs.modal', function () {
-                $.session.clear();
-            })
-        })
-
-        // 更新数据重新汇总金额
-        $('input[type=number]').on('change', function () {
-            compute_total_amount()
-        })
-
-    </script>
+<!-- 客户搜索 -->
+{% include "modal/customer_select_js.html" %}
+<!-- 产品搜索 -->
+{% include "modal/production_select_js.html" %}
+<!-- 报价总额 -->
+<script src="{{ url_for('static', filename='js/common/amount_quotation.js', v='1.5.24') }}"></script>
 {% endblock %}

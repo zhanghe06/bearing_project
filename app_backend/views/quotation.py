@@ -102,7 +102,6 @@ def lists(page=1):
     # 搜索条件
     form = QuotationSearchForm(request.form)
     form.uid.choices = get_quotation_user_list_choices()
-    form.cid.choices = get_quotation_customer_list_choices(form.uid.data)
     # app.logger.info('')
 
     search_condition = [
@@ -118,7 +117,7 @@ def lists(page=1):
         else:
             if form.uid.data != default_choice_option_int:
                 search_condition.append(Quotation.uid == form.uid.data)
-            if form.cid.data != default_choice_option_int:
+            if form.cid.data and form.company_name.data:
                 search_condition.append(Quotation.cid == form.cid.data)
             if form.start_create_time.data:
                 search_condition.append(Quotation.create_time >= form.start_create_time.data)
@@ -270,6 +269,7 @@ def add():
 
         amount_quotation = 0
         for quotation_item in form.quotation_items.entries:
+            current_time = datetime.utcnow()
             quotation_item_data = {
                 'quotation_id': quotation_id,
                 'enquiry_cid': form.cid.data,
@@ -284,11 +284,13 @@ def add():
                 'delivery_time': quotation_item.form.delivery_time.data,
                 'quantity': quotation_item.form.quantity.data,
                 'unit_price': quotation_item.form.unit_price.data,
+                'create_time': current_time,
+                'update_time': current_time,
             }
 
             # 新增
             add_quotation_item(quotation_item_data)
-            amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
+            amount_quotation += (quotation_item_data['quantity'] or 0) * (quotation_item_data['unit_price'] or 0)
 
         # 更新报价
         quotation_data = {
@@ -455,15 +457,15 @@ def edit(quotation_id):
                 'unit_price': quotation_item.form.unit_price.data,
             }
 
-            # 新增
             if not quotation_item.form.id.data:
+                # 新增
                 add_quotation_item(quotation_item_data)
                 amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
-                continue
-            # 修改
-            edit_quotation_item(quotation_item.form.id.data, quotation_item_data)
-            amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
-            quotation_items_ids_new.append(quotation_item.form.id.data)
+            else:
+                # 修改
+                edit_quotation_item(quotation_item.form.id.data, quotation_item_data)
+                amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
+                quotation_items_ids_new.append(quotation_item.form.id.data)
         # 删除
         quotation_items_ids_del = list(set(quotation_items_ids) - set(quotation_items_ids_new))
         for quotation_items_id in quotation_items_ids_del:

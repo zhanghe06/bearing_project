@@ -5,8 +5,8 @@
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
-                   onclick="$('#menu-quotation').trigger('click')">{{ _('quotation management') }}</a></li>
-            <li class="active">{{ _('quotation lists') }}</li>
+                   onclick="$('#menu-customer').trigger('click')">{{ _('customer management') }}</a></li>
+            <li class="active">{{ _('customer contact lists') }}</li>
         </ol>
 
         <div class="panel panel-default">
@@ -24,14 +24,6 @@
                 <div class="panel-body">
                     <form class="form-inline" method="post">
                         {{ form.csrf_token }}
-                        <div class="form-group form-group-sm{% if form.uid.errors %} has-error{% endif %}">
-                            {{ form.uid.label() }}
-                            {{ form.uid(class="form-control") }}
-                        </div>
-{#                        <div class="form-group form-group-sm{% if form.cid.errors %} has-error{% endif %}">#}
-{#                            {{ form.cid.label() }}#}
-{#                            {{ form.cid(class="form-control") }}#}
-{#                        </div>#}
                         <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
                             {{ form.cid(class="hidden") }}
                             {{ form.company_name.label() }}
@@ -47,13 +39,17 @@
                                       data-target="#customer_select_modal"></span>
                             </div>
                         </div>
-                        <div class="form-group form-group-sm{% if form.start_create_time.errors %} has-error{% endif %}">
-                            {{ form.start_create_time.label() }}
-                            {{ form.start_create_time(class="form-control") }}
+                        <div class="form-group form-group-sm{% if form.contact_name.errors %} has-error{% endif %}">
+                            {{ form.contact_name.label() }}
+                            {{ form.contact_name(class="form-control") }}
                         </div>
-                        <div class="form-group form-group-sm{% if form.end_create_time.errors %} has-error{% endif %}">
-                            {{ form.end_create_time.label() }}
-                            {{ form.end_create_time(class="form-control") }}
+                        <div class="form-group form-group-sm{% if form.address.errors %} has-error{% endif %}">
+                            {{ form.address.label() }}
+                            {{ form.address(class="form-control") }}
+                        </div>
+                        <div class="form-group form-group-sm{% if form.mobile.errors %} has-error{% endif %}">
+                            {{ form.mobile.label() }}
+                            {{ form.mobile(class="form-control") }}
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-sm" name="op"
@@ -75,46 +71,43 @@
                 <tr>
                     <th>
                         <label>
-                            <input class="select_all" name="quotation_ids" title="{{ _('Select All') }}"
+                            <input class="select_all" name="customer_contact_ids" title="{{ _('Select All') }}"
                                    rel="tooltip" type="checkbox" value=""/>
                             {{ _('Select All') }}
                         </label>
                     </th>
-                    <th>{{ _('quotation user') }}</th>
+
                     <th>{{ _('customer company') }}</th>
-{#                    <th>{{ _('audit status') }}</th>#}
-{#                    <th>{{ _('order status') }}</th>#}
-                    <th>{{ _('quotation amount') }}</th>
-                    <th>{{ _('quotation note') }}</th>
-                    <th>{{ _('create time') }}</th>
-                    <th>{{ _('update time') }}</th>
+                    <th>{{ _('contact name') }}</th>
+                    <th>{{ _('salutation') }}</th>
+                    <th>{{ _('mobile') }}</th>
+                    <th>{{ _('tel') }}<br/>{{ _('fax') }}</th>
+                    <th>{{ _('address') }}</th>
+                    <th>{{ _('default status') }}</th>
                     <th>{{ _('operation') }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for info in pagination.items %}
                     <tr class="text-muted item">
-                        <td>
+                        <td style="width: 5em;">
                             <label>
-                                <input class="select_item" name="quotation_id" title="{{ _('Select') }}"
+                                <input class="select_item" name="customer_contact_id" title="{{ _('Select') }}"
                                        rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                             </label>
                         </td>
-                        <td>{{ info.uid | user_name }}</td>
-                        <td>{{ info.cid | customer_company_name }}</td>
-{#                        <td>{{ info.status_audit | status_audit }}</td>#}
-{#                        <td>{{ info.status_order | status_order }}</td>#}
-{#                        <td><a href="{{ url_for('quotation.info', quotation_id=info.id) }}" rel="tooltip"#}
-{#                               title="{{ _('Click details') }}">{{ info.amount_quotation }}</a></td>#}
-                        <td>{{ info.amount_quotation }}</td>
-                        <td>{{ info.note }}</td>
-                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                        <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                        <td>
 
+                        <td style="width: 10em;">{{ info.cid | customer_company_name }}</td>
+                        <td style="width: 4em;">{{ info.name}}</td>
+                        <td style="width: 4em;">{{ info.salutation}}</td>
+                        <td style="width: 4em;">{{ info.mobile}}</td>
+                        <td style="width: 11em;">{{ info.tel}}<br/>{{ info.fax}}</td>
+                        <td style="width: 18em;">{{ info.address}}</td>
+                        <td style="width: 4em;">{{ info.status_default | status_default}}</td>
+                        <td style="width: 7em;">
                             <!-- Split button -->
                             <div class="btn-group btn-group-sm">
-                                <a class="btn btn-default" href="{{ url_for('quotation.edit', quotation_id=info.id, next=request.path) }}">
+                                <a class="btn btn-default" href="{{ url_for('customer_contact.edit', customer_id=info.cid, next=request.path) }}">
                                     <span class="glyphicon glyphicon-pencil"></span> {{ _('Edit') }}
                                 </a>
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
@@ -124,7 +117,7 @@
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li>
-                                        <a href="javascript:void(0);" onclick="quotation_delete({{ info.id }})">
+                                        <a href="javascript:void(0);" onclick="customer_contact_delete({{ info.id }})">
                                             <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
                                         </a>
                                     </li>
@@ -144,7 +137,7 @@
             </table>
             {# 翻页 #}
             {% from "macros.html" import render_pagination_post %}
-            {{ render_pagination_post(pagination, 'quotation.lists') }}
+            {{ render_pagination_post(pagination, 'customer_contact.lists') }}
         </div>
     </div>
 
@@ -158,12 +151,12 @@
 {% include "modal/customer_select_js.html" %}
 
 <script>
-    // 报价删除
-    function quotation_delete (quotation_id) {
+    // 联系方式删除
+    function customer_contact_delete (customer_contact_id) {
         if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
-            $.getJSON('{{ url_for('quotation.ajax_delete') }}',
+            $.getJSON('{{ url_for('customer_contact.ajax_delete') }}',
                 {
-                    quotation_id: quotation_id
+                    customer_contact_id: customer_contact_id
                 }, function (data) {
                     if (data.result === true) {
                         alert(data.msg)
@@ -176,14 +169,5 @@
         }
     }
 
-    $(function () {
-        //搜索表单
-
-        //级联选择
-        $('#uid').change(function () {
-            $('#cid').get(0).selectedIndex = 0
-            $('#search_form').submit()
-        })
-    })
 </script>
 {% endblock %}

@@ -1,0 +1,36 @@
+<script>
+    $(function () {
+        // 客户选择搜索
+        $('.customer_select_search_btn').on('click', function () {
+            var input_group_obj = $(this).parents('div.input-group')
+            var customer_input = input_group_obj.find('input[name="company_name"]')
+            var keywords = customer_input.val()
+            $.session.set('customer_keywords', keywords)
+            if (!keywords) {
+                alert('{{ _("company name is empty") }}')
+                customer_input.focus()
+                return false
+            } else {
+                $('iframe[name="customer_search_iframe"]').attr('src', '{{ url_for("customer.search") }}')
+            }
+        })
+
+        // 客户选择确认
+        $('#customer_select_confirm_btn').on('click', function () {
+            var company_id = $.session.get('company_id')
+            if (!company_id) {
+                alert('{{ _("Please select a customer") }}')
+
+                return false
+            } else {
+                $('input[name$="cid"]').val(company_id)
+                $('input[name$="company_name"]').val($.session.get('company_name'))
+                $('#customer_select_modal').modal('hide')
+            }
+        })
+
+        $('#customer_select_modal').on('hidden.bs.modal', function () {
+            $.session.clear()
+        })
+    })
+</script>

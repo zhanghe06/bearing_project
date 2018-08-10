@@ -4,89 +4,89 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: customer_contact.py
-@time: 2018-03-16 10:03
+@file: customer_invoice.py
+@time: 2018-08-08 11:19
 """
 
 
 from app_backend import db
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import CustomerContact
+from app_backend.models.bearing_project import CustomerInvoice
 
 
 db_instance = DbInstance(db)
 
 
-def get_customer_contact_row_by_id(customer_contact_id):
+def get_customer_invoice_row_by_id(customer_invoice_id):
     """
     通过 id 获取信息
-    :param customer_contact_id:
+    :param customer_invoice_id:
     :return: None/object
     """
-    return db_instance.get_row_by_id(CustomerContact, customer_contact_id)
+    return db_instance.get_row_by_id(CustomerInvoice, customer_invoice_id)
 
 
-def get_customer_contact_row(*args, **kwargs):
+def get_customer_invoice_row(*args, **kwargs):
     """
     获取信息
     :param args:
     :param kwargs:
     :return: None/object
     """
-    return db_instance.get_row(CustomerContact, *args, **kwargs)
+    return db_instance.get_row(CustomerInvoice, *args, **kwargs)
 
 
-def get_customer_contact_rows(*args, **kwargs):
+def get_customer_invoice_rows(*args, **kwargs):
     """
     获取列表
     :param args:
     :param kwargs:
     :return:
     """
-    return db_instance.get_rows(CustomerContact, *args, **kwargs)
+    return db_instance.get_rows(CustomerInvoice, *args, **kwargs)
 
 
-def get_customer_contact_rows_by_ids(pk_ids):
+def get_customer_invoice_rows_by_ids(pk_ids):
     """
     通过一组 ids 获取信息列表
     :param pk_ids:
     :return:
     """
-    return db_instance.get_rows_by_ids(CustomerContact, pk_ids)
+    return db_instance.get_rows_by_ids(CustomerInvoice, pk_ids)
 
 
-def add_customer_contact(customer_contact_data):
+def add_customer_invoice(customer_invoice_data):
     """
     添加信息
-    :param customer_contact_data:
+    :param customer_invoice_data:
     :return: None/Value of user.id
     :except:
     """
-    return db_instance.add(CustomerContact, customer_contact_data)
+    return db_instance.add(CustomerInvoice, customer_invoice_data)
 
 
-def edit_customer_contact(customer_contact_id, customer_contact_data):
+def edit_customer_invoice(customer_invoice_id, customer_invoice_data):
     """
     修改信息
-    :param customer_contact_id:
-    :param customer_contact_data:
+    :param customer_invoice_id:
+    :param customer_invoice_data:
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.edit(CustomerContact, customer_contact_id, customer_contact_data)
+    return db_instance.edit(CustomerInvoice, customer_invoice_id, customer_invoice_data)
 
 
-def delete_customer_contact(customer_contact_id):
+def delete_customer_invoice(customer_invoice_id):
     """
     删除信息
-    :param customer_contact_id:
+    :param customer_invoice_id:
     :return: Number of affected rows (Example: 0/1)
     :except:
     """
-    return db_instance.delete(CustomerContact, customer_contact_id)
+    return db_instance.delete(CustomerInvoice, customer_invoice_id)
 
 
-def get_customer_contact_pagination(page=1, per_page=10, *args, **kwargs):
+def get_customer_invoice_pagination(page=1, per_page=10, *args, **kwargs):
     """
     获取列表（分页）
     Usage:
@@ -103,5 +103,5 @@ def get_customer_contact_pagination(page=1, per_page=10, *args, **kwargs):
     :param kwargs:
     :return:
     """
-    rows = db_instance.get_pagination(CustomerContact, page, per_page, *args, **kwargs)
+    rows = db_instance.get_pagination(CustomerInvoice, page, per_page, *args, **kwargs)
     return rows

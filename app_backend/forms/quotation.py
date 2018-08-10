@@ -54,7 +54,7 @@ class AmountQuotationValidate(object):
         amount_quotation = 0
 
         for quotation_item in form.quotation_items.entries:
-            amount_quotation += quotation_item.form.quantity.data * quotation_item.form.unit_price.data
+            amount_quotation += (quotation_item.form.quantity.data or 0) * (quotation_item.form.unit_price.data or 0)
 
         if amount_quotation >= 100000000:
             # raise ValidationError(self.message or _('Data limit exceeded'))
@@ -77,20 +77,31 @@ class QuotationSearchForm(FlaskForm):
             'title': _('quotation user'),
         }
     )
-    cid = SelectField(
+    cid = IntegerField(
         _('customer company'),
         validators=[
-            InputRequired(),  # 可以为0
+            InputRequired(),
         ],
-        default=default_choice_option_int,
-        coerce=int,
-        # choices=quotation_brand_choices,
+        default=0,
         description=_('customer company'),
         render_kw={
             'rel': 'tooltip',
             'title': _('customer company'),
+            'placeholder': _('customer company'),
+            'autocomplete': 'off',
         }
     )
+    company_name = StringField(
+        _('company name'),
+        validators=[],
+        description=_('company name'),
+        render_kw={
+            'placeholder': _('company name'),
+            'rel': 'tooltip',
+            'title': _('company name'),
+        }
+    )
+
     start_create_time = DateField(
         _('start time'),
         validators=[],

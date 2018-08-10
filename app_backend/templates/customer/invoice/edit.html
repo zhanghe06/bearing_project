@@ -6,19 +6,19 @@
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
                    onclick="$('#menu-customer').trigger('click')">{{ _('customer management') }}</a></li>
-            <li class="active">{{ _('customer info') }}</li>
+            <li class="active">{{ _('customer invoice') }}</li>
         </ol>
         <!-- 标签导航 -->
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="javascript:void(0);">{{ _('customer info') }}</a></li>
-            <li role="presentation"><a href="{{ url_for('customer_invoice.edit', customer_id=customer_id) }}">{{ _('customer invoice') }}</a></li>
+            <li role="presentation"><a href="{{ url_for('customer.edit', customer_id=customer_id) }}">{{ _('customer info') }}</a></li>
+            <li role="presentation" class="active"><a href="javascript:void(0);">{{ _('customer invoice') }}</a></li>
             <li role="presentation"><a href="{{ url_for('customer_contact.edit', customer_id=customer_id) }}">{{ _('customer contact') }}</a></li>
         </ul>
         <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
 
         <form class="form-horizontal" method="post" action="">
             {{ form.csrf_token }}
-            {{ form.id }}
+            {{ form.cid }}
             <div class="form-group{% if form.company_name.errors %} has-error{% endif %}">
                 {{ form.company_name.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">
@@ -26,6 +26,15 @@
                 </div>
                 <div class="col-sm-4">
                     <span class="help-block hidden-xs">{{ form.company_name.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.company_tax_id.errors %} has-error{% endif %}">
+                {{ form.company_tax_id.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.company_tax_id(class="form-control", title=form.company_tax_id.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_tax_id.description }}</span>
                 </div>
             </div>
             <div class="form-group{% if form.company_address.errors %} has-error{% endif %}">
@@ -37,15 +46,6 @@
                     <span class="help-block hidden-xs">{{ form.company_address.description }}</span>
                 </div>
             </div>
-            <div class="form-group{% if form.company_site.errors %} has-error{% endif %}">
-                {{ form.company_site.label(class="col-sm-2 control-label") }}
-                <div class="col-sm-6">
-                    {{ form.company_site(class="form-control", title=form.company_site.errors|join(', ')) }}
-                </div>
-                <div class="col-sm-4">
-                    <span class="help-block hidden-xs">{{ form.company_site.description }}</span>
-                </div>
-            </div>
             <div class="form-group{% if form.company_tel.errors %} has-error{% endif %}">
                 {{ form.company_tel.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">
@@ -55,31 +55,22 @@
                     <span class="help-block hidden-xs">{{ form.company_tel.description }}</span>
                 </div>
             </div>
-            <div class="form-group{% if form.company_fax.errors %} has-error{% endif %}">
-                {{ form.company_fax.label(class="col-sm-2 control-label") }}
+            <div class="form-group{% if form.company_bank_name.errors %} has-error{% endif %}">
+                {{ form.company_bank_name.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">
-                    {{ form.company_fax(class="form-control", title=form.company_fax.errors|join(', ')) }}
+                    {{ form.company_bank_name(class="form-control", title=form.company_bank_name.errors|join(', ')) }}
                 </div>
                 <div class="col-sm-4">
-                    <span class="help-block hidden-xs">{{ form.company_fax.description }}</span>
+                    <span class="help-block hidden-xs">{{ form.company_bank_name.description }}</span>
                 </div>
             </div>
-            <div class="form-group{% if form.company_type.errors %} has-error{% endif %}">
-                {{ form.company_type.label(class="col-sm-2 control-label") }}
+            <div class="form-group{% if form.company_bank_account.errors %} has-error{% endif %}">
+                {{ form.company_bank_account.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">
-                    {{ form.company_type(class="form-control", title=form.company_type.errors|join(', ')) }}
+                    {{ form.company_bank_account(class="form-control", title=form.company_bank_account.errors|join(', ')) }}
                 </div>
                 <div class="col-sm-4">
-                    <span class="help-block hidden-xs">{{ form.company_type.description }}</span>
-                </div>
-            </div>
-            <div class="form-group{% if form.owner_uid.errors %} has-error{% endif %}">
-                {{ form.owner_uid.label(class="col-sm-2 control-label") }}
-                <div class="col-sm-6">
-                    {{ form.owner_uid(class="form-control", title=form.owner_uid.errors|join(', ')) }}
-                </div>
-                <div class="col-sm-4">
-                    <span class="help-block hidden-xs">{{ form.owner_uid.description }}</span>
+                    <span class="help-block hidden-xs">{{ form.company_bank_account.description }}</span>
                 </div>
             </div>
             <div class="form-group">

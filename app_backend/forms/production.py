@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, IntegerField, SelectField
-from wtforms.validators import DataRequired, ValidationError
+from wtforms.validators import DataRequired, ValidationError, Length
 
 from wtforms.widgets import HTMLString
 from wtforms.compat import text_type, iteritems
@@ -160,6 +160,7 @@ class ProductionEditForm(FlaskForm):
         _('production brand'),
         validators=[
             DataRequired(),
+            Length(min=2, max=16),
         ],
         description='产品品牌（例如：SKF、FAG、NSK...）',
         render_kw={

@@ -110,63 +110,97 @@ class CustomerAddForm(FlaskForm):
     """
     company_name = StringField(
         _('company name'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司名称，最大长度100字符'
+        validators=[
+            DataRequired(),
+            Length(min=2, max=100),
+        ],
+        description=_('company name'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company name'),
+            'placeholder': _('company name'),
+            'autocomplete': 'off',
+        }
     )
     company_address = StringField(
         _('company address'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司地址，最大长度100字符'
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company address'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company address'),
+            'placeholder': _('company address'),
+            'autocomplete': 'off',
+        }
     )
     company_site = StringField(
         _('company site'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司官网，最大长度100字符'
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company site'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company site'),
+            'placeholder': _('company site'),
+            'autocomplete': 'off',
+        }
     )
     company_tel = StringField(
         _('company tel'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司电话，最大长度100字符'
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company tel'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company tel'),
+            'placeholder': _('company tel'),
+            'autocomplete': 'off',
+        }
     )
     company_fax = StringField(
         _('company fax'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司传真，最大长度100字符'
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company fax'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company fax'),
+            'placeholder': _('company fax'),
+            'autocomplete': 'off',
+        }
     )
     company_type = SelectField(
         _('company type'),
-        validators=[InputRequired()],
+        validators=[
+            InputRequired(),
+        ],
         default=default_choice_option_int,
         coerce=int,
-        description=_('company type')
+        description=_('company type'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company type'),
+            'autocomplete': 'off',
+        }
     )
     owner_uid = SelectField(
         _('owner uid'),
-        validators=[InputRequired()],
+        validators=[
+            InputRequired(),
+        ],
         default=default_choice_option_int,
         coerce=int,
-        description=_('owner uid')
-    )
-    status_delete = IntegerField(
-        _('delete status'),
-        validators=[],
-        default=0,
-        description=_('delete status')
-    )
-    delete_time = DateField(
-        _('delete time'),
-        validators=[],
-        description=_('delete time')
-    )
-    create_time = DateField(
-        _('create time'),
-        validators=[],
-        description=_('create time')
-    )
-    update_time = DateField(
-        _('update time'),
-        validators=[],
-        description=_('update time')
+        description=_('owner uid'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('owner uid'),
+            'autocomplete': 'off',
+        }
     )
 
 
@@ -185,42 +219,97 @@ class CustomerEditForm(FlaskForm):
     )
     company_name = StringField(
         _('company name'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司名称，最大长度100字符'
+        validators=[
+            DataRequired(),
+            Length(min=2, max=100),
+        ],
+        description=_('company name'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company name'),
+            'placeholder': _('company name'),
+            'autocomplete': 'off',
+        }
     )
     company_address = StringField(
         _('company address'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司地址，最大长度100字符'
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company address'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company address'),
+            'placeholder': _('company address'),
+            'autocomplete': 'off',
+        }
     )
     company_site = StringField(
         _('company site'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司官网，最大长度100字符'
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company site'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company site'),
+            'placeholder': _('company site'),
+            'autocomplete': 'off',
+        }
     )
     company_tel = StringField(
         _('company tel'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司电话，最大长度100字符'
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company tel'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company tel'),
+            'placeholder': _('company tel'),
+            'autocomplete': 'off',
+        }
     )
     company_fax = StringField(
         _('company fax'),
-        validators=[DataRequired(), Length(max=100)],
-        description='公司传真，最大长度100字符'
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company fax'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company fax'),
+            'placeholder': _('company fax'),
+            'autocomplete': 'off',
+        }
     )
     company_type = SelectField(
         _('company type'),
-        validators=[InputRequired()],
+        validators=[
+            InputRequired(),
+        ],
         default=default_choice_option_int,
         coerce=int,
-        description=_('company type')
+        description=_('company type'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company type'),
+            'autocomplete': 'off',
+        }
     )
     owner_uid = SelectField(
         _('owner uid'),
-        validators=[InputRequired()],
+        validators=[
+            InputRequired(),
+        ],
         default=default_choice_option_int,
         coerce=int,
-        description=_('owner uid')
+        description=_('owner uid'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('owner uid'),
+            'autocomplete': 'off',
+        }
     )
     status_delete = IntegerField(
         _('delete status'),

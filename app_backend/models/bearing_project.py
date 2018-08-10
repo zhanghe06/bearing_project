@@ -64,11 +64,11 @@ class Catalogue(Base):
     )
 
     id = Column(Integer, primary_key=True)
-    production_brand = Column(String(16), nullable=False, server_default=text("''"))
-    production_model = Column(String(32), nullable=False, index=True, server_default=text("''"))
-    production_label = Column(String(32), nullable=False, server_default=text("''"))
-    production_brand_old = Column(String(16), nullable=False, server_default=text("''"))
-    production_model_old = Column(String(32), nullable=False, index=True, server_default=text("''"))
+    production_brand = Column(String(32), nullable=False, server_default=text("''"))
+    production_model = Column(String(64), nullable=False, index=True, server_default=text("''"))
+    production_label = Column(String(64), nullable=False, server_default=text("''"))
+    production_brand_old = Column(String(32), nullable=False, server_default=text("''"))
+    production_model_old = Column(String(64), nullable=False, index=True, server_default=text("''"))
     production_class = Column(String(32), nullable=False, server_default=text("''"))
     ind = Column(Numeric(4, 0), nullable=False, server_default=text("'0'"))
     oud = Column(Numeric(4, 0), nullable=False, server_default=text("'0'"))
@@ -221,12 +221,32 @@ class Production(Base):
 
     id = Column(Integer, primary_key=True)
     category_id = Column(Integer, nullable=False, server_default=text("'0'"))
-    production_brand = Column(String(16), nullable=False, server_default=text("''"))
-    production_model = Column(String(32), nullable=False, index=True, server_default=text("''"))
+    production_brand = Column(String(32), nullable=False, server_default=text("''"))
+    production_model = Column(String(64), nullable=False, index=True, server_default=text("''"))
     production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
     note = Column(String(64), nullable=False, server_default=text("''"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
     delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
+class ProductionQuotationItems(Base):
+    __tablename__ = 'production_quotation_items'
+
+    id = Column(Integer, primary_key=True)
+    customer_enquiry_cid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
+    customer_enquiry_company_name = Column(String(64), nullable=False, server_default=text("'客户询价-公司名称'"))
+    customer_enquiry_production_id = Column(Integer, nullable=False, server_default=text("'0'"))
+    customer_enquiry_production_brand = Column(String(32), nullable=False, server_default=text("''"))
+    customer_enquiry_production_model = Column(String(64), nullable=False, server_default=text("''"))
+    customer_enquiry_production_num = Column(Integer, nullable=False, server_default=text("'1'"))
+    inventory_in_stock_num = Column(Integer, nullable=False, server_default=text("'0'"))
+    inventory_in_transit_num = Column(Integer, nullable=False, server_default=text("'0'"))
+    quotation_uid = Column(Integer, nullable=False, server_default=text("'0'"))
+    quotation_production_brand = Column(String(32), nullable=False, server_default=text("''"))
+    quotation_production_model = Column(String(64), nullable=False, server_default=text("''"))
+    quotation_cost_price = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 

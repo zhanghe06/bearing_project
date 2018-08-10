@@ -18,6 +18,7 @@ from app_backend.api.user import get_user_row_by_id
 from app_backend.api.warehouse import get_warehouse_row_by_id
 from app_backend.api.rack import get_rack_row_by_id
 from app_backend.api.production import get_production_row_by_id
+from app_common.maps.status_default import STATUS_DEFAULT_DICT
 from app_common.maps.type_auth import TYPE_AUTH_DICT
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 from app_common.maps.type_role import TYPE_ROLE_DICT
@@ -158,3 +159,13 @@ def filter_status_order(status_order_id):
     :return:
     """
     return STATUS_ORDER_DICT.get(status_order_id, '')
+
+
+@app.template_filter('status_default')
+def filter_status_default(status_default_id):
+    """
+    默认状态
+    :param status_default_id:
+    :return:
+    """
+    return STATUS_DEFAULT_DICT.get(status_default_id, '')

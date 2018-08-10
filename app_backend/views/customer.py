@@ -119,7 +119,7 @@ def lists(page=1):
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
             if form.company_name.data:
-                search_condition.append(Customer.company_name == form.company_name.data)
+                search_condition.append(Customer.company_name.like('%%%s%%' % form.company_name.data))
             if form.company_type.data != default_choice_option_int:
                 search_condition.append(Customer.company_type == form.company_type.data)
             if form.owner_uid.data != default_choice_option_int:
@@ -351,6 +351,7 @@ def edit(customer_id):
         # 表单校验失败
         if customer_id != form.id.data or not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
+            flash(form.errors, 'danger')
             return render_template(
                 template_name,
                 customer_id=customer_id,

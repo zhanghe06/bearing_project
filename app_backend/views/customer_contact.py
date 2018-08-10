@@ -40,6 +40,14 @@ from app_backend.api.customer import (
     customer_middleman_stats,
     customer_end_user_stats,
 )
+from app_backend.api.customer_contact import (
+    get_customer_contact_pagination,
+    get_customer_contact_row_by_id,
+    add_customer_contact,
+    edit_customer_contact,
+    get_customer_contact_rows,
+    delete_customer_contact,
+)
 from app_backend.api.user import (
     get_user_rows
 )
@@ -48,7 +56,12 @@ from app_backend.forms.customer import (
     CustomerAddForm,
     CustomerEditForm,
 )
-from app_backend.models.bearing_project import Customer
+from app_backend.forms.customer_contact import (
+    CustomerContactSearchForm,
+    CustomerContactAddForm,
+    CustomerContactEditForm,
+    CustomerContactItemEditForm)
+from app_backend.models.bearing_project import Customer, CustomerContact
 from app_backend.permissions import (
     permission_customer_section_add,
     permission_customer_section_search,
@@ -91,22 +104,21 @@ def get_sales_user_list():
 @permission_customer_section_search.require(http_exception=403)
 def lists(page=1):
     """
-    客户列表
+    客户联系方式列表
     :param page:
     :return:
     """
-    template_name = 'customer/lists.html'
+    template_name = 'customer/contact/lists.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('customer lists')
+    document_info['TITLE'] = _('customer contact lists')
 
     # 搜索条件
-    form = CustomerSearchForm(request.form)
-    form.owner_uid.choices = get_sales_user_list()
+    form = CustomerContactSearchForm(request.form)
     # app.logger.info('')
 
     search_condition = [
-        Customer.status_delete == STATUS_DEL_NO,
+        CustomerContact.status_delete == STATUS_DEL_NO,
     ]
     if request.method == 'POST':
         # 表单校验失败
@@ -116,32 +128,31 @@ def lists(page=1):
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.company_name.data:
-                search_condition.append(Customer.company_name == form.company_name.data)
-            if form.company_type.data != default_choice_option_int:
-                search_condition.append(Customer.company_type == form.company_type.data)
-            if form.owner_uid.data != default_choice_option_int:
-                search_condition.append(Customer.owner_uid == form.owner_uid.data)
-            if form.start_create_time.data:
-                search_condition.append(Customer.create_time >= form.start_create_time.data)
-            if form.end_create_time.data:
-                search_condition.append(Customer.create_time <= form.end_create_time.data)
+            if form.cid.data and form.company_name.data:
+                search_condition.append(CustomerContact.cid == form.cid.data)
+            if form.contact_name.data:
+                search_condition.append(CustomerContact.contact_name == form.contact_name.data)
+            if form.address.data:
+                search_condition.append(CustomerContact.address.like('%%%s%%' % form.address.data))
+            if form.mobile.data:
+                search_condition.append(CustomerContact.mobile == form.company_name.data)
+
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
             if not permission_customer_section_export.can():
                 abort(403)
-            column_names = Customer.__table__.columns.keys()
+            column_names = CustomerContact.__table__.columns.keys()
             query_sets = get_customer_rows(*search_condition)
 
             return excel.make_response_from_query_sets(
                 query_sets=query_sets,
                 column_names=column_names,
                 file_type='csv',
-                file_name='%s.csv' % _('customer lists')
+                file_name='%s.csv' % _('customer contact lists')
             )
     # 翻页数据
-    pagination = get_customer_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_customer_contact_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(
@@ -179,80 +190,17 @@ def info(customer_id):
     return render_template('customer/info.html', customer_info=customer_info, **document_info)
 
 
-@bp_customer_contact.route('/add.html', methods=['GET', 'POST'])
-@login_required
-@permission_customer_section_add.require(http_exception=403)
-def add():
-    """
-    创建客户
-    :return:
-    """
-    template_name = 'customer/add.html'
-    # 文档信息
-    document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('customer add')
-
-    # 加载创建表单
-    form = CustomerAddForm(request.form)
-
-    # 进入创建页面
-    if request.method == 'GET':
-        # 渲染页面
-        return render_template(
-            template_name,
-            form=form,
-            **document_info
-        )
-
-    # 处理创建请求
-    if request.method == 'POST':
-        # 表单校验失败
-        if not form.validate_on_submit():
-            flash(_('Add Failure'), 'danger')
-            return render_template(
-                template_name,
-                form=form,
-                **document_info
-            )
-
-        # 表单校验成功
-        current_time = datetime.utcnow()
-        customer_data = {
-            'company_name': form.company_name.data,
-            'company_address': form.company_address.data,
-            'company_site': form.company_site.data,
-            'company_tel': form.company_tel.data,
-            'company_fax': form.company_fax.data,
-            'company_type': form.company_type.data,
-            'owner_uid': form.owner_uid.data,
-            'create_time': current_time,
-            'update_time': current_time,
-        }
-        result = add_customer(customer_data)
-        # 创建操作成功
-        if result:
-            flash(_('Add Success'), 'success')
-            return redirect(request.args.get('next') or url_for('customer.lists'))
-        # 创建操作失败
-        else:
-            flash(_('Add Failure'), 'danger')
-            return render_template(
-                template_name,
-                form=form,
-                **document_info
-            )
-
-
-@bp_customer_contact.route('/<int:customer_id>/edit.html', methods=['GET', 'POST'])
+@bp_customer_contact.route('/<int:customer_id>.html', methods=['GET', 'POST'])
 @login_required
 def edit(customer_id):
     """
-    客户编辑
+    联系方式
+    注意 contact_name name 对换
     """
     # 检查编辑权限
-    customer_item_edit_permission = CustomerItemEditPermission(customer_id)
-    if not customer_item_edit_permission.can():
-        abort(403)
+    # customer_item_edit_permission = CustomerItemEditPermission(customer_id)
+    # if not customer_item_edit_permission.can():
+    #     abort(403)
 
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在
@@ -262,28 +210,42 @@ def edit(customer_id):
     if customer_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
-    template_name = 'customer/edit.html'
+    template_name = 'customer/contact/edit.html'
 
     # 加载编辑表单
-    form = CustomerEditForm(request.form)
+    form = CustomerContactEditForm(request.form)
+    form.cid.choices = customer_id
+    form.company_name.choices = customer_info.company_name
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('customer edit')
+    document_info['TITLE'] = _('customer contact edit')
 
     # 进入编辑页面
     if request.method == 'GET':
+        # 获取明细
+        customer_contact_items = get_customer_contact_rows(cid=customer_id)
         # 表单赋值
-        form.id.data = customer_info.id
+        form.cid.data = customer_info.id
         form.company_name.data = customer_info.company_name
-        form.company_address.data = customer_info.company_address
-        form.company_site.data = customer_info.company_site
-        form.company_tel.data = customer_info.company_tel
-        form.company_fax.data = customer_info.company_fax
-        form.company_type.data = customer_info.company_type
-        form.owner_uid.data = customer_info.owner_uid
-        form.create_time.data = customer_info.create_time
-        form.update_time.data = customer_info.update_time
+        # form.quotation_items = quotation_items
+        while len(form.customer_contact_items) > 0:
+            form.customer_contact_items.pop_entry()
+        for customer_contact_item in customer_contact_items:
+            customer_contact_item_form = CustomerContactItemEditForm()
+            customer_contact_item_form.id = customer_contact_item.id
+            customer_contact_item_form.cid = customer_contact_item.cid
+            customer_contact_item_form.contact_name = customer_contact_item.name
+            customer_contact_item_form.salutation = customer_contact_item.salutation
+            customer_contact_item_form.mobile = customer_contact_item.mobile
+            customer_contact_item_form.tel = customer_contact_item.tel
+            customer_contact_item_form.fax = customer_contact_item.fax
+            customer_contact_item_form.address = customer_contact_item.address
+            customer_contact_item_form.note = customer_contact_item.note
+            customer_contact_item_form.status_default = customer_contact_item.status_default
+            form.customer_contact_items.append_entry(customer_contact_item_form)
+        if not customer_contact_items:
+            form.customer_contact_items.append_entry()
         # 渲染页面
         return render_template(
             template_name,
@@ -294,9 +256,43 @@ def edit(customer_id):
 
     # 处理编辑请求
     if request.method == 'POST':
+        # 增删数据行不需要校验表单
+
+        # 表单新增空行
+        if form.data_line_add.data is not None:
+            if form.customer_contact_items.max_entries and len(
+                    form.customer_contact_items.entries) >= form.customer_contact_items.max_entries:
+                flash('最多创建%s条记录' % form.customer_contact_items.max_entries, 'danger')
+            else:
+                form.customer_contact_items.append_entry()
+
+            return render_template(
+                template_name,
+                customer_id=customer_id,
+                form=form,
+                **document_info
+            )
+        # 表单删除一行
+        if form.data_line_del.data is not None:
+            if form.customer_contact_items.min_entries and len(
+                    form.customer_contact_items.entries) <= form.customer_contact_items.min_entries:
+                flash('最少保留%s条记录' % form.customer_contact_items.min_entries, 'danger')
+            else:
+                data_line_index = form.data_line_del.data
+                form.customer_contact_items.entries.pop(data_line_index)
+
+            return render_template(
+                template_name,
+                customer_id=customer_id,
+                form=form,
+                **document_info
+            )
+
         # 表单校验失败
-        if customer_id != form.id.data or not form.validate_on_submit():
+        if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
+            flash(form.errors, 'danger')
+            flash(form.customer_contact_items.errors, 'danger')
             return render_template(
                 template_name,
                 customer_id=customer_id,
@@ -304,22 +300,48 @@ def edit(customer_id):
                 **document_info
             )
         # 表单校验成功
-        current_time = datetime.utcnow()
-        customer_data = {
-            'company_name': form.company_name.data,
-            'company_address': form.company_address.data,
-            'company_site': form.company_site.data,
-            'company_tel': form.company_tel.data,
-            'company_fax': form.company_fax.data,
-            'company_type': form.company_type.data,
-            'owner_uid': form.owner_uid.data,
-            'update_time': current_time,
-        }
-        result = edit_customer(customer_id, customer_data)
+
+        # 获取明细
+        customer_contact_items = get_customer_contact_rows(cid=customer_id)
+        customer_contact_items_ids = [item.id for item in customer_contact_items]
+
+        # 数据新增、数据删除、数据修改
+
+        customer_contact_items_ids_new = []
+        result = True
+        for customer_contact_item in form.customer_contact_items.entries:
+            # 错误
+            if customer_contact_item.form.id.data and customer_contact_item.form.id.data not in customer_contact_items_ids:
+                continue
+
+            customer_contact_item_data = {
+                'cid': customer_id,
+                'name': customer_contact_item.form.contact_name.data,
+                'salutation': customer_contact_item.form.salutation.data,
+                'mobile': customer_contact_item.form.mobile.data,
+                'tel': customer_contact_item.form.tel.data,
+                'fax': customer_contact_item.form.fax.data,
+                'address': customer_contact_item.form.address.data,
+                'note': customer_contact_item.form.note.data,
+                'status_default': customer_contact_item.form.status_default.data,
+            }
+
+            if not customer_contact_item.form.id.data:
+                # 新增
+                result = result and add_customer_contact(customer_contact_item_data)
+            else:
+                # 修改
+                result = result and edit_customer_contact(customer_contact_item.form.id.data, customer_contact_item_data)
+                customer_contact_items_ids_new.append(customer_contact_item.form.id.data)
+        # 删除
+        customer_contact_items_ids_del = list(set(customer_contact_items_ids) - set(customer_contact_items_ids_new))
+        for customer_contact_items_id in customer_contact_items_ids_del:
+            result = result and delete_customer_contact(customer_contact_items_id)
+
         # 编辑操作成功
         if result:
             flash(_('Edit Success'), 'success')
-            return redirect(request.args.get('next') or url_for('customer.lists'))
+            return redirect(request.args.get('next') or url_for('customer.contact_lists'))
         # 编辑操作失败
         else:
             flash(_('Edit Failure'), 'danger')
