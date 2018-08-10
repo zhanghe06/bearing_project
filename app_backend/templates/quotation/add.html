@@ -30,6 +30,10 @@
                 {{ form.uid.label() }}
                 {{ form.uid(class="form-control input-sm", title=form.uid.errors|join(', ')) }}
             </div>
+            <div class="form-group{% if form.status_order.errors %} has-error{% endif %}">
+                {{ form.status_order.label() }}
+                {{ form.status_order(class="form-control input-sm", title=form.status_order.errors|join(', ')) }}
+            </div>
             <div class="form-group{% if form.amount_quotation.errors %} has-error{% endif %}">
                 {{ form.amount_quotation.label() }}
                 {{ form.amount_quotation(class="form-control input-sm", title=form.amount_quotation.errors|join(', ')) }}
@@ -57,6 +61,8 @@
                         <th>{{ _('quantity') }}</th>
                         <th>{{ _('production sku') }}</th>
                         <th>{{ _('unit_price') }}</th>
+                        <th>{{ _('delivery time') }}</th>
+                        <th>{{ _('note') }}</th>
                         <th>{{ _('Option') }}</th>
                     </tr>
                     </thead>
@@ -65,10 +71,10 @@
                         <tr class="text-muted">
                             <td><span readonly="readonly" class="form-control input-sm">{{ loop.index }}</span></td>
                             <td class="bg-warning{% if info.enquiry_production_model.errors %} has-error{% endif %}">
-                                {{ info.enquiry_production_model(class="form-control input-sm", title=info.enquiry_production_model.errors|join(', '), style="min-width: 12em;") }}
+                                {{ info.enquiry_production_model(class="form-control input-sm", title=info.enquiry_production_model.errors|join(', '), style="width: 12em;") }}
                             </td>
                             <td class="bg-warning{% if info.enquiry_quantity.errors %} has-error{% endif %}">
-                                {{ info.enquiry_quantity(class="form-control input-sm", title=info.enquiry_quantity.errors|join(', '), style="min-width: 4em; max-width: 7em; ") }}
+                                {{ info.enquiry_quantity(class="form-control input-sm text-right", title=info.enquiry_quantity.errors|join(', '), style="width: 7em; ") }}
                             </td>
                             <td>
                                 {{ info.production_id() }}
@@ -84,13 +90,13 @@
                             {#                                {{ info.production_brand(class="form-control input-sm", title=info.production_brand.errors|join(', ')) }}#}
                             {#                            </td>#}
                             <td class="input-group{% if info.production_id.errors or info.production_model.errors %} has-error{% endif %}">
-                                {{ info.production_model(class="form-control input-sm production_model", title=info.production_id.errors|join(', ') or info.production_model.errors|join(', '), style="min-width: 12em;") }}
+                                {{ info.production_model(class="form-control input-sm production_model", title=info.production_id.errors|join(', ') or info.production_model.errors|join(', '), style="width: 12em;") }}
                                 <span class="input-group-addon glyphicon glyphicon-option-horizontal production_select_search_btn"
                                       style="top: 0; cursor:pointer;" data-toggle="modal"
                                       data-target="#production_select_modal"></span>
                             </td>
                             <td{% if info.quantity.errors %} class="has-error"{% endif %}>
-                                {{ info.quantity(class="form-control input-sm text-right quantity", title=info.quantity.errors|join(', '), style="min-width: 4em; max-width: 7em; ") }}
+                                {{ info.quantity(class="form-control input-sm text-right quantity", title=info.quantity.errors|join(', '), style="width: 7em;") }}
                             </td>
                             <td{% if info.production_sku.errors %} class="has-error"{% endif %}>
                                 <span style="min-width: 4em;" readonly="readonly"
@@ -103,7 +109,13 @@
                             {#                                {{ info.production_sku(class="form-control input-sm", title=info.production_sku.errors|join(', ')) }}#}
                             {#                            </td>#}
                             <td{% if info.unit_price.errors %} class="has-error"{% endif %}>
-                                {{ info.unit_price(class="form-control input-sm text-right unit_price", title=info.unit_price.errors|join(', '), style="min-width: 7em;") }}
+                                {{ info.unit_price(class="form-control input-sm text-right unit_price", title=info.unit_price.errors|join(', '), style="width: 7em;") }}
+                            </td>
+                            <td{% if info.delivery_time.errors %} class="has-error"{% endif %}>
+                                {{ info.delivery_time(class="form-control input-sm", title=info.delivery_time.errors|join(', '), style="width: 6em;") }}
+                            </td>
+                            <td{% if info.note.errors %} class="has-error"{% endif %}>
+                                {{ info.note(class="form-control input-sm", title=info.note.errors|join(', '), style="width: 6em;") }}
                             </td>
                             <td style="min-width: 6em;">
                                 <button type="submit" class="input-sm glyphicon glyphicon-plus" name="data_line_add"

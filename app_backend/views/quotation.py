@@ -69,6 +69,7 @@ from app_common.maps.default import default_choices_int, default_choice_option_i
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
+from app_common.maps.status_order import STATUS_ORDER_CHOICES
 from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
 )
@@ -206,6 +207,7 @@ def add():
     form.uid.choices = get_user_choices()
     form.uid.data = current_user.id
     form.contact_id.choices = default_choices_int
+    form.status_order.choices = STATUS_ORDER_CHOICES
 
     # 进入创建页面
     if request.method == 'GET':
@@ -260,10 +262,14 @@ def add():
         # 表单校验成功
 
         # 创建报价
+        current_time = datetime.utcnow()
         quotation_data = {
             'uid': form.uid.data,
             'cid': form.cid.data,
+            'status_order': form.status_order.data,
             'expiry_date': (datetime.utcnow() + timedelta(days=7)).strftime('%Y-%m-%d'),
+            'create_time': current_time,
+            'update_time': current_time,
         }
         quotation_id = add_quotation(quotation_data)
 
@@ -296,6 +302,7 @@ def add():
         quotation_data = {
             'amount_production': amount_quotation,
             'amount_quotation': amount_quotation,
+            'update': current_time,
         }
         result = edit_quotation(quotation_id, quotation_data)
 
@@ -342,7 +349,11 @@ def edit(quotation_id):
     # 加载编辑表单
     form = QuotationEditForm(request.form)
     form.uid.choices = get_user_choices()
+    form.status_order.choices = STATUS_ORDER_CHOICES
     form.contact_id.choices = default_choices_int
+
+    form.uid.data = quotation_info.uid
+    form.status_order.data = quotation_info.status_order
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -372,6 +383,7 @@ def edit(quotation_id):
             quotation_item_form.note = quotation_item.note
             quotation_item_form.quantity = quotation_item.quantity
             quotation_item_form.unit_price = quotation_item.unit_price
+            quotation_item_form.delivery_time = quotation_item.delivery_time
             form.quotation_items.append_entry(quotation_item_form)
         # 渲染页面
         return render_template(
@@ -472,11 +484,14 @@ def edit(quotation_id):
             delete_quotation_item(quotation_items_id)
 
         # 更新报价
+        current_time = datetime.utcnow()
         quotation_data = {
             'cid': form.cid.data,
             'uid': form.uid.data,
+            'status_order': form.status_order.data,
             'amount_production': amount_quotation,
             'amount_quotation': amount_quotation,
+            'update_time': current_time,
         }
         result = edit_quotation(quotation_id, quotation_data)
 

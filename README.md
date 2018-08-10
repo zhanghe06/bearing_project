@@ -393,4 +393,6 @@ http://docs.jinkan.org/docs/flask/patterns/lazyloading.html
 
 ## TODO
 
+- [ ] 批量删除
 - [ ] 联动删除
+- [ ] 输入清空

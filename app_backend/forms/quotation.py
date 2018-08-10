@@ -302,9 +302,8 @@ class QuotationAddForm(FlaskForm):
     cid = IntegerField(
         _('customer company'),
         validators=[
-            InputRequired(),
+            DataRequired(),
         ],
-        default=0,
         description=_('customer company'),
         render_kw={
             'rel': 'tooltip',
@@ -335,6 +334,18 @@ class QuotationAddForm(FlaskForm):
         render_kw={
             'rel': 'tooltip',
             'title': _('customer contact'),
+        }
+    )
+    status_order = SelectField(
+        _('order status'),
+        validators=[
+            DataRequired(),
+        ],
+        coerce=int,
+        description=_('order status'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('order status'),
         }
     )
     amount_quotation = DecimalField(
@@ -380,7 +391,7 @@ class QuotationEditForm(FlaskForm):
     cid = IntegerField(
         _('customer company'),
         validators=[
-            InputRequired(),
+            DataRequired(),
         ],
         description=_('customer company'),
         render_kw={
@@ -423,6 +434,18 @@ class QuotationEditForm(FlaskForm):
         render_kw={
             'rel': 'tooltip',
             'title': _('tax type'),
+        }
+    )
+    status_order = SelectField(
+        _('order status'),
+        validators=[
+            DataRequired(),
+        ],
+        coerce=int,
+        description=_('order status'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('order status'),
         }
     )
     amount_quotation = DecimalField(

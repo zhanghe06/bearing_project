@@ -24,3 +24,5 @@ STATUS_ORDER_DICT = {
     1: _('Order Success'),  # 下单成功
     2: _('Order Failure'),  # 下单失败
 }
+
+STATUS_ORDER_CHOICES = STATUS_ORDER_DICT.items()
