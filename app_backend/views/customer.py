@@ -283,7 +283,7 @@ def add():
         # 创建操作成功
         if result:
             flash(_('Add Success'), 'success')
-            return redirect(request.args.get('next') or url_for('customer.lists'))
+            return redirect(request.args.get('next') or url_for('customer.edit', customer_id=result))
         # 创建操作失败
         else:
             flash(_('Add Failure'), 'danger')
@@ -351,7 +351,7 @@ def edit(customer_id):
         # 表单校验失败
         if customer_id != form.id.data or not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
-            flash(form.errors, 'danger')
+            # flash(form.errors, 'danger')
             return render_template(
                 template_name,
                 customer_id=customer_id,

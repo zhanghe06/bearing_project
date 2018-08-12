@@ -113,6 +113,7 @@ from app_backend.views.user import bp_user
 from app_backend.views.user_auth import bp_auth
 from app_backend.views.production import bp_production
 from app_backend.views.quotation import bp_quotation
+from app_backend.views.quotation_item import bp_quotation_item
 from app_backend.views.orders_buyer import bp_buyer_orders
 from app_backend.views.orders_sales import bp_sales_orders
 from app_backend.views.warehouse import bp_warehouse
@@ -135,6 +136,7 @@ app.register_blueprint(bp_user)
 app.register_blueprint(bp_auth)
 app.register_blueprint(bp_production)
 app.register_blueprint(bp_quotation)
+app.register_blueprint(bp_quotation_item)
 app.register_blueprint(bp_buyer_orders)
 app.register_blueprint(bp_sales_orders)
 app.register_blueprint(bp_warehouse)

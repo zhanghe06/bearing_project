@@ -308,6 +308,7 @@ DROP TABLE IF EXISTS `quotation_items`;
 CREATE TABLE `quotation_items` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `quotation_id` INT NOT NULL COMMENT '报价总表ID',
+  `uid` INT NOT NULL COMMENT '报价人ID',
   `enquiry_cid` INT NOT NULL DEFAULT 0 COMMENT '客户询价-公司ID',
   `enquiry_company_name` VARCHAR(100) NOT NULL DEFAULT '' '客户询价-公司名称',
   `enquiry_production_model` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '客户询价-产品型号',
@@ -321,14 +322,16 @@ CREATE TABLE `quotation_items` (
   `unit_price` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '报价备注',
   `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `status_ordered` TINYINT NOT NULL DEFAULT 0 COMMENT '下单状态（0:未下单,1:已下单）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY (`quotation_id`),
-  KEY (`production_id`),
-  KEY (`enquiry_cid`)
+  KEY (`uid`),
+  KEY (`enquiry_cid`),
+  KEY (`production_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报价明细';
 
 

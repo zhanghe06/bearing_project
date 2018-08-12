@@ -113,6 +113,7 @@ class ProductionAddForm(FlaskForm):
             'placeholder': _('production brand'),
             'rel': 'tooltip',
             'title': _('production brand'),
+            'autocomplete': 'off',
         }
     )
     production_model = StringField(
@@ -139,6 +140,7 @@ class ProductionAddForm(FlaskForm):
             'placeholder': _('production note'),
             'rel': 'tooltip',
             'title': _('production note'),
+            'autocomplete': 'off',
         }
     )
 
@@ -167,6 +169,7 @@ class ProductionEditForm(FlaskForm):
             'placeholder': _('production brand'),
             'rel': 'tooltip',
             'title': _('production brand'),
+            'autocomplete': 'off',
         }
     )
     production_model = StringField(
@@ -191,6 +194,7 @@ class ProductionEditForm(FlaskForm):
             'placeholder': _('production note'),
             'rel': 'tooltip',
             'title': _('production note'),
+            'autocomplete': 'off',
         }
     )
     create_time = DateField(

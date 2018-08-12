@@ -316,6 +316,7 @@ class QuotationItems(Base):
 
     id = Column(Integer, primary_key=True)
     quotation_id = Column(Integer, nullable=False, index=True)
+    uid = Column(Integer, nullable=False, index=True)
     enquiry_cid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
     enquiry_company_name = Column(String(100), nullable=False, server_default=text("'客户询价-公司名称'"))
     enquiry_production_model = Column(String(64), nullable=False, server_default=text("''"))
@@ -329,6 +330,7 @@ class QuotationItems(Base):
     unit_price = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     note = Column(String(256), nullable=False, server_default=text("''"))
     type_tax = Column(Integer, nullable=False, server_default=text("'1'"))
+    status_ordered = Column(Integer, nullable=False, server_default=text("'0'"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
     delete_time = Column(DateTime)
     create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))

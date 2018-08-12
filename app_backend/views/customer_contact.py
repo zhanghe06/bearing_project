@@ -291,8 +291,8 @@ def edit(customer_id):
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
-            flash(form.errors, 'danger')
-            flash(form.customer_contact_items.errors, 'danger')
+            # flash(form.errors, 'danger')
+            # flash(form.customer_contact_items.errors, 'danger')
             return render_template(
                 template_name,
                 customer_id=customer_id,

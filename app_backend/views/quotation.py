@@ -252,7 +252,7 @@ def add():
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Add Failure'), 'danger')
-            flash(form.errors, 'danger')
+            # flash(form.errors, 'danger')
             return render_template(
                 template_name,
                 form=form,
@@ -278,6 +278,7 @@ def add():
             current_time = datetime.utcnow()
             quotation_item_data = {
                 'quotation_id': quotation_id,
+                'uid': form.uid.data,
                 'enquiry_cid': form.cid.data,
                 'enquiry_company_name': get_customer_row_by_id(form.cid.data).company_name,
                 'enquiry_production_model': quotation_item.form.enquiry_production_model.data,
@@ -290,6 +291,7 @@ def add():
                 'delivery_time': quotation_item.form.delivery_time.data,
                 'quantity': quotation_item.form.quantity.data,
                 'unit_price': quotation_item.form.unit_price.data,
+                'status_ordered': quotation_item.form.status_ordered.data,
                 'create_time': current_time,
                 'update_time': current_time,
             }
@@ -352,9 +354,6 @@ def edit(quotation_id):
     form.status_order.choices = STATUS_ORDER_CHOICES
     form.contact_id.choices = default_choices_int
 
-    form.uid.data = quotation_info.uid
-    form.status_order.data = quotation_info.status_order
-
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('quotation edit')
@@ -366,6 +365,7 @@ def edit(quotation_id):
         # 表单赋值
         form.uid.data = quotation_info.uid
         form.cid.data = quotation_info.cid
+        form.status_order.data = quotation_info.status_order
         form.amount_quotation.data = quotation_info.amount_quotation
         # form.quotation_items = quotation_items
         while len(form.quotation_items) > 0:
@@ -374,6 +374,7 @@ def edit(quotation_id):
             quotation_item_form = QuotationItemEditForm()
             quotation_item_form.id = quotation_item.id
             quotation_item_form.quotation_id = quotation_item.quotation_id
+            quotation_item_form.uid = quotation_item.uid
             quotation_item_form.enquiry_production_model = quotation_item.enquiry_production_model
             quotation_item_form.enquiry_quantity = quotation_item.enquiry_quantity
             quotation_item_form.production_id = quotation_item.production_id
@@ -384,6 +385,7 @@ def edit(quotation_id):
             quotation_item_form.quantity = quotation_item.quantity
             quotation_item_form.unit_price = quotation_item.unit_price
             quotation_item_form.delivery_time = quotation_item.delivery_time
+            quotation_item_form.status_ordered = quotation_item.status_ordered
             form.quotation_items.append_entry(quotation_item_form)
         # 渲染页面
         return render_template(
@@ -430,8 +432,8 @@ def edit(quotation_id):
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
-            flash(form.errors, 'danger')
-            flash(form.quotation_items.errors, 'danger')
+            # flash(form.errors, 'danger')
+            # flash(form.quotation_items.errors, 'danger')
             return render_template(
                 template_name,
                 quotation_id=quotation_id,
@@ -455,6 +457,7 @@ def edit(quotation_id):
 
             quotation_item_data = {
                 'quotation_id': quotation_id,
+                'uid': form.uid.data,
                 'enquiry_cid': form.cid.data,
                 'enquiry_company_name': get_customer_row_by_id(form.cid.data).company_name,
                 'enquiry_production_model': quotation_item.form.enquiry_production_model.data,
@@ -467,6 +470,7 @@ def edit(quotation_id):
                 'delivery_time': quotation_item.form.delivery_time.data,
                 'quantity': quotation_item.form.quantity.data,
                 'unit_price': quotation_item.form.unit_price.data,
+                'status_ordered': quotation_item.form.status_ordered.data,
             }
 
             if not quotation_item.form.id.data:

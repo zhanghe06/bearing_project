@@ -67,6 +67,7 @@
                         <th>{{ _('unit_price') }}</th>
                         <th>{{ _('delivery time') }}</th>
                         <th>{{ _('note') }}</th>
+                        <th>{{ _('ordered status') }}</th>
                         <th>{{ _('Option') }}</th>
                     </tr>
                     </thead>
@@ -115,6 +116,10 @@
                             </td>
                             <td{% if info.note.errors %} class="has-error"{% endif %}>
                                 {{ info.note(class="form-control input-sm", title=info.note.errors|join(', '), style="width: 6em;") }}
+                            </td>
+                            <td class="{% if info.status_ordered.errors %} text-danger{% endif %}">
+                                {{ info.status_ordered() }}
+                                {{ info.status_ordered.label(rel="tooltip", title=info.status_ordered.errors|join(', ')) }}
                             </td>
                             <td style="min-width: 6em;">
                                 <button type="submit" class="input-sm glyphicon glyphicon-plus" name="data_line_add"

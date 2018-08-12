@@ -80,14 +80,14 @@ INSERT INTO `quotation` VALUES (2, 1, 1, 1, '11000.00', '10.00', '0.00', '11000.
 
 -- 插入报价明细信息
 TRUNCATE TABLE `quotation_items`;
-INSERT INTO `quotation_items` VALUES (1, 1, 1, '测试公司1', '7008CE', 0, 1, 'SKF', '7008CEGA/P4A', 'Pcs', '', 10, '20.00', '', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `quotation_items` VALUES (2, 1, 1, '测试公司1', '7012CE', 0, 2, 'SKF', '7012CEGA/P4A', 'Pcs', '', 10, '80.00', '', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `quotation_items` VALUES (3, 1, 1, '测试公司1', '7008CE/HC', 0, 3, 'SKF', '7008CEGA/HCP4A', 'Pcs', '', 10, '20.00', '', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `quotation_items` VALUES (4, 1, 1, '测试公司1', '7012CE/HC', 0, 4, 'SKF', '7012CEGA/HCP4A', 'Pcs', '', 10, '80.00', '', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `quotation_items` VALUES (5, 2, 1, '测试公司1', '7008CE', 0, 1, 'SKF', '7008CEGA/P4A', 'Pcs', '', 10, '20.00', '', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `quotation_items` VALUES (6, 2, 1, '测试公司1', '7012CE', 0, 2, 'SKF', '7012CEGA/P4A', 'Pcs', '', 10, '80.00', '', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `quotation_items` VALUES (7, 2, 1, '测试公司1', '7008CE/HC', 0, 3, 'SKF', '7008CEGA/HCP4A', 'Pcs', '', 10, '20.00', '', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `quotation_items` VALUES (8, 2, 1, '测试公司1', '7012CE/HC', 0, 4, 'SKF', '7012CEGA/HCP4A', 'Pcs', '', 10, '80.00', '', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `quotation_items` VALUES (1, 1, 1, 1, '测试公司1', '7008CE', 0, 1, 'SKF', '7008CEGA/P4A', 'Pcs', '', 10, '20.00', '', 0, 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `quotation_items` VALUES (2, 1, 1, 1, '测试公司1', '7012CE', 0, 2, 'SKF', '7012CEGA/P4A', 'Pcs', '', 10, '80.00', '', 0, 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `quotation_items` VALUES (3, 1, 1, 1, '测试公司1', '7008CE/HC', 0, 3, 'SKF', '7008CEGA/HCP4A', 'Pcs', '', 10, '20.00', '', 0, 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `quotation_items` VALUES (4, 1, 1, 1, '测试公司1', '7012CE/HC', 0, 4, 'SKF', '7012CEGA/HCP4A', 'Pcs', '', 10, '80.00', '', 0, 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `quotation_items` VALUES (5, 2, 1, 1, '测试公司1', '7008CE', 0, 1, 'SKF', '7008CEGA/P4A', 'Pcs', '', 10, '20.00', '', 0, 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `quotation_items` VALUES (6, 2, 1, 1, '测试公司1', '7012CE', 0, 2, 'SKF', '7012CEGA/P4A', 'Pcs', '', 10, '80.00', '', 0, 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `quotation_items` VALUES (7, 2, 1, 1, '测试公司1', '7008CE/HC', 0, 3, 'SKF', '7008CEGA/HCP4A', 'Pcs', '', 10, '20.00', '', 0, 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `quotation_items` VALUES (8, 2, 1, 1, '测试公司1', '7012CE/HC', 0, 4, 'SKF', '7012CEGA/HCP4A', 'Pcs', '', 10, '80.00', '', 0, 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
 
 
 -- 插入仓库信息

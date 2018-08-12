@@ -271,6 +271,15 @@ class QuotationItemAddForm(FlaskForm):
             'title': _('delivery time'),
         }
     )
+    status_ordered = BooleanField(
+        _('ordered status'),
+        default=False,
+        validators=[],
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('ordered status'),
+        }
+    )
 
 
 class QuotationItemEditForm(QuotationItemAddForm):
@@ -339,7 +348,7 @@ class QuotationAddForm(FlaskForm):
     status_order = SelectField(
         _('order status'),
         validators=[
-            DataRequired(),
+            InputRequired(),
         ],
         coerce=int,
         description=_('order status'),
@@ -439,7 +448,7 @@ class QuotationEditForm(FlaskForm):
     status_order = SelectField(
         _('order status'),
         validators=[
-            DataRequired(),
+            InputRequired(),
         ],
         coerce=int,
         description=_('order status'),

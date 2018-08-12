@@ -91,9 +91,9 @@
                             <td class="{% if info.note.errors %} has-error{% endif %}">
                                 {{ info.note(class="form-control input-sm", title=info.note.errors|join(', '), style="min-width: 4em; max-width: 7em; ") }}
                             </td>
-                            <td class="{% if info.status_default.errors %} has-error{% endif %}">
+                            <td class="{% if info.status_default.errors %} text-danger{% endif %}">
                                 {{ info.status_default() }}
-                                {{ info.status_default.label() }}
+                                {{ info.status_default.label(rel="tooltip", title=info.status_default.errors|join(', ')) }}
                             </td>
                             <td style="min-width: 6em;">
                                 <button type="submit" class="input-sm glyphicon glyphicon-plus" name="data_line_add"

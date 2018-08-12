@@ -30,6 +30,36 @@ company_type_choices = copy(default_choices_int)
 company_type_choices.extend(iteritems(TYPE_COMPANY_DICT))
 
 
+class DefaultStatusValidate(object):
+    """
+    默认状态校验
+    """
+
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        # 获取默认状态数量
+        default_status_count = 0
+
+        for customer_contact_item in form.customer_contact_items.entries:
+            default_status_count += int(customer_contact_item.form.status_default.data)
+
+        # 数量 < 1
+        if default_status_count < 1:
+            # 必须指定一个默认联系方式
+            for customer_contact_item in form.customer_contact_items.entries:
+                customer_contact_item.form.status_default.errors = ['必须指定一个默认联系方式']
+            # raise ValidationError(self.message or _('Must specify a default customer contact'))
+
+        # 数量 > 1
+        if default_status_count > 1:
+            # 仅能指定一个默认联系方式
+            for customer_contact_item in form.customer_contact_items.entries:
+                customer_contact_item.form.status_default.errors = ['仅能指定一个默认联系方式']
+            # raise ValidationError(self.message or _('Only specify one default customer contact'))
+
+
 class CustomerContactSearchForm(FlaskForm):
     """
     搜索表单
@@ -365,7 +395,15 @@ class CustomerContactItemEditForm(FlaskForm):
             'autocomplete': 'off',
         }
     )
-    status_default = BooleanField(_('default status'), default=False)
+    status_default = BooleanField(
+        _('default status'),
+        default=False,
+        validators=[],
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('default status'),
+        }
+    )
     status_delete = IntegerField(
         _('delete status'),
         validators=[],
@@ -424,4 +462,6 @@ class CustomerContactEditForm(FlaskForm):
         FormField(CustomerContactItemEditForm),
         label='联系方式明细',
         min_entries=1,
+        validators=[DefaultStatusValidate()],
+
     )
