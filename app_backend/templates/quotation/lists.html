@@ -28,12 +28,8 @@
                             {{ form.uid.label() }}
                             {{ form.uid(class="form-control") }}
                         </div>
-{#                        <div class="form-group form-group-sm{% if form.cid.errors %} has-error{% endif %}">#}
-{#                            {{ form.cid.label() }}#}
-{#                            {{ form.cid(class="form-control") }}#}
-{#                        </div>#}
                         <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
-                            {{ form.cid(class="hidden") }}
+                            {{ form.cid() }}
                             {{ form.company_name.label() }}
                             <div class="input-group">
                                 {{ form.company_name(
@@ -82,8 +78,6 @@
                     </th>
                     <th>{{ _('quotation user') }}</th>
                     <th>{{ _('customer company') }}</th>
-{#                    <th>{{ _('audit status') }}</th>#}
-{#                    <th>{{ _('order status') }}</th>#}
                     <th>{{ _('quotation amount') }}</th>
                     <th>{{ _('quotation note') }}</th>
                     <th>{{ _('create time') }}</th>
@@ -102,16 +96,11 @@
                         </td>
                         <td>{{ info.uid | user_name }}</td>
                         <td>{{ info.cid | customer_company_name }}</td>
-{#                        <td>{{ info.status_audit | status_audit }}</td>#}
-{#                        <td>{{ info.status_order | status_order }}</td>#}
-{#                        <td><a href="{{ url_for('quotation.info', quotation_id=info.id) }}" rel="tooltip"#}
-{#                               title="{{ _('Click details') }}">{{ info.amount_quotation }}</a></td>#}
                         <td>{{ info.amount_quotation }}</td>
                         <td>{{ info.note }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
-
                             <!-- Split button -->
                             <div class="btn-group btn-group-sm">
                                 <a class="btn btn-default" href="{{ url_for('quotation.edit', quotation_id=info.id, next=request.path) }}">

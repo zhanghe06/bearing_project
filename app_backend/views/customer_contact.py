@@ -58,7 +58,7 @@ from app_backend.forms.customer import (
 )
 from app_backend.forms.customer_contact import (
     CustomerContactSearchForm,
-    CustomerContactAddForm,
+    # CustomerContactAddForm,
     CustomerContactEditForm,
     CustomerContactItemEditForm)
 from app_backend.models.bearing_project import Customer, CustomerContact
@@ -131,7 +131,7 @@ def lists(page=1):
             if form.cid.data and form.company_name.data:
                 search_condition.append(CustomerContact.cid == form.cid.data)
             if form.contact_name.data:
-                search_condition.append(CustomerContact.contact_name == form.contact_name.data)
+                search_condition.append(CustomerContact.name == form.contact_name.data)
             if form.address.data:
                 search_condition.append(CustomerContact.address.like('%%%s%%' % form.address.data))
             if form.mobile.data:
@@ -161,33 +161,6 @@ def lists(page=1):
         pagination=pagination,
         **document_info
     )
-
-
-@bp_customer_contact.route('/<int:customer_id>/info.html')
-@login_required
-def info(customer_id):
-    """
-    客户详情
-    :param customer_id:
-    :return:
-    """
-    # 检查读取权限
-    customer_item_get_permission = CustomerItemGetPermission(customer_id)
-    if not customer_item_get_permission.can():
-        abort(403)
-    # 详情数据
-    customer_info = get_customer_row_by_id(customer_id)
-    # 检查资源是否存在
-    if not customer_info:
-        abort(404)
-    # 检查资源是否删除
-    if customer_info.status_delete == STATUS_DEL_OK:
-        abort(410)
-    # 文档信息
-    document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('customer info')
-    # 渲染模板
-    return render_template('customer/info.html', customer_info=customer_info, **document_info)
 
 
 @bp_customer_contact.route('/<int:customer_id>.html', methods=['GET', 'POST'])

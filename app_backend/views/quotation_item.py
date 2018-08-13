@@ -119,7 +119,7 @@ def lists(page=1):
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
             if form.cid.data and form.company_name.data:
-                search_condition.append(QuotationItems.cid == form.cid.data)
+                search_condition.append(QuotationItems.enquiry_cid == form.cid.data)
             if form.production_model.data:
                 search_condition.append(QuotationItems.production_model.like('%%%s%%' % form.production_model.data))
             if form.start_create_time.data:

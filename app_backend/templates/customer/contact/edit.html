@@ -20,7 +20,7 @@
             {{ form.csrf_token }}
 
             <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
-                {{ form.cid(class="hidden") }}
+                {{ form.cid() }}
                 {{ form.company_name.label() }}
                 <div class="input-group">
                     {{ form.company_name(

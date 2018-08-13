@@ -25,7 +25,7 @@ from wtforms import StringField, PasswordField, BooleanField, DateField, DateTim
     DecimalField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
     IPAddress
-from wtforms.fields import FieldList, FormField
+from wtforms.fields import FieldList, FormField, HiddenField
 
 from app_backend.forms import SelectBS, CheckBoxBS
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
@@ -78,17 +78,18 @@ class QuotationSearchForm(FlaskForm):
         }
     )
     cid = IntegerField(
-        _('customer company'),
+        _('customer id'),
         validators=[
             InputRequired(),
         ],
         default=0,
-        description=_('customer company'),
+        description=_('customer id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer company'),
-            'placeholder': _('customer company'),
+            'title': _('customer id'),
+            'placeholder': _('customer id'),
             'autocomplete': 'off',
+            'type': 'hidden',
         }
     )
     company_name = StringField(
@@ -309,16 +310,17 @@ class QuotationAddForm(FlaskForm):
         }
     )
     cid = IntegerField(
-        _('customer company'),
+        _('customer id'),
         validators=[
             DataRequired(),
         ],
-        description=_('customer company'),
+        description=_('customer id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer company'),
-            'placeholder': _('customer company'),
+            'title': _('customer id'),
+            'placeholder': _('customer id'),
             'autocomplete': 'off',
+            'type': 'hidden',
         }
     )
     company_name = StringField(
@@ -398,16 +400,17 @@ class QuotationEditForm(FlaskForm):
         }
     )
     cid = IntegerField(
-        _('customer company'),
+        _('customer id'),
         validators=[
             DataRequired(),
         ],
-        description=_('customer company'),
+        description=_('customer id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer company'),
-            'placeholder': _('customer company'),
+            'title': _('customer id'),
+            'placeholder': _('customer id'),
             'autocomplete': 'off',
+            'type': 'hidden',
         }
     )
     company_name = StringField(

@@ -37,7 +37,7 @@ pip install pyexcel-xls
 pip install Flask-Principal
 pip install Flask-Babel
 pip install Flask-Moment
-pip install sqlacodegen
+pip install sqlacodegen==1.1.6  # 注意: 最新版 sqlacodegen==2.0 有bug
 pip install gunicorn
 pip install eventlet
 pip install Flask-SocketIO
@@ -357,6 +357,13 @@ class SomeForm(FlaskForm):
 ```
 
 注意: 嵌套表单不能有`name`字段, `form.name`表示嵌套表单明细的名称
+
+
+## WTForms
+
+https://github.com/wtforms/wtforms/blob/79840898a3e17b0ae535d9fdcff9537ef0e190b0/CHANGES.rst#version-22
+
+Version 2.2 新增了`required`属性的渲染, 注意: `hidden`类型的文本框不会校验`required`属性
 
 
 ## 本地事务的幂等性

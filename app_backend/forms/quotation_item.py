@@ -57,17 +57,18 @@ class QuotationItemSearchForm(FlaskForm):
     #     }
     # )
     cid = IntegerField(
-        _('customer company'),
+        _('customer id'),
         validators=[
             InputRequired(),
         ],
         default=0,
-        description=_('customer company'),
+        description=_('customer id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer company'),
-            'placeholder': _('customer company'),
+            'title': _('customer id'),
+            'placeholder': _('customer id'),
             'autocomplete': 'off',
+            'type': 'hidden',
         }
     )
     company_name = StringField(

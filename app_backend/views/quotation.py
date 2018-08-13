@@ -304,7 +304,7 @@ def add():
         quotation_data = {
             'amount_production': amount_quotation,
             'amount_quotation': amount_quotation,
-            'update': current_time,
+            'update_time': current_time,
         }
         result = edit_quotation(quotation_id, quotation_data)
 
