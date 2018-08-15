@@ -6,7 +6,7 @@
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
                    onclick="$('#menu-production').trigger('click')">{{ _('production management') }}</a></li>
-            <li class="active">{{ _('production edit') }}</li>
+            <li class="active">{{ _('production sensitive edit') }}</li>
         </ol>
         <form class="form-horizontal" method="post" action="">
             {{ form.csrf_token }}
@@ -14,16 +14,22 @@
             <div class="form-group{% if form.production_brand.errors %} has-error{% endif %}">
                 {{ form.production_brand.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">
-                    {{ form.production_brand(class="form-control", title=form.production_brand.errors|join(', ')) }}
+                    {{ form.production_brand(class="form-control production_brand", title=form.production_brand.errors|join(', ')) }}
                 </div>
                 <div class="col-sm-4">
                     <span class="help-block hidden-xs">{{ form.production_brand.description }}</span>
                 </div>
             </div>
-            <div class="form-group{% if form.production_model.errors %} has-error{% endif %}">
+            <div class="form-group{% if form.production_id.errors or form.production_model.errors %} has-error{% endif %}">
                 {{ form.production_model.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">
-                    {{ form.production_model(class="form-control", title=form.production_model.errors|join(', ')) }}
+                    <div class="input-group">
+                        {{ form.production_model(class="form-control production_model", title=form.production_id.errors|join(', ') or form.production_model.errors|join(', ')) }}
+                        {{ form.production_id() }}
+                        <span class="input-group-addon glyphicon glyphicon-option-horizontal production_select_search_btn"
+                              style="top: 0; cursor:pointer;" data-toggle="modal"
+                              data-target="#production_select_modal"></span>
+                    </div>
                 </div>
                 <div class="col-sm-4">
                     <span class="help-block hidden-xs">{{ form.production_model.description }}</span>
@@ -32,10 +38,25 @@
             <div class="form-group{% if form.production_sku.errors %} has-error{% endif %}">
                 {{ form.production_sku.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">
-                    {{ form.production_sku(class="form-control", title=form.production_sku.errors|join(', ')) }}
+                    {{ form.production_sku(class="form-control production_sku", title=form.production_sku.errors|join(', ')) }}
                 </div>
                 <div class="col-sm-4">
                     <span class="help-block hidden-xs">{{ form.production_sku.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
+                {{ form.company_name.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        {{ form.company_name(class="form-control company_name", title=form.cid.errors|join(', ') or form.company_name.errors|join(', ')) }}
+                        {{ form.cid() }}
+                        <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
+                              style="top: 0; cursor:pointer;" data-toggle="modal"
+                              data-target="#customer_select_modal"></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_name.description }}</span>
                 </div>
             </div>
             <div class="form-group{% if form.note.errors %} has-error{% endif %}">
@@ -82,7 +103,17 @@
         </form>
     </div>
 
+    <!-- 客户搜索 -->
+    {% include "modal/customer_select.html" %}
+
+    <!-- 产品搜索 -->
+    {% include "modal/production_select.html" %}
+
 {% endblock %}
 
 {% block extra_js %}
+    <!-- 客户搜索 -->
+    {% include "modal/customer_select_js.html" %}
+    <!-- 产品搜索 -->
+    {% include "modal/production_select_js.html" %}
 {% endblock %}

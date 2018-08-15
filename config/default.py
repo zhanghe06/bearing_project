@@ -4,9 +4,10 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: product.py
-@time: 2018-03-05 15:02
+@file: default.py
+@time: 2018-08-14 16:38
 """
+
 
 from __future__ import unicode_literals
 
@@ -17,7 +18,7 @@ from datetime import timedelta
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-DEBUG = False
+DEBUG = True
 
 CSRF_ENABLED = True
 
@@ -91,7 +92,9 @@ DOCUMENT_INFO = {
 }
 
 PER_PAGE_FRONTEND = 12
+PER_PAGE_FRONTEND_MODAL = 8
 PER_PAGE_BACKEND = 12
+PER_PAGE_BACKEND_MODAL = 8
 
 
 BABEL_DEFAULT_LOCALE = 'zh'     # en, zh, zh_Hans_CN

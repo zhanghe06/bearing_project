@@ -50,6 +50,7 @@ class DefaultStatusValidate(object):
             # 必须指定一个默认联系方式
             for customer_contact_item in form.customer_contact_items.entries:
                 customer_contact_item.form.status_default.errors = ['必须指定一个默认联系方式']
+            raise ValidationError('必须指定一个默认联系方式')
             # raise ValidationError(self.message or _('Must specify a default customer contact'))
 
         # 数量 > 1
@@ -57,6 +58,7 @@ class DefaultStatusValidate(object):
             # 仅能指定一个默认联系方式
             for customer_contact_item in form.customer_contact_items.entries:
                 customer_contact_item.form.status_default.errors = ['仅能指定一个默认联系方式']
+            raise ValidationError('仅能指定一个默认联系方式')
             # raise ValidationError(self.message or _('Only specify one default customer contact'))
 
 

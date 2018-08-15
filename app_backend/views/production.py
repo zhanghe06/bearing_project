@@ -41,7 +41,7 @@ from app_backend.api.production import (
 )
 from app_backend.api.production import (
     get_production_rows,
-    get_distinct_brand,
+    get_distinct_production_brand,
 )
 from app_backend.forms.production import (
     ProductionSearchForm,
@@ -77,7 +77,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 def get_production_brand_choices():
     production_brand_list = copy(default_choices_str)
-    distinct_brand = get_distinct_brand(status_delete=STATUS_DEL_NO)
+    distinct_brand = get_distinct_production_brand(status_delete=STATUS_DEL_NO)
     production_brand_list.extend([(brand, brand) for brand in distinct_brand])
     return production_brand_list
 
@@ -299,6 +299,7 @@ def edit(production_id):
         form.id.data = production_info.id
         form.production_brand.data = production_info.production_brand
         form.production_model.data = production_info.production_model
+        form.production_sku.data = production_info.production_sku
         form.note.data = production_info.note
         form.create_time.data = production_info.create_time
         form.update_time.data = production_info.update_time
@@ -326,6 +327,7 @@ def edit(production_id):
         production_data = {
             'production_brand': form.production_brand.data.upper(),
             'production_model': form.production_model.data.upper(),
+            'production_sku': form.production_sku.data,
             'note': form.note.data,
             'update_time': current_time,
         }

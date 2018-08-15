@@ -314,7 +314,7 @@ def edit(customer_id):
         # 编辑操作成功
         if result:
             flash(_('Edit Success'), 'success')
-            return redirect(request.args.get('next') or url_for('customer.contact_lists'))
+            return redirect(request.args.get('next') or url_for('customer_contact.lists'))
         # 编辑操作失败
         else:
             flash(_('Edit Failure'), 'danger')

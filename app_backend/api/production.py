@@ -110,7 +110,25 @@ def get_production_pagination(page=1, per_page=10, *args, **kwargs):
     return rows
 
 
-def get_distinct_brand(*args, **kwargs):
+def delete_production_table():
+    """
+    清空表
+    :return:
+    """
+    return db_instance.delete_table(Production)
+
+
+def count_production(*args, **kwargs):
+    """
+    计数
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    return db_instance.count(Production, *args, **kwargs)
+
+
+def get_distinct_production_brand(*args, **kwargs):
     """
     获取品牌
     :param args:

@@ -29,6 +29,15 @@
                     <span class="help-block hidden-xs">{{ form.production_model.description }}</span>
                 </div>
             </div>
+            <div class="form-group{% if form.production_sku.errors %} has-error{% endif %}">
+                {{ form.production_sku.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.production_sku(class="form-control", title=form.production_sku.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.production_sku.description }}</span>
+                </div>
+            </div>
             <div class="form-group{% if form.note.errors %} has-error{% endif %}">
                 {{ form.note.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">

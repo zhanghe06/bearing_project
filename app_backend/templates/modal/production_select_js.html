@@ -1,11 +1,11 @@
 <script>
     $(function () {
-        var tr_edit_obj
+        var line_edit_obj
 
         // 产品选择搜索
         $('.production_select_search_btn').on('click', function () {
-            tr_edit_obj = $(this).parents('tr')
-            var production_model_input = tr_edit_obj.find('input.production_model')
+            line_edit_obj = $(this).parents('.items_line')
+            var production_model_input = line_edit_obj.find('input.production_model')
             var keywords = production_model_input.val()
             $.session.set('production_keywords', keywords)
             if (!keywords) {
@@ -28,15 +28,15 @@
                 var production_model = $.session.get('production_model')
                 var production_sku = $.session.get('production_sku')
 
-                $(tr_edit_obj).find('input[name$="production_id"]').val(production_id)
+                $(line_edit_obj).find('input[name$="production_id"]').val(production_id)
 
-                $(tr_edit_obj).find('input.production_brand').val(production_brand)
-                $(tr_edit_obj).find('input.production_model').val(production_model)
-                $(tr_edit_obj).find('input.production_sku').val(production_sku)
+                $(line_edit_obj).find('input.production_brand').val(production_brand)
+                $(line_edit_obj).find('input.production_model').val(production_model)
+                $(line_edit_obj).find('input.production_sku').val(production_sku)
 
-                $(tr_edit_obj).find('span.production_brand').text(production_brand)
-                $(tr_edit_obj).find('span.production_model').text(production_model)
-                $(tr_edit_obj).find('span.production_sku').text(production_sku)
+                $(line_edit_obj).find('span.production_brand').text(production_brand)
+                $(line_edit_obj).find('span.production_model').text(production_model)
+                $(line_edit_obj).find('span.production_sku').text(production_sku)
                 $('#production_select_modal').modal('hide')
             }
         })

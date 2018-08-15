@@ -5,7 +5,7 @@
 .idea
 .DS_Store
 
-logs/
+logs/*
 !logs/index.html
 
 # Translations
@@ -20,7 +20,7 @@ htmlcov/
 
 # Elasticsearch
 docker/Elasticsearch/data/
-# docker/Elasticsearch/logs/
+docker/Elasticsearch/logs/
 
 # InfluxDB
 docker/InfluxDB/data/
@@ -29,3 +29,12 @@ docker/InfluxDB/data/
 docker/MariaDB/backup/
 docker/MariaDB/data/
 docker/MariaDB/log/
+
+# Nginx
+docker/Nginx/logs/
+
+
+# Config
+# config/*
+# !config/__init__.py
+# !config/default.py

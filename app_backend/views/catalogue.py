@@ -39,7 +39,7 @@ from app_backend.api.catalogue import (
 )
 from app_backend.api.production import (
     get_production_rows,
-    get_distinct_brand,
+    get_distinct_production_brand,
 )
 from app_backend.forms.production import (
     ProductionSearchForm,
@@ -73,7 +73,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 def get_production_brand_choices():
     production_brand_list = copy(default_choices_str)
-    distinct_brand = get_distinct_brand()
+    distinct_brand = get_distinct_production_brand()
     production_brand_list.extend([(brand, brand) for brand in distinct_brand])
     return production_brand_list
 

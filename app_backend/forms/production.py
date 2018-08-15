@@ -131,6 +131,21 @@ class ProductionAddForm(FlaskForm):
             'autocomplete': 'off',
         }
     )
+    production_sku = StringField(
+        _('production sku'),
+        validators=[
+            DataRequired(),
+            Length(min=2, max=16),
+        ],
+        default='Pcs',
+        description='单位（Pcs:个,Pair:对,Set:组）',
+        render_kw={
+            'placeholder': _('production sku'),
+            'rel': 'tooltip',
+            'title': _('production sku'),
+            'autocomplete': 'off',
+        }
+    )
     note = StringField(
         _('production note'),
         validators=[],
@@ -183,6 +198,20 @@ class ProductionEditForm(FlaskForm):
             'placeholder': _('production model'),
             'rel': 'tooltip',
             'title': _('production model'),
+            'autocomplete': 'off',
+        }
+    )
+    production_sku = StringField(
+        _('production sku'),
+        validators=[
+            DataRequired(),
+            Length(min=2, max=16),
+        ],
+        description='单位（Pcs:个,Pair:对,Set:组）',
+        render_kw={
+            'placeholder': _('production sku'),
+            'rel': 'tooltip',
+            'title': _('production sku'),
             'autocomplete': 'off',
         }
     )

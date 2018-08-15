@@ -525,6 +525,27 @@ CREATE TABLE `purchase_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='进货清单明细';
 
 
+DROP TABLE IF EXISTS `production_sensitive`;
+CREATE TABLE `production_sensitive` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `cid` INT NOT NULL DEFAULT 0 COMMENT '敏感型号-公司ID',
+  `company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '敏感型号-公司名称',
+  `production_id` INT NOT NULL COMMENT '产品ID',
+  `production_brand` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品品牌',
+  `production_model` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `production_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
+  `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '型号备注',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`cid`),
+  KEY (`production_id`),
+  UNIQUE (`cid`, `production_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='敏感型号';
+
+
 DROP TABLE IF EXISTS `production_quotation_items`;
 CREATE TABLE `production_quotation_items` (
   `id` INT NOT NULL AUTO_INCREMENT,

@@ -26,6 +26,18 @@
                     <li>
                         <a href="{{ url_for('production.add') }}">{{ _('production add') }}</a>
                     </li>
+                    <li>
+                        <a id="menu-production-sensitive" href="#">{{ _('production sensitive management') }} <span
+                                class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li>
+                                <a href="{{ url_for('production_sensitive.lists') }}">{{ _('production sensitive lists') }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('production_sensitive.add') }}">{{ _('production sensitive add') }}</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
 
@@ -219,6 +231,9 @@
                         <ul class="nav nav-third-level">
                             <li>
                                 <a href="{{ url_for('system.catalogue_import') }}">{{ _('catalogue import') }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('system.production_import') }}">{{ _('production import') }}</a>
                             </li>
                             <li>
                                 <a href="{{ url_for('system.quotation_import') }}">{{ _('quotation import') }}</a>

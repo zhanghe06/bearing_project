@@ -73,7 +73,7 @@
                     </thead>
                     <tbody>
                     {% for info in form.quotation_items %}
-                        <tr class="text-muted">
+                        <tr class="text-muted items_line">
                             {{ info.form.id() }}
                             <td><span readonly="readonly" class="form-control input-sm">{{ loop.index }}</span></td>
                             <td class="bg-warning{% if info.enquiry_production_model.errors %} has-error{% endif %}">

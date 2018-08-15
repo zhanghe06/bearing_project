@@ -1,0 +1,161 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-production').trigger('click')">{{ _('production management') }}</a></li>
+            <li class="active">{{ _('production sensitive lists') }}</li>
+        </ol>
+        <form method="post">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSearch">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                           aria-expanded="true" aria-controls="collapseSearch">
+                            {{ _('Search toolbar') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="headingSearch">
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            {{ form.csrf_token }}
+                            <div class="form-group{% if form.production_brand.errors %} has-error{% endif %}">
+                                {{ form.production_brand.label() }}
+                                {{ form.production_brand(class="form-control input-sm") }}
+                            </div>
+                            <div class="form-group{% if form.production_model.errors %} has-error{% endif %}">
+                                {{ form.production_model.label() }}
+                                {{ form.production_model(class="form-control input-sm") }}
+                            </div>
+                            <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
+                            {{ form.cid() }}
+                            {{ form.company_name.label() }}
+                            <div class="input-group">
+                                {{ form.company_name(
+                                    class="form-control input-sm",
+                                    title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
+                                    autocomplete="off"
+                                    )
+                                }}
+                                <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
+                                      style="top: 0; cursor:pointer;" data-toggle="modal"
+                                      data-target="#customer_select_modal"></span>
+                            </div>
+                        </div>
+
+                            <button type="submit" class="btn-sm btn-primary" name="op"
+                                    value="0">{{ _('Search') }}</button>
+                            <button type="submit" class="btn-sm btn-primary" name="op"
+                                    value="1">{{ _('Export') }}</button>
+                            <button type="submit" class="btn-sm btn-danger" name="op"
+                                    value="2">{{ _('Delete') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                {#         <table class="table table-striped">#}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <label>
+                                <input class="select_all" name="production_ids" title="{{ _('Select All') }}"
+                                       rel="tooltip" type="checkbox" value=""/>
+                                {{ _('Select All') }}
+                            </label>
+                        </th>
+                        <th>{{ _('production brand') }}</th>
+                        <th>{{ _('production model') }}</th>
+                        <th>{{ _('production sku') }}</th>
+                        <th>{{ _('company name') }}</th>
+                        <th>{{ _('production note') }}</th>
+                        <th>{{ _('create time') }}</th>
+                        <th>{{ _('update time') }}</th>
+                        <th>{{ _('operation') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for info in pagination.items %}
+                        <tr class="text-muted item">
+                            <td>
+                                <label>
+                                    <input class="select_item" name="production_sensitive_id" title="{{ _('Select') }}"
+                                           rel="tooltip" type="checkbox" value="{{ info.id }}"/>
+                                </label>
+                            </td>
+                            <td>{{ info.production_brand }}</td>
+                            <td><a href="{{ url_for('production.info', production_id=info.production_id) }}" rel="tooltip"
+                                   title="{{ _('Click details') }}">{{ info.production_model }}</a></td>
+                            <td>{{ info.production_sku }}</td>
+                            <td>{{ info.cid | customer_company_name }}</td>
+                            <td>{{ info.note | default('-', True) }}</td>
+                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>
+                                <!-- Split button -->
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-default" href="{{ url_for('production_sensitive.edit', production_sensitive_id=info.id, next=request.path) }}">
+                                        <span class="glyphicon glyphicon-pencil"></span> {{ _('Edit') }}
+                                    </a>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="javascript:void(0);" onclick="production_sensitive_delete({{ info.id }})">
+                                                <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {# 翻页 #}
+                {% from "macros.html" import render_pagination_post %}
+                {{ render_pagination_post(pagination, 'production_sensitive.lists') }}
+            </div>
+        </form>
+    </div>
+
+    <!-- 客户搜索 -->
+    {% include "modal/customer_select.html" %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <!-- 客户搜索 -->
+{% include "modal/customer_select_js.html" %}
+    <script>
+        // 产品删除
+        function production_sensitive_delete (production_sensitive_id) {
+            if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
+                $.getJSON('{{ url_for('production_sensitive.ajax_delete') }}',
+                    {
+                        production_sensitive_id: production_sensitive_id
+                    }, function (data) {
+                        if (data.result === true) {
+                            alert(data.msg)
+                        } else {
+                            alert(data.msg)
+                        }
+                        window.location.reload()
+                    })
+                return false
+            }
+        }
+    </script>
+{% endblock %}

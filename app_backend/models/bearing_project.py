@@ -251,6 +251,26 @@ class ProductionQuotationItems(Base):
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
+class ProductionSensitive(Base):
+    __tablename__ = 'production_sensitive'
+    __table_args__ = (
+        Index('cid_2', 'cid', 'production_id', unique=True),
+    )
+
+    id = Column(Integer, primary_key=True)
+    cid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
+    company_name = Column(String(100), nullable=False, server_default=text("''"))
+    production_id = Column(Integer, nullable=False, index=True)
+    production_brand = Column(String(32), nullable=False, server_default=text("''"))
+    production_model = Column(String(64), nullable=False, server_default=text("''"))
+    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
+    note = Column(String(256), nullable=False, server_default=text("''"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
 class Purchase(Base):
     __tablename__ = 'purchase'
 

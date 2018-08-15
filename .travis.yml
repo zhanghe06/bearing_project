@@ -11,9 +11,8 @@ install:
   - pip install pyyaml
 # command to run tests
 script:
-  - cd tests
-  # Copy the coveragerc down so coverage.py can find it.
-  - coverage run --source='.' test_compatibility.py
+  - export PYTHONPATH=${PWD}
+  - coverage run -a tests/test_compatibility.py
   - coverage report
 after_success:
   - coveralls

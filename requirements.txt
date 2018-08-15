@@ -42,7 +42,6 @@ requests-oauthlib==1.0.0
 six==1.11.0
 sqlacodegen==1.1.6
 SQLAlchemy==1.2.10
-supervisor==3.3.4
 texttable==1.4.0
 ua-parser==0.8.0
 urllib3==1.23
