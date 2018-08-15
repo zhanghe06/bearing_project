@@ -65,6 +65,7 @@ from app_backend.permissions import (
     QuotationItemEditPermission,
     QuotationItemDelPermission,
 )
+from app_backend.signals.quotation import signal_quotation_status_delete
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -542,29 +543,34 @@ def ajax_delete():
 
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
-        ajax_failure_msg['msg'] = _('Del Failure')  # Method Not Allowed
+        ext_msg = _('Method Not Allowed')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     # 检查请求参数
     quotation_id = request.args.get('quotation_id', 0, type=int)
     if not quotation_id:
-        ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
     quotation_item_del_permission = QuotationItemDelPermission(quotation_id)
     if not quotation_item_del_permission.can():
-        ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
     if not quotation_info:
-        ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
     # 检查资源是否删除
     if quotation_info.status_delete == STATUS_DEL_OK:
-        ajax_success_msg['msg'] = _('Del Success')  # Already deleted
+        ext_msg = _('Already deleted')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_success_msg)
 
     current_time = datetime.utcnow()
@@ -575,6 +581,14 @@ def ajax_delete():
     }
     result = edit_quotation(quotation_id, quotation_data)
     if result:
+        # 发送删除信号
+        signal_data = {
+            'quotation_id': quotation_id,
+            'status_delete': STATUS_DEL_OK,
+            'current_time': current_time,
+        }
+        signal_quotation_status_delete.send(app, **signal_data)
+
         ajax_success_msg['msg'] = _('Del Success')
         return jsonify(ajax_success_msg)
     else:

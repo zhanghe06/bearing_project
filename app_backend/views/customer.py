@@ -58,6 +58,7 @@ from app_backend.permissions import (
     CustomerItemEditPermission,
     CustomerItemDelPermission,
 )
+from app_backend.signals.customer import signal_customer_status_delete
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -398,29 +399,34 @@ def ajax_delete():
 
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
-        ajax_failure_msg['msg'] = _('Del Failure')  # Method Not Allowed
+        ext_msg = _('Method Not Allowed')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     # 检查请求参数
     customer_id = request.args.get('customer_id', 0, type=int)
     if not customer_id:
-        ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
-    # customer_item_del_permission = CustomerItemDelPermission(customer_id)
-    # if not customer_item_del_permission.can():
-    #     ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
-    #     return jsonify(ajax_failure_msg)
+    customer_item_del_permission = CustomerItemDelPermission(customer_id)
+    if not customer_item_del_permission.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
 
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在
     if not customer_info:
-        ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
     # 检查资源是否删除
     if customer_info.status_delete == STATUS_DEL_OK:
-        ajax_success_msg['msg'] = _('Del Success')  # Already deleted
+        ext_msg = _('Already deleted')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_success_msg)
 
     current_time = datetime.utcnow()
@@ -431,6 +437,15 @@ def ajax_delete():
     }
     result = edit_customer(customer_id, customer_data)
     if result:
+
+        # 发送删除信号
+        signal_data = {
+            'customer_id': customer_id,
+            'status_delete': STATUS_DEL_OK,
+            'current_time': current_time,
+        }
+        signal_customer_status_delete.send(app, **signal_data)
+
         ajax_success_msg['msg'] = _('Del Success')
         return jsonify(ajax_success_msg)
     else:

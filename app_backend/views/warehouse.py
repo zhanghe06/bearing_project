@@ -308,28 +308,33 @@ def ajax_delete():
 
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
-        ajax_failure_msg['msg'] = _('Del Failure')  # Method Not Allowed
+        ext_msg = _('Method Not Allowed')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     # 检查请求参数
     warehouse_id = request.args.get('warehouse_id', 0, type=int)
     if not warehouse_id:
-        ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
     if not permission_role_stock_keeper.can():
-        ajax_failure_msg['msg'] = _('Del Failure')  # Permission Denied
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     warehouse_info = get_warehouse_row_by_id(warehouse_id)
     # 检查资源是否存在
     if not warehouse_info:
-        ajax_failure_msg['msg'] = _('Del Failure')  # ID does not exist
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
     # 检查资源是否删除
     if warehouse_info.status_delete == STATUS_DEL_OK:
-        ajax_success_msg['msg'] = _('Del Success')  # Already deleted
+        ext_msg = _('Already deleted')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_success_msg)
 
     current_time = datetime.utcnow()
