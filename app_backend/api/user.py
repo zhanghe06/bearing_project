@@ -255,4 +255,5 @@ def get_user_choices():
     """
     uid_list = get_user_rows(status_delete=STATUS_DEL_NO)
     user_choices = [(user.id, user.name) for user in uid_list]
+    user_choices.insert(0, (0, '-'))
     return user_choices

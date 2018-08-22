@@ -100,7 +100,7 @@
                         <td>{{ info.note }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                        <td>
+                        <td style="min-width: 8em;">
                             <!-- Split button -->
                             <div class="btn-group btn-group-sm">
                                 <a class="btn btn-default" href="{{ url_for('quotation.edit', quotation_id=info.id, next=request.path) }}">
@@ -117,12 +117,17 @@
                                             <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
                                         </a>
                                     </li>
-{#                                    <li role="separator" class="divider"></li>#}
-{#                                    <li>#}
-{#                                        <a href="{{ url_for('quotation.preview', quotation_id=info.id, next=request.path) }}" target="_blank">#}
-{#                                            <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}#}
-{#                                        </a>#}
-{#                                    </li>#}
+                                    <li role="separator" class="divider" style="margin: 0"></li>
+                                    <li>
+                                        <a href="{{ url_for('quotation.preview', quotation_id=info.id, next=request.path) }}" target="_blank">
+                                            <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url_for('quotation.pdf', quotation_id=info.id) }}" target="_blank">
+                                            <span class="glyphicon glyphicon-download-alt"></span> {{ _('Download') }}
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
 

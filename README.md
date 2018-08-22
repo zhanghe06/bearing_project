@@ -41,6 +41,7 @@ pip install sqlacodegen==1.1.6  # 注意: 最新版 sqlacodegen==2.0 有bug
 pip install gunicorn
 pip install eventlet
 pip install Flask-SocketIO
+pip install Flask-WeasyPrint
 pip install redis
 pip install requests
 pip install mysqlclient
@@ -177,6 +178,14 @@ tips默认是不支持换行的, 需要`data-html`和`data-toggle`一起配合
      onclick="refresh_code();">
 ```
 
+title 动态显示
+
+```
+span_obj.prop('title', 'new title').tooltip('fixTitle').tooltip('show');
+```
+如果仅仅修改title, 不会触发tooltip渲染
+
+
 ## 权限控制
 
 控制目标
@@ -266,6 +275,29 @@ $('body').on('click', '.class-name', function(){
   })
 })
 ```
+
+## H5 兼容PC、移动端点击事件
+
+需要区分平台, 分别绑定对应事件
+```javascript
+$(function () {
+    var is_mobile = window.hasOwnProperty("ontouchstart")
+    var toggle_password_obj = $('#toggle_password')
+    var captcha_img_obj = $('#captcha_img')
+
+    if(is_mobile){
+        toggle_password_obj.bind('touchstart', toggle_password)
+        captcha_img_obj.bind('touchstart', refresh_code)
+    }else {
+        toggle_password_obj.bind('click', toggle_password)
+        captcha_img_obj.bind('click', refresh_code)
+    }
+})
+```
+
+如果仅仅绑定`click`, 移动端初次点击, 需要点击两次
+
+如果同时绑定`touchstart`和`click`, 移动端会触发两次事件
 
 
 ## 关于 cli 模式下的上下文管理
@@ -397,6 +429,25 @@ http://docs.jinkan.org/docs/flask/patterns/lazyloading.html
     <!-- The contents of myscript.js will be loaded inside the script tag -->
 {% endblock %}
 ```
+
+## Flask-WeasyPrint
+
+系统依赖
+
+https://weasyprint.readthedocs.io/en/latest/install.html
+
+ubuntu
+```
+sudo apt-get install libpango1.0-0
+sudo apt-get install libcairo2
+sudo apt-get install libpq-dev
+```
+
+mac
+```
+brew install cairo pango gdk-pixbuf libffi
+```
+
 
 ## TODO
 

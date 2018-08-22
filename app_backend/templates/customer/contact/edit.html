@@ -10,8 +10,11 @@
         </ol>
         <!-- 标签导航 -->
         <ul class="nav nav-tabs">
-            <li role="presentation"><a href="{{ url_for('customer.edit', customer_id=customer_id) }}">{{ _('customer info') }}</a></li>
-            <li role="presentation"><a href="{{ url_for('customer_invoice.edit', customer_id=customer_id) }}">{{ _('customer invoice') }}</a></li>
+            <li role="presentation"><a
+                    href="{{ url_for('customer.edit', customer_id=customer_id) }}">{{ _('customer info') }}</a></li>
+            <li role="presentation"><a
+                    href="{{ url_for('customer_invoice.edit', customer_id=customer_id) }}">{{ _('customer invoice') }}</a>
+            </li>
             <li role="presentation" class="active"><a href="javascript:void(0);">{{ _('customer contact') }}</a></li>
         </ul>
         <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
@@ -27,26 +30,25 @@
                         class="form-control input-sm",
                         title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
                         autocomplete="off"
-                        )
-                    }}
+                        ) }}
                     <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
                           style="top: 0; cursor:pointer;" data-toggle="modal"
                           data-target="#customer_select_modal"></span>
                 </div>
             </div>
 
-        <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4 text-center">
-                <button type="submit" class="btn-sm btn-success btn-load"
-                    data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
-                <button type="reset" class="btn-sm btn-default">{{ _('Reset') }}</button>
+            <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 text-center">
+                    <button type="submit" class="btn-sm btn-success btn-load"
+                            data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
+                    <button type="reset" class="btn-sm btn-default">{{ _('Reset') }}</button>
+                </div>
             </div>
-        </div>
-        <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+            <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
 
             <div class="table-responsive">
-{#                         <table class="table table-striped">#}
+                {#                         <table class="table table-striped">#}
                 <table class="table table-hover table-condensed items_table">
                     <thead>
                     <tr>
@@ -57,6 +59,7 @@
                         <th>{{ _('address') }}</th>
                         <th>{{ _('tel') }}</th>
                         <th>{{ _('fax') }}</th>
+                        <th>{{ _('email') }}</th>
                         <th>{{ _('note') }}</th>
                         <th>{{ _('default status') }}</th>
                         <th>{{ _('Option') }}</th>
@@ -65,8 +68,8 @@
                     <tbody>
                     {% for info in form.customer_contact_items %}
                         <tr class="text-muted">
-                        {{ info.form.id() }}
-                        {{ info.form.cid() }}
+                            {{ info.form.id() }}
+                            {{ info.form.cid() }}
                             <td>
                                 <span readonly="readonly" class="form-control input-sm">{{ loop.index }}</span>
                             </td>
@@ -88,10 +91,13 @@
                             <td class="{% if info.fax.errors %} has-error{% endif %}">
                                 {{ info.fax(class="form-control input-sm", title=info.fax.errors|join(', '), style="min-width: 4em;") }}
                             </td>
+                            <td class="{% if info.email.errors %} has-error{% endif %}">
+                                {{ info.email(class="form-control input-sm", title=info.email.errors|join(', '), style="min-width: 4em;") }}
+                            </td>
                             <td class="{% if info.note.errors %} has-error{% endif %}">
                                 {{ info.note(class="form-control input-sm", title=info.note.errors|join(', '), style="min-width: 4em; max-width: 7em; ") }}
                             </td>
-                            <td class="{% if info.status_default.errors %} text-danger{% endif %}">
+                            <td style="min-width: 4em;" class="{% if info.status_default.errors %} text-danger{% endif %}">
                                 {{ info.status_default() }}
                                 {{ info.status_default.label(rel="tooltip", title=info.status_default.errors|join(', ')) }}
                             </td>
@@ -118,4 +124,14 @@
 {% block extra_js %}
 <!-- 客户搜索 -->
 {% include "modal/customer_select_js.html" %}
+<script>
+    // 全选点击事件
+    $('input[name$="status_default"]').on('change', function () {
+        var current_status_default = $(this).prop('checked')
+        $('input[name$="status_default"]').prop('checked', false)
+        if (current_status_default) {
+            $(this).prop('checked', true)
+        }
+    })
+</script>
 {% endblock %}

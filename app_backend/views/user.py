@@ -30,15 +30,16 @@ from flask_login import login_required
 from app_backend import app
 from app_backend import excel
 from app_backend.api.user import (
+    get_user_rows,
     get_user_pagination,
     get_user_row_by_id,
     add_user,
     edit_user,
     user_current_stats,
     user_former_stats,
-)
-from app_backend.api.user import (
-    get_user_rows
+    get_user_choices)
+from app_backend.api.user_auth import (
+    add_user_auth
 )
 from app_backend.forms.user import (
     UserSearchForm,
@@ -59,7 +60,9 @@ from app_common.maps.default import default_choices_int, default_choice_option_i
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
-from app_common.maps.type_role import TYPE_ROLE_MANAGER
+from app_common.maps.status_verified import STATUS_VERIFIED_OK
+from app_common.maps.type_auth import TYPE_AUTH_ACCOUNT
+from app_common.maps.type_role import TYPE_ROLE_MANAGER, TYPE_ROLE_CHOICES
 from app_common.tools import json_default
 
 # 定义蓝图
@@ -235,6 +238,9 @@ def add():
     # 加载创建表单
     form = UserAddForm(request.form)
 
+    form.role_id.choices = TYPE_ROLE_CHOICES
+    form.parent_id.choices = get_user_choices()
+
     # 进入创建页面
     if request.method == 'GET':
         # 渲染页面
@@ -256,16 +262,40 @@ def add():
             )
 
         # 表单校验成功
+
+        # 创建用户基本信息
         current_time = datetime.utcnow()
         user_data = {
             'name': form.name.data,
+            'salutation': form.salutation.data,
+            'mobile': form.mobile.data,
+            'tel': form.tel.data,
+            'fax': form.fax.data,
+            'email': form.email.data,
             'role_id': form.role_id.data,
             'parent_id': form.parent_id.data,
             'create_time': current_time,
             'update_time': current_time,
         }
-        result = add_user(user_data)
-        # 创建操作成功
+        user_id = add_user(user_data)
+        if not user_id:
+            flash(_('Add Failure'), 'danger')
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
+        # 创建用户认证信息
+        user_auth_data = {
+            'user_id': user_id,
+            'type_auth': TYPE_AUTH_ACCOUNT,
+            'auth_key': form.name.data,
+            'auth_secret': '123456',  # 默认密码
+            'status_verified': STATUS_VERIFIED_OK,
+            'create_time': current_time,
+            'update_time': current_time,
+        }
+        result = add_user_auth(user_auth_data)
         if result:
             flash(_('Add Success'), 'success')
             return redirect(request.args.get('next') or url_for('user.lists'))
@@ -303,6 +333,9 @@ def edit(user_id):
     # 加载编辑表单
     form = UserEditForm(request.form)
 
+    form.role_id.choices = TYPE_ROLE_CHOICES
+    form.parent_id.choices = get_user_choices()
+
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('user edit')
@@ -310,7 +343,13 @@ def edit(user_id):
     # 进入编辑页面
     if request.method == 'GET':
         # 表单赋值
+        form.id.data = user_info.id
         form.name.data = user_info.name
+        form.salutation.data = user_info.salutation
+        form.mobile.data = user_info.mobile
+        form.tel.data = user_info.tel
+        form.fax.data = user_info.fax
+        form.email.data = user_info.email
         form.role_id.data = user_info.role_id
         form.parent_id.data = user_info.parent_id
         form.create_time.data = user_info.create_time
@@ -328,6 +367,7 @@ def edit(user_id):
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
+            flash(form.errors, 'danger')
             return render_template(
                 template_name,
                 user_id=user_id,
@@ -338,6 +378,11 @@ def edit(user_id):
         current_time = datetime.utcnow()
         user_data = {
             'name': form.name.data,
+            'salutation': form.salutation.data,
+            'mobile': form.mobile.data,
+            'tel': form.tel.data,
+            'fax': form.fax.data,
+            'email': form.email.data,
             'role_id': form.role_id.data,
             'parent_id': form.parent_id.data,
             'update_time': current_time,

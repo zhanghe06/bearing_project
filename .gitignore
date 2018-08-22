@@ -35,6 +35,6 @@ docker/Nginx/logs/
 
 
 # Config
-# config/*
-# !config/__init__.py
-# !config/default.py
+config/*
+!config/__init__.py
+!config/default.py

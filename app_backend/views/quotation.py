@@ -25,10 +25,12 @@ from flask import (
 )
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
+from flask_weasyprint import render_pdf, HTML, CSS
 
 from app_backend.api.catalogue import get_catalogue_choices
 from app_backend.api.customer import get_customer_choices, get_customer_row_by_id
-from app_backend.api.user import get_user_choices
+from app_backend.api.customer_contact import get_customer_contact_row_by_id
+from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.forms.production import ProductionSelectForm
 from app_backend.forms.quotation import QuotationItemEditForm
 from app_backend import (
@@ -77,6 +79,8 @@ from app_common.maps.type_role import (
 from app_common.tools import json_default
 
 # 定义蓝图
+from app_common.tools.date_time import time_utc_to_local
+
 bp_quotation = Blueprint('quotation', __name__, url_prefix='/quotation')
 
 # 加载配置
@@ -207,7 +211,7 @@ def add():
     form = QuotationAddForm(request.form)
     form.uid.choices = get_user_choices()
     form.uid.data = current_user.id
-    form.contact_id.choices = default_choices_int
+    # form.contact_id.choices = default_choices_int
     form.status_order.choices = STATUS_ORDER_CHOICES
 
     # 进入创建页面
@@ -267,6 +271,7 @@ def add():
         quotation_data = {
             'uid': form.uid.data,
             'cid': form.cid.data,
+            'contact_id': form.contact_id.data,
             'status_order': form.status_order.data,
             'expiry_date': (datetime.utcnow() + timedelta(days=7)).strftime('%Y-%m-%d'),
             'create_time': current_time,
@@ -353,7 +358,6 @@ def edit(quotation_id):
     form = QuotationEditForm(request.form)
     form.uid.choices = get_user_choices()
     form.status_order.choices = STATUS_ORDER_CHOICES
-    form.contact_id.choices = default_choices_int
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -366,6 +370,7 @@ def edit(quotation_id):
         # 表单赋值
         form.uid.data = quotation_info.uid
         form.cid.data = quotation_info.cid
+        form.contact_id.data = quotation_info.contact_id
         form.status_order.data = quotation_info.status_order
         form.amount_quotation.data = quotation_info.amount_quotation
         # form.quotation_items = quotation_items
@@ -493,6 +498,7 @@ def edit(quotation_id):
         quotation_data = {
             'cid': form.cid.data,
             'uid': form.uid.data,
+            'contact_id': form.contact_id.data,
             'status_order': form.status_order.data,
             'amount_production': amount_quotation,
             'amount_quotation': amount_quotation,
@@ -518,6 +524,33 @@ def edit(quotation_id):
 @bp_quotation.route('/<int:quotation_id>/preview.html')
 @login_required
 def preview(quotation_id):
+    """
+    打印预览
+    :param quotation_id:
+    :return:
+    """
+    quotation_info = get_quotation_row_by_id(quotation_id)
+    # 检查资源是否存在
+    if not quotation_info:
+        abort(404)
+    # 检查资源是否删除
+    if quotation_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
+    quotation_code = 'XABJ%s' % time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S')
+
+    # 获取客户公司信息
+    customer_info = get_customer_row_by_id(quotation_info.cid)
+
+    # 获取客户联系方式
+    customer_contact_info = get_customer_contact_row_by_id(quotation_info.contact_id)
+
+    # 获取报价人员信息
+    user_info = get_user_row_by_id(quotation_info.uid)
+
+    quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
+
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('quotation edit')
@@ -527,7 +560,70 @@ def preview(quotation_id):
     return render_template(
         template_name,
         quotation_id=quotation_id,
+        quotation_info=quotation_info,
+        customer_info=customer_info,
+        customer_contact_info=customer_contact_info,
+        user_info=user_info,
+        quotation_items=quotation_items,
+        quotation_print_date=quotation_print_date,
+        quotation_code=quotation_code,
         **document_info
+    )
+
+
+@bp_quotation.route('/<int:quotation_id>.pdf')
+@login_required
+def pdf(quotation_id):
+    """
+    文件下载
+    :param quotation_id:
+    :return:
+    """
+    quotation_info = get_quotation_row_by_id(quotation_id)
+    # 检查资源是否存在
+    if not quotation_info:
+        abort(404)
+    # 检查资源是否删除
+    if quotation_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
+    quotation_code = 'XABJ%s' % time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S')
+
+    # 获取客户公司信息
+    customer_info = get_customer_row_by_id(quotation_info.cid)
+
+    # 获取客户联系方式
+    customer_contact_info = get_customer_contact_row_by_id(quotation_info.contact_id)
+
+    # 获取报价人员信息
+    user_info = get_user_row_by_id(quotation_info.uid)
+
+    quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('quotation edit')
+
+    template_name = 'quotation/pdf.html'
+
+    html = render_template(
+        template_name,
+        quotation_id=quotation_id,
+        quotation_info=quotation_info,
+        customer_info=customer_info,
+        customer_contact_info=customer_contact_info,
+        user_info=user_info,
+        quotation_items=quotation_items,
+        quotation_print_date=quotation_print_date,
+        quotation_code=quotation_code,
+        **document_info
+    )
+    # return html
+    return render_pdf(
+        html=HTML(string=html),
+        stylesheets=[CSS(string='@page {size:A4; margin:35px;}')],
+        download_filename='报价单.pdf'.encode('utf-8')
     )
 
 

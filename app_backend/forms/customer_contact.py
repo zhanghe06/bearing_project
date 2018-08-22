@@ -376,6 +376,19 @@ class CustomerContactItemEditForm(FlaskForm):
             'autocomplete': 'off',
         }
     )
+    email = StringField(
+        _('email'),
+        validators=[
+            Length(max=60),
+        ],
+        description=_('email'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('email'),
+            'placeholder': _('email'),
+            'autocomplete': 'off',
+        }
+    )
     address = StringField(
         _('address'),
         validators=[

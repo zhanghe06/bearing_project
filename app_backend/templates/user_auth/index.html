@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="renderer" content="webkit">
@@ -20,7 +21,7 @@
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
     <!-- Custom -->
-    <link href="{{ url_for('static', filename='css/custom.css', v='1.5.20') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.css', v='1.5.25') }}" rel="stylesheet">
 
     {% block extra_css %}{% endblock %}
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements andmedia queries -->
@@ -67,7 +68,16 @@
                         </div>
                         <div class="form-group{% if form.auth_secret.errors %} has-error{% endif %}">
                             <div class="col-sm-12">
-                                {{ form.auth_secret(class="form-control") }}
+                                <div class="input-group">
+                                    {{ form.auth_secret(class="form-control") }}
+                                    <span id="toggle_password"
+                                          class="input-group-addon glyphicon glyphicon-eye-close"
+                                          style="top: 0; cursor:pointer; border-radius: 0 4px 4px 0; border-left: 0;"
+                                          rel="tooltip"
+                                          data-html="true" data-toggle="tooltip" data-placement="top"
+                                          title="<span style='white-space: nowrap;'>{{ _('Show')}}</span><br/>{{ _('password') }}">
+                                    </span>
+                                </div>
                                 {% for error in form.auth_secret.errors %}
                                     <span class="help-block">{{ error }}</span>
                                 {% endfor %}
@@ -79,11 +89,11 @@
 
                             <span class="input-group-addon" id="basic-addon2" style="padding: 0;border: 0">
                             <img src="{{ url_for('captcha.get_code', code_type='login', t=t) }}"
-                                data-html="true" data-toggle="tooltip" data-placement="top"
-                                rel="tooltip"
-                                title="{{ _('Unsharpness<br/>Change next') }}"
-                                id="captcha_img"
-                                onclick="refresh_code();" style="cursor: pointer">
+                                 data-html="true" data-toggle="tooltip" data-placement="top"
+                                 rel="tooltip"
+                                 title="{{ _('Unsharpness<br/>Change next') }}"
+                                 id="captcha_img"
+                                 style="cursor: pointer">
                             </span>
 
                         </div>
@@ -92,7 +102,6 @@
                                 <span class="help-block">{{ error }}</span>
                             </div>
                         {% endfor %}
-
 
                         <div class="form-group{% if form.remember.errors %} has-error{% endif %}">
                             <div class="col-sm-12">
@@ -105,8 +114,8 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <button type="submit" class="btn btn-success btn-load btn-block" data-loading-text="{{ _('Signing on') }}"
-                                        autocomplete="off">{{ _('Sign in') }}
+                                <button type="submit" class="btn btn-success btn-load btn-block"
+                                        data-loading-text="{{ _('Signing on') }}">{{ _('Sign in') }}
                                 </button>
                             </div>
                         </div>
@@ -125,14 +134,45 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 <!-- Custom -->
-<script src="{{ url_for('static', filename='js/custom.js', v='1.5.20') }}"></script>
+<script src="{{ url_for('static', filename='js/custom.js', v='1.5.25') }}"></script>
 
 <script>
-    // 刷新验证码
-    function refresh_code() {
-        var now = new Date();
-        $('#captcha_img')[0].setAttribute("src", "{{ url_for('captcha.get_code', code_type='login') }}" + "?t=" + now.getTime());
+    // 显隐密码
+    function toggle_password () {
+        var auth_secret_obj = $('input[name="auth_secret"]');
+        var span_obj = $('span.glyphicon');
+        if (auth_secret_obj.prop('type') === 'password'){
+            auth_secret_obj.prop('type', 'text')
+            span_obj.removeClass('glyphicon-eye-close')
+            span_obj.addClass('glyphicon-eye-open')
+            span_obj.prop('title', "<span style='white-space: nowrap;'>{{ _('Hidden')}}</span><br/>{{ _('password') }}").tooltip('fixTitle').tooltip('show');
+        }else {
+            auth_secret_obj.prop('type', 'password')
+            span_obj.removeClass('glyphicon-eye-open')
+            span_obj.addClass('glyphicon-eye-close')
+            span_obj.prop('title', "<span style='white-space: nowrap;'>{{ _('Show')}}</span><br/>{{ _('password') }}").tooltip('fixTitle').tooltip('show');
+        }
     }
+    // 刷新验证码
+    function refresh_code () {
+        var now = new Date()
+        $('#captcha_img').attr('src', '{{ url_for('captcha.get_code', code_type='login') }}' + '?t=' + now.getTime())
+    }
+    // 兼容PC、移动端点击事件
+    $(function () {
+        var is_mobile = window.hasOwnProperty("ontouchstart")
+        var toggle_password_obj = $('#toggle_password')
+        var captcha_img_obj = $('#captcha_img')
+
+        if(is_mobile){
+            toggle_password_obj.bind('touchstart', toggle_password)
+            captcha_img_obj.bind('touchstart', refresh_code)
+        }else {
+            toggle_password_obj.bind('click', toggle_password)
+            captcha_img_obj.bind('click', refresh_code)
+        }
+    })
+
 </script>
 </body>
 

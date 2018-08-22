@@ -26,6 +26,21 @@
                           data-target="#customer_select_modal"></span>
                 </div>
             </div>
+            <div class="form-group{% if form.contact_id.errors or form.contact_name.errors %} has-error{% endif %}">
+                {{ form.contact_id() }}
+                {{ form.contact_name.label() }}
+                <div class="input-group">
+                    {{ form.contact_name(
+                        class="form-control input-sm",
+                        title=form.contact_id.errors|join(', ') or form.contact_name.errors|join(', '),
+                        autocomplete="off"
+                        )
+                    }}
+                    <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_contact_select_search_btn"
+                          style="top: 0; cursor:pointer;" data-toggle="modal"
+                          data-target="#customer_contact_select_modal"></span>
+                </div>
+            </div>
             <div class="form-group{% if form.uid.errors %} has-error{% endif %}">
                 {{ form.uid.label() }}
                 {{ form.uid(class="form-control input-sm", title=form.uid.errors|join(', ')) }}
@@ -140,6 +155,9 @@
     <!-- 客户搜索 -->
     {% include "modal/customer_select.html" %}
 
+    <!-- 联系方式搜索 -->
+    {% include "modal/customer_contact_select.html" %}
+
     <!-- 产品搜索 -->
     {% include "modal/production_select.html" %}
 
@@ -147,10 +165,12 @@
 {% endblock %}
 
 {% block extra_js %}
-    <!-- 客户搜索 -->
-    {% include "modal/customer_select_js.html" %}
-    <!-- 产品搜索 -->
-    {% include "modal/production_select_js.html" %}
-    <!-- 报价总额 -->
-    <script src="{{ url_for('static', filename='js/common/amount_quotation.js', v='1.5.24') }}"></script>
+<!-- 客户搜索 -->
+{% include "modal/customer_select_js.html" %}
+<!-- 联系方式搜索 -->
+{% include "modal/customer_contact_select_js.html" %}
+<!-- 产品搜索 -->
+{% include "modal/production_select_js.html" %}
+<!-- 报价总额 -->
+<script src="{{ url_for('static', filename='js/common/amount_quotation.js', v='1.5.24') }}"></script>
 {% endblock %}

@@ -14,6 +14,7 @@ import json
 
 from app_backend import app
 from app_backend.api.customer import get_customer_row_by_id
+from app_backend.api.customer_contact import get_customer_contact_row_by_id
 from app_backend.api.user import get_user_row_by_id
 from app_backend.api.warehouse import get_warehouse_row_by_id
 from app_backend.api.rack import get_rack_row_by_id
@@ -65,6 +66,19 @@ def filter_customer_company_name(customer_id):
     """
     customer_info = get_customer_row_by_id(customer_id)
     return customer_info.company_name if customer_info else '-'
+
+
+@app.template_filter('customer_contact_name')
+def filter_customer_contact_name(contact_id):
+    """
+    客户公司名称
+    :param contact_id:
+    :return:
+    """
+    if not contact_id:
+        return '-'
+    customer_contact_info = get_customer_contact_row_by_id(contact_id)
+    return customer_contact_info.name if customer_contact_info else '-'
 
 
 @app.template_filter('warehouse_name')

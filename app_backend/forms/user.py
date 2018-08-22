@@ -76,7 +76,7 @@ class UserSearchForm(FlaskForm):
     start_create_time = DateField(
         _('start time'),
         validators=[],
-        default=datetime.utcnow() - timedelta(days=30),
+        default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -88,7 +88,7 @@ class UserSearchForm(FlaskForm):
     end_create_time = DateField(
         _('end time'),
         validators=[],
-        default=datetime.utcnow(),
+        default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),
@@ -110,13 +110,71 @@ class UserAddForm(FlaskForm):
     """
     name = StringField(
         _('user name'),
-        validators=[],
+        validators=[
+            DataRequired(),
+            Length(min=2, max=20),
+        ],
         default='',
         description=_('user name'),
         render_kw={
             'placeholder': _('user name'),
             'rel': 'tooltip',
             'title': _('user name'),
+        }
+    )
+    salutation = StringField(
+        _('salutation'),
+        validators=[],
+        default='',
+        description=_('salutation'),
+        render_kw={
+            'placeholder': _('salutation'),
+            'rel': 'tooltip',
+            'title': _('salutation'),
+        }
+    )
+    mobile = StringField(
+        _('mobile'),
+        validators=[],
+        default='',
+        description=_('mobile'),
+        render_kw={
+            'placeholder': _('mobile'),
+            'rel': 'tooltip',
+            'title': _('mobile'),
+        }
+    )
+    tel = StringField(
+        _('tel'),
+        validators=[],
+        default='',
+        description=_('tel'),
+        render_kw={
+            'placeholder': _('tel'),
+            'rel': 'tooltip',
+            'title': _('tel'),
+        }
+    )
+    fax = StringField(
+        _('fax'),
+        validators=[],
+        default='',
+        description=_('fax'),
+        render_kw={
+            'placeholder': _('fax'),
+            'rel': 'tooltip',
+            'title': _('fax'),
+        }
+    )
+    email = StringField(
+        _('email'),
+        validators=[],
+        default='',
+        description=_('email'),
+        render_kw={
+            'placeholder': _('email'),
+            'rel': 'tooltip',
+            'title': _('email'),
         }
     )
     role_id = SelectField(
@@ -161,13 +219,71 @@ class UserEditForm(FlaskForm):
     )
     name = StringField(
         _('user name'),
-        validators=[],
+        validators=[
+            DataRequired(),
+            Length(min=2, max=20),
+        ],
         default='',
         description=_('user name'),
         render_kw={
             'placeholder': _('user name'),
             'rel': 'tooltip',
             'title': _('user name'),
+        }
+    )
+    salutation = StringField(
+        _('salutation'),
+        validators=[],
+        default='',
+        description=_('salutation'),
+        render_kw={
+            'placeholder': _('salutation'),
+            'rel': 'tooltip',
+            'title': _('salutation'),
+        }
+    )
+    mobile = StringField(
+        _('mobile'),
+        validators=[],
+        default='',
+        description=_('mobile'),
+        render_kw={
+            'placeholder': _('mobile'),
+            'rel': 'tooltip',
+            'title': _('mobile'),
+        }
+    )
+    tel = StringField(
+        _('tel'),
+        validators=[],
+        default='',
+        description=_('tel'),
+        render_kw={
+            'placeholder': _('tel'),
+            'rel': 'tooltip',
+            'title': _('tel'),
+        }
+    )
+    fax = StringField(
+        _('fax'),
+        validators=[],
+        default='',
+        description=_('fax'),
+        render_kw={
+            'placeholder': _('fax'),
+            'rel': 'tooltip',
+            'title': _('fax'),
+        }
+    )
+    email = StringField(
+        _('email'),
+        validators=[],
+        default='',
+        description=_('email'),
+        render_kw={
+            'placeholder': _('email'),
+            'rel': 'tooltip',
+            'title': _('email'),
         }
     )
     role_id = SelectField(
@@ -197,11 +313,11 @@ class UserEditForm(FlaskForm):
     )
     create_time = DateField(
         _('create time'),
-        validators=[DataRequired()],
+        validators=[],
         description=_('create time')
     )
     update_time = DateField(
         _('update time'),
-        validators=[DataRequired()],
+        validators=[],
         description=_('update time')
     )

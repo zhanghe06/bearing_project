@@ -77,12 +77,12 @@
                         </label>
                     </th>
 
-                    <th>{{ _('customer company') }}</th>
+                    <th>{{ _('customer company') }}<br/>{{ _('address') }}</th>
                     <th>{{ _('contact name') }}</th>
                     <th>{{ _('salutation') }}</th>
                     <th>{{ _('mobile') }}</th>
                     <th>{{ _('tel') }}<br/>{{ _('fax') }}</th>
-                    <th>{{ _('address') }}</th>
+                    <th>{{ _('email') }}</th>
                     <th>{{ _('default status') }}</th>
                     <th>{{ _('operation') }}</th>
                 </tr>
@@ -97,12 +97,12 @@
                             </label>
                         </td>
 
-                        <td style="width: 10em;">{{ info.cid | customer_company_name }}</td>
+                        <td style="width: 18em;">{{ info.cid | customer_company_name }}<br/>{{ info.address}}</td>
                         <td style="width: 4em;">{{ info.name}}</td>
                         <td style="width: 4em;">{{ info.salutation}}</td>
                         <td style="width: 4em;">{{ info.mobile}}</td>
                         <td style="width: 11em;">{{ info.tel}}<br/>{{ info.fax}}</td>
-                        <td style="width: 18em;">{{ info.address}}</td>
+                        <td style="width: 11em;">{{ info.email}}</td>
                         <td style="width: 4em;">{{ info.status_default | status_default}}</td>
                         <td style="width: 7em;">
                             <!-- Split button -->

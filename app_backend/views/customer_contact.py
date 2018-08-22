@@ -86,6 +86,7 @@ bp_customer_contact = Blueprint('customer_contact', __name__, url_prefix='/custo
 # 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 PER_PAGE_BACKEND = app.config.get('PER_PAGE_BACKEND', 20)
+PER_PAGE_BACKEND_MODAL = app.config.get('PER_PAGE_BACKEND_MODAL', 10)
 AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
@@ -213,6 +214,7 @@ def edit(customer_id):
             customer_contact_item_form.mobile = customer_contact_item.mobile
             customer_contact_item_form.tel = customer_contact_item.tel
             customer_contact_item_form.fax = customer_contact_item.fax
+            customer_contact_item_form.email = customer_contact_item.email
             customer_contact_item_form.address = customer_contact_item.address
             customer_contact_item_form.note = customer_contact_item.note
             customer_contact_item_form.status_default = customer_contact_item.status_default
@@ -294,6 +296,7 @@ def edit(customer_id):
                 'mobile': customer_contact_item.form.mobile.data,
                 'tel': customer_contact_item.form.tel.data,
                 'fax': customer_contact_item.form.fax.data,
+                'email': customer_contact_item.form.email.data,
                 'address': customer_contact_item.form.address.data,
                 'note': customer_contact_item.form.note.data,
                 'status_default': customer_contact_item.form.status_default.data,
@@ -324,6 +327,51 @@ def edit(customer_id):
                 form=form,
                 **document_info
             )
+
+
+@bp_customer_contact.route('/search.html', methods=['GET', 'POST'])
+@login_required
+@permission_customer_section_search.require(http_exception=403)
+def search():
+    """
+    客户联系方式搜索
+    :return:
+    """
+    template_name = 'customer/contact/search_modal.html'
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('Customer Contact Search')
+
+    # 搜索条件
+    form = CustomerContactSearchForm(request.form)
+    # app.logger.info('')
+
+    search_condition = [
+        CustomerContact.status_delete == STATUS_DEL_NO,
+    ]
+    if request.method == 'POST':
+        # 表单校验失败
+        if not form.validate_on_submit():
+            flash(_('Search Failure'), 'danger')
+            flash(form.errors, 'danger')
+            # 单独处理csrf_token
+            if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
+                map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
+        else:
+            if form.cid.data:
+                search_condition.append(CustomerContact.cid == form.cid.data)
+            if form.contact_name.data:
+                search_condition.append(CustomerContact.name.like('%%%s%%' % form.contact_name.data))
+    # 翻页数据
+    pagination = get_customer_contact_pagination(form.page.data, PER_PAGE_BACKEND_MODAL, *search_condition)
+
+    # 渲染模板
+    return render_template(
+        template_name,
+        form=form,
+        pagination=pagination,
+        **document_info
+    )
 
 
 @bp_customer_contact.route('/ajax/del', methods=['GET', 'POST'])

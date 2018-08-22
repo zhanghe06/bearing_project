@@ -92,7 +92,7 @@
                         <td>{{ info.company_type | type_company }}</td>
                         <td>{{ info.owner_uid | user_name }}</td>
                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}<br/>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                        <td>
+                        <td style="min-width: 8em;">
                             <!-- Split button -->
                             <div class="btn-group btn-group-sm">
                                 <a class="btn btn-default" href="{{ url_for('customer.edit', customer_id=info.id, next=request.path) }}">

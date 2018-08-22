@@ -106,7 +106,7 @@ class QuotationSearchForm(FlaskForm):
     start_create_time = DateField(
         _('start time'),
         validators=[],
-        default=datetime.utcnow() - timedelta(days=30),
+        default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -118,7 +118,7 @@ class QuotationSearchForm(FlaskForm):
     end_create_time = DateField(
         _('end time'),
         validators=[],
-        default=datetime.utcnow(),
+        default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),
@@ -333,18 +333,27 @@ class QuotationAddForm(FlaskForm):
             'title': _('company name'),
         }
     )
-    contact_id = SelectField(
-        _('customer contact'),
+    contact_id = IntegerField(
+        _('customer contact id'),
         validators=[
-            # InputRequired(),
+            DataRequired(),
         ],
-        default=default_choice_option_int,
         # default=0,
-        coerce=int,
-        description=_('customer contact'),
+        description=_('customer contact id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer contact'),
+            'title': _('customer contact id'),
+            'type': 'hidden',
+        }
+    )
+    contact_name = StringField(
+        _('customer contact name'),
+        validators=[],
+        description=_('customer contact name'),
+        render_kw={
+            'placeholder': _('customer contact name'),
+            'rel': 'tooltip',
+            'title': _('customer contact name'),
         }
     )
     status_order = SelectField(
@@ -385,6 +394,7 @@ class QuotationAddForm(FlaskForm):
         FormField(QuotationItemAddForm),
         label='报价明细',
         min_entries=1,
+        max_entries=12,
     )
 
 
@@ -423,18 +433,27 @@ class QuotationEditForm(FlaskForm):
             'title': _('company name'),
         }
     )
-    contact_id = SelectField(
-        _('customer contact'),
+    contact_id = IntegerField(
+        _('customer contact id'),
         validators=[
-            # InputRequired(),
+            DataRequired(),
         ],
-        default=default_choice_option_int,
         # default=0,
-        coerce=int,
-        description=_('customer contact'),
+        description=_('customer contact id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer contact'),
+            'title': _('customer contact id'),
+            'type': 'hidden',
+        }
+    )
+    contact_name = StringField(
+        _('customer contact name'),
+        validators=[],
+        description=_('customer contact name'),
+        render_kw={
+            'placeholder': _('customer contact name'),
+            'rel': 'tooltip',
+            'title': _('customer contact name'),
         }
     )
     type_tax = SelectBS(
@@ -486,4 +505,5 @@ class QuotationEditForm(FlaskForm):
         FormField(QuotationItemEditForm),
         label='报价明细',
         min_entries=1,
+        max_entries=12,
     )

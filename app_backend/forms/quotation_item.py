@@ -96,7 +96,7 @@ class QuotationItemSearchForm(FlaskForm):
     start_create_time = DateField(
         _('start time'),
         validators=[],
-        default=datetime.utcnow() - timedelta(days=30),
+        default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -108,7 +108,7 @@ class QuotationItemSearchForm(FlaskForm):
     end_create_time = DateField(
         _('end time'),
         validators=[],
-        default=datetime.utcnow(),
+        default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),

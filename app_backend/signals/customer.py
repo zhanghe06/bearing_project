@@ -14,10 +14,10 @@ from blinker import Namespace
 
 from app_backend import app
 
-# from app_backend.api.customer import
-from app_backend.api.customer_invoice import edit_customer_invoice
+from app_backend.api.customer_invoice import get_customer_invoice_row_by_id, edit_customer_invoice
 from app_backend.api.customer_contact import get_customer_contact_rows, edit_customer_contact
-
+from app_backend.api.quotation import get_quotation_rows, edit_quotation
+from app_backend.api.quotation_item import get_quotation_item_rows, edit_quotation_item
 
 _signal = Namespace()
 
@@ -32,6 +32,7 @@ def customer_status_delete(sender, **extra):
     状态跟踪 - 删除状态
         1、开票资料删除状态同步更新
         2、联系方式删除状态同步更新
+        3、客户报价删除状态同步更新
     :param sender:
     :param extra:
     :return:
@@ -45,12 +46,14 @@ def customer_status_delete(sender, **extra):
 
     result = True
     # 1、开票资料删除状态同步更新
-    customer_invoice_data = {
-        'status_delete': status_delete,
-        'delete_time': current_time,
-        'update_time': current_time,
-    }
-    result = result and edit_customer_invoice(customer_id, customer_invoice_data)
+    customer_invoice_info = get_customer_invoice_row_by_id(customer_id)
+    if customer_invoice_info:
+        customer_invoice_data = {
+            'status_delete': status_delete,
+            'delete_time': current_time,
+            'update_time': current_time,
+        }
+        result = result and edit_customer_invoice(customer_id, customer_invoice_data)
 
     # 2、联系方式删除状态同步更新
     customer_contact_items = get_customer_contact_rows(cid=customer_id)
@@ -62,4 +65,27 @@ def customer_status_delete(sender, **extra):
             'update_time': current_time,
         }
         result = result and edit_customer_contact(customer_contact_item_id, customer_contact_item_data)
+
+    # 3、客户报价删除状态同步更新
+    # 报价总表
+    quotation_items = get_quotation_rows(cid=customer_id)
+    for quotation_item in quotation_items:
+        quotation_item_id = quotation_item.id
+        quotation_item_data = {
+            'status_delete': status_delete,
+            'delete_time': current_time,
+            'update_time': current_time,
+        }
+        result = result and edit_quotation(quotation_item_id, quotation_item_data)
+        # 报价明细
+        quotation_item_items = get_quotation_item_rows(quotation_id=quotation_item_id)
+        for quotation_item_item in quotation_item_items:
+            quotation_item_item_id = quotation_item_item.id
+            quotation_item_item_data = {
+                'status_delete': status_delete,
+                'delete_time': current_time,
+                'update_time': current_time,
+            }
+            result = result and edit_quotation_item(quotation_item_item_id, quotation_item_item_data)
+
     return result

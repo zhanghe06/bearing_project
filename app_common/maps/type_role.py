@@ -29,3 +29,5 @@ TYPE_ROLE_DICT = {
     4: _('Storekeeper'),  # 库管
     5: _('Finance'),  # 财务
 }
+
+TYPE_ROLE_CHOICES = TYPE_ROLE_DICT.items()

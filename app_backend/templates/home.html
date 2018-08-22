@@ -22,11 +22,13 @@
 
 {% block extra_js %}
     <script>
-        // 当前时间同步刷新
-        var update_time;
-        (update_time = function () {
-            $('#current_time').html(moment().format('dddd, YYYY-MM-DD, a hh:mm:ss'))
-        })()
-        setInterval(update_time, 1000)
+        $(function () {
+            // 当前时间同步刷新
+            var update_time;
+            (update_time = function () {
+                $('#current_time').html(moment().format('dddd, YYYY-MM-DD, a hh:mm:ss'))
+            })()
+            setInterval(update_time, 1000)
+        })
     </script>
 {% endblock %}

@@ -93,7 +93,7 @@ def before_request():
     """
     当前用户信息
     """
-    lang = request.accept_languages.best_match(['en', 'zh'])
+    lang = request.accept_languages.best_match(['en', 'zh'], default='zh')
     g.lang = lang
     g.moment_locale = moment_locale_map.get(lang)
     g.user_agent = user_agents.parse(str(request.user_agent))
