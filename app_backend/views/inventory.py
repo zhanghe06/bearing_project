@@ -59,7 +59,7 @@ from app_backend.permissions import (
     permission_inventory_section_export,
     permission_inventory_section_stats,
     permission_role_stock_keeper,
-)
+    permission_role_administrator)
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -127,6 +127,28 @@ def lists(page=1):
                 file_type='csv',
                 file_name='%s.csv' % _('inventory lists')
             )
+        # 批量删除
+        if form.op.data == 2:
+            inventory_ids = request.form.getlist('inventory_id')
+            # 检查删除权限
+            if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
+                ext_msg = _('Permission Denied')
+                flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+            else:
+                result_total = True
+                for inventory_id in inventory_ids:
+                    current_time = datetime.utcnow()
+                    inventory_data = {
+                        'status_delete': STATUS_DEL_OK,
+                        'delete_time': current_time,
+                        'update_time': current_time,
+                    }
+                    result = edit_inventory(inventory_id, inventory_data)
+                    result_total = result_total and result
+                if result_total:
+                    flash(_('Del Success'), 'success')
+                else:
+                    flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_inventory_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
@@ -318,7 +340,7 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
-    if not permission_role_stock_keeper.can():
+    if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
         ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
@@ -333,7 +355,7 @@ def ajax_delete():
     if inventory_info.status_delete == STATUS_DEL_OK:
         ext_msg = _('Already deleted')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_success_msg)
+        return jsonify(ajax_failure_msg)
 
     current_time = datetime.utcnow()
     inventory_data = {

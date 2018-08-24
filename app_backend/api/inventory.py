@@ -80,6 +80,16 @@ def delete_inventory(inventory_id):
     return db_instance.delete(Inventory, inventory_id)
 
 
+def count_inventory(*args, **kwargs):
+    """
+    计数
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    return db_instance.count(Inventory, *args, **kwargs)
+
+
 def get_inventory_pagination(page=1, per_page=10, *args, **kwargs):
     """
     获取列表（分页）

@@ -43,6 +43,8 @@ from app_backend.api.production import (
     get_production_rows,
     get_distinct_production_brand,
 )
+from app_backend.api.quotation_item import count_quotation_item
+from app_backend.api.production_sensitive import count_production_sensitive
 from app_backend.forms.production import (
     ProductionSearchForm,
     ProductionAddForm,
@@ -129,6 +131,44 @@ def lists():
                 file_type='csv',
                 file_name='%s.csv' % _('production lists')
             )
+        # 批量删除
+        if form.op.data == 2:
+            production_ids = request.form.getlist('production_id')
+            # 检查删除权限
+            if not permission_role_administrator.can():
+                ext_msg = _('Permission Denied')
+                flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+            else:
+                permitted = True
+                for production_id in production_ids:
+                    # 检查是否正在使用
+                    # 报价、订单、敏感型号
+                    if count_quotation_item(**{'production_id': production_id, 'status_delete': STATUS_DEL_NO}):
+                        ext_msg = _('Currently In Use')
+                        flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                        permitted = False
+                        break
+                    if count_production_sensitive(**{'production_id': production_id, 'status_delete': STATUS_DEL_NO}):
+                        ext_msg = _('Currently In Use')
+                        flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                        permitted = False
+                        break
+                if permitted:
+                    result_total = True
+                    for production_id in production_ids:
+                        current_time = datetime.utcnow()
+                        production_data = {
+                            'status_delete': STATUS_DEL_OK,
+                            'delete_time': current_time,
+                            'update_time': current_time,
+                        }
+                        result = edit_production(production_id, production_data)
+                        result_total = result_total and result
+                    if result_total:
+                        flash(_('Del Success'), 'success')
+                    else:
+                        flash(_('Del Failure'), 'danger')
+
     # 翻页数据
     pagination = get_production_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
@@ -386,7 +426,17 @@ def ajax_delete():
     if production_info.status_delete == STATUS_DEL_OK:
         ext_msg = _('Already deleted')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_success_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查是否正在使用
+    # 报价、订单、敏感型号
+    if count_quotation_item(**{'production_id': production_id, 'status_delete': STATUS_DEL_NO}):
+        ext_msg = _('Currently In Use')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    if count_production_sensitive(**{'production_id': production_id, 'status_delete': STATUS_DEL_NO}):
+        ext_msg = _('Currently In Use')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
 
     current_time = datetime.utcnow()
     production_data = {

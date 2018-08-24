@@ -82,6 +82,16 @@ def delete_rack(rack_id):
     return db_instance.delete(Rack, rack_id)
 
 
+def count_rack(*args, **kwargs):
+    """
+    计数
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    return db_instance.count(Rack, *args, **kwargs)
+
+
 def get_rack_pagination(page=1, per_page=10, *args, **kwargs):
     """
     获取列表（分页）

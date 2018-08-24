@@ -161,3 +161,7 @@ WEIBO_OAUTH = {
     # since weibo's response is a shit, we need to force parse the content
     'content_type': 'application/json',
 }
+
+
+# 业务配置
+QUOTATION_PREFIX = 'QT'

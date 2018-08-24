@@ -124,6 +124,7 @@ from app_backend.views.purchase import bp_purchase
 from app_backend.views.delivery import bp_delivery
 from app_backend.views.system import bp_system
 from app_backend.views.socket_io import bp_socket_io
+from app_backend.views.price import bp_price
 
 # 注册蓝图
 app.register_blueprint(bp_captcha)
@@ -148,6 +149,7 @@ app.register_blueprint(bp_purchase)
 app.register_blueprint(bp_delivery)
 app.register_blueprint(bp_system)
 app.register_blueprint(bp_socket_io)
+app.register_blueprint(bp_price)
 
 # 导入自定义过滤器
 from app_backend import filters

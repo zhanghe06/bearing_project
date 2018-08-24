@@ -29,6 +29,7 @@ from flask_login import login_required
 
 from app_backend import app
 from app_backend import excel
+from app_backend.api.inventory import count_inventory
 from app_backend.api.warehouse import (
     get_warehouse_choices,
 )
@@ -57,7 +58,7 @@ from app_backend.permissions import (
     permission_rack_section_export,
     permission_rack_section_stats,
     permission_role_stock_keeper,
-)
+    permission_role_administrator)
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -124,6 +125,38 @@ def lists(page=1):
                 file_type='csv',
                 file_name='%s.csv' % _('rack lists')
             )
+        # 批量删除
+        if form.op.data == 2:
+            rack_ids = request.form.getlist('rack_id')
+            # 检查删除权限
+            if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
+                ext_msg = _('Permission Denied')
+                flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+            else:
+                permitted = True
+                for rack_id in rack_ids:
+                    # 检查是否正在使用
+                    # 库存
+                    if count_inventory(**{'rack_id': rack_id, 'status_delete': STATUS_DEL_NO}):
+                        ext_msg = _('Currently In Use')
+                        flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                        permitted = False
+                        break
+                if permitted:
+                    result_total = True
+                    for rack_id in rack_ids:
+                        current_time = datetime.utcnow()
+                        rack_data = {
+                            'status_delete': STATUS_DEL_OK,
+                            'delete_time': current_time,
+                            'update_time': current_time,
+                        }
+                        result = edit_rack(rack_id, rack_data)
+                        result_total = result_total and result
+                    if result_total:
+                        flash(_('Del Success'), 'success')
+                    else:
+                        flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_rack_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
@@ -315,7 +348,7 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
-    if not permission_role_stock_keeper.can():
+    if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
         ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
@@ -330,7 +363,13 @@ def ajax_delete():
     if rack_info.status_delete == STATUS_DEL_OK:
         ext_msg = _('Already deleted')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_success_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查是否正在使用
+    # 库存
+    if count_inventory(**{'rack_id': rack_id, 'status_delete': STATUS_DEL_NO}):
+        ext_msg = _('Currently In Use')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
 
     current_time = datetime.utcnow()
     rack_data = {

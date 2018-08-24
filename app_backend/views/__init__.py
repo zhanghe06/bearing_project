@@ -104,6 +104,9 @@ def before_request():
     # else:
     #     session['status_login'] = False
 
+    # 加载基本配置
+    g.QUOTATION_PREFIX = app.config.get('QUOTATION_PREFIX', '')
+
 
 @identity_loaded.connect_via(app)
 def on_identity_loaded(sender, identity):
@@ -154,6 +157,8 @@ def on_identity_loaded(sender, identity):
 
     # 角色 - 销售
     if current_user.role_id == TYPE_ROLE_SALES:
+        # 赋予整体角色权限
+        identity.provides.add(RoleNeed('销售'))
         # 版块基本操作权限（销售）
         # （创建、查询、统计）
         # 客户-----------------------------------------------------------------------
@@ -204,6 +209,8 @@ def on_identity_loaded(sender, identity):
 
     # 角色 - 经理
     if current_user.role_id == TYPE_ROLE_MANAGER:
+        # 赋予整体角色权限
+        identity.provides.add(RoleNeed('经理'))
         # 版块基本操作权限（经理）
         # （创建、查询、统计、导出）
         # 客户-----------------------------------------------------------------------
@@ -297,6 +304,8 @@ def on_identity_loaded(sender, identity):
 
     # 角色 - 库管
     if current_user.role_id == TYPE_ROLE_STOREKEEPER:
+        # 赋予整体角色权限
+        identity.provides.add(RoleNeed('库管'))
         # 库存-----------------------------------------------------------------------
         # 库存创建
         identity.provides.add(SectionActionNeed('inventory', 'add'))

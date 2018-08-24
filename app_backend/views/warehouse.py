@@ -41,6 +41,8 @@ from app_backend.api.warehouse import (
     get_warehouse_rows,
     # get_distinct_brand,
 )
+from app_backend.api.inventory import count_inventory
+from app_backend.api.rack import count_rack
 from app_backend.forms.warehouse import (
     WarehouseSearchForm,
     WarehouseAddForm,
@@ -53,7 +55,7 @@ from app_backend.permissions import (
     permission_warehouse_section_export,
     permission_warehouse_section_stats,
     permission_role_stock_keeper,
-)
+    permission_role_administrator)
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -120,6 +122,44 @@ def lists(page=1):
                 file_type='csv',
                 file_name='%s.csv' % _('warehouse lists')
             )
+        # 批量删除
+        if form.op.data == 2:
+            warehouse_ids = request.form.getlist('warehouse_id')
+            # 检查删除权限
+            if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
+                ext_msg = _('Permission Denied')
+                flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+            else:
+                permitted = True
+                for warehouse_id in warehouse_ids:
+                    # 检查是否正在使用
+                    # 库存、货架
+                    if count_inventory(**{'warehouse_id': warehouse_id, 'status_delete': STATUS_DEL_NO}):
+                        ext_msg = _('Currently In Use')
+                        flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                        permitted = False
+                        break
+                    if count_rack(**{'warehouse_id': warehouse_id, 'status_delete': STATUS_DEL_NO}):
+                        ext_msg = _('Currently In Use')
+                        flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                        permitted = False
+                        break
+                if permitted:
+                    result_total = True
+                    for warehouse_id in warehouse_ids:
+                        current_time = datetime.utcnow()
+                        warehouse_data = {
+                            'status_delete': STATUS_DEL_OK,
+                            'delete_time': current_time,
+                            'update_time': current_time,
+                        }
+                        result = edit_warehouse(warehouse_id, warehouse_data)
+                        result_total = result_total and result
+                    if result_total:
+                        flash(_('Del Success'), 'success')
+                    else:
+                        flash(_('Del Failure'), 'danger')
+
     # 翻页数据
     pagination = get_warehouse_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
@@ -320,7 +360,7 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
-    if not permission_role_stock_keeper.can():
+    if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
         ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
@@ -335,7 +375,17 @@ def ajax_delete():
     if warehouse_info.status_delete == STATUS_DEL_OK:
         ext_msg = _('Already deleted')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_success_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查是否正在使用
+    # 库存、货架
+    if count_inventory(**{'warehouse_id': warehouse_id, 'status_delete': STATUS_DEL_NO}):
+        ext_msg = _('Currently In Use')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    if count_rack(**{'warehouse_id': warehouse_id, 'status_delete': STATUS_DEL_NO}):
+        ext_msg = _('Currently In Use')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
 
     current_time = datetime.utcnow()
     warehouse_data = {

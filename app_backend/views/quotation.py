@@ -22,7 +22,7 @@ from flask import (
     abort,
     jsonify,
     Blueprint,
-)
+    g)
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
 from flask_weasyprint import render_pdf, HTML, CSS
@@ -143,6 +143,41 @@ def lists(page=1):
                 file_type='csv',
                 file_name='%s.csv' % _('quotation lists')
             )
+        # 批量删除
+        if form.op.data == 2:
+            quotation_ids = request.form.getlist('quotation_id')
+            # 检查删除权限
+            permitted = True
+            for quotation_id in quotation_ids:
+                quotation_item_del_permission = QuotationItemDelPermission(quotation_id)
+                if not quotation_item_del_permission.can():
+                    ext_msg = _('Permission Denied')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+            if permitted:
+                result_total = True
+                for quotation_id in quotation_ids:
+                    current_time = datetime.utcnow()
+                    quotation_data = {
+                        'status_delete': STATUS_DEL_OK,
+                        'delete_time': current_time,
+                        'update_time': current_time,
+                    }
+                    result = edit_quotation(quotation_id, quotation_data)
+                    if result:
+                        # 发送删除信号
+                        signal_data = {
+                            'quotation_id': quotation_id,
+                            'status_delete': STATUS_DEL_OK,
+                            'current_time': current_time,
+                        }
+                        signal_quotation_status_delete.send(app, **signal_data)
+                    result_total = result_total and result
+                if result_total:
+                    flash(_('Del Success'), 'success')
+                else:
+                    flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_quotation_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
@@ -538,7 +573,7 @@ def preview(quotation_id):
         abort(410)
 
     quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
-    quotation_code = 'XABJ%s' % time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S')
+    quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
     customer_info = get_customer_row_by_id(quotation_info.cid)
@@ -588,7 +623,7 @@ def pdf(quotation_id):
         abort(410)
 
     quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
-    quotation_code = 'XABJ%s' % time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S')
+    quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
     customer_info = get_customer_row_by_id(quotation_info.cid)

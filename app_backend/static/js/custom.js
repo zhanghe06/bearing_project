@@ -97,10 +97,22 @@ $(function () {
  * 通知类型自动关闭（alert-success,alert-warning,alert-danger）
  * 消息类型保持不动（alert-info）
  */
-$('.alert-success,.alert-warning,.alert-danger').fadeTo(3500, 500).slideUp(500, function () {
+$('.alert-success,.alert-warning,.alert-danger').fadeTo(3500, 0.8).slideUp(500, function () {
     $(this).slideUp(500)
 })
 
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
   $('.selectpicker').selectpicker('mobile');
 }
+
+/*按钮虚框移除*/
+$('button').on('click', function () {
+    $(this).blur();
+})
+
+/*数据行超链接阻止冒泡*/
+$(function() {
+    $("tr.item>td a").click(function(event) {
+        event.stopPropagation();
+    });
+});

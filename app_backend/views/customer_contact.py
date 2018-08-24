@@ -414,7 +414,7 @@ def ajax_delete():
     if customer_info.status_delete == STATUS_DEL_OK:
         ext_msg = _('Already deleted')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_success_msg)
+        return jsonify(ajax_failure_msg)
 
     current_time = datetime.utcnow()
     customer_data = {

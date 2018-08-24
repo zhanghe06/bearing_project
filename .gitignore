@@ -38,3 +38,6 @@ docker/Nginx/logs/
 config/*
 !config/__init__.py
 !config/default.py
+
+env_*.sh
+!env_default.sh

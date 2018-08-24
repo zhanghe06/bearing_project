@@ -4,73 +4,123 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
-            <li><a href="javascript:void(0);" onclick="$('#menu-inventory').trigger('click');">{{ _('inventory management') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-inventory').trigger('click')">{{ _('inventory management') }}</a></li>
             <li class="active">{{ _('inventory lists') }}</li>
         </ol>
+        <form method="post">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSearch">
+                    <h4 class="panel-title panel-title-sm">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                           aria-expanded="true" aria-controls="collapseSearch">
+                            {{ _('Search toolbar') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="headingSearch">
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            {{ form.csrf_token }}
 
-        <form class="form-inline" id="search_form" method="post">
-            {{ form.csrf_token }}
-            <div class="form-group{% if form.warehouse_id.errors %} has-error{% endif %}">
-                {{ form.warehouse_id.label() }}
-                {{ form.warehouse_id(class="form-control") }}
+                            <div class="form-group form-group-sm{% if form.warehouse_id.errors %} has-error{% endif %}">
+                                {{ form.warehouse_id.label() }}
+                                {{ form.warehouse_id(class="form-control") }}
+                            </div>
+                            <div class="form-group form-group-sm{% if form.rack_id.errors %} has-error{% endif %}">
+                                {{ form.rack_id.label() }}
+                                {{ form.rack_id(class="form-control") }}
+                            </div>
+
+                            <button type="submit" class="btn-sm btn-primary" name="op"
+                                    value="0">{{ _('Search') }}</button>
+                            <button type="submit" class="btn-sm btn-primary" name="op"
+                                    value="1">{{ _('Export') }}</button>
+                            <button type="submit" class="btn-sm btn-danger delete_all" name="op"
+                                    value="2">{{ _('Delete') }}</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group{% if form.rack_id.errors %} has-error{% endif %}">
-                {{ form.rack_id.label() }}
-                {{ form.rack_id(class="form-control") }}
-            </div>
 
-            <button type="submit" class="btn btn-primary" name="op" value="0">{{ _('Search') }}</button>
-            <button type="submit" class="btn btn-primary" name="op" value="1">{{ _('Export') }}</button>
-        </form>
-
-        <hr/>
-
-        <div class="table-responsive">
-            {#         <table class="table table-striped">#}
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>编号</th>
-                    <th>产品编号</th>
-                    <th>产品品牌</th>
-                    <th>产品型号</th>
-                    <th>仓库名称</th>
-                    <th>货架名称</th>
-                    <th>库存数量</th>
-                    <th>库存备注</th>
-                    <th>创建时间</th>
-                    <th>更新时间</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for info in pagination.items %}
-                    <tr class="text-muted">
-                        <td>{{ info.id }}</td>
-                        <td>{{ info.production_id }}</td>
-                        <td>{{ info.production_id | production_brand }}</td>
-                        <td><a href="{{ url_for('production.info', production_id=info.production_id) }}" rel="tooltip"
-                               title="{{ _('Click details') }}">{{ info.production_id | production_model }}</a></td>
-                        <td>{{ info.warehouse_id | warehouse_name }}</td>
-                        <td>{{ info.rack_id | rack_name }}</td>
-                        <td class="text-right">{{ info.stock_qty }}</td>
-                        <td>{{ info.note | default('-', True) }}</td>
-                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                        <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                        <td>
-                            <a href="{{ url_for('inventory.edit', inventory_id=info.id, next=request.path) }}"
-                               rel="tooltip" title="{{ _('Edit') }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="javascript:void(0);" onclick="inventory_delete({{ info.id }});" rel="tooltip"
-                               title="{{ _('Delete') }}"><span class="glyphicon glyphicon-trash"></span></a>
-                        </td>
+            <div class="table-responsive">
+                {#         <table class="table table-striped">#}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <label>
+                                <input class="select_all" name="inventory_ids" title="{{ _('Select All') }}"
+                                       rel="tooltip" type="checkbox" value=""/>
+                                {{ _('Select All') }}
+                            </label>
+                        </th>
+                        <th>{{ _('production id') }}</th>
+                        <th>{{ _('production brand') }}</th>
+                        <th>{{ _('production model') }}</th>
+                        <th>{{ _('warehouse name') }}</th>
+                        <th>{{ _('rack name') }}</th>
+                        <th>{{ _('stock quantity') }}</th>
+                        <th>{{ _('inventory note') }}</th>
+                        <th>{{ _('create time') }}</th>
+                        <th>{{ _('update time') }}</th>
+                        <th>{{ _('operation') }}</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            {# 翻页 #}
-            {% from "macros.html" import render_pagination %}
-            {{ render_pagination(pagination, 'inventory.lists') }}
-        </div>
+                    </thead>
+                    <tbody>
+                    {% for info in pagination.items %}
+                        <tr class="text-muted item">
+                            <td>
+                                <label>
+                                    <input class="select_item" name="inventory_id" title="{{ _('Select') }}"
+                                           rel="tooltip" type="checkbox" value="{{ info.id }}"/>
+                                </label>
+                            </td>
+                            <td>{{ info.production_id }}</td>
+                            <td>{{ info.production_id | production_brand }}</td>
+                            <td><a href="{{ url_for('production.info', production_id=info.production_id) }}"
+                                   rel="tooltip"
+                                   title="{{ _('Click details') }}">{{ info.production_id | production_model }}</a></td>
+                            <td>{{ info.warehouse_id | warehouse_name }}</td>
+                            <td>{{ info.rack_id | rack_name }}</td>
+                            <td class="text-right">{{ info.stock_qty }}</td>
+                            <td>{{ info.note | default('-', True) }}</td>
+                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>
+                                <!-- Split button -->
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-default"
+                                       href="{{ url_for('inventory.edit', inventory_id=info.id, next=request.path) }}">
+                                        <span class="glyphicon glyphicon-pencil"></span> {{ _('Edit') }}
+                                    </a>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="javascript:void(0);" onclick="inventory_delete({{ info.id }})">
+                                                <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {# 翻页 #}
+                {% from "macros.html" import render_pagination_post %}
+                {{ render_pagination_post(pagination, 'inventory.lists') }}
+            </div>
+        </form>
     </div>
 
 {% endblock %}
@@ -78,31 +128,31 @@
 {% block extra_js %}
     <script>
         // 库存删除
-        function inventory_delete(inventory_id) {
-            if (confirm('删除数据不能恢复，是否确认删除?')) {
+        function inventory_delete (inventory_id) {
+            if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
                 $.getJSON('{{ url_for('inventory.ajax_delete') }}',
                     {
                         inventory_id: inventory_id
                     }, function (data) {
                         if (data.result === true) {
-                            alert(data.msg);
+                            alert(data.msg)
                         } else {
-                            alert(data.msg);
+                            alert(data.msg)
                         }
-                        window.location.reload();
-                    });
-                return false;
+                        window.location.reload()
+                    })
+                return false
             }
         }
 
-        $(function(){
+        $(function () {
             //搜索表单
 
             //级联选择
             $('#warehouse_id').change(function () {
-                $('#rack_id').get(0).selectedIndex=0;
-                $('#search_form').submit();
-            });
-        });
+                $('#rack_id').get(0).selectedIndex = 0
+                $('#search_form').submit()
+            })
+        })
     </script>
 {% endblock %}

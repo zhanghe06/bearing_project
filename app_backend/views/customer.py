@@ -25,7 +25,7 @@ from flask import (
     Blueprint,
 )
 from flask_babel import gettext as _
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from app_backend import (
     app,
@@ -40,9 +40,11 @@ from app_backend.api.customer import (
     customer_middleman_stats,
     customer_end_user_stats,
 )
+from app_backend.api.production_sensitive import count_production_sensitive
 from app_backend.api.user import (
     get_user_rows,
     get_user_choices)
+from app_backend.api.quotation import count_quotation
 from app_backend.forms.customer import (
     CustomerSearchForm,
     CustomerAddForm,
@@ -143,6 +145,55 @@ def lists(page=1):
                 file_type='csv',
                 file_name='%s.csv' % _('customer lists')
             )
+        # 批量删除
+        if form.op.data == 2:
+            customer_ids = request.form.getlist('customer_id')
+            # 检查删除权限
+            permitted = True
+            for customer_id in customer_ids:
+                # 明细权限
+                customer_item_del_permission = CustomerItemDelPermission(customer_id)
+                if not customer_item_del_permission.can():
+                    ext_msg = _('Permission Denied')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+                # 检查是否正在使用
+                # 报价、订单、敏感型号
+                if count_quotation(**{'cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+                if count_production_sensitive(**{'cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+            if permitted:
+                result_total = True
+                for customer_id in customer_ids:
+                    current_time = datetime.utcnow()
+                    customer_data = {
+                        'status_delete': STATUS_DEL_OK,
+                        'delete_time': current_time,
+                        'update_time': current_time,
+                    }
+                    result = edit_customer(customer_id, customer_data)
+                    if result:
+                        # 发送删除信号
+                        signal_data = {
+                            'customer_id': customer_id,
+                            'status_delete': STATUS_DEL_OK,
+                            'current_time': current_time,
+                        }
+                        signal_customer_status_delete.send(app, **signal_data)
+                    result_total = result_total and result
+                if result_total:
+                    flash(_('Del Success'), 'success')
+                else:
+                    flash(_('Del Failure'), 'danger')
+
     # 翻页数据
     pagination = get_customer_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
@@ -245,6 +296,7 @@ def add():
 
     form.company_type.choices = TYPE_COMPANY_CHOICES
     form.owner_uid.choices = get_user_choices()
+    form.owner_uid.data = current_user.id
 
     # 进入创建页面
     if request.method == 'GET':
@@ -427,7 +479,17 @@ def ajax_delete():
     if customer_info.status_delete == STATUS_DEL_OK:
         ext_msg = _('Already deleted')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_success_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查是否正在使用
+    # 报价、订单、敏感型号
+    if count_quotation(**{'cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+        ext_msg = _('Currently In Use')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    if count_production_sensitive(**{'cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+        ext_msg = _('Currently In Use')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
 
     current_time = datetime.utcnow()
     customer_data = {

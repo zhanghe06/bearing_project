@@ -175,6 +175,22 @@
             })
         })
 
+        /*批量删除*/
+        $('.delete_all').on('click', function () {
+            if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
+                var select_item_checked = false
+                $('.select_item').each(function () {
+                    select_item_checked = select_item_checked || $(this).prop('checked')
+                })
+                if (!select_item_checked) {
+                    alert('{{ _('Please select what you want to delete') }}');
+                }
+            }else {
+                // 取消删除, 阻止冒泡, 防止提交
+                return false
+            }
+        })
+
     })
 </script>
 

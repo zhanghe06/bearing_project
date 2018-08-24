@@ -29,6 +29,7 @@ from flask_login import login_required
 
 from app_backend import app
 from app_backend import excel
+from app_backend.api.quotation import count_quotation
 from app_backend.api.user import (
     get_user_rows,
     get_user_pagination,
@@ -55,7 +56,7 @@ from app_backend.permissions import (
     UserItemGetPermission,
     UserItemEditPermission,
     UserItemDelPermission,
-)
+    permission_role_administrator)
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -138,6 +139,38 @@ def lists(page=1):
                 file_type='csv',
                 file_name='%s.csv' % _('user lists')
             )
+        # 批量删除
+        if form.op.data == 2:
+            user_ids = request.form.getlist('user_id')
+            # 检查删除权限
+            if not permission_role_administrator.can():
+                ext_msg = _('Permission Denied')
+                flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+            else:
+                permitted = True
+                for user_id in user_ids:
+                    # 检查是否正在使用
+                    # 报价、订单
+                    if count_quotation(**{'uid': user_id, 'status_delete': STATUS_DEL_NO}):
+                        ext_msg = _('Currently In Use')
+                        flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                        permitted = False
+                        break
+                if permitted:
+                    result_total = True
+                    for user_id in user_ids:
+                        current_time = datetime.utcnow()
+                        user_data = {
+                            'status_delete': STATUS_DEL_OK,
+                            'delete_time': current_time,
+                            'update_time': current_time,
+                        }
+                        result = edit_user(user_id, user_data)
+                        result_total = result_total and result
+                    if result_total:
+                        flash(_('Del Success'), 'success')
+                    else:
+                        flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_user_pagination(page, PER_PAGE_BACKEND, *search_condition)
 
@@ -427,8 +460,7 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
-    user_item_del_permission = UserItemDelPermission(user_id)
-    if not user_item_del_permission.can():
+    if not permission_role_administrator.can():
         ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
@@ -443,7 +475,13 @@ def ajax_delete():
     if user_info.status_delete == STATUS_DEL_OK:
         ext_msg = _('Already deleted')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_success_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查是否正在使用
+    # 报价、订单
+    if count_quotation(**{'uid': user_id, 'status_delete': STATUS_DEL_NO}):
+        ext_msg = _('Currently In Use')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
 
     current_time = datetime.utcnow()
     user_data = {

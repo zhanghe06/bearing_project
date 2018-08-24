@@ -37,3 +37,7 @@ body {
 table.items_table tr td {
     border-top: 0;
 }
+
+.panel-title-sm {
+    font-size: 14px;
+}
