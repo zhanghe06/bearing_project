@@ -184,6 +184,7 @@
                 })
                 if (!select_item_checked) {
                     alert('{{ _('Please select what you want to delete') }}');
+                    return false
                 }
             }else {
                 // 取消删除, 阻止冒泡, 防止提交

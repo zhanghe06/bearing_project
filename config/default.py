@@ -57,8 +57,7 @@ DB_MYSQL = {
 }
 
 SQLALCHEMY_DATABASE_URI_MYSQL = \
-    'mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8' % \
-    (DB_MYSQL['user'], DB_MYSQL['passwd'], DB_MYSQL['host'], DB_MYSQL['port'], DB_MYSQL['db'])
+    'mysql+mysqldb://%(user)s:%(passwd)s@%(host)s:%(port)s/%(db)s?charset=utf8' % DB_MYSQL
 
 SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI_MYSQL
 # SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # 打开自动提交 官方已经移除(http://flask-sqlalchemy.pocoo.org/2.1/changelog/#version-2-0)

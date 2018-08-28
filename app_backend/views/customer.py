@@ -91,13 +91,11 @@ def get_sales_user_list():
 
 
 @bp_customer.route('/lists.html', methods=['GET', 'POST'])
-@bp_customer.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
 @permission_customer_section_search.require(http_exception=403)
-def lists(page=1):
+def lists():
     """
     客户列表
-    :param page:
     :return:
     """
     template_name = 'customer/lists.html'
@@ -195,7 +193,7 @@ def lists(page=1):
                     flash(_('Del Failure'), 'danger')
 
     # 翻页数据
-    pagination = get_customer_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_customer_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(
@@ -327,6 +325,7 @@ def add():
             'company_site': form.company_site.data,
             'company_tel': form.company_tel.data,
             'company_fax': form.company_fax.data,
+            'company_email': form.company_email.data,
             'company_type': form.company_type.data,
             'owner_uid': form.owner_uid.data,
             'create_time': current_time,
@@ -387,6 +386,7 @@ def edit(customer_id):
         form.company_site.data = customer_info.company_site
         form.company_tel.data = customer_info.company_tel
         form.company_fax.data = customer_info.company_fax
+        form.company_email.data = customer_info.company_email
         form.company_type.data = customer_info.company_type
         form.owner_uid.data = customer_info.owner_uid
         form.create_time.data = customer_info.create_time
@@ -419,6 +419,7 @@ def edit(customer_id):
             'company_site': form.company_site.data,
             'company_tel': form.company_tel.data,
             'company_fax': form.company_fax.data,
+            'company_email': form.company_email.data,
             'company_type': form.company_type.data,
             'owner_uid': form.owner_uid.data,
             'update_time': current_time,

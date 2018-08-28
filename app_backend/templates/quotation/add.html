@@ -41,6 +41,14 @@
                           data-target="#customer_contact_select_modal"></span>
                 </div>
             </div>
+            <div class="form-group{% if form.delivery_way.errors %} has-error{% endif %}">
+                {{ form.delivery_way.label() }}
+                {{ form.delivery_way(class="form-control input-sm", title=form.delivery_way.errors|join(', ')) }}
+            </div>
+            <div class="form-group{% if form.note.errors %} has-error{% endif %}">
+                {{ form.note.label() }}
+                {{ form.note(class="form-control input-sm", title=form.note.errors|join(', ')) }}
+            </div>
             <div class="form-group{% if form.uid.errors %} has-error{% endif %}">
                 {{ form.uid.label() }}
                 {{ form.uid(class="form-control input-sm", title=form.uid.errors|join(', ')) }}

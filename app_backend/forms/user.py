@@ -102,6 +102,11 @@ class UserSearchForm(FlaskForm):
         validators=[],
         default=0,
     )
+    page = IntegerField(
+        _('page'),
+        validators=[],
+        default=1,
+    )
 
 
 class UserAddForm(FlaskForm):

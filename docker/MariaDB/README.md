@@ -28,5 +28,6 @@ $ sh db_init.sh
 
 备份数据
 ```
-$ sh db_dump.sh
+$ sh db_dump.sh [db_name]
+$ sh db_dump_all.sh
 ```

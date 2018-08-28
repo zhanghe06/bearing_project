@@ -114,6 +114,7 @@ class Customer(Base):
     company_site = Column(String(100), nullable=False, server_default=text("''"))
     company_tel = Column(String(100), nullable=False, server_default=text("''"))
     company_fax = Column(String(100), nullable=False, server_default=text("''"))
+    company_email = Column(String(100), nullable=False, server_default=text("''"))
     company_type = Column(Integer, nullable=False, server_default=text("'0'"))
     owner_uid = Column(Integer, nullable=False, server_default=text("'0'"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))

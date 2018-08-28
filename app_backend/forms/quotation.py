@@ -132,6 +132,11 @@ class QuotationSearchForm(FlaskForm):
         validators=[],
         default=0,
     )
+    page = IntegerField(
+        _('page'),
+        validators=[],
+        default=1,
+    )
 
 
 class QuotationItemAddForm(FlaskForm):
@@ -356,6 +361,26 @@ class QuotationAddForm(FlaskForm):
             'title': _('customer contact name'),
         }
     )
+    delivery_way = StringField(
+        _('delivery way'),
+        validators=[],
+        description=_('delivery way'),
+        render_kw={
+            'placeholder': _('delivery way'),
+            'rel': 'tooltip',
+            'title': _('delivery way'),
+        }
+    )
+    note = StringField(
+        _('quotation note'),
+        validators=[],
+        description=_('quotation note'),
+        render_kw={
+            'placeholder': _('quotation note'),
+            'rel': 'tooltip',
+            'title': _('quotation note'),
+        }
+    )
     status_order = SelectField(
         _('order status'),
         validators=[
@@ -456,15 +481,24 @@ class QuotationEditForm(FlaskForm):
             'title': _('customer contact name'),
         }
     )
-    type_tax = SelectBS(
-        _('tax type'),
+    delivery_way = StringField(
+        _('delivery way'),
         validators=[],
-        default=0,
-        choices=TYPE_TAX_CHOICES,
-        description=_('tax type'),
+        description=_('delivery way'),
         render_kw={
+            'placeholder': _('delivery way'),
             'rel': 'tooltip',
-            'title': _('tax type'),
+            'title': _('delivery way'),
+        }
+    )
+    note = StringField(
+        _('quotation note'),
+        validators=[],
+        description=_('quotation note'),
+        render_kw={
+            'placeholder': _('quotation note'),
+            'rel': 'tooltip',
+            'title': _('quotation note'),
         }
     )
     status_order = SelectField(

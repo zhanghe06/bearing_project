@@ -19,7 +19,7 @@ TYPE_COMPANY_MIDDLEMAN = 1
 TYPE_COMPANY_END_USER = 2
 
 TYPE_COMPANY_DICT = {
-    0: _('Unknown'),  # 未知
+    0: _('-'),  # 未知
     1: _('Middle Man'),  # 中间商
     2: _('Final User'),  # 最终用户
 }

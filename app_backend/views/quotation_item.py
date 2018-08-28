@@ -88,13 +88,11 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 @bp_quotation_item.route('/lists.html', methods=['GET', 'POST'])
-@bp_quotation_item.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
 @permission_quotation_section_search.require(http_exception=403)
-def lists(page=1):
+def lists():
     """
     报价列表
-    :param page:
     :return:
     """
     template_name = 'quotation_item/lists.html'
@@ -141,7 +139,7 @@ def lists(page=1):
                 file_name='%s.csv' % _('quotation item lists')
             )
     # 翻页数据
-    pagination = get_quotation_item_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_quotation_item_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(

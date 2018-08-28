@@ -77,13 +77,11 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 @bp_rack.route('/lists.html', methods=['GET', 'POST'])
-@bp_rack.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
 # @permission_rack_section_search.require(http_exception=403)
-def lists(page=1):
+def lists():
     """
     货架列表
-    :param page:
     :return:
     """
     template_name = 'rack/lists.html'
@@ -158,7 +156,7 @@ def lists(page=1):
                     else:
                         flash(_('Del Failure'), 'danger')
     # 翻页数据
-    pagination = get_rack_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_rack_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(

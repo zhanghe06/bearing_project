@@ -174,6 +174,19 @@ class CustomerAddForm(FlaskForm):
             'autocomplete': 'off',
         }
     )
+    company_email = StringField(
+        _('company email'),
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company email'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company email'),
+            'placeholder': _('company email'),
+            'autocomplete': 'off',
+        }
+    )
     company_type = SelectField(
         _('company type'),
         validators=[
@@ -280,6 +293,19 @@ class CustomerEditForm(FlaskForm):
             'rel': 'tooltip',
             'title': _('company fax'),
             'placeholder': _('company fax'),
+            'autocomplete': 'off',
+        }
+    )
+    company_email = StringField(
+        _('company email'),
+        validators=[
+            Length(max=100),
+        ],
+        description=_('company email'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('company email'),
+            'placeholder': _('company email'),
             'autocomplete': 'off',
         }
     )

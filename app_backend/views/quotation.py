@@ -91,13 +91,11 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 @bp_quotation.route('/lists.html', methods=['GET', 'POST'])
-@bp_quotation.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
 @permission_quotation_section_search.require(http_exception=403)
-def lists(page=1):
+def lists():
     """
     报价列表
-    :param page:
     :return:
     """
     template_name = 'quotation/lists.html'
@@ -179,7 +177,7 @@ def lists(page=1):
                 else:
                     flash(_('Del Failure'), 'danger')
     # 翻页数据
-    pagination = get_quotation_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_quotation_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(
@@ -211,6 +209,9 @@ def info(quotation_id):
     if quotation_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
+    # 公司信息
+    company_info = get_customer_row_by_id(quotation_info.cid)
+
     template_name = 'quotation/info.html'
 
     # 文档信息
@@ -225,6 +226,7 @@ def info(quotation_id):
         template_name,
         quotation_info=quotation_info,
         quotation_items=quotation_items,
+        company_info=company_info,
         **document_info
     )
 

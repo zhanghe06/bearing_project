@@ -134,6 +134,28 @@ def lists():
                 file_type='csv',
                 file_name='%s.csv' % _('production sensitive lists')
             )
+        # 批量删除
+        if form.op.data == 2:
+            production_sensitive_ids = request.form.getlist('production_sensitive_id')
+            # 检查删除权限
+            if not permission_role_administrator.can():
+                ext_msg = _('Permission Denied')
+                flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+            else:
+                result_total = True
+                for production_sensitive_id in production_sensitive_ids:
+                    current_time = datetime.utcnow()
+                    production_sensitive_data = {
+                        'status_delete': STATUS_DEL_OK,
+                        'delete_time': current_time,
+                        'update_time': current_time,
+                    }
+                    result = edit_production_sensitive(production_sensitive_id, production_sensitive_data)
+                    result_total = result_total and result
+                if result_total:
+                    flash(_('Del Success'), 'success')
+                else:
+                    flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_production_sensitive_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 

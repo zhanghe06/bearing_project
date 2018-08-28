@@ -64,6 +64,15 @@
                     <span class="help-block hidden-xs">{{ form.company_fax.description }}</span>
                 </div>
             </div>
+            <div class="form-group{% if form.company_email.errors %} has-error{% endif %}">
+                {{ form.company_email.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.company_email(class="form-control", title=form.company_email.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_email.description }}</span>
+                </div>
+            </div>
             <div class="form-group{% if form.company_type.errors %} has-error{% endif %}">
                 {{ form.company_type.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">

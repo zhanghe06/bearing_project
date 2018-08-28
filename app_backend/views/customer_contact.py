@@ -100,13 +100,11 @@ def get_sales_user_list():
 
 
 @bp_customer_contact.route('/lists.html', methods=['GET', 'POST'])
-@bp_customer_contact.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
 @permission_customer_section_search.require(http_exception=403)
-def lists(page=1):
+def lists():
     """
     客户联系方式列表
-    :param page:
     :return:
     """
     template_name = 'customer/contact/lists.html'
@@ -153,7 +151,7 @@ def lists(page=1):
                 file_name='%s.csv' % _('customer contact lists')
             )
     # 翻页数据
-    pagination = get_customer_contact_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_customer_contact_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(
