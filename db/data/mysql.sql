@@ -41,6 +41,23 @@ INSERT INTO `customer_contact` VALUES (1, 1, '小马', '先生', '13800000000', 
 INSERT INTO `customer_contact` VALUES (2, 1, '小兰', '小姐', '13811111111', '021-12345678', '021-12345678', 'youyiku@example.com', '采购', '上海市虹口区曲阳路898号1202室', '', 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
 
 
+-- 插入产品类别
+TRUNCATE TABLE `category`;
+INSERT INTO `category` VALUES (1, '轴承', 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (2, '调心球轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (3, '调心滚子轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (4, '圆锥滚子轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (5, '推力球轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (6, '深沟球轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (7, '角接触球轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (8, '圆柱滚子轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (9, '滚针轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (10, '双向推力角接触球轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (11, '转台轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (12, '滚珠丝杠轴承', 1, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `category` VALUES (13, '精密锁紧螺母', 0, 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+
+
 -- 插入产品信息
 TRUNCATE TABLE `production`;
 INSERT INTO `production` VALUES (1, 0, 'SKF', '7008CEGA/P4A', 'Pcs', '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');

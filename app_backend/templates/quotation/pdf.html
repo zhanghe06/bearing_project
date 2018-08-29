@@ -140,9 +140,9 @@
                         <td>{{ quotation_item.production_brand }}</td>
                         <td>{{ quotation_item.enquiry_production_model or quotation_item.production_model }}</td>
                         <td>{{ quotation_item.production_sku }}</td>
-                        <td class="text-right">{{ quotation_item.quantity }}</td>
-                        <td class="text-right">￥{{ quotation_item.unit_price }}</td>
-                        <td class="text-right">￥{{ quotation_item.quantity*quotation_item.unit_price }}</td>
+                        <td class="text-right">{{ '{:,}'.format(quotation_item.quantity) }}</td>
+                        <td class="text-right">￥{{ '{:,}'.format(quotation_item.unit_price) }}</td>
+                        <td class="text-right">￥{{ '{:,}'.format(quotation_item.quantity*quotation_item.unit_price) }}</td>
                         <td>{{ quotation_item.delivery_time }}</td>
                     </tr>
                     {% endfor %}
@@ -196,7 +196,7 @@
 {#                        </tr>#}
                         <tr>
                             <th>{{ _('Total') }}:</th>
-                            <td>￥{{ quotation_info.amount_quotation }}</td>
+                            <td>￥{{ '{:,}'.format(quotation_info.amount_quotation) }}</td>
                         </tr>
                     </table>
                 </div>

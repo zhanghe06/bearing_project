@@ -448,6 +448,12 @@ mac
 brew install cairo pango gdk-pixbuf libffi
 ```
 
+## 外链设计
+
+```html
+<a target="_blank" href="https://link.juejin.im?target=https%3A%2F%2Fswagger.io" rel="nofollow noopener noreferrer">Swagger</a>
+```
+
 
 ## TODO
 
