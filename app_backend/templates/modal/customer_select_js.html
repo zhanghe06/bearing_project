@@ -3,7 +3,7 @@
         // 客户选择搜索
         $('.customer_select_search_btn').on('click', function () {
             var input_group_obj = $(this).parents('div.input-group')
-            var customer_input = input_group_obj.find('input[name="company_name"]')
+            var customer_input = input_group_obj.find('input[name="customer_company_name"]')
             var keywords = customer_input.val()
             $.session.set('customer_keywords', keywords)
             if (!keywords) {
@@ -23,8 +23,8 @@
 
                 return false
             } else {
-                $('input[name$="cid"]').val(company_id)
-                $('input[name$="company_name"]').val($.session.get('company_name'))
+                $('input[name$="customer_cid"]').val(company_id)
+                $('input[name$="customer_company_name"]').val($.session.get('customer_company_name'))
                 $('#customer_select_modal').modal('hide')
             }
         })

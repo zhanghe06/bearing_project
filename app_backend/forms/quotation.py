@@ -24,7 +24,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, \
     DecimalField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress
+    IPAddress, Optional
 from wtforms.fields import FieldList, FormField, HiddenField
 
 from app_backend.forms import SelectBS, CheckBoxBS
@@ -32,11 +32,11 @@ from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 # from app_backend.api.user import get_user_rows
 from app_common.maps.default import default_choices_int, default_choice_option_int
 
-from copy import copy
+from copy import deepcopy
 
 from app_common.maps.type_tax import TYPE_TAX_CHOICES
 
-role_id_choices = copy(default_choices_int)
+role_id_choices = deepcopy(default_choices_int)
 role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 
@@ -77,36 +77,36 @@ class QuotationSearchForm(FlaskForm):
             'title': _('quotation user'),
         }
     )
-    cid = IntegerField(
-        _('customer id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             InputRequired(),
         ],
         default=0,
-        description=_('customer id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('customer company name'),
         }
     )
 
     start_create_time = DateField(
         _('start time'),
-        validators=[],
-        default=datetime.utcnow() - timedelta(days=365),
+        validators=[Optional()],
+        # default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -117,8 +117,8 @@ class QuotationSearchForm(FlaskForm):
     )
     end_create_time = DateField(
         _('end time'),
-        validators=[],
-        default=datetime.utcnow() + timedelta(days=1),
+        validators=[Optional()],
+        # default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),
@@ -169,13 +169,16 @@ class QuotationItemAddForm(FlaskForm):
     enquiry_quantity = IntegerField(
         _('enquiry quantity'),
         validators=[],
-        default=0,
+        default=1,
         description=_('enquiry quantity'),
         render_kw={
             'placeholder': _('enquiry quantity'),
             'rel': 'tooltip',
             'title': _('enquiry quantity'),
             'type': 'number',
+            'step': 1,
+            'min': 1,
+            'max': 10000,
         }
     )
     production_id = IntegerField(
@@ -230,6 +233,7 @@ class QuotationItemAddForm(FlaskForm):
     quantity = IntegerField(
         _('quantity'),
         validators=[],
+        default=1,
         description=_('quantity'),
         render_kw={
             'placeholder': _('quantity'),
@@ -244,6 +248,7 @@ class QuotationItemAddForm(FlaskForm):
     unit_price = DecimalField(
         _('unit price'),
         validators=[],
+        default=0.00,
         description=_('unit price'),
         render_kw={
             'placeholder': _('unit price'),

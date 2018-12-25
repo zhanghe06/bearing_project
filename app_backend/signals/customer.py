@@ -17,7 +17,7 @@ from app_backend import app
 from app_backend.api.customer_invoice import get_customer_invoice_row_by_id, edit_customer_invoice
 from app_backend.api.customer_contact import get_customer_contact_rows, edit_customer_contact
 from app_backend.api.quotation import get_quotation_rows, edit_quotation
-from app_backend.api.quotation_item import get_quotation_item_rows, edit_quotation_item
+from app_backend.api.quotation_items import get_quotation_items_rows, edit_quotation_items
 
 _signal = Namespace()
 
@@ -78,14 +78,14 @@ def customer_status_delete(sender, **extra):
         }
         result = result and edit_quotation(quotation_item_id, quotation_item_data)
         # 报价明细
-        quotation_item_items = get_quotation_item_rows(quotation_id=quotation_item_id)
-        for quotation_item_item in quotation_item_items:
+        quotation_items_items = get_quotation_items_rows(quotation_id=quotation_item_id)
+        for quotation_item_item in quotation_items_items:
             quotation_item_item_id = quotation_item_item.id
             quotation_item_item_data = {
                 'status_delete': status_delete,
                 'delete_time': current_time,
                 'update_time': current_time,
             }
-            result = result and edit_quotation_item(quotation_item_item_id, quotation_item_item_data)
+            result = result and edit_quotation_items(quotation_item_item_id, quotation_item_item_data)
 
     return result

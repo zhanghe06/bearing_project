@@ -14,7 +14,7 @@ from blinker import Namespace
 
 from app_backend import app
 
-from app_backend.api.quotation_item import get_quotation_item_rows, edit_quotation_item, delete_quotation_item
+from app_backend.api.quotation_items import get_quotation_items_rows, edit_quotation_items, delete_quotation_items
 
 
 _signal = Namespace()
@@ -51,7 +51,7 @@ def quotation_status_delete(sender, **extra):
     current_time = extra.get('current_time')
     if not quotation_id:
         return
-    quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
+    quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
     result = True
     for quotation_item in quotation_items:
         quotation_item_id = quotation_item.id
@@ -60,5 +60,5 @@ def quotation_status_delete(sender, **extra):
             'delete_time': current_time,
             'update_time': current_time,
         }
-        result = result and edit_quotation_item(quotation_item_id, quotation_item_data)
+        result = result and edit_quotation_items(quotation_item_id, quotation_item_data)
     return result

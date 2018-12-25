@@ -15,6 +15,10 @@ import json
 from app_backend import app
 from app_backend.api.customer import get_customer_row_by_id
 from app_backend.api.customer_contact import get_customer_contact_row_by_id
+from app_backend.api.enquiry import get_enquiry_row_by_id
+from app_backend.api.quotation import get_quotation_row_by_id
+from app_backend.api.supplier import get_supplier_row_by_id
+from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
 from app_backend.api.user import get_user_row_by_id
 from app_backend.api.warehouse import get_warehouse_row_by_id
 from app_backend.api.rack import get_rack_row_by_id
@@ -71,7 +75,7 @@ def filter_customer_company_name(customer_id):
 @app.template_filter('customer_contact_name')
 def filter_customer_contact_name(contact_id):
     """
-    客户公司名称
+    客户联系人员
     :param contact_id:
     :return:
     """
@@ -79,6 +83,30 @@ def filter_customer_contact_name(contact_id):
         return '-'
     customer_contact_info = get_customer_contact_row_by_id(contact_id)
     return customer_contact_info.name if customer_contact_info else '-'
+
+
+@app.template_filter('supplier_company_name')
+def filter_supplier_company_name(supplier_id):
+    """
+    渠道公司名称
+    :param supplier_id:
+    :return:
+    """
+    supplier_info = get_supplier_row_by_id(supplier_id)
+    return supplier_info.company_name if supplier_info else '-'
+
+
+@app.template_filter('supplier_contact_name')
+def filter_supplier_contact_name(contact_id):
+    """
+    渠道联系人员
+    :param contact_id:
+    :return:
+    """
+    if not contact_id:
+        return '-'
+    supplier_contact_info = get_supplier_contact_row_by_id(contact_id)
+    return supplier_contact_info.name if supplier_contact_info else '-'
 
 
 @app.template_filter('warehouse_name')
@@ -123,6 +151,28 @@ def filter_production_model(production_id):
     """
     production_info = get_production_row_by_id(production_id)
     return production_info.production_model if production_info else '-'
+
+
+@app.template_filter('quotation_create_time')
+def filter_quotation_create_time(quotation_id):
+    """
+    报价创建时间
+    :param quotation_id:
+    :return:
+    """
+    quotation_info = get_quotation_row_by_id(quotation_id)
+    return quotation_info.create_time if quotation_info else None
+
+
+@app.template_filter('enquiry_create_time')
+def filter_enquiry_create_time(enquiry_id):
+    """
+    询价创建时间
+    :param enquiry_id:
+    :return:
+    """
+    enquiry_info = get_enquiry_row_by_id(enquiry_id)
+    return enquiry_info.create_time if enquiry_info else None
 
 
 @app.template_filter('type_auth')

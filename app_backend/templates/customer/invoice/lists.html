@@ -24,13 +24,13 @@
                 <div class="panel-body">
                     <form class="form-inline" method="post">
                         {{ form.csrf_token }}
-                        <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
-                            {{ form.cid() }}
-                            {{ form.company_name.label() }}
+                        <div class="form-group{% if form.customer_cid.errors or form.customer_company_name.errors %} has-error{% endif %}">
+                            {{ form.customer_cid() }}
+                            {{ form.customer_company_name.label() }}
                             <div class="input-group">
-                                {{ form.company_name(
+                                {{ form.customer_company_name(
                                     class="form-control input-sm",
-                                    title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
+                                    title=form.customer_cid.errors|join(', ') or form.customer_company_name.errors|join(', '),
                                     autocomplete="off"
                                     )
                                 }}

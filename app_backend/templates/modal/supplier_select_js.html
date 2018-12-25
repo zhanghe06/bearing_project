@@ -1,0 +1,36 @@
+<script>
+    $(function () {
+        // 渠道选择搜索
+        $('.supplier_select_search_btn').on('click', function () {
+            var input_group_obj = $(this).parents('div.input-group')
+            var supplier_input = input_group_obj.find('input[name="supplier_company_name"]')
+            var keywords = supplier_input.val()
+            $.session.set('supplier_keywords', keywords)
+            if (!keywords) {
+                alert('{{ _("company name is empty") }}')
+                supplier_input.focus()
+                return false
+            } else {
+                $('iframe[name="supplier_search_iframe"]').attr('src', '{{ url_for("supplier.search") }}')
+            }
+        })
+
+        // 渠道选择确认
+        $('#supplier_select_confirm_btn').on('click', function () {
+            var company_id = $.session.get('company_id')
+            if (!company_id) {
+                alert('{{ _("Please select a supplier") }}')
+
+                return false
+            } else {
+                $('input[name$="supplier_cid"]').val(company_id)
+                $('input[name$="supplier_company_name"]').val($.session.get('supplier_company_name'))
+                $('#supplier_select_modal').modal('hide')
+            }
+        })
+
+        $('#supplier_select_modal').on('hidden.bs.modal', function () {
+            $.session.clear()
+        })
+    })
+</script>

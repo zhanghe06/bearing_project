@@ -2,20 +2,20 @@
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
             <li class="sidebar-search">
-                <div class="input-group custom-search-form">
-                    <input type="search" class="form-control" placeholder="{{ _('Search') }}..." speech x-webkit-speech onwebkitspeechchange="">
+                <form class="input-group custom-search-form" method="post" action="{{ url_for('price.search') }}">
+                    <input type="search" name="production_model" class="form-control" placeholder="{{ _('Search') }}..." speech x-webkit-speech onwebkitspeechchange="">
+                    <input type="hidden" name="cid" value="0">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">
+                        <button class="btn btn-default" type="submit">
                             <i class="fa fa-search"></i>
                         </button>
                     </span>
-                </div>
+                </form>
                 <!-- /input-group -->
             </li>
             <li>
                 <a href="{{ url_for('index') }}"><i class="fa fa-home fa-fw"></i> {{ _('management center') }}</a>
             </li>
-
             <li{% if 'production/' in request.path %} class="active"{% endif %}>
                 <a id="menu-production" href="#"><i class="fa fa-gift fa-fw"></i> {{ _('production management') }}<span
                         class="fa arrow"></span></a>
@@ -40,7 +40,21 @@
                     </li>
                 </ul>
             </li>
-
+            <li{% if 'user/' in request.path %} class="active"{% endif %}>
+                <a id="menu-user" href="#"><i class="fa fa-users fa-fw"></i> {{ _('user management') }}<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url_for('user.lists') }}">{{ _('user lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('user.add') }}">{{ _('user add') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('user.stats') }}">{{ _('user stats') }}</a>
+                    </li>
+                </ul>
+            </li>
             <li{% if 'customer/' in request.path %} class="active"{% endif %}>
                 <a id="menu-customer" href="#"><i class="fa fa-table fa-fw"></i> {{ _('customer management') }}<span
                         class="fa arrow"></span></a>
@@ -73,39 +87,18 @@
                         <a href="{{ url_for('supplier.add') }}">{{ _('supplier add') }}</a>
                     </li>
                     <li>
+                        <a href="{{ url_for('supplier_invoice.lists') }}">{{ _('supplier invoice lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('supplier_contact.lists') }}">{{ _('supplier contact lists') }}</a>
+                    </li>
+                    <li>
                         <a href="{{ url_for('supplier.stats') }}">{{ _('supplier stats') }}</a>
-                    </li>
-                    <li>
-                        <a id="menu-supplier-contact" href="#">{{ _('address management') }} <span
-                                class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li>
-                                <a href="{{ url_for('supplier_contact.lists') }}">{{ _('supplier contact lists') }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ url_for('supplier_contact.add') }}">{{ _('supplier contact add') }}</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li{% if 'user/' in request.path %} class="active"{% endif %}>
-                <a id="menu-user" href="#"><i class="fa fa-users fa-fw"></i> {{ _('user management') }}<span
-                        class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="{{ url_for('user.lists') }}">{{ _('user lists') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('user.add') }}">{{ _('user add') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('user.stats') }}">{{ _('user stats') }}</a>
                     </li>
                 </ul>
             </li>
             <li{% if 'quotation/' in request.path %} class="active"{% endif %}>
-                <a id="menu-quotation" href="#"><i class="fa fa-file fa-fw"></i> {{ _('quotation management') }}<span
+                <a id="menu-quotation" href="#"><i class="fa fa-file-text fa-fw"></i> {{ _('quotation management') }}<span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
@@ -115,50 +108,92 @@
                         <a href="{{ url_for('quotation.add') }}">{{ _('quotation add') }}</a>
                     </li>
                     <li>
-                        <a href="{{ url_for('quotation_item.lists') }}">{{ _('quotation item lists') }}</a>
+                        <a href="{{ url_for('quotation_items.lists') }}">{{ _('quotation item lists') }}</a>
                     </li>
                     <li>
                         <a href="{{ url_for('quotation.stats') }}">{{ _('quotation stats') }}</a>
                     </li>
                 </ul>
             </li>
-            <li{% if 'sales_orders/' in request.path %} class="active"{% endif %}>
+            <li{% if 'enquiry/' in request.path %} class="active"{% endif %}>
+                <a id="menu-enquiry" href="#"><i class="fa fa-file fa-fw"></i> {{ _('enquiry management') }}<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url_for('enquiry.lists') }}">{{ _('enquiry lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('enquiry.add') }}">{{ _('enquiry add') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('enquiry_items.lists') }}">{{ _('enquiry item lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('enquiry.stats') }}">{{ _('enquiry stats') }}</a>
+                    </li>
+                </ul>
+            </li>
+            <li{% if 'sales/' in request.path %} class="active"{% endif %}>
                 <a id="menu-sales" href="#"><i class="fa fa-briefcase fa-fw"></i> {{ _('sales management') }}<span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a id="menu-sales-orders" href="#">{{ _('sales orders management') }} <span
+                        <a id="menu-sales-order" href="#">{{ _('sales order management') }} <span
                                 class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="{{ url_for('sales_orders.lists') }}">{{ _('sales orders lists') }}</a>
+                                <a href="{{ url_for('sales_order.lists') }}">{{ _('sales order lists') }}</a>
                             </li>
                             <li>
-                                <a href="{{ url_for('sales_orders.add') }}">{{ _('sales orders add') }}</a>
+                                <a href="{{ url_for('sales_order.add') }}">{{ _('sales order add') }}</a>
                             </li>
                             <li>
-                                <a href="{{ url_for('sales_orders.stats') }}">{{ _('sales orders stats') }}</a>
+                                <a href="{{ url_for('sales_order.stats') }}">{{ _('sales order stats') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a id="menu-sales-delivery" href="#">{{ _('sales delivery management') }} <span
+                                class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li>
+                                <a href="{{ url_for('sales_delivery.lists') }}">{{ _('sales delivery lists') }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('sales_delivery.add') }}">{{ _('sales delivery add') }}</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </li>
-            <li{% if 'buyer_orders/' in request.path %} class="active"{% endif %}>
+            <li{% if 'buyer/' in request.path %} class="active"{% endif %}>
                 <a id="menu-buyer" href="#"><i class="fa fa-cart-plus fa-fw"></i> {{ _('buyer management') }}<span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a id="menu-buyer-orders" href="#">{{ _('buyer orders management') }} <span
+                        <a id="menu-buyer-order" href="#">{{ _('buyer order management') }} <span
                                 class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
                             <li>
-                                <a href="{{ url_for('buyer_orders.lists') }}">{{ _('buyer orders lists') }}</a>
+                                <a href="{{ url_for('buyer_order.lists') }}">{{ _('buyer order lists') }}</a>
                             </li>
                             <li>
-                                <a href="{{ url_for('buyer_orders.add') }}">{{ _('buyer orders add') }}</a>
+                                <a href="{{ url_for('buyer_order.add') }}">{{ _('buyer order add') }}</a>
                             </li>
                             <li>
-                                <a href="{{ url_for('buyer_orders.stats') }}">{{ _('buyer orders stats') }}</a>
+                                <a href="{{ url_for('buyer_order.stats') }}">{{ _('buyer order stats') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a id="menu-buyer-purchase" href="#">{{ _('buyer purchase management') }} <span
+                                class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li>
+                                <a href="{{ url_for('buyer_purchase.lists') }}">{{ _('buyer purchase lists') }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('buyer_purchase.add') }}">{{ _('buyer purchase add') }}</a>
                             </li>
                         </ul>
                     </li>
@@ -219,6 +254,19 @@
                                 <a href="{{ url_for('delivery.add') }}">{{ _('delivery add') }}</a>
                             </li>
                         </ul>
+                    </li>
+                </ul>
+            </li>
+            <li{% if 'accountant/' in request.path %} class="active"{% endif %}>
+                <a id="menu-accountant" href="#"><i
+                        class="fa fa-bar-chart fa-fw"></i> {{ _('accountant management') }}<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url_for('warehouse.lists') }}">{{ _('accountant lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('warehouse.add') }}">{{ _('accountant add') }}</a>
                     </li>
                 </ul>
             </li>

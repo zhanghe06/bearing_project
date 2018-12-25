@@ -43,7 +43,7 @@ from app_backend.api.production import (
     get_production_rows,
     get_distinct_production_brand,
 )
-from app_backend.api.quotation_item import count_quotation_item
+from app_backend.api.quotation_items import count_quotation_items
 from app_backend.api.production_sensitive import count_production_sensitive
 from app_backend.forms.production import (
     ProductionSearchForm,
@@ -120,8 +120,8 @@ def lists():
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
-            if not permission_production_section_export.can():
-                abort(403)
+            # if not permission_production_section_export.can():
+            #     abort(403)
             column_names = Production.__table__.columns.keys()
             query_sets = get_production_rows(*search_condition)
 
@@ -143,7 +143,7 @@ def lists():
                 for production_id in production_ids:
                     # 检查是否正在使用
                     # 报价、订单、敏感型号
-                    if count_quotation_item(**{'production_id': production_id, 'status_delete': STATUS_DEL_NO}):
+                    if count_quotation_items(**{'production_id': production_id, 'status_delete': STATUS_DEL_NO}):
                         ext_msg = _('Currently In Use')
                         flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                         permitted = False
@@ -429,7 +429,7 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
     # 检查是否正在使用
     # 报价、订单、敏感型号
-    if count_quotation_item(**{'production_id': production_id, 'status_delete': STATUS_DEL_NO}):
+    if count_quotation_items(**{'production_id': production_id, 'status_delete': STATUS_DEL_NO}):
         ext_msg = _('Currently In Use')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)

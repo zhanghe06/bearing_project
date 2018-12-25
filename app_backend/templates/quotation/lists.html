@@ -30,13 +30,13 @@
                                 {{ form.uid.label() }}
                                 {{ form.uid(class="form-control") }}
                             </div>
-                            <div class="form-group form-group-sm{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
-                                {{ form.cid() }}
-                                {{ form.company_name.label() }}
+                            <div class="form-group form-group-sm{% if form.customer_cid.errors or form.customer_company_name.errors %} has-error{% endif %}">
+                                {{ form.customer_cid() }}
+                                {{ form.customer_company_name.label() }}
                                 <div class="input-group">
-                                    {{ form.company_name(
+                                    {{ form.customer_company_name(
                                     class="form-control",
-                                    title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
+                                    title=form.customer_cid.errors|join(', ') or form.customer_company_name.errors|join(', '),
                                     autocomplete="off"
                                     ) }}
                                     <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
@@ -80,7 +80,7 @@
                         <th>{{ _('quotation code') }}</th>
                         <th>{{ _('quotation user') }}</th>
                         <th>{{ _('customer company') }}</th>
-                        <th>{{ _('quotation amount') }}</th>
+                        <th class="text-right">{{ _('quotation amount') }}</th>
                         <th>{{ _('quotation note') }}</th>
                         <th>{{ _('create time') }}</th>
                         <th>{{ _('update time') }}</th>
@@ -96,10 +96,10 @@
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td>{{ g.QUOTATION_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</td>
+                            <td><a href="{{ url_for('quotation.edit', quotation_id=info.id) }}">{{ g.QUOTATION_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
                             <td>{{ info.uid | user_name }}</td>
-                            <td>{{ info.cid | customer_company_name }}</td>
-                            <td>{{ info.amount_quotation }}</td>
+                            <td>{{ info.customer_cid | customer_company_name }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.amount_quotation) }}</td>
                             <td>{{ info.note }}</td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>

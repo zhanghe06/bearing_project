@@ -28,6 +28,10 @@ from app_backend import (
 )
 from flask_babel import gettext as _
 from flask_login import login_required
+
+from app_backend.api.quotation_items import get_quotation_items_pagination, get_quotation_items_rows
+from app_backend.forms.price import PriceSearchForm
+from app_backend.models.bearing_project import QuotationItems
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -36,7 +40,7 @@ from app_common.maps.type_company import TYPE_COMPANY_CHOICES
 from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
 )
-from app_backend.permissions import permission_customer_section_search
+from app_backend.permissions import permission_customer_section_search, permission_quotation_section_export
 
 # 定义蓝图
 bp_price = Blueprint('price', __name__, url_prefix='/price')
@@ -52,7 +56,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 @bp_price.route('/search.html', methods=['GET', 'POST'])
 @login_required
-@permission_customer_section_search.require(http_exception=403)
+# @permission_customer_section_search.require(http_exception=403)
 def search():
     """
     价格搜索
@@ -67,18 +71,18 @@ def search():
         3.2、其它品牌类似型号
     :return:
     """
-    template_name = 'customer/search_modal.html'
+    template_name = 'price/lists.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('Customer Search')
+    document_info['TITLE'] = _('price lists')
 
     # 搜索条件
-    form = CustomerSearchForm(request.form)
-    form.owner_uid.choices = get_sales_user_list()
+    form = PriceSearchForm(request.form)
+    # form.uid.choices = get_quotation_user_list_choices()
     # app.logger.info('')
 
     search_condition = [
-        Customer.status_delete == STATUS_DEL_NO,
+        QuotationItems.status_delete == STATUS_DEL_NO,
     ]
     if request.method == 'POST':
         # 表单校验失败
@@ -88,12 +92,30 @@ def search():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.company_type.data != default_choice_option_int:
-                search_condition.append(Customer.company_type == form.company_type.data)
-            if form.company_name.data:
-                search_condition.append(Customer.company_name.like('%%%s%%' % form.company_name.data))
+            if form.cid.data and form.company_name.data:
+                search_condition.append(QuotationItems.enquiry_cid == form.cid.data)
+            if form.production_model.data:
+                search_condition.append(QuotationItems.production_model.like('%%%s%%' % form.production_model.data))
+            if form.start_create_time.data:
+                search_condition.append(QuotationItems.create_time >= form.start_create_time.data)
+            if form.end_create_time.data:
+                search_condition.append(QuotationItems.create_time <= form.end_create_time.data)
+        # 处理导出
+        if form.op.data == 1:
+            # 检查导出权限
+            if not permission_quotation_section_export.can():
+                abort(403)
+            column_names = QuotationItems.__table__.columns.keys()
+            query_sets = get_quotation_items_rows(*search_condition)
+
+            return excel.make_response_from_query_sets(
+                query_sets=query_sets,
+                column_names=column_names,
+                file_type='csv',
+                file_name='%s.csv' % _('price lists')
+            )
     # 翻页数据
-    pagination = get_customer_pagination(form.page.data, PER_PAGE_BACKEND_MODAL, *search_condition)
+    pagination = get_quotation_items_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(
@@ -102,3 +124,4 @@ def search():
         pagination=pagination,
         **document_info
     )
+

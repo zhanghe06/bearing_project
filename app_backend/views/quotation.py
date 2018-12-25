@@ -49,8 +49,8 @@ from app_backend.api.quotation import (
     quotation_order_stats,
     get_quotation_user_list_choices, get_quotation_customer_list_choices)
 
-from app_backend.api.quotation_item import get_quotation_item_rows, add_quotation_item, edit_quotation_item, \
-    delete_quotation_item
+from app_backend.api.quotation_items import get_quotation_items_rows, add_quotation_items, edit_quotation_items, \
+    delete_quotation_items
 from wtforms.fields import FieldList, FormField
 from app_backend.forms.quotation import (
     QuotationSearchForm,
@@ -121,8 +121,8 @@ def lists():
         else:
             if form.uid.data != default_choice_option_int:
                 search_condition.append(Quotation.uid == form.uid.data)
-            if form.cid.data and form.company_name.data:
-                search_condition.append(Quotation.cid == form.cid.data)
+            if form.customer_cid.data and form.customer_company_name.data:
+                search_condition.append(Quotation.cid == form.customer_cid.data)
             if form.start_create_time.data:
                 search_condition.append(Quotation.create_time >= form.start_create_time.data)
             if form.end_create_time.data:
@@ -219,7 +219,7 @@ def info(quotation_id):
     document_info['TITLE'] = _('quotation info')
 
     # 获取明细
-    quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
+    quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
 
     # 渲染模板
     return render_template(
@@ -309,6 +309,8 @@ def add():
             'uid': form.uid.data,
             'cid': form.cid.data,
             'contact_id': form.contact_id.data,
+            'delivery_way': form.delivery_way.data,
+            'note': form.note.data,
             'status_order': form.status_order.data,
             'expiry_date': (datetime.utcnow() + timedelta(days=7)).strftime('%Y-%m-%d'),
             'create_time': current_time,
@@ -340,7 +342,7 @@ def add():
             }
 
             # 新增
-            add_quotation_item(quotation_item_data)
+            add_quotation_items(quotation_item_data)
             amount_quotation += (quotation_item_data['quantity'] or 0) * (quotation_item_data['unit_price'] or 0)
 
         # 更新报价
@@ -403,11 +405,13 @@ def edit(quotation_id):
     # 进入编辑页面
     if request.method == 'GET':
         # 获取明细
-        quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
+        quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
         # 表单赋值
         form.uid.data = quotation_info.uid
         form.cid.data = quotation_info.cid
         form.contact_id.data = quotation_info.contact_id
+        form.delivery_way.data = quotation_info.delivery_way
+        form.note.data = quotation_info.note
         form.status_order.data = quotation_info.status_order
         form.amount_quotation.data = quotation_info.amount_quotation
         # form.quotation_items = quotation_items
@@ -486,7 +490,7 @@ def edit(quotation_id):
         # 表单校验成功
 
         # 获取明细
-        quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
+        quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
         quotation_items_ids = [item.id for item in quotation_items]
 
         # 数据新增、数据删除、数据修改
@@ -518,17 +522,17 @@ def edit(quotation_id):
 
             if not quotation_item.form.id.data:
                 # 新增
-                add_quotation_item(quotation_item_data)
+                add_quotation_items(quotation_item_data)
                 amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
             else:
                 # 修改
-                edit_quotation_item(quotation_item.form.id.data, quotation_item_data)
+                edit_quotation_items(quotation_item.form.id.data, quotation_item_data)
                 amount_quotation += quotation_item_data['quantity'] * quotation_item_data['unit_price']
                 quotation_items_ids_new.append(quotation_item.form.id.data)
         # 删除
         quotation_items_ids_del = list(set(quotation_items_ids) - set(quotation_items_ids_new))
         for quotation_items_id in quotation_items_ids_del:
-            delete_quotation_item(quotation_items_id)
+            delete_quotation_items(quotation_items_id)
 
         # 更新报价
         current_time = datetime.utcnow()
@@ -536,6 +540,8 @@ def edit(quotation_id):
             'cid': form.cid.data,
             'uid': form.uid.data,
             'contact_id': form.contact_id.data,
+            'delivery_way': form.delivery_way.data,
+            'note': form.note.data,
             'status_order': form.status_order.data,
             'amount_production': amount_quotation,
             'amount_quotation': amount_quotation,
@@ -586,7 +592,7 @@ def preview(quotation_id):
     # 获取报价人员信息
     user_info = get_user_row_by_id(quotation_info.uid)
 
-    quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
+    quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -636,7 +642,7 @@ def pdf(quotation_id):
     # 获取报价人员信息
     user_info = get_user_row_by_id(quotation_info.uid)
 
-    quotation_items = get_quotation_item_rows(quotation_id=quotation_id)
+    quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -729,41 +735,41 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
 
-@bp_quotation.route('/ajax/stats', methods=['GET', 'POST'])
-@login_required
-def ajax_stats():
-    """
-    获取报价统计
-    :return:
-    """
-    time_based = request.args.get('time_based', 'hour')
-    result_quotation_middleman = quotation_middleman_stats(time_based)
-    result_quotation_end_user = quotation_end_user_stats(time_based)
-
-    line_chart_data = {
-        'labels': [label for label, _ in result_quotation_middleman],
-        'datasets': [
-            {
-                'label': '同行',
-                'backgroundColor': 'rgba(220,220,220,0.5)',
-                'borderColor': 'rgba(220,220,220,1)',
-                'pointBackgroundColor': 'rgba(220,220,220,1)',
-                'pointBorderColor': '#fff',
-                'pointBorderWidth': 2,
-                'data': [data for _, data in result_quotation_middleman]
-            },
-            {
-                'label': '终端',
-                'backgroundColor': 'rgba(151,187,205,0.5)',
-                'borderColor': 'rgba(151,187,205,1)',
-                'pointBackgroundColor': 'rgba(151,187,205,1)',
-                'pointBorderColor': '#fff',
-                'pointBorderWidth': 2,
-                'data': [data for _, data in result_quotation_end_user]
-            }
-        ]
-    }
-    return json.dumps(line_chart_data, default=json_default)
+# @bp_quotation.route('/ajax/stats', methods=['GET', 'POST'])
+# @login_required
+# def ajax_stats():
+#     """
+#     获取报价统计
+#     :return:
+#     """
+#     time_based = request.args.get('time_based', 'hour')
+#     result_quotation_middleman = quotation_middleman_stats(time_based)
+#     result_quotation_end_user = quotation_end_user_stats(time_based)
+#
+#     line_chart_data = {
+#         'labels': [label for label, _ in result_quotation_middleman],
+#         'datasets': [
+#             {
+#                 'label': '同行',
+#                 'backgroundColor': 'rgba(220,220,220,0.5)',
+#                 'borderColor': 'rgba(220,220,220,1)',
+#                 'pointBackgroundColor': 'rgba(220,220,220,1)',
+#                 'pointBorderColor': '#fff',
+#                 'pointBorderWidth': 2,
+#                 'data': [data for _, data in result_quotation_middleman]
+#             },
+#             {
+#                 'label': '终端',
+#                 'backgroundColor': 'rgba(151,187,205,0.5)',
+#                 'borderColor': 'rgba(151,187,205,1)',
+#                 'pointBackgroundColor': 'rgba(151,187,205,1)',
+#                 'pointBorderColor': '#fff',
+#                 'pointBorderWidth': 2,
+#                 'data': [data for _, data in result_quotation_end_user]
+#             }
+#         ]
+#     }
+#     return json.dumps(line_chart_data, default=json_default)
 
 
 @bp_quotation.route('/stats.html')

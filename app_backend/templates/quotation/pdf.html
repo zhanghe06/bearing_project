@@ -75,11 +75,11 @@
                 <h4 class="page-header">
 {#                    <span class="glyphicon glyphicon-globe"#}
 {#                          aria-hidden="true"></span> #}
-                    <img style="height: 20px; width: 88px; margin-bottom: 5px" src="{{ url_for('static', filename='img/skf.png') }}" height="20px" width="88px"> {{ _('Xinai Electromechainical Technology (shanghai) Co., Ltd.') }}
+                    <img style="height: 20px; width: 88px; margin-bottom: 5px" src="{{ url_for('static', filename='img/skf.png') }}" height="20px" width="88px"> {{ COMPANY_NAME_CN }}
 {#                    <small class="pull-right">{{ _('Print Date') }}: {{ moment(quotation_info.update_time).format('YYYY-MM-DD') }}</small>#}
                     <small class="pull-right">{{ _('Print Date') }}: {{ quotation_print_date }}</small>
                     <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
-                    <small>Xinai Electromechainical Technology (shanghai) Co., Ltd.</small>
+                    <small>{{ COMPANY_NAME_EN }}</small>
                 </h4>
             </div><!-- /.col -->
         </div>

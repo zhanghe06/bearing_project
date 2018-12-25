@@ -23,7 +23,7 @@ from flask_moment import Moment
 from flask_oauthlib.client import OAuth
 from flask_principal import Principal
 import flask_excel as excel
-from flask_socketio import SocketIO
+# from flask_socketio import SocketIO
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_babel import Babel, gettext as _
@@ -66,8 +66,8 @@ babel = Babel(app)
 excel.init_excel(app)
 
 # SocketIO
-socketio = SocketIO()
-socketio.init_app(app, async_mode='eventlet', message_queue=app.config['REDIS_URL'])
+# socketio = SocketIO()
+# socketio.init_app(app, async_mode='eventlet', message_queue=app.config['REDIS_URL'])
 
 # 第三方开放授权登录
 oauth = OAuth(app)
@@ -114,16 +114,20 @@ from app_backend.views.user_auth import bp_auth
 from app_backend.views.production import bp_production
 from app_backend.views.production_sensitive import bp_production_sensitive
 from app_backend.views.quotation import bp_quotation
-from app_backend.views.quotation_item import bp_quotation_item
-from app_backend.views.orders_buyer import bp_buyer_orders
-from app_backend.views.orders_sales import bp_sales_orders
+from app_backend.views.quotation_items import bp_quotation_items
+from app_backend.views.enquiry import bp_enquiry
+from app_backend.views.enquiry_items import bp_enquiry_items
+from app_backend.views.buyer_order import bp_buyer_order
+from app_backend.views.buyer_purchase import bp_buyer_purchase
+from app_backend.views.sales_order import bp_sales_order
+from app_backend.views.sales_delivery import bp_sales_delivery
 from app_backend.views.warehouse import bp_warehouse
 from app_backend.views.rack import bp_rack
 from app_backend.views.inventory import bp_inventory
 from app_backend.views.purchase import bp_purchase
 from app_backend.views.delivery import bp_delivery
 from app_backend.views.system import bp_system
-from app_backend.views.socket_io import bp_socket_io
+# from app_backend.views.socket_io import bp_socket_io
 from app_backend.views.price import bp_price
 
 # 注册蓝图
@@ -139,16 +143,20 @@ app.register_blueprint(bp_auth)
 app.register_blueprint(bp_production)
 app.register_blueprint(bp_production_sensitive)
 app.register_blueprint(bp_quotation)
-app.register_blueprint(bp_quotation_item)
-app.register_blueprint(bp_buyer_orders)
-app.register_blueprint(bp_sales_orders)
+app.register_blueprint(bp_quotation_items)
+app.register_blueprint(bp_enquiry)
+app.register_blueprint(bp_enquiry_items)
+app.register_blueprint(bp_buyer_order)
+app.register_blueprint(bp_buyer_purchase)
+app.register_blueprint(bp_sales_order)
+app.register_blueprint(bp_sales_delivery)
 app.register_blueprint(bp_warehouse)
 app.register_blueprint(bp_rack)
 app.register_blueprint(bp_inventory)
 app.register_blueprint(bp_purchase)
 app.register_blueprint(bp_delivery)
 app.register_blueprint(bp_system)
-app.register_blueprint(bp_socket_io)
+# app.register_blueprint(bp_socket_io)
 app.register_blueprint(bp_price)
 
 # 导入自定义过滤器

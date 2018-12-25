@@ -1,0 +1,184 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-enquiry').trigger('click')">{{ _('enquiry management') }}</a></li>
+            <li class="active">{{ _('enquiry add') }}</li>
+        </ol>
+
+        <form class="form-inline" id="search_form" method="post">
+            {{ form.csrf_token }}
+
+            <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
+                {{ form.cid() }}
+                {{ form.company_name.label() }}
+                <div class="input-group">
+                    {{ form.company_name(
+                        class="form-control input-sm",
+                        title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
+                        autocomplete="off"
+                        ) }}
+                    <span class="input-group-addon glyphicon glyphicon-option-horizontal supplier_select_search_btn"
+                          style="top: 0; cursor:pointer;" data-toggle="modal"
+                          data-target="#supplier_select_modal"></span>
+                </div>
+            </div>
+            <div class="form-group{% if form.contact_id.errors or form.contact_name.errors %} has-error{% endif %}">
+                {{ form.contact_id() }}
+                {{ form.contact_name.label() }}
+                <div class="input-group">
+                    {{ form.contact_name(
+                        class="form-control input-sm",
+                        title=form.contact_id.errors|join(', ') or form.contact_name.errors|join(', '),
+                        autocomplete="off"
+                        )
+                    }}
+                    <span class="input-group-addon glyphicon glyphicon-option-horizontal supplier_contact_select_search_btn"
+                          style="top: 0; cursor:pointer;" data-toggle="modal"
+                          data-target="#supplier_contact_select_modal"></span>
+                </div>
+            </div>
+            <div class="form-group{% if form.delivery_way.errors %} has-error{% endif %}">
+                {{ form.delivery_way.label() }}
+                {{ form.delivery_way(class="form-control input-sm", title=form.delivery_way.errors|join(', ')) }}
+            </div>
+            <div class="form-group{% if form.note.errors %} has-error{% endif %}">
+                {{ form.note.label() }}
+                {{ form.note(class="form-control input-sm", title=form.note.errors|join(', ')) }}
+            </div>
+            <div class="form-group{% if form.uid.errors %} has-error{% endif %}">
+                {{ form.uid.label() }}
+                {{ form.uid(class="form-control input-sm", title=form.uid.errors|join(', ')) }}
+            </div>
+            <div class="form-group{% if form.status_order.errors %} has-error{% endif %}">
+                {{ form.status_order.label() }}
+                {{ form.status_order(class="form-control input-sm", title=form.status_order.errors|join(', ')) }}
+            </div>
+            <div class="form-group{% if form.amount_enquiry.errors %} has-error{% endif %}">
+                {{ form.amount_enquiry.label() }}
+                {{ form.amount_enquiry(class="form-control input-sm", title=form.amount_enquiry.errors|join(', ')) }}
+            </div>
+
+            <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+            <div class="text-center">
+                <button type="submit" class="btn-sm btn-success btn-load"
+                        data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
+                <button type="reset" class="btn-sm btn-default">{{ _('Reset') }}</button>
+            </div>
+            <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+
+            <div class="table-responsive">
+                {#                         <table class="table table-striped">#}
+                <table class="table table-hover table-condensed items_table">
+                    <thead>
+                    <tr>
+                        <th>{{ _('#') }}</th>
+                        <th class="bg-warning">{{ _('enquiry production model') }}</th>
+                        <th class="bg-warning">{{ _('enquiry quantity') }}</th>
+                        <th></th>
+                        <th>{{ _('production brand') }}</th>
+                        <th>{{ _('production model') }}</th>
+                        <th>{{ _('quantity') }}</th>
+                        <th>{{ _('production sku') }}</th>
+                        <th>{{ _('unit_price') }}</th>
+                        <th>{{ _('delivery time') }}</th>
+                        <th>{{ _('note') }}</th>
+                        <th>{{ _('ordered status') }}</th>
+                        <th>{{ _('Option') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for info in form.enquiry_items %}
+                        <tr class="text-muted items_line">
+                            <td><span readonly="readonly" class="form-control input-sm">{{ loop.index }}</span></td>
+                            <td class="bg-warning{% if info.enquiry_production_model.errors %} has-error{% endif %}">
+                                {{ info.enquiry_production_model(class="form-control input-sm", title=info.enquiry_production_model.errors|join(', '), style="width: 12em;") }}
+                            </td>
+                            <td class="bg-warning{% if info.enquiry_quantity.errors %} has-error{% endif %}">
+                                {{ info.enquiry_quantity(class="form-control input-sm text-right", title=info.enquiry_quantity.errors|join(', '), style="width: 7em; ") }}
+                            </td>
+                            <td>
+                                {{ info.production_id() }}
+                            </td>
+                            <td{% if info.production_brand.errors %} class="has-error"{% endif %}>
+                                <span style="min-width: 4em;" readonly="readonly"
+                                      class="form-control input-sm production_brand"
+                                      title="{{ info.production_brand.errors|join(', ') }}"
+                                      rel="tooltip">{{ info.production_brand.data }}</span>
+                                {{ info.production_brand(class="hidden production_brand") }}
+                            </td>
+                            {#                            <td{% if info.production_brand.errors %} class="has-error"{% endif %}>#}
+                            {#                                {{ info.production_brand(class="form-control input-sm", title=info.production_brand.errors|join(', ')) }}#}
+                            {#                            </td>#}
+                            <td class="input-group{% if info.production_id.errors or info.production_model.errors %} has-error{% endif %}">
+                                {{ info.production_model(class="form-control input-sm production_model", title=info.production_id.errors|join(', ') or info.production_model.errors|join(', '), style="width: 12em;") }}
+                                <span class="input-group-addon glyphicon glyphicon-option-horizontal production_select_search_btn"
+                                      style="top: 0; cursor:pointer;" data-toggle="modal"
+                                      data-target="#production_select_modal"></span>
+                            </td>
+                            <td{% if info.quantity.errors %} class="has-error"{% endif %}>
+                                {{ info.quantity(class="form-control input-sm text-right quantity", title=info.quantity.errors|join(', '), style="width: 7em;") }}
+                            </td>
+                            <td{% if info.production_sku.errors %} class="has-error"{% endif %}>
+                                <span style="min-width: 4em;" readonly="readonly"
+                                      class="form-control input-sm production_sku"
+                                      title="{{ info.production_sku.errors|join(', ') }}"
+                                      rel="tooltip">{{ info.production_sku.data }}</span>
+                                {{ info.production_sku(class="hidden production_sku") }}
+                            </td>
+                            {#                            <td{% if info.production_sku.errors %} class="has-error"{% endif %}>#}
+                            {#                                {{ info.production_sku(class="form-control input-sm", title=info.production_sku.errors|join(', ')) }}#}
+                            {#                            </td>#}
+                            <td{% if info.unit_price.errors %} class="has-error"{% endif %}>
+                                {{ info.unit_price(class="form-control input-sm text-right unit_price", title=info.unit_price.errors|join(', '), style="width: 7em;") }}
+                            </td>
+                            <td{% if info.delivery_time.errors %} class="has-error"{% endif %}>
+                                {{ info.delivery_time(class="form-control input-sm", title=info.delivery_time.errors|join(', '), style="width: 6em;") }}
+                            </td>
+                            <td{% if info.note.errors %} class="has-error"{% endif %}>
+                                {{ info.note(class="form-control input-sm", title=info.note.errors|join(', '), style="width: 6em;") }}
+                            </td>
+                            <td class="{% if info.status_ordered.errors %} text-danger{% endif %}">
+                                {{ info.status_ordered() }}
+                                {{ info.status_ordered.label(rel="tooltip", title=info.status_ordered.errors|join(', ')) }}
+                            </td>
+                            <td style="min-width: 6em;">
+                                <button type="submit" class="input-sm glyphicon glyphicon-plus" name="data_line_add"
+                                        value="{{ loop.index0 }}" rel="tooltip" title="{{ _('Add') }}"></button>
+                                <button type="submit" class="input-sm glyphicon glyphicon-minus" name="data_line_del"
+                                        value="{{ loop.index0 }}" rel="tooltip" title="{{ _('Delete') }}"></button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <hr/>
+    </div>
+
+    <!-- 渠道搜索 -->
+    {% include "modal/supplier_select.html" %}
+
+    <!-- 联系方式搜索 -->
+    {% include "modal/supplier_contact_select.html" %}
+
+    <!-- 产品搜索 -->
+    {% include "modal/production_select.html" %}
+
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- 渠道搜索 -->
+{% include "modal/supplier_select_js.html" %}
+<!-- 联系方式搜索 -->
+{% include "modal/supplier_contact_select_js.html" %}
+<!-- 产品搜索 -->
+{% include "modal/production_select_js.html" %}
+<!-- 询价总额 -->
+<script src="{{ url_for('static', filename='js/common/amount_enquiry.js', v='1.5.24') }}"></script>
+{% endblock %}

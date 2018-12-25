@@ -11,7 +11,7 @@
 from __future__ import unicode_literals
 
 import json
-from copy import copy
+from copy import deepcopy
 from datetime import datetime
 
 from flask import (
@@ -83,7 +83,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_sales_user_list():
-    sales_user_list = copy(default_choices_int)
+    sales_user_list = deepcopy(default_choices_int)
     user_list = get_user_rows(**{'role_id': TYPE_ROLE_SALES})
     sales_user_list.extend([(0, '-')])
     sales_user_list.extend([(user.id, user.name) for user in user_list])

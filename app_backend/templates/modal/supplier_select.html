@@ -1,0 +1,18 @@
+<div class="modal fade" id="supplier_select_modal" tabindex="-1" role="dialog" aria-labelledby="supplier_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="supplier_label">{{ _('Supplier Search') }}</h4>
+            </div>
+            <div class="modal-body">
+                <iframe name="supplier_search_iframe" src="" width="100%" height="100%" frameborder="no" marginwidth="0" marginheight="0" allowtransparency="yes" style="min-height: 300px"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Close') }}</button>
+                <button type="button" class="btn btn-primary" id="supplier_select_confirm_btn">{{ _('Submit') }}</button>
+            </div>
+        </div>
+    </div>
+</div>

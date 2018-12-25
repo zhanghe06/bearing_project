@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-supplier').trigger('click')">{{ _('supplier management') }}</a></li>
+            <li class="active">{{ _('supplier add') }}</li>
+        </ol>
+        <!-- 标签导航 -->
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="javascript:void(0);">{{ _('supplier info') }}</a></li>
+            <li role="presentation"><a href="javascript:void(0);" onclick="alert('{{ _('Please complete the supplier information first') }}');">{{ _('supplier invoice') }}</a></li>
+            <li role="presentation"><a href="javascript:void(0);" onclick="alert('{{ _('Please complete the supplier information first') }}');">{{ _('supplier contact') }}</a></li>
+        </ul>
+        <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+
+        <form class="form-horizontal" method="post" action="">
+            {{ form.csrf_token }}
+            <div class="form-group{% if form.company_name.errors %} has-error{% endif %}">
+                {{ form.company_name.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.company_name(class="form-control", title=form.company_name.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_name.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.company_address.errors %} has-error{% endif %}">
+                {{ form.company_address.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.company_address(class="form-control", title=form.company_address.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_address.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.company_site.errors %} has-error{% endif %}">
+                {{ form.company_site.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.company_site(class="form-control", title=form.company_site.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_site.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.company_tel.errors %} has-error{% endif %}">
+                {{ form.company_tel.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.company_tel(class="form-control", title=form.company_tel.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_tel.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.company_fax.errors %} has-error{% endif %}">
+                {{ form.company_fax.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.company_fax(class="form-control", title=form.company_fax.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_fax.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.company_email.errors %} has-error{% endif %}">
+                {{ form.company_email.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.company_email(class="form-control", title=form.company_email.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_email.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.company_type.errors %} has-error{% endif %}">
+                {{ form.company_type.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.company_type(class="form-control", title=form.company_type.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.company_type.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.owner_uid.errors %} has-error{% endif %}">
+                {{ form.owner_uid.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.owner_uid(class="form-control", title=form.owner_uid.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.owner_uid.description }}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-load"
+                            data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
+                    <button type="reset" class="btn btn-default">{{ _('Reset') }}</button>
+                    <button class="btn btn-default"
+                            onclick="history.back(); return false">{{ _('Go Back') }}</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

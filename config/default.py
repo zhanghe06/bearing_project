@@ -88,6 +88,8 @@ DOCUMENT_INFO = {
     'PROJECT_NAME': _('Website Name'),  # 网站名称
     'ICP_CODE': '沪ICP备12024750号',
     'APP_NAME': _('App Name'),  # 应用名称
+    'COMPANY_NAME_EN': 'Bearing Technology Co., Ltd.',      # 公司名称英文
+    'COMPANY_NAME_CN': _('Bearing Technology Co., Ltd.'),   # 公司名称中文
 }
 
 PER_PAGE_FRONTEND = 12
@@ -163,4 +165,11 @@ WEIBO_OAUTH = {
 
 
 # 业务配置
-QUOTATION_PREFIX = 'QT'
+QUOTATION_PREFIX = 'QT'  # 报价
+ENQUIRIES_PREFIX = 'EQ'  # 询价
+
+SALES_ORDER_PREFIX = 'SO'  # 销售订单
+BUYER_ORDER_PREFIX = 'BO'  # 采购订单
+
+DELIVERY_PREFIX = 'DL'  # 出货
+PURCHASE_PREFIX = 'PC'  # 进货

@@ -4,8 +4,8 @@
         $('.customer_contact_select_search_btn').on('click', function () {
 
             // 基于客户选择
-            var input_cid = $('input[name="cid"]')
-            var input_company_name = $('input[name="company_name"]')
+            var input_cid = $('input[name="customer_cid"]')
+            var input_company_name = $('input[name="customer_company_name"]')
             var input_cid_value = input_cid.val()
             if (!input_cid_value){
                 alert('{{ _("company name is empty") }}')

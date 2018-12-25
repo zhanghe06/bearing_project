@@ -24,9 +24,9 @@ from wtforms.validators import InputRequired, DataRequired, Length, NumberRange,
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 
-from copy import copy
+from copy import deepcopy
 
-company_type_choices = copy(default_choices_int)
+company_type_choices = deepcopy(default_choices_int)
 company_type_choices.extend(iteritems(TYPE_COMPANY_DICT))
 
 
@@ -66,29 +66,29 @@ class CustomerContactSearchForm(FlaskForm):
     """
     搜索表单
     """
-    cid = IntegerField(
-        _('customer id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             InputRequired(),
         ],
         default=0,
-        description=_('customer id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('customer company name'),
             'autocomplete': 'off',
         }
     )
@@ -135,145 +135,6 @@ class CustomerContactSearchForm(FlaskForm):
         validators=[],
         default=1,
     )
-
-
-# class CustomerContactItemAddForm(FlaskForm):
-#     def __init__(self, *args, **kwargs):
-#         kwargs['csrf_enabled'] = False  # disable csrf
-#         FlaskForm.__init__(self, *args, **kwargs)
-#
-#     contact_name = StringField(
-#         _('contact name'),
-#         validators=[
-#             DataRequired(),
-#             Length(min=1, max=20),
-#         ],
-#         description=_('contact name'),
-#         render_kw={
-#             'rel': 'tooltip',
-#             'title': _('contact name'),
-#             'placeholder': _('contact name'),
-#             'autocomplete': 'off',
-#         }
-#     )
-#     salutation = StringField(
-#         _('salutation'),
-#         validators=[
-#             Length(max=20),
-#         ],
-#         description=_('salutation'),
-#         render_kw={
-#             'rel': 'tooltip',
-#             'title': _('salutation'),
-#             'placeholder': _('salutation'),
-#             'autocomplete': 'off',
-#         }
-#     )
-#     mobile = StringField(
-#         _('mobile'),
-#         validators=[
-#             Length(max=20),
-#         ],
-#         description=_('mobile'),
-#         render_kw={
-#             'rel': 'tooltip',
-#             'title': _('mobile'),
-#             'placeholder': _('mobile'),
-#             'autocomplete': 'off',
-#         }
-#     )
-#     tel = StringField(
-#         _('tel'),
-#         validators=[
-#             Length(max=20),
-#         ],
-#         description=_('tel'),
-#         render_kw={
-#             'rel': 'tooltip',
-#             'title': _('tel'),
-#             'placeholder': _('tel'),
-#             'autocomplete': 'off',
-#         }
-#     )
-#     fax = StringField(
-#         _('fax'),
-#         validators=[
-#             Length(max=20),
-#         ],
-#         description=_('fax'),
-#         render_kw={
-#             'rel': 'tooltip',
-#             'title': _('fax'),
-#             'placeholder': _('fax'),
-#             'autocomplete': 'off',
-#         }
-#     )
-#     address = StringField(
-#         _('address'),
-#         validators=[
-#             DataRequired(),
-#             Length(max=100),
-#         ],
-#         description=_('address'),
-#         render_kw={
-#             'rel': 'tooltip',
-#             'title': _('address'),
-#             'placeholder': _('address'),
-#             'autocomplete': 'off',
-#         }
-#     )
-#     note = StringField(
-#         _('note'),
-#         validators=[
-#             Length(max=256),
-#         ],
-#         description=_('note'),
-#         render_kw={
-#             'rel': 'tooltip',
-#             'title': _('note'),
-#             'placeholder': _('note'),
-#             'autocomplete': 'off',
-#         }
-#     )
-#     status_default = BooleanField(_('default status'), default=False)
-#
-#
-# class CustomerContactAddForm(FlaskForm):
-#     """
-#     创建表单（字段一般带有默认选项）
-#     """
-#     cid = IntegerField(
-#         _('customer id'),
-#         validators=[
-#             DataRequired(),
-#         ],
-#         render_kw={
-#             'type': 'hidden',
-#         }
-#     )
-#     company_name = StringField(
-#         _('company name'),
-#         validators=[],
-#         description=_('company name'),
-#         render_kw={
-#             'placeholder': _('company name'),
-#             'rel': 'tooltip',
-#             'title': _('company name'),
-#         }
-#     )
-#     data_line_add = IntegerField(
-#         '数据行新增',
-#         validators=[],
-#     )
-#     data_line_del = IntegerField(
-#         '数据行删除',
-#         validators=[],
-#     )
-#     customer_contact_items = FieldList(
-#         FormField(CustomerContactItemAddForm),
-#         label='联系方式明细',
-#         min_entries=1,
-#     )
 
 
 class CustomerContactItemEditForm(FlaskForm):

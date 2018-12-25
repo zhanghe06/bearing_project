@@ -1,0 +1,190 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-buyer-orders').trigger('click')">{{ _('buyer orders management') }}</a></li>
+            <li class="active">{{ _('buyer orders lists') }}</li>
+        </ol>
+        <form method="post">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSearch">
+                    <h4 class="panel-title panel-title-sm">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                           aria-expanded="true" aria-controls="collapseSearch">
+                            {{ _('Search toolbar') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="headingSearch">
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            {{ form.csrf_token }}
+                            <div class="form-group form-group-sm{% if form.uid.errors %} has-error{% endif %}">
+                                {{ form.uid.label() }}
+                                {{ form.uid(class="form-control") }}
+                            </div>
+                            <div class="form-group form-group-sm{% if form.supplier_cid.errors or form.supplier_company_name.errors %} has-error{% endif %}">
+                                {{ form.supplier_cid() }}
+                                {{ form.supplier_company_name.label() }}
+                                <div class="input-group">
+                                    {{ form.supplier_company_name(
+                                    class="form-control",
+                                    title=form.supplier_cid.errors|join(', ') or form.supplier_company_name.errors|join(', '),
+                                    autocomplete="off"
+                                    ) }}
+                                    <span class="input-group-addon glyphicon glyphicon-option-horizontal supplier_select_search_btn"
+                                          style="top: 0; cursor:pointer;" data-toggle="modal"
+                                          data-target="#supplier_select_modal"></span>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm{% if form.start_create_time.errors %} has-error{% endif %}">
+                                {{ form.start_create_time.label() }}
+                                {{ form.start_create_time(class="form-control") }}
+                            </div>
+                            <div class="form-group form-group-sm{% if form.end_create_time.errors %} has-error{% endif %}">
+                                {{ form.end_create_time.label() }}
+                                {{ form.end_create_time(class="form-control") }}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                    value="0">{{ _('Search') }}</button>
+                            <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                    value="1">{{ _('Export') }}</button>
+                            <button type="submit" class="btn-sm btn-danger delete_all" name="op"
+                                    value="2">{{ _('Delete') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="table-responsive">
+                {#         <table class="table table-striped">#}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <label>
+                                <input class="select_all" name="buyer_order_ids" title="{{ _('Select All') }}"
+                                       rel="tooltip" type="checkbox" value=""/>
+                                {{ _('Select All') }}
+                            </label>
+                        </th>
+                        <th>{{ _('buyer order code') }}</th>
+                        <th>{{ _('buyer order user') }}</th>
+                        <th>{{ _('supplier company') }}</th>
+                        <th class="text-right">{{ _('buyer order amount') }}</th>
+                        <th>{{ _('buyer order note') }}</th>
+                        <th>{{ _('create time') }}</th>
+                        <th>{{ _('update time') }}</th>
+                        <th>{{ _('operation') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for info in pagination.items %}
+                        <tr class="text-muted item">
+                            <td>
+                                <label>
+                                    <input class="select_item" name="buyer_order_id" title="{{ _('Select') }}"
+                                           rel="tooltip" type="checkbox" value="{{ info.id }}"/>
+                                </label>
+                            </td>
+                            <td><a href="{{ url_for('buyer_order.edit', buyer_order_id=info.id) }}">{{ g.BUYER_ORDER_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
+                            <td>{{ info.uid | user_name }}</td>
+                            <td>{{ info.cid | supplier_company_name }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.amount_order) }}</td>
+                            <td>{{ info.note }}</td>
+                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td style="min-width: 8em;">
+                                <!-- Split button -->
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-default"
+                                       href="{{ url_for('buyer_order.edit', buyer_order_id=info.id, next=request.path) }}">
+                                        <span class="glyphicon glyphicon-pencil"></span> {{ _('Edit') }}
+                                    </a>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="javascript:void(0);" onclick="buyer_order_delete({{ info.id }})">
+                                                <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
+                                            </a>
+                                        </li>
+                                        <li role="separator" class="divider" style="margin: 0"></li>
+                                        <li>
+                                            <a href="{{ url_for('buyer_order.preview', buyer_order_id=info.id, next=request.path) }}"
+                                               target="_blank">
+                                                <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url_for('buyer_order.pdf', buyer_order_id=info.id) }}"
+                                               target="_blank">
+                                                <span class="glyphicon glyphicon-download-alt"></span> {{ _('Download') }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {# 翻页 #}
+                {% from "macros.html" import render_pagination_post %}
+                {{ render_pagination_post(pagination, 'buyer_order.lists') }}
+            </div>
+        </form>
+    </div>
+
+    <!-- 渠道搜索 -->
+    {% include "modal/supplier_select.html" %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <!-- 渠道搜索 -->
+    {% include "modal/supplier_select_js.html" %}
+
+    <script>
+        // 采购订单删除
+        function buyer_order_delete (buyer_order_id) {
+            if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
+                $.getJSON('{{ url_for('buyer_order.ajax_delete') }}',
+                    {
+                        buyer_order_id: buyer_order_id
+                    }, function (data) {
+                        if (data.result === true) {
+                            alert(data.msg)
+                        } else {
+                            alert(data.msg)
+                        }
+                        window.location.reload()
+                    })
+                return false
+            }
+        }
+
+        $(function () {
+            //搜索表单
+
+            //级联选择
+            $('#uid').change(function () {
+                $('#cid').get(0).selectedIndex = 0
+                $('#search_form').submit()
+            })
+        })
+    </script>
+{% endblock %}

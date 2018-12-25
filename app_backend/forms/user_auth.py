@@ -37,6 +37,7 @@ class CaptchaValidate(object):
         code_key = '%s:%s' % ('code_str', 'login')
         code_str = session.pop(code_key, '')
         if not code_str:
+            # TODO 有时初次登录会出现 code_str 为空, 待查
             raise ValidationError(self.message or _('Captcha Expired'))
         if code_str.upper() != data.upper():
             raise ValidationError(self.message or _('Captcha Value Failure'))

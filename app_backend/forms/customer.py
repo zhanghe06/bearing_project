@@ -18,13 +18,13 @@ from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress
+    IPAddress, Optional
 from app_common.maps.default import default_choices_int, default_choice_option_int
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 
-from copy import copy
+from copy import deepcopy
 
-company_type_choices = copy(default_choices_int)
+company_type_choices = deepcopy(default_choices_int)
 company_type_choices.extend(iteritems(TYPE_COMPANY_DICT))
 
 
@@ -70,8 +70,8 @@ class CustomerSearchForm(FlaskForm):
     )
     start_create_time = DateField(
         _('start time'),
-        validators=[],
-        default=datetime.utcnow() - timedelta(days=365),
+        validators=[Optional()],
+        # default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -82,8 +82,8 @@ class CustomerSearchForm(FlaskForm):
     )
     end_create_time = DateField(
         _('end time'),
-        validators=[],
-        default=datetime.utcnow() + timedelta(days=1),
+        validators=[Optional()],
+        # default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),

@@ -63,6 +63,7 @@ from app_backend.permissions import (
 )
 from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
+    TYPE_ROLE_PURCHASER,
     TYPE_ROLE_MANAGER,
     TYPE_ROLE_SYSTEM,
     TYPE_ROLE_STOREKEEPER,
@@ -105,7 +106,16 @@ def before_request():
     #     session['status_login'] = False
 
     # 加载基本配置
-    g.QUOTATION_PREFIX = app.config.get('QUOTATION_PREFIX', '')
+    g.QUOTATION_PREFIX = app.config.get('QUOTATION_PREFIX', '')  # 报价
+    g.ENQUIRIES_PREFIX = app.config.get('ENQUIRIES_PREFIX', '')  # 询价
+
+    g.SALES_ORDER_PREFIX = app.config.get('SALES_ORDER_PREFIX', '')  # 销售订单
+    g.BUYER_ORDER_PREFIX = app.config.get('BUYER_ORDER_PREFIX', '')  # 采购订单
+
+    g.DELIVERY_PREFIX = app.config.get('DELIVERY_PREFIX', '')  # 出货
+    g.PURCHASE_PREFIX = app.config.get('PURCHASE_PREFIX', '')  # 进货
+
+    g.STATIC_RES_VER = '1.5.26'  # 静态资源版本
 
 
 @identity_loaded.connect_via(app)
@@ -175,6 +185,58 @@ def on_identity_loaded(sender, identity):
         identity.provides.add(SectionActionNeed('quotation', 'search'))
         # 报价统计
         identity.provides.add(SectionActionNeed('quotation', 'stats'))
+
+        # 版块明细操作权限（销售）
+        # （读取、编辑、删除、打印）
+        # 客户-----------------------------------------------------------------------
+        customer_rows_condition = {
+            'owner_uid': current_user.id
+        }
+        customer_rows = get_customer_rows(**customer_rows_condition)
+        for customer_row in customer_rows:
+            # 客户读取权限
+            identity.provides.add(SectionActionItemNeed('customer', 'get', unicode(customer_row.id)))
+            # 客户编辑权限
+            identity.provides.add(SectionActionItemNeed('customer', 'edit', unicode(customer_row.id)))
+            # 客户删除权限
+            identity.provides.add(SectionActionItemNeed('customer', 'del', unicode(customer_row.id)))
+            # 客户打印权限
+            identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
+        # 报价-----------------------------------------------------------------------
+        quotation_rows_condition = {
+            'uid': current_user.id
+        }
+        quotation_rows = get_quotation_rows(**quotation_rows_condition)
+        for quotation_row in quotation_rows:
+            # 报价读取权限
+            identity.provides.add(SectionActionItemNeed('quotation', 'get', unicode(quotation_row.id)))
+            # 报价编辑权限
+            identity.provides.add(SectionActionItemNeed('quotation', 'edit', unicode(quotation_row.id)))
+            # 报价删除权限
+            identity.provides.add(SectionActionItemNeed('quotation', 'del', unicode(quotation_row.id)))
+            # 报价打印权限
+            identity.provides.add(SectionActionItemNeed('quotation', 'print', unicode(quotation_row.id)))
+
+    # 角色 - 采购
+    if current_user.role_id == TYPE_ROLE_PURCHASER:
+        # 赋予整体角色权限
+        identity.provides.add(RoleNeed('采购'))
+        # 版块基本操作权限（销售）
+        # （创建、查询、统计）
+        # 渠道-----------------------------------------------------------------------
+        # 渠道创建
+        identity.provides.add(SectionActionNeed('supplier', 'add'))
+        # 渠道查询
+        identity.provides.add(SectionActionNeed('supplier', 'search'))
+        # 渠道统计
+        identity.provides.add(SectionActionNeed('supplier', 'stats'))
+        # 询价-----------------------------------------------------------------------
+        # 询价创建
+        identity.provides.add(SectionActionNeed('enquiry', 'add'))
+        # 询价查询
+        identity.provides.add(SectionActionNeed('enquiry', 'search'))
+        # 询价统计
+        identity.provides.add(SectionActionNeed('enquiry', 'stats'))
 
         # 版块明细操作权限（销售）
         # （读取、编辑、删除、打印）

@@ -110,12 +110,6 @@ def lists(page=1):
     )
 
 
-@bp_customer_invoice.route('/add.html', methods=['GET', 'POST'])
-@login_required
-def add():
-    return jsonify({})
-
-
 @bp_customer_invoice.route('/<int:customer_id>.html', methods=['GET', 'POST'])
 @login_required
 def edit(customer_id):

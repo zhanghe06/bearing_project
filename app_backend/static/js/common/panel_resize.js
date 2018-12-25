@@ -1,5 +1,5 @@
 $(function () {
-    var collapse_search_obj = $('#collapseSearch')
+    var collapse_search_obj = $('.panel-collapse')
 
     collapse_search_obj.on('shown.bs.collapse', function () {
         $(this).parent().find('.panel_resize_btn').removeClass('glyphicon-resize-full')

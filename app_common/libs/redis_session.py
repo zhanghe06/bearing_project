@@ -35,9 +35,7 @@ class RedisSessionInterface(SessionInterface):
     session_class = RedisSession
 
     def __init__(self, redis=None, prefix='session:', **kwargs):
-        if redis is None:
-            redis = Redis(**kwargs)
-        self.redis = redis
+        self.redis = redis or Redis(**kwargs)
         self.prefix = prefix
 
     @staticmethod

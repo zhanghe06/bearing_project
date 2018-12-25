@@ -71,6 +71,7 @@
                             </label>
                         </th>
                         <th>{{ _('user name') }}</th>
+                        <th>{{ _('user mobile') }}</th>
                         <th>{{ _('user role') }}</th>
                         <th>{{ _('user leader') }}</th>
                         <th>{{ _('online status') }}</th>
@@ -89,7 +90,8 @@
                                 </label>
                             </td>
                             <td><a href="{{ url_for('user.info', user_id=info.id) }}" rel="tooltip"
-                                   title="{{ _('Click details') }}">{{ info.name }}</a></td>
+                                   title="{{ _('Click details') }}">{{ info.name }}</a> <small>{{ info.salutation }}</small></td>
+                            <td>{{ info.mobile }}</td>
                             <td>{{ info.role_id | type_role }}</td>
                             <td>{{ info.parent_id | user_name }}</td>
                             <td>{% if info.id | status_online %}
