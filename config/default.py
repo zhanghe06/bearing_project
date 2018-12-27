@@ -90,6 +90,10 @@ DOCUMENT_INFO = {
     'APP_NAME': _('App Name'),  # 应用名称
     'COMPANY_NAME_EN': 'Bearing Technology Co., Ltd.',      # 公司名称英文
     'COMPANY_NAME_CN': _('Bearing Technology Co., Ltd.'),   # 公司名称中文
+    'COMPANY_ADDRESS_EN': 'Room 1024 Level 10, No.100, East Yan\'an Road, Huangpu District, Shanghai, P. R. China',     # 公司地址英文
+    'COMPANY_ADDRESS_CN': _('Room 1024 Level 10, No.100, East Yan\'an Road, Huangpu District, Shanghai, P. R. China'),  # 公司地址中文
+    'COMPANY_TEL': '021-66666666',  # 公司电话
+    'COMPANY_FAX': '021-88888888',  # 公司传真
 }
 
 PER_PAGE_FRONTEND = 12
@@ -162,6 +166,19 @@ WEIBO_OAUTH = {
     # since weibo's response is a shit, we need to force parse the content
     'content_type': 'application/json',
 }
+
+
+# 邮件配置
+MAIL_SERVER = 'localhost'
+MAIL_PORT = 25
+MAIL_USE_TLS = False
+MAIL_USE_SSL = False
+MAIL_DEBUG = DEBUG
+MAIL_USERNAME = None
+MAIL_PASSWORD = None
+MAIL_DEFAULT_SENDER = ('no-reply', 'no-reply@localhost')
+MAIL_MAX_EMAILS = None
+MAIL_ASCII_ATTACHMENTS = False
 
 
 # 业务配置

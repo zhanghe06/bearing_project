@@ -37,6 +37,7 @@ pip install pyexcel-xls
 pip install Flask-Principal
 pip install Flask-Babel
 pip install Flask-Moment
+pip install Flask-Mail
 pip install sqlacodegen==1.1.6  # 注意: 最新版 sqlacodegen==2.0 有bug
 pip install gunicorn
 pip install eventlet
@@ -307,6 +308,12 @@ cli 模式下, 需要加入如下代码
 ctx = app.app_context()
 ctx.push()
 ```
+或者
+```
+with app.app_context():
+    ...
+    pass
+```
 
 参考:
 
@@ -336,6 +343,11 @@ https://pypi.org/project/mysqlclient/
 `auth_key` VARBINARY(60)
 `auth_secret` VARBINARY(60)
 ```
+
+
+## Flask-Mail
+
+https://pythonhosted.org/Flask-Mail/
 
 
 ## 系统日志 和 服务监控

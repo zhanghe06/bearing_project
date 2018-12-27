@@ -80,8 +80,8 @@ def lists(page=1):
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.cid.data and form.company_name.data:
-                search_condition.append(SupplierInvoice.cid == form.cid.data)
+            if form.supplier_cid.data and form.supplier_company_name.data:
+                search_condition.append(SupplierInvoice.cid == form.supplier_cid.data)
             if form.company_tax_id.data:
                 search_condition.append(SupplierInvoice.contact_name == form.company_tax_id.data)
         # 处理导出

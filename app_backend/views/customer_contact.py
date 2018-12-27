@@ -127,14 +127,14 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.cid.data and form.company_name.data:
-                search_condition.append(CustomerContact.cid == form.cid.data)
+            if form.customer_cid.data and form.customer_company_name.data:
+                search_condition.append(CustomerContact.cid == form.customer_cid.data)
             if form.contact_name.data:
                 search_condition.append(CustomerContact.name == form.contact_name.data)
             if form.address.data:
                 search_condition.append(CustomerContact.address.like('%%%s%%' % form.address.data))
             if form.mobile.data:
-                search_condition.append(CustomerContact.mobile == form.company_name.data)
+                search_condition.append(CustomerContact.mobile == form.mobile.data)
 
         # 处理导出
         if form.op.data == 1:

@@ -21,6 +21,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_moment import Moment
 from flask_oauthlib.client import OAuth
+from flask_mail import Mail
 from flask_principal import Principal
 import flask_excel as excel
 # from flask_socketio import SocketIO
@@ -71,6 +72,9 @@ excel.init_excel(app)
 
 # 第三方开放授权登录
 oauth = OAuth(app)
+
+# 邮件
+mail = Mail(app)
 
 # GitHub
 oauth_github = oauth.remote_app(
