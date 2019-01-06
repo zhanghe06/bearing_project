@@ -356,10 +356,10 @@ def search():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.cid.data:
-                search_condition.append(CustomerContact.cid == form.cid.data)
-            if form.contact_name.data:
-                search_condition.append(CustomerContact.name.like('%%%s%%' % form.contact_name.data))
+            if form.customer_cid.data:
+                search_condition.append(CustomerContact.cid == form.customer_cid.data)
+            if form.customer_contact_name.data:
+                search_condition.append(CustomerContact.name.like('%%%s%%' % form.customer_contact_name.data))
     # 翻页数据
     pagination = get_customer_contact_pagination(form.page.data, PER_PAGE_BACKEND_MODAL, *search_condition)
 

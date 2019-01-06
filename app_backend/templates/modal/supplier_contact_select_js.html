@@ -15,7 +15,7 @@
 
             // 搜索关键词可以为空
             var input_group_obj = $(this).parents('div.input-group')
-            var supplier_contact_input = input_group_obj.find('input[name="contact_name"]')
+            var supplier_contact_input = input_group_obj.find('input[name="supplier_contact_name"]')
             var keywords = supplier_contact_input.val()
             $.session.set('supplier_contact_keywords', keywords)
             $.session.set('supplier_cid', input_cid_value)
@@ -38,8 +38,8 @@
 
                 return false
             } else {
-                $('input[name$="contact_id"]').val(contact_id)
-                $('input[name$="contact_name"]').val($.session.get('contact_name'))
+                $('input[name$="supplier_contact_id"]').val(contact_id)
+                $('input[name$="supplier_contact_name"]').val($.session.get('contact_name'))
                 $('#supplier_contact_select_modal').modal('hide')
             }
         })

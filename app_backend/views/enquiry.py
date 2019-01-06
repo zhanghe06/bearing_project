@@ -124,8 +124,8 @@ def lists():
         else:
             if form.uid.data != default_choice_option_int:
                 search_condition.append(Enquiry.uid == form.uid.data)
-            if form.cid.data and form.company_name.data:
-                search_condition.append(Enquiry.cid == form.cid.data)
+            if form.supplier_cid.data and form.supplier_company_name.data:
+                search_condition.append(Enquiry.supplier_cid == form.supplier_cid.data)
             if form.start_create_time.data:
                 search_condition.append(Enquiry.create_time >= form.start_create_time.data)
             if form.end_create_time.data:
@@ -213,7 +213,7 @@ def info(enquiry_id):
         abort(410)
 
     # 公司信息
-    company_info = get_supplier_row_by_id(enquiry_info.cid)
+    company_info = get_supplier_row_by_id(enquiry_info.supplier_cid)
 
     template_name = 'enquiry/info.html'
 
@@ -251,7 +251,6 @@ def add():
     form = EnquiryAddForm(request.form)
     form.uid.choices = get_user_choices()
     form.uid.data = current_user.id
-    # form.contact_id.choices = default_choices_int
     form.status_order.choices = STATUS_ORDER_CHOICES
 
     # 进入创建页面
@@ -310,8 +309,8 @@ def add():
         current_time = datetime.utcnow()
         enquiry_data = {
             'uid': form.uid.data,
-            'cid': form.cid.data,
-            'contact_id': form.contact_id.data,
+            'supplier_cid': form.supplier_cid.data,
+            'supplier_contact_id': form.supplier_contact_id.data,
             'status_order': form.status_order.data,
             'expiry_date': (datetime.utcnow() + timedelta(days=7)).strftime('%Y-%m-%d'),
             'create_time': current_time,
@@ -325,8 +324,8 @@ def add():
             enquiry_item_data = {
                 'enquiry_id': enquiry_id,
                 'uid': form.uid.data,
-                'quotation_cid': form.cid.data,
-                'quotation_company_name': get_supplier_row_by_id(form.cid.data).company_name,
+                'supplier_cid': form.supplier_cid.data,
+                'supplier_company_name': get_supplier_row_by_id(form.supplier_cid.data).company_name,
                 'enquiry_production_model': enquiry_item.form.enquiry_production_model.data,
                 'enquiry_quantity': enquiry_item.form.enquiry_quantity.data,
                 'production_id': enquiry_item.form.production_id.data,
@@ -409,8 +408,8 @@ def edit(enquiry_id):
         enquiry_items = get_enquiry_items_rows(enquiry_id=enquiry_id)
         # 表单赋值
         form.uid.data = enquiry_info.uid
-        form.cid.data = enquiry_info.cid
-        form.contact_id.data = enquiry_info.contact_id
+        form.supplier_cid.data = enquiry_info.supplier_cid
+        form.supplier_contact_id.data = enquiry_info.supplier_contact_id
         form.status_order.data = enquiry_info.status_order
         form.amount_enquiry.data = enquiry_info.amount_enquiry
         # form.enquiry_items = enquiry_items
@@ -504,8 +503,8 @@ def edit(enquiry_id):
             enquiry_item_data = {
                 'enquiry_id': enquiry_id,
                 'uid': form.uid.data,
-                'quotation_cid': form.cid.data,
-                'quotation_company_name': get_supplier_row_by_id(form.cid.data).company_name,
+                'supplier_cid': form.supplier_cid.data,
+                'supplier_company_name': get_supplier_row_by_id(form.supplier_cid.data).company_name,
                 'enquiry_production_model': enquiry_item.form.enquiry_production_model.data,
                 'enquiry_quantity': enquiry_item.form.enquiry_quantity.data,
                 'production_id': enquiry_item.form.production_id.data,
@@ -536,9 +535,9 @@ def edit(enquiry_id):
         # 更新询价
         current_time = datetime.utcnow()
         enquiry_data = {
-            'cid': form.cid.data,
+            'supplier_cid': form.supplier_cid.data,
             'uid': form.uid.data,
-            'contact_id': form.contact_id.data,
+            'supplier_contact_id': form.supplier_contact_id.data,
             'status_order': form.status_order.data,
             'amount_production': amount_enquiry,
             'amount_enquiry': amount_enquiry,
@@ -581,10 +580,10 @@ def preview(enquiry_id):
     enquiry_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(enquiry_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
-    supplier_info = get_supplier_row_by_id(enquiry_info.cid)
+    supplier_info = get_supplier_row_by_id(enquiry_info.supplier_cid)
 
     # 获取渠道联系方式
-    supplier_contact_info = get_supplier_contact_row_by_id(enquiry_info.contact_id)
+    supplier_contact_info = get_supplier_contact_row_by_id(enquiry_info.supplier_contact_id)
 
     # 获取询价人员信息
     user_info = get_user_row_by_id(enquiry_info.uid)
@@ -631,10 +630,10 @@ def pdf(enquiry_id):
     enquiry_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(enquiry_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
-    supplier_info = get_supplier_row_by_id(enquiry_info.cid)
+    supplier_info = get_supplier_row_by_id(enquiry_info.supplier_cid)
 
     # 获取客户联系方式
-    supplier_contact_info = get_supplier_contact_row_by_id(enquiry_info.contact_id)
+    supplier_contact_info = get_supplier_contact_row_by_id(enquiry_info.supplier_contact_id)
 
     # 获取询价人员信息
     user_info = get_user_row_by_id(enquiry_info.uid)

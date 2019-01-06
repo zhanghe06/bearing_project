@@ -24,7 +24,7 @@
                 return false
             } else {
                 $('input[name$="customer_cid"]').val(company_id)
-                $('input[name$="customer_company_name"]').val($.session.get('customer_company_name'))
+                $('input[name$="customer_company_name"]').val($.session.get('company_name'))
                 $('#customer_select_modal').modal('hide')
             }
         })

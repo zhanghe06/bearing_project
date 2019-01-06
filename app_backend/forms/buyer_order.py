@@ -293,64 +293,64 @@ class BuyerOrderItemsEditForm(BuyerOrderItemsAddForm):
 
 class BuyerOrderAddForm(FlaskForm):
     uid = SelectField(
-        _('buyer user'),
+        _('buyer order user'),
         validators=[
             DataRequired(),
         ],
         default=default_choice_option_int,
         coerce=int,
         # choices=quotation_brand_choices,
-        description=_('buyer user'),
+        description=_('buyer order user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('buyer user'),
+            'title': _('buyer order user'),
         }
     )
-    cid = IntegerField(
-        _('customer id'),
+    supplier_cid = IntegerField(
+        _('supplier company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('customer id'),
+        description=_('supplier company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('supplier company id'),
+            'placeholder': _('supplier company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    supplier_company_name = StringField(
+        _('supplier company name'),
         validators=[],
-        description=_('company name'),
+        description=_('supplier company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('supplier company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('supplier company name'),
         }
     )
-    contact_id = IntegerField(
-        _('customer contact id'),
+    supplier_contact_id = IntegerField(
+        _('supplier contact id'),
         validators=[
             DataRequired(),
         ],
         # default=0,
-        description=_('customer contact id'),
+        description=_('supplier contact id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer contact id'),
+            'title': _('supplier contact id'),
             'type': 'hidden',
         }
     )
-    contact_name = StringField(
-        _('customer contact name'),
+    supplier_contact_name = StringField(
+        _('supplier contact name'),
         validators=[],
-        description=_('customer contact name'),
+        description=_('supplier contact name'),
         render_kw={
-            'placeholder': _('customer contact name'),
+            'placeholder': _('supplier contact name'),
             'rel': 'tooltip',
-            'title': _('customer contact name'),
+            'title': _('supplier contact name'),
         }
     )
     delivery_way = StringField(
@@ -415,60 +415,60 @@ class BuyerOrderAddForm(FlaskForm):
 
 class BuyerOrderEditForm(FlaskForm):
     uid = SelectField(
-        _('quotation user'),
+        _('buyer order user'),
         validators=[],
         coerce=int,
-        description=_('quotation user'),
+        description=_('buyer order user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('quotation user'),
+            'title': _('buyer order user'),
         }
     )
-    cid = IntegerField(
-        _('customer id'),
+    supplier_cid = IntegerField(
+        _('supplier company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('customer id'),
+        description=_('supplier company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('supplier company id'),
+            'placeholder': _('supplier company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    supplier_company_name = StringField(
+        _('supplier company name'),
         validators=[],
-        description=_('company name'),
+        description=_('supplier company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('supplier company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('supplier company name'),
         }
     )
-    contact_id = IntegerField(
-        _('customer contact id'),
+    supplier_contact_id = IntegerField(
+        _('supplier contact id'),
         validators=[
             DataRequired(),
         ],
         # default=0,
-        description=_('customer contact id'),
+        description=_('supplier contact id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer contact id'),
+            'title': _('supplier contact id'),
             'type': 'hidden',
         }
     )
-    contact_name = StringField(
-        _('customer contact name'),
+    supplier_contact_name = StringField(
+        _('supplier contact name'),
         validators=[],
-        description=_('customer contact name'),
+        description=_('supplier contact name'),
         render_kw={
-            'placeholder': _('customer contact name'),
+            'placeholder': _('supplier contact name'),
             'rel': 'tooltip',
-            'title': _('customer contact name'),
+            'title': _('supplier contact name'),
         }
     )
     delivery_way = StringField(
@@ -492,13 +492,13 @@ class BuyerOrderEditForm(FlaskForm):
         }
     )
     note = StringField(
-        _('order note'),
+        _('buyer order note'),
         validators=[],
-        description=_('order note'),
+        description=_('buyer order note'),
         render_kw={
-            'placeholder': _('order note'),
+            'placeholder': _('buyer order note'),
             'rel': 'tooltip',
-            'title': _('order note'),
+            'title': _('buyer order note'),
         }
     )
     amount_buyer_orders = DecimalField(

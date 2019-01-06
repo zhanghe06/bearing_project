@@ -88,7 +88,8 @@
                             {{ form.captcha(class="form-control") }}
 
                             <span class="input-group-addon" id="basic-addon2" style="padding: 0;border: 0">
-                            <img src="{{ url_for('captcha.get_code', code_type='login', t=t) }}"
+{#                            <img src="{{ url_for('captcha.get_code', code_type='login', t=t) }}"#}
+                            <img src="{{ url_for('static', filename='img/code.png') }}"
                                  data-html="true" data-toggle="tooltip" data-placement="top"
                                  rel="tooltip"
                                  title="{{ _('Unsharpness<br/>Change next') }}"
@@ -171,6 +172,9 @@
             toggle_password_obj.bind('click', toggle_password)
             captcha_img_obj.bind('click', refresh_code)
         }
+
+        // 强制刷新验证码
+        refresh_code();
     })
 
 </script>

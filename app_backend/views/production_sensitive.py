@@ -114,8 +114,8 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.cid.data and form.company_name.data:
-                search_condition.append(ProductionSensitive.cid == form.cid.data)
+            if form.customer_cid.data and form.customer_company_name.data:
+                search_condition.append(ProductionSensitive.customer_cid == form.customer_cid.data)
             if form.production_brand.data != default_choice_option_str:
                 search_condition.append(ProductionSensitive.production_sensitive_brand == form.production_brand.data)
             if form.production_model.data:
@@ -207,8 +207,8 @@ def add():
         # 表单校验成功
         current_time = datetime.utcnow()
         production_sensitive_data = {
-            'cid': form.cid.data,
-            'company_name': get_customer_row_by_id(form.cid.data).company_name,
+            'customer_cid': form.customer_cid.data,
+            'customer_company_name': get_customer_row_by_id(form.customer_cid.data).company_name,
             'production_id': form.production_id.data,
             'production_brand': form.production_brand.data.upper(),
             'production_model': form.production_model.data.upper(),
@@ -260,8 +260,8 @@ def edit(production_sensitive_id):
     if request.method == 'GET':
         # 表单赋值
         form.id.data = production_sensitive_info.id
-        form.cid.data = production_sensitive_info.cid
-        form.company_name.data = production_sensitive_info.company_name
+        form.customer_cid.data = production_sensitive_info.customer_cid
+        form.customer_company_name.data = production_sensitive_info.customer_company_name
         form.production_id.data = production_sensitive_info.production_id
         form.production_brand.data = production_sensitive_info.production_brand
         form.production_model.data = production_sensitive_info.production_model
@@ -291,8 +291,8 @@ def edit(production_sensitive_id):
         # 表单校验成功
         current_time = datetime.utcnow()
         production_sensitive_data = {
-            'cid': form.cid.data,
-            'company_name': get_customer_row_by_id(form.cid.data).company_name,
+            'customer_cid': form.customer_cid.data,
+            'customer_company_name': get_customer_row_by_id(form.customer_cid.data).company_name,
             'production_id': form.production_id.data,
             'production_brand': form.production_brand.data.upper(),
             'production_model': form.production_model.data.upper(),

@@ -122,7 +122,7 @@ def lists():
             if form.uid.data != default_choice_option_int:
                 search_condition.append(Quotation.uid == form.uid.data)
             if form.customer_cid.data and form.customer_company_name.data:
-                search_condition.append(Quotation.cid == form.customer_cid.data)
+                search_condition.append(Quotation.customer_cid == form.customer_cid.data)
             if form.start_create_time.data:
                 search_condition.append(Quotation.create_time >= form.start_create_time.data)
             if form.end_create_time.data:
@@ -210,7 +210,7 @@ def info(quotation_id):
         abort(410)
 
     # 公司信息
-    company_info = get_customer_row_by_id(quotation_info.cid)
+    company_info = get_customer_row_by_id(quotation_info.customer_cid)
 
     template_name = 'quotation/info.html'
 
@@ -248,7 +248,6 @@ def add():
     form = QuotationAddForm(request.form)
     form.uid.choices = get_user_choices()
     form.uid.data = current_user.id
-    # form.contact_id.choices = default_choices_int
     form.status_order.choices = STATUS_ORDER_CHOICES
 
     # 进入创建页面
@@ -307,8 +306,8 @@ def add():
         current_time = datetime.utcnow()
         quotation_data = {
             'uid': form.uid.data,
-            'cid': form.cid.data,
-            'contact_id': form.contact_id.data,
+            'customer_cid': form.customer_cid.data,
+            'customer_contact_id': form.customer_contact_id.data,
             'delivery_way': form.delivery_way.data,
             'note': form.note.data,
             'status_order': form.status_order.data,
@@ -324,8 +323,8 @@ def add():
             quotation_item_data = {
                 'quotation_id': quotation_id,
                 'uid': form.uid.data,
-                'enquiry_cid': form.cid.data,
-                'enquiry_company_name': get_customer_row_by_id(form.cid.data).company_name,
+                'customer_cid': form.customer_cid.data,
+                'customer_company_name': get_customer_row_by_id(form.customer_cid.data).company_name,
                 'enquiry_production_model': quotation_item.form.enquiry_production_model.data,
                 'enquiry_quantity': quotation_item.form.enquiry_quantity.data,
                 'production_id': quotation_item.form.production_id.data,
@@ -408,8 +407,8 @@ def edit(quotation_id):
         quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
         # 表单赋值
         form.uid.data = quotation_info.uid
-        form.cid.data = quotation_info.cid
-        form.contact_id.data = quotation_info.contact_id
+        form.customer_cid.data = quotation_info.customer_cid
+        form.customer_contact_id.data = quotation_info.customer_contact_id
         form.delivery_way.data = quotation_info.delivery_way
         form.note.data = quotation_info.note
         form.status_order.data = quotation_info.status_order
@@ -505,8 +504,8 @@ def edit(quotation_id):
             quotation_item_data = {
                 'quotation_id': quotation_id,
                 'uid': form.uid.data,
-                'enquiry_cid': form.cid.data,
-                'enquiry_company_name': get_customer_row_by_id(form.cid.data).company_name,
+                'customer_cid': form.customer_cid.data,
+                'customer_company_name': get_customer_row_by_id(form.customer_cid.data).company_name,
                 'enquiry_production_model': quotation_item.form.enquiry_production_model.data,
                 'enquiry_quantity': quotation_item.form.enquiry_quantity.data,
                 'production_id': quotation_item.form.production_id.data,
@@ -537,9 +536,9 @@ def edit(quotation_id):
         # 更新报价
         current_time = datetime.utcnow()
         quotation_data = {
-            'cid': form.cid.data,
+            'customer_cid': form.customer_cid.data,
             'uid': form.uid.data,
-            'contact_id': form.contact_id.data,
+            'customer_contact_id': form.customer_contact_id.data,
             'delivery_way': form.delivery_way.data,
             'note': form.note.data,
             'status_order': form.status_order.data,
@@ -584,10 +583,10 @@ def preview(quotation_id):
     quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
-    customer_info = get_customer_row_by_id(quotation_info.cid)
+    customer_info = get_customer_row_by_id(quotation_info.customer_cid)
 
     # 获取客户联系方式
-    customer_contact_info = get_customer_contact_row_by_id(quotation_info.contact_id)
+    customer_contact_info = get_customer_contact_row_by_id(quotation_info.customer_contact_id)
 
     # 获取报价人员信息
     user_info = get_user_row_by_id(quotation_info.uid)
@@ -634,10 +633,10 @@ def pdf(quotation_id):
     quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
-    customer_info = get_customer_row_by_id(quotation_info.cid)
+    customer_info = get_customer_row_by_id(quotation_info.customer_cid)
 
     # 获取客户联系方式
-    customer_contact_info = get_customer_contact_row_by_id(quotation_info.contact_id)
+    customer_contact_info = get_customer_contact_row_by_id(quotation_info.customer_contact_id)
 
     # 获取报价人员信息
     user_info = get_user_row_by_id(quotation_info.uid)

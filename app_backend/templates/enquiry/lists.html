@@ -30,13 +30,13 @@
                                 {{ form.uid.label() }}
                                 {{ form.uid(class="form-control") }}
                             </div>
-                            <div class="form-group form-group-sm{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
-                                {{ form.cid() }}
-                                {{ form.company_name.label() }}
+                            <div class="form-group form-group-sm{% if form.supplier_cid.errors or form.supplier_company_name.errors %} has-error{% endif %}">
+                                {{ form.supplier_cid() }}
+                                {{ form.supplier_company_name.label() }}
                                 <div class="input-group">
-                                    {{ form.company_name(
+                                    {{ form.supplier_company_name(
                                     class="form-control",
-                                    title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
+                                    title=form.supplier_cid.errors|join(', ') or form.supplier_company_name.errors|join(', '),
                                     autocomplete="off"
                                     ) }}
                                     <span class="input-group-addon glyphicon glyphicon-option-horizontal supplier_select_search_btn"
@@ -98,7 +98,7 @@
                             </td>
                             <td><a href="{{ url_for('enquiry.edit', enquiry_id=info.id) }}">{{ g.ENQUIRIES_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
                             <td>{{ info.uid | user_name }}</td>
-                            <td>{{ info.cid | supplier_company_name }}</td>
+                            <td>{{ info.supplier_cid | supplier_company_name }}</td>
                             <td class="text-right">{{ '{:,}'.format(info.amount_enquiry) }}</td>
                             <td>{{ info.note }}</td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>

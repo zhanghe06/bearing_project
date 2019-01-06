@@ -225,8 +225,8 @@ def add():
         current_time = datetime.utcnow()
         buyer_order_data = {
             'uid': form.uid.data,
-            'cid': form.cid.data,
-            'contact_id': form.contact_id.data,
+            'supplier_cid': form.supplier_cid.data,
+            'supplier_contact_id': form.supplier_contact_id.data,
             'type_tax': form.type_tax.data,
             'delivery_way': form.delivery_way.data,
             'create_time': current_time,
@@ -240,8 +240,8 @@ def add():
             buyer_order_item_data = {
                 'buyer_order_id': buyer_order_id,
                 'uid': form.uid.data,
-                'cid': form.cid.data,
-                'company_name': get_supplier_row_by_id(form.cid.data).company_name,
+                'supplier_cid': form.supplier_cid.data,
+                'supplier_company_name': get_supplier_row_by_id(form.supplier_cid.data).company_name,
                 'custom_production_brand': buyer_order_item.form.custom_production_brand.data,
                 'custom_production_model': buyer_order_item.form.custom_production_model.data,
                 'production_id': buyer_order_item.form.production_id.data,
@@ -277,7 +277,7 @@ def add():
         # 创建操作成功
         if result:
             flash(_('Add Success'), 'success')
-            return redirect(request.args.get('next') or url_for('buyer_orders.lists'))
+            return redirect(request.args.get('next') or url_for('buyer_order.lists'))
         # 创建操作失败
         else:
             flash(_('Add Failure'), 'danger')
@@ -324,8 +324,8 @@ def edit(buyer_order_id):
         buyer_order_items = get_buyer_order_items_rows(buyer_order_id=buyer_order_id)
         # 表单赋值
         form.uid.data = buyer_order_info.uid
-        form.cid.data = buyer_order_info.cid
-        form.contact_id.data = buyer_order_info.contact_id
+        form.supplier_cid.data = buyer_order_info.supplier_cid
+        form.supplier_contact_id.data = buyer_order_info.supplier_contact_id
         form.type_tax.data = buyer_order_info.type_tax
         form.amount_buyer_orders.data = buyer_order_info.amount_order
         # form.buyer_order_items = buyer_order_items
@@ -336,8 +336,8 @@ def edit(buyer_order_id):
             buyer_order_item_form.id = buyer_order_item.id
             buyer_order_item_form.buyer_order_id = buyer_order_item.buyer_order_id
             buyer_order_item_form.uid = buyer_order_item.uid
-            buyer_order_item_form.cid = buyer_order_item.cid
-            buyer_order_item_form.company_name = buyer_order_item.company_name
+            # buyer_order_item_form.supplier_cid = buyer_order_item.supplier_cid
+            # buyer_order_item_form.supplier_company_name = buyer_order_item.supplier_company_name
             buyer_order_item_form.custom_production_brand = buyer_order_item.custom_production_brand
             buyer_order_item_form.custom_production_model = buyer_order_item.custom_production_model
             buyer_order_item_form.production_id = buyer_order_item.production_id
@@ -422,8 +422,8 @@ def edit(buyer_order_id):
             buyer_order_item_data = {
                 'buyer_order_id': buyer_order_id,
                 'uid': form.uid.data,
-                'cid': form.cid.data,
-                'company_name': get_supplier_row_by_id(form.cid.data).company_name,
+                'supplier_cid': form.supplier_cid.data,
+                'supplier_company_name': get_supplier_row_by_id(form.supplier_cid.data).company_name,
                 'custom_production_brand': buyer_order_item.form.custom_production_brand.data,
                 'custom_production_model': buyer_order_item.form.custom_production_model.data,
                 'production_id': buyer_order_item.form.production_id.data,
@@ -451,12 +451,12 @@ def edit(buyer_order_id):
         for buyer_order_items_id in buyer_order_items_ids_del:
             delete_buyer_order_items(buyer_order_items_id)
 
-        # 更新询价
+        # 更新采购订单
         current_time = datetime.utcnow()
         buyer_order_data = {
-            'cid': form.cid.data,
             'uid': form.uid.data,
-            'contact_id': form.contact_id.data,
+            'supplier_cid': form.supplier_cid.data,
+            'supplier_contact_id': form.supplier_contact_id.data,
             'type_tax': form.type_tax.data,
             'amount_production': amount_buyer_order,
             'amount_order': amount_buyer_order,

@@ -92,14 +92,14 @@ class CustomerContactSearchForm(FlaskForm):
             'autocomplete': 'off',
         }
     )
-    contact_name = StringField(
-        _('contact name'),
+    customer_contact_name = StringField(
+        _('customer contact name'),
         validators=[],
-        description=_('contact name'),
+        description=_('customer contact name'),
         render_kw={
-            'placeholder': _('contact name'),
+            'placeholder': _('customer contact name'),
             'rel': 'tooltip',
-            'title': _('contact name'),
+            'title': _('customer contact name'),
             'autocomplete': 'off',
         }
     )

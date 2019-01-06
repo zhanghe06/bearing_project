@@ -319,36 +319,35 @@ class QuotationAddForm(FlaskForm):
             'title': _('quotation user'),
         }
     )
-    cid = IntegerField(
-        _('customer id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('customer id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('customer company name'),
         }
     )
-    contact_id = IntegerField(
+    customer_contact_id = IntegerField(
         _('customer contact id'),
         validators=[
             DataRequired(),
         ],
-        # default=0,
         description=_('customer contact id'),
         render_kw={
             'rel': 'tooltip',
@@ -356,7 +355,7 @@ class QuotationAddForm(FlaskForm):
             'type': 'hidden',
         }
     )
-    contact_name = StringField(
+    customer_contact_name = StringField(
         _('customer contact name'),
         validators=[],
         description=_('customer contact name'),
@@ -439,31 +438,32 @@ class QuotationEditForm(FlaskForm):
             'title': _('quotation user'),
         }
     )
-    cid = IntegerField(
-        _('customer id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('customer id'),
+        default=0,
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('customer company name'),
         }
     )
-    contact_id = IntegerField(
+    customer_contact_id = IntegerField(
         _('customer contact id'),
         validators=[
             DataRequired(),
@@ -476,7 +476,7 @@ class QuotationEditForm(FlaskForm):
             'type': 'hidden',
         }
     )
-    contact_name = StringField(
+    customer_contact_name = StringField(
         _('customer contact name'),
         validators=[],
         description=_('customer contact name'),

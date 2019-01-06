@@ -29,29 +29,29 @@ class ProductionSensitiveSearchForm(FlaskForm):
     """
     搜索表单
     """
-    cid = IntegerField(
-        _('customer id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             InputRequired(),
         ],
         default=0,
-        description=_('customer id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('customer company name'),
         }
     )
     production_brand = SelectField(
@@ -91,29 +91,29 @@ class ProductionSensitiveAddForm(FlaskForm):
     """
     创建表单
     """
-    cid = IntegerField(
-        _('customer id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             DataRequired(),
         ],
         default=0,
-        description=_('customer id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('customer company name'),
             'autocomplete': 'off',
         }
     )

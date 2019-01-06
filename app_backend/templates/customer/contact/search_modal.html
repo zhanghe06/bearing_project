@@ -18,10 +18,10 @@
                     <div class="panel-body">
                         <div id="customer_contact_search_form" class="form-inline">
                             {{ form.csrf_token }}
-                            {{ form.cid() }}
-                            <div class="form-group{% if form.contact_name.errors %} has-error{% endif %}">
-                                {{ form.contact_name.label() }}
-                                {{ form.contact_name(class="form-control input-sm") }}
+                            {{ form.customer_cid() }}
+                            <div class="form-group{% if form.customer_contact_name.errors %} has-error{% endif %}">
+                                {{ form.customer_contact_name.label() }}
+                                {{ form.customer_contact_name(class="form-control input-sm") }}
                             </div>
                             <button type="submit" class="btn-sm btn-primary" name="op"
                                     value="0">{{ _('Search') }}</button>
@@ -50,7 +50,7 @@
                         <tr class="text-muted customer_contact_select_tr" style="cursor: pointer">
                             <td>
                                 <label>
-                                    <input name="contact_id" disabled="disabled" title="{{ _('Select') }}"
+                                    <input name="customer_contact_id" disabled="disabled" title="{{ _('Select') }}"
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
@@ -59,7 +59,7 @@
 {#                                       value="{{ info.cid | customer_company_name }}"/>#}
 {#                            </td>#}
                             <td>{{ info.name}}
-                                <input name="contact_name" disabled="disabled" type="hidden"
+                                <input name="customer_contact_name" disabled="disabled" type="hidden"
                                        value="{{ info.name }}"/>
                             </td>
                             <td>{{ info.salutation}}</td>
@@ -90,8 +90,8 @@
 
             // 公司必选
             if (customer_cid) {
-                customer_contact_search_form.find('input[name="contact_name"]').val(keywords)
-                customer_contact_search_form.find('input[name="cid"]').val(customer_cid)
+                customer_contact_search_form.find('input[name="customer_contact_name"]').val(keywords)
+                customer_contact_search_form.find('input[name="customer_cid"]').val(customer_cid)
 
                 $('form').submit()
                 $.session.clear()
@@ -99,18 +99,18 @@
 
             $('.customer_contact_select_tr').on('click', function () {
 
-                var current_checkbox = $(this).find('input[name="contact_id"]')
+                var current_checkbox = $(this).find('input[name="customer_contact_id"]')
 
                 if (current_checkbox.prop('checked')) {
-                    $('input[name="contact_id"]').prop('checked', false)
+                    $('input[name="customer_contact_id"]').prop('checked', false)
                     current_checkbox.prop('checked', false)
                     $.session.remove('contact_id')
                     $.session.remove('contact_name')
                 } else {
-                    $('input[name="contact_id"]').prop('checked', false)
+                    $('input[name="customer_contact_id"]').prop('checked', false)
                     current_checkbox.prop('checked', true)
-                    $.session.set('contact_id', $(this).find('input[name="contact_id"]').val())
-                    $.session.set('contact_name', $(this).find('input[name="contact_name"]').val())
+                    $.session.set('contact_id', $(this).find('input[name="customer_contact_id"]').val())
+                    $.session.set('contact_name', $(this).find('input[name="customer_contact_name"]').val())
                 }
             })
         })

@@ -98,7 +98,7 @@
                             </td>
                             <td><a href="{{ url_for('buyer_order.edit', buyer_order_id=info.id) }}">{{ g.BUYER_ORDER_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
                             <td>{{ info.uid | user_name }}</td>
-                            <td>{{ info.cid | supplier_company_name }}</td>
+                            <td>{{ info.supplier_cid | supplier_company_name }}</td>
                             <td class="text-right">{{ '{:,}'.format(info.amount_order) }}</td>
                             <td>{{ info.note }}</td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>

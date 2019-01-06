@@ -104,7 +104,7 @@ def get_sales_user_list():
 @permission_supplier_section_search.require(http_exception=403)
 def lists():
     """
-    客户联系方式列表
+    渠道联系方式列表
     :return:
     """
     template_name = 'supplier/contact/lists.html'
@@ -332,7 +332,7 @@ def edit(supplier_id):
 @permission_supplier_section_search.require(http_exception=403)
 def search():
     """
-    客户联系方式搜索
+    渠道联系方式搜索
     :return:
     """
     template_name = 'supplier/contact/search_modal.html'
@@ -356,10 +356,10 @@ def search():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.cid.data:
-                search_condition.append(SupplierContact.cid == form.cid.data)
-            if form.contact_name.data:
-                search_condition.append(SupplierContact.name.like('%%%s%%' % form.contact_name.data))
+            if form.supplier_cid.data:
+                search_condition.append(SupplierContact.cid == form.supplier_cid.data)
+            if form.supplier_contact_name.data:
+                search_condition.append(SupplierContact.name.like('%%%s%%' % form.supplier_contact_name.data))
     # 翻页数据
     pagination = get_supplier_contact_pagination(form.page.data, PER_PAGE_BACKEND_MODAL, *search_condition)
 
@@ -376,7 +376,7 @@ def search():
 @login_required
 def ajax_delete():
     """
-    客户删除
+    渠道删除
     :return:
     """
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
@@ -433,7 +433,7 @@ def ajax_delete():
 @login_required
 def ajax_stats():
     """
-    获取客户统计
+    获取渠道统计
     :return:
     """
     time_based = request.args.get('time_based', 'hour')
@@ -471,7 +471,7 @@ def ajax_stats():
 @permission_supplier_section_stats.require(http_exception=403)
 def stats():
     """
-    客户统计
+    渠道统计
     :return:
     """
     # 统计数据
@@ -494,7 +494,7 @@ def stats():
 @permission_supplier_section_stats.require(http_exception=403)
 def stats_item(supplier_id):
     """
-    客户统计明细
+    渠道统计明细
     :param supplier_id:
     :return:
     """

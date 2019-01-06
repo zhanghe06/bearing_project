@@ -34,13 +34,13 @@
                                 {{ form.production_model.label() }}
                                 {{ form.production_model(class="form-control input-sm") }}
                             </div>
-                            <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
-                            {{ form.cid() }}
-                            {{ form.company_name.label() }}
+                            <div class="form-group{% if form.customer_cid.errors or form.customer_company_name.errors %} has-error{% endif %}">
+                            {{ form.customer_cid() }}
+                            {{ form.customer_company_name.label() }}
                             <div class="input-group">
-                                {{ form.company_name(
+                                {{ form.customer_company_name(
                                     class="form-control input-sm",
-                                    title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
+                                    title=form.customer_cid.errors|join(', ') or form.customer_company_name.errors|join(', '),
                                     autocomplete="off"
                                     )
                                 }}
@@ -96,7 +96,7 @@
                             <td><a href="{{ url_for('production.info', production_id=info.production_id) }}" rel="tooltip"
                                    title="{{ _('Click details') }}">{{ info.production_model }}</a></td>
                             <td>{{ info.production_sku }}</td>
-                            <td>{{ info.cid | customer_company_name }}</td>
+                            <td>{{ info.customer_cid | customer_company_name }}</td>
                             <td>{{ info.note | default('-', True) }}</td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>

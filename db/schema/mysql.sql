@@ -520,6 +520,8 @@ CREATE TABLE `buyer_order_items` (
   `uid` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
   `supplier_cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
   `supplier_company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司名称',
+  `custom_production_brand` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '定制品牌（订单优先显示）',
+  `custom_production_model` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '定制型号（订单优先显示）',
   `production_id` INT NOT NULL COMMENT '产品ID',
   `production_brand` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品品牌',
   `production_model` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品型号',

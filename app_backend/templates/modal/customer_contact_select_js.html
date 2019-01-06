@@ -15,7 +15,7 @@
 
             // 搜索关键词可以为空
             var input_group_obj = $(this).parents('div.input-group')
-            var customer_contact_input = input_group_obj.find('input[name="contact_name"]')
+            var customer_contact_input = input_group_obj.find('input[name="customer_contact_name"]')
             var keywords = customer_contact_input.val()
             $.session.set('customer_contact_keywords', keywords)
             $.session.set('customer_cid', input_cid_value)
@@ -38,8 +38,8 @@
 
                 return false
             } else {
-                $('input[name$="contact_id"]').val(contact_id)
-                $('input[name$="contact_name"]').val($.session.get('contact_name'))
+                $('input[name$="customer_contact_id"]').val(contact_id)
+                $('input[name$="customer_contact_name"]').val($.session.get('contact_name'))
                 $('#customer_contact_select_modal').modal('hide')
             }
         })

@@ -95,7 +95,7 @@ def lists():
     报价列表
     :return:
     """
-    template_name = 'quotation_item/lists.html'
+    template_name = 'quotation/items/lists.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('quotation item lists')
@@ -116,8 +116,8 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.cid.data and form.company_name.data:
-                search_condition.append(QuotationItems.enquiry_cid == form.cid.data)
+            if form.customer_cid.data and form.customer_company_name.data:
+                search_condition.append(QuotationItems.customer_cid == form.customer_cid.data)
             if form.production_model.data:
                 # 注意查询效率
                 search_condition.append(

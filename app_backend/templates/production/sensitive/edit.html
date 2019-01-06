@@ -44,19 +44,19 @@
                     <span class="help-block hidden-xs">{{ form.production_sku.description }}</span>
                 </div>
             </div>
-            <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
-                {{ form.company_name.label(class="col-sm-2 control-label") }}
+            <div class="form-group{% if form.customer_cid.errors or form.customer_company_name.errors %} has-error{% endif %}">
+                {{ form.customer_company_name.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">
                     <div class="input-group">
-                        {{ form.company_name(class="form-control company_name", title=form.cid.errors|join(', ') or form.company_name.errors|join(', ')) }}
-                        {{ form.cid() }}
+                        {{ form.customer_company_name(class="form-control company_name", title=form.customer_cid.errors|join(', ') or form.customer_company_name.errors|join(', ')) }}
+                        {{ form.customer_cid() }}
                         <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
                               style="top: 0; cursor:pointer;" data-toggle="modal"
                               data-target="#customer_select_modal"></span>
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <span class="help-block hidden-xs">{{ form.company_name.description }}</span>
+                    <span class="help-block hidden-xs">{{ form.customer_company_name.description }}</span>
                 </div>
             </div>
             <div class="form-group{% if form.note.errors %} has-error{% endif %}">

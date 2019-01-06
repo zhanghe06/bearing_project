@@ -48,6 +48,8 @@ class BuyerOrderItems(Base):
     uid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
     supplier_cid = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
     supplier_company_name = Column(String(100), nullable=False, server_default=text("''"))
+    custom_production_brand = Column(String(32), nullable=False, server_default=text("''"))
+    custom_production_model = Column(String(64), nullable=False, server_default=text("''"))
     production_id = Column(Integer, nullable=False, index=True)
     production_brand = Column(String(32), nullable=False, server_default=text("''"))
     production_model = Column(String(64), nullable=False, server_default=text("''"))

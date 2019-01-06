@@ -41,7 +41,7 @@ role_id_choices = copy(default_choices_int)
 role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 
-class AmountOrdersValidate(object):
+class AmountSalesOrderValidate(object):
     """
     订单总金额校验（总金额小于1亿）
     订单数量 1-10000
@@ -52,30 +52,30 @@ class AmountOrdersValidate(object):
         self.message = message
 
     def __call__(self, form, field):
-        amount_order = 0
+        amount_sales_orders = 0
 
-        for quotation_item in form.quotation_items.entries:
-            amount_order += (quotation_item.form.quantity.data or 0) * (quotation_item.form.unit_price.data or 0)
+        for sales_order_item in form.sales_order_items.entries:
+            amount_sales_orders += (sales_order_item.form.quantity.data or 0) * (sales_order_item.form.unit_price.data or 0)
 
-        if amount_order >= 100000000:
+        if amount_sales_orders >= 100000000:
             # raise ValidationError(self.message or _('Data limit exceeded'))
             # TODO why? 使用翻译报错 unicode l'' 这是什么类型
             raise ValidationError(self.message or '数据超出限制')
 
 
-class OrderSearchForm(FlaskForm):
+class SalesOrderSearchForm(FlaskForm):
     uid = SelectField(
-        _('quotation user'),
+        _('sales order user'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
-        # choices=quotation_brand_choices,
-        description=_('quotation user'),
+        # choices=sales_order_brand_choices,
+        description=_('sales order user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('quotation user'),
+            'title': _('sales order user'),
         }
     )
     customer_cid = IntegerField(
@@ -140,7 +140,7 @@ class OrderSearchForm(FlaskForm):
     )
 
 
-class OrderItemAddForm(FlaskForm):
+class SalesOrderItemAddForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         kwargs['csrf_enabled'] = False  # disable csrf
         FlaskForm.__init__(self, *args, **kwargs)
@@ -280,7 +280,7 @@ class OrderItemAddForm(FlaskForm):
     )
 
 
-class OrderItemEditForm(OrderItemAddForm):
+class SalesOrderItemEditForm(SalesOrderItemAddForm):
     id = IntegerField(
         _('production id'),
         validators=[
@@ -293,44 +293,44 @@ class OrderItemEditForm(OrderItemAddForm):
     )
 
 
-class OrderAddForm(FlaskForm):
+class SalesOrderAddForm(FlaskForm):
     uid = SelectField(
-        _('quotation user'),
+        _('sales order user'),
         validators=[
             DataRequired(),
         ],
         coerce=int,
-        description=_('quotation user'),
+        description=_('sales order user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('quotation user'),
+            'title': _('sales order user'),
         }
     )
-    cid = IntegerField(
-        _('customer id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('customer id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('customer company name'),
         }
     )
-    contact_id = IntegerField(
+    customer_contact_id = IntegerField(
         _('customer contact id'),
         validators=[
             DataRequired(),
@@ -343,7 +343,7 @@ class OrderAddForm(FlaskForm):
             'type': 'hidden',
         }
     )
-    contact_name = StringField(
+    customer_contact_name = StringField(
         _('customer contact name'),
         validators=[],
         description=_('customer contact name'),
@@ -364,37 +364,37 @@ class OrderAddForm(FlaskForm):
         }
     )
     note = StringField(
-        _('quotation note'),
+        _('sales order note'),
         validators=[],
-        description=_('quotation note'),
+        description=_('sales order note'),
         render_kw={
-            'placeholder': _('quotation note'),
+            'placeholder': _('sales order note'),
             'rel': 'tooltip',
-            'title': _('quotation note'),
+            'title': _('sales order note'),
         }
     )
     status_order = SelectField(
-        _('order status'),
+        _('sales order status'),
         validators=[
             InputRequired(),
         ],
         coerce=int,
-        description=_('order status'),
+        description=_('sales order status'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('order status'),
+            'title': _('sales order status'),
         }
     )
     amount_order = DecimalField(
-        _('amount quotation'),
+        _('amount sales order'),
         validators=[
-            AmountOrderValidate()
+            AmountSalesOrderValidate()
         ],
-        description=_('amount quotation'),
+        description=_('amount sales order'),
         render_kw={
-            'placeholder': _('amount quotation'),
+            'placeholder': _('amount sales order'),
             'rel': 'tooltip',
-            'title': _('amount quotation'),
+            'title': _('amount sales order'),
             'type': 'number',
             'disabled': 'disabled',
         }
@@ -407,50 +407,50 @@ class OrderAddForm(FlaskForm):
         '数据行删除',
         validators=[],
     )
-    quotation_items = FieldList(
-        FormField(OrderItemAddForm),
+    sales_order_items = FieldList(
+        FormField(SalesOrderItemAddForm),
         label='报价明细',
         min_entries=1,
         max_entries=12,
     )
 
 
-class OrderEditForm(FlaskForm):
+class SalesOrderEditForm(FlaskForm):
     uid = SelectField(
-        _('quotation user'),
+        _('sales order user'),
         validators=[],
         coerce=int,
-        description=_('quotation user'),
+        description=_('sales order user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('quotation user'),
+            'title': _('sales order user'),
         }
     )
-    cid = IntegerField(
-        _('customer id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('customer id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('customer company name'),
         }
     )
-    contact_id = IntegerField(
+    customer_contact_id = IntegerField(
         _('customer contact id'),
         validators=[
             DataRequired(),
@@ -463,7 +463,7 @@ class OrderEditForm(FlaskForm):
             'type': 'hidden',
         }
     )
-    contact_name = StringField(
+    customer_contact_name = StringField(
         _('customer contact name'),
         validators=[],
         description=_('customer contact name'),
@@ -484,37 +484,37 @@ class OrderEditForm(FlaskForm):
         }
     )
     note = StringField(
-        _('quotation note'),
+        _('sales order note'),
         validators=[],
-        description=_('quotation note'),
+        description=_('sales order note'),
         render_kw={
-            'placeholder': _('quotation note'),
+            'placeholder': _('sales order note'),
             'rel': 'tooltip',
-            'title': _('quotation note'),
+            'title': _('sales order note'),
         }
     )
     status_order = SelectField(
-        _('order status'),
+        _('sales order status'),
         validators=[
             InputRequired(),
         ],
         coerce=int,
-        description=_('order status'),
+        description=_('sales order status'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('order status'),
+            'title': _('sales order status'),
         }
     )
     amount_order = DecimalField(
-        _('amount quotation'),
+        _('amount order'),
         validators=[
-            AmountOrdersValidate()
+            AmountSalesOrderValidate()
         ],
-        description=_('amount quotation'),
+        description=_('amount sales order'),
         render_kw={
-            'placeholder': _('amount quotation'),
+            'placeholder': _('amount sales order'),
             'rel': 'tooltip',
-            'title': _('amount quotation'),
+            'title': _('amount sales order'),
             'type': 'number',
             'readonly': 'readonly',
         }
@@ -527,8 +527,8 @@ class OrderEditForm(FlaskForm):
         '数据行删除',
         validators=[],
     )
-    quotation_items = FieldList(
-        FormField(OrderItemEditForm),
+    sales_order_items = FieldList(
+        FormField(SalesOrderItemEditForm),
         label='报价明细',
         min_entries=1,
         max_entries=12,

@@ -92,14 +92,14 @@ class SupplierContactSearchForm(FlaskForm):
             'autocomplete': 'off',
         }
     )
-    contact_name = StringField(
-        _('contact name'),
+    supplier_contact_name = StringField(
+        _('supplier contact name'),
         validators=[],
-        description=_('contact name'),
+        description=_('supplier contact name'),
         render_kw={
-            'placeholder': _('contact name'),
+            'placeholder': _('supplier contact name'),
             'rel': 'tooltip',
-            'title': _('contact name'),
+            'title': _('supplier contact name'),
             'autocomplete': 'off',
         }
     )

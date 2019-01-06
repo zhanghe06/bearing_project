@@ -99,7 +99,7 @@
 {#                            </label>#}
 {#                        </td>#}
                         <td><a href="{{ url_for('quotation.edit', quotation_id=info.quotation_id) }}">{{ g.QUOTATION_PREFIX }}{{ moment(info.quotation_id | quotation_create_time).format('YYMMDDHHmmss') }}</a></td>
-                        <td>{{ info.enquiry_cid | customer_company_name }}</td>
+                        <td>{{ info.customer_cid | customer_company_name }}</td>
                         <td class="bg-warning">{{ info.enquiry_production_model }}</td>
                         <td>{{ info.production_brand }}</td>
                         <td>{{ info.production_model }}</td>

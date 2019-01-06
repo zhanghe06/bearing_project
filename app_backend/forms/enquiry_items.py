@@ -56,29 +56,29 @@ class EnquiryItemsSearchForm(FlaskForm):
     #         'title': _('enquiry user'),
     #     }
     # )
-    cid = IntegerField(
-        _('customer id'),
+    supplier_cid = IntegerField(
+        _('supplier company id'),
         validators=[
             InputRequired(),
         ],
         default=0,
-        description=_('customer id'),
+        description=_('supplier company  id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('supplier company  id'),
+            'placeholder': _('supplier company  id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    supplier_company_name = StringField(
+        _('supplier company name'),
         validators=[],
-        description=_('company name'),
+        description=_('supplier company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('supplier company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('supplier company name'),
         }
     )
     production_model = StringField(

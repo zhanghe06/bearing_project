@@ -37,7 +37,9 @@ class CaptchaValidate(object):
         code_key = '%s:%s' % ('code_str', 'login')
         code_str = session.pop(code_key, '')
         if not code_str:
-            # TODO 有时初次登录会出现 code_str 为空, 待查
+            # 注意：validators 执行会渲染html元素，与页面同步加载，所以无法确认 session弹出 先后顺序
+            # 如果 validators 先执行，session再弹出，则会出现session验证码为空的情况
+            # 所以，表单校验之后，重新加载页面，验证码的刷新动作，应该在页面加载完成之后由js控制刷新
             raise ValidationError(self.message or _('Captcha Expired'))
         if code_str.upper() != data.upper():
             raise ValidationError(self.message or _('Captcha Value Failure'))
