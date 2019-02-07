@@ -33,6 +33,8 @@ docker/MariaDB/log/
 # Nginx
 docker/Nginx/logs/
 
+# Redis
+docker/Redis/data/
 
 # Config
 config/*

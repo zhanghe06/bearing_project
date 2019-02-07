@@ -406,7 +406,7 @@ def get_locale():
     # otherwise try to guess the language from the user accept
     # header the browser transmits.  We support de/fr/en in this
     # example.  The best match wins.
-    return g.lang
+    return getattr(g, 'lang', 'en')
 
 
 @babel.timezoneselector

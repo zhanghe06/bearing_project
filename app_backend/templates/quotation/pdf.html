@@ -89,31 +89,30 @@
         <!-- info row -->
         <div class="row preview-info">
             <div class="col-xs-8">
-                <strong>客户名称: {{ quotation_info.cid | customer_company_name }}</strong>
+                <strong>{{ _('Customer Name') }}: {{ quotation_info.customer_cid | customer_company_name }}</strong>
                 <address>
                     <br>
-                    客户地址: {{ customer_info.company_address }}<br>
-                    联系人: {{ customer_contact_info.name }}
+                    {{ _('Customer Address') }}: {{ customer_info.company_address }}<br>
+                    {{ _('Contacter') }}: {{ customer_contact_info.name }}
                     <small>{{ customer_contact_info.salutation }}</small>
                     <br>
-                    手机: {{ customer_contact_info.mobile }}<br/>
-                    电话: {{ customer_contact_info.tel or customer_info.company_tel }}<br/>
-                    传真: {{ customer_contact_info.fax or customer_info.company_fax }}<br/>
-                    邮箱: {{ customer_contact_info.email or customer_info.company_email }}
+                    {{ _('Mobile') }}: {{ customer_contact_info.mobile }}<br/>
+                    {{ _('Tel') }}: {{ customer_contact_info.tel or customer_info.company_tel }}<br/>
+                    {{ _('Fax') }}: {{ customer_contact_info.fax or customer_info.company_fax }}<br/>
+                    {{ _('Email') }}: {{ customer_contact_info.email or customer_info.company_email }}
                 </address>
             </div><!-- /.col -->
             <div class="col-xs-4">
-{#                <b>报价单号: XABJ{{ moment(quotation_info.create_time).format('YYMMDDHHmmss') }}</b><br/>#}
                 <b>报价单号: {{ quotation_code }}</b><br/>
                 <b>报价效期:</b> 一周<br/>
                 <br/>
-                报价人: {{ user_info.name }}
+                {{ _('Offerer') }}: {{ user_info.name }}
                 <small>{{ user_info.salutation }}</small>
                 <br>
-                手机: {{ user_info.mobile }}<br/>
-                电话: {{ user_info.tel }}<br/>
-                传真: {{ user_info.fax }}<br/>
-                邮箱: {{ user_info.email }}
+                {{ _('Mobile') }}: {{ user_info.mobile }}<br/>
+                {{ _('Tel') }}: {{ user_info.tel }}<br/>
+                {{ _('Fax') }}: {{ user_info.fax }}<br/>
+                {{ _('Email') }}: {{ user_info.email }}
             </div><!-- /.col -->
         </div><!-- /.row -->
 

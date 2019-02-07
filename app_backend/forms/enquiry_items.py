@@ -62,11 +62,11 @@ class EnquiryItemsSearchForm(FlaskForm):
             InputRequired(),
         ],
         default=0,
-        description=_('supplier company  id'),
+        description=_('supplier company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('supplier company  id'),
-            'placeholder': _('supplier company  id'),
+            'title': _('supplier company id'),
+            'placeholder': _('supplier company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
