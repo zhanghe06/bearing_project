@@ -62,9 +62,9 @@
 {#                {{ form.status_order.label() }}#}
 {#                {{ form.status_order(class="form-control input-sm", title=form.status_order.errors|join(', ')) }}#}
 {#            </div>#}
-            <div class="form-group{% if form.amount_buyer_orders.errors %} has-error{% endif %}">
-                {{ form.amount_buyer_orders.label() }}
-                {{ form.amount_buyer_orders(class="form-control input-sm", title=form.amount_buyer_orders.errors|join(', ')) }}
+            <div class="form-group{% if form.amount_order.errors %} has-error{% endif %}">
+                {{ form.amount_order.label() }}
+                {{ form.amount_order(class="form-control input-sm", title=form.amount_order.errors|join(', ')) }}
             </div>
 
             <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->

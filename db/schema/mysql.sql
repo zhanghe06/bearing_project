@@ -617,7 +617,7 @@ CREATE TABLE `purchase` (
   `amount_production` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '产品金额',
   `amount_shipping` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '运费金额',
   `amount_adjustment` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '调整金额',
-  `amount_delivery` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '出货总额',
+  `amount_purchase` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '进货总额',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '清单备注',
   `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
   `audit_uid` INT NOT NULL DEFAULT 0 COMMENT '审核用户ID',
@@ -684,6 +684,77 @@ CREATE TABLE `production_sensitive` (
   KEY (`production_id`),
   UNIQUE (`customer_cid`, `production_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='敏感型号';
+
+
+DROP TABLE IF EXISTS `bank_account`;
+CREATE TABLE `bank_account` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `bank_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '银行名称',
+  `type_bank` TINYINT NOT NULL DEFAULT 0 COMMENT '银行类型（0:未知,1:基本账户,2:一般账户）',
+  `initial_balance` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '期初余额',
+  `closing_balance` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '期末余额',
+  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '备注',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='银行总账';
+
+
+DROP TABLE IF EXISTS `bank_account_items`;
+CREATE TABLE `bank_account_items` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `bank_id` INT NOT NULL DEFAULT 0 COMMENT '银行ID',
+  `type_current` TINYINT NOT NULL DEFAULT 0 COMMENT '往来类型（0:未知,1:客户,2:渠道）',
+  `cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
+  `company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司名称',
+  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '账目备注',
+  `type_account` TINYINT NOT NULL DEFAULT 0 COMMENT '账目类型（0:未知,1:收款,2:付款,3:退回,4:退出）',
+  `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`bank_id`),
+  KEY (`type_current`, `cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='银行明细账';
+
+
+DROP TABLE IF EXISTS `cash_account`;
+CREATE TABLE `cash_account` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `cash_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '现金名称',
+  `initial_balance` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '期初余额',
+  `closing_balance` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '期末余额',
+  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '备注',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='现金总账';
+
+
+DROP TABLE IF EXISTS `cash_account_items`;
+CREATE TABLE `cash_account_items` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `cash_id` INT NOT NULL DEFAULT 0 COMMENT '现金ID',
+  `type_current` TINYINT NOT NULL DEFAULT 0 COMMENT '往来类型（0:未知,1:客户,2:渠道）',
+  `cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
+  `company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司名称',
+  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '账目备注',
+  `type_account` TINYINT NOT NULL DEFAULT 0 COMMENT '账目类型（0:未知,1:收款,2:付款,3:退回,4:退出）',
+  `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`type_current`, `cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='现金明细账';
+
 
 
 # catalog_contrast

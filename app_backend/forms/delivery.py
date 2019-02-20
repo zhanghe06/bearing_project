@@ -4,8 +4,8 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: buyer_order.py
-@time: 2018-09-13 13:28
+@file: delivery.py
+@time: 2019-02-11 17:41
 """
 
 
@@ -41,66 +41,66 @@ role_id_choices = deepcopy(default_choices_int)
 role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 
-class AmountBuyerOrderValidate(object):
+class AmountDeliveryValidate(object):
     """
-    订单总金额校验（总金额小于1亿）
-    订单数量 1-10000
-    订单单价 0.00-1000000.00
+    出货总金额校验（总金额小于1亿）
+    出货数量 1-10000
+    出货单价 0.00-1000000.00
     """
 
     def __init__(self, message=None):
         self.message = message
 
     def __call__(self, form, field):
-        amount_order = 0
+        amount_delivery = 0
 
-        for buyer_order_item in form.buyer_order_items.entries:
-            amount_order += (buyer_order_item.form.quantity.data or 0) * (buyer_order_item.form.unit_price.data or 0)
+        for delivery_item in form.delivery_items.entries:
+            amount_delivery += (delivery_item.form.quantity.data or 0) * (delivery_item.form.unit_price.data or 0)
 
-        if amount_order >= 100000000:
+        if amount_delivery >= 100000000:
             # raise ValidationError(self.message or _('Data limit exceeded'))
             # TODO why? 使用翻译报错 unicode l'' 这是什么类型
             raise ValidationError(self.message or '数据超出限制')
 
 
-class BuyerOrderSearchForm(FlaskForm):
+class DeliverySearchForm(FlaskForm):
     uid = SelectField(
-        _('buyer user'),
+        _('delivery user'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
         # choices=quotation_brand_choices,
-        description=_('buyer user'),
+        description=_('delivery user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('buyer user'),
+            'title': _('delivery user'),
         }
     )
-    supplier_cid = IntegerField(
-        _('supplier company id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             InputRequired(),
         ],
         default=0,
-        description=_('supplier company id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('supplier company id'),
-            'placeholder': _('supplier company id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    supplier_company_name = StringField(
-        _('supplier company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('supplier company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('supplier company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('supplier company name'),
+            'title': _('customer company name'),
         }
     )
 
@@ -140,19 +140,19 @@ class BuyerOrderSearchForm(FlaskForm):
     )
 
 
-class BuyerOrderItemsAddForm(FlaskForm):
+class DeliveryItemsAddForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         kwargs['csrf_enabled'] = False  # disable csrf
         FlaskForm.__init__(self, *args, **kwargs)
 
-    buyer_order_id = IntegerField(
-        _('buyer order id'),
+    delivery_id = IntegerField(
+        _('delivery id'),
         validators=[
         ],
         render_kw={
-            'placeholder': _('buyer order id'),
+            'placeholder': _('delivery id'),
             'rel': "tooltip",
-            'title': _('buyer order id'),
+            'title': _('delivery id'),
         }
     )
     custom_production_brand = StringField(
@@ -278,7 +278,7 @@ class BuyerOrderItemsAddForm(FlaskForm):
     )
 
 
-class BuyerOrderItemsEditForm(BuyerOrderItemsAddForm):
+class DeliveryItemsEditForm(DeliveryItemsAddForm):
     id = IntegerField(
         _('production id'),
         validators=[
@@ -291,66 +291,66 @@ class BuyerOrderItemsEditForm(BuyerOrderItemsAddForm):
     )
 
 
-class BuyerOrderAddForm(FlaskForm):
+class DeliveryAddForm(FlaskForm):
     uid = SelectField(
-        _('buyer order user'),
+        _('delivery user'),
         validators=[
             DataRequired(),
         ],
         default=default_choice_option_int,
         coerce=int,
         # choices=quotation_brand_choices,
-        description=_('buyer order user'),
+        description=_('delivery user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('buyer order user'),
+            'title': _('delivery user'),
         }
     )
-    supplier_cid = IntegerField(
-        _('supplier company id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('supplier company id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('supplier company id'),
-            'placeholder': _('supplier company id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    supplier_company_name = StringField(
-        _('supplier company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('supplier company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('supplier company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('supplier company name'),
+            'title': _('customer company name'),
         }
     )
-    supplier_contact_id = IntegerField(
-        _('supplier contact id'),
+    customer_contact_id = IntegerField(
+        _('customer contact id'),
         validators=[
             DataRequired(),
         ],
         # default=0,
-        description=_('supplier contact id'),
+        description=_('customer contact id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('supplier contact id'),
+            'title': _('customer contact id'),
             'type': 'hidden',
         }
     )
-    supplier_contact_name = StringField(
-        _('supplier contact name'),
+    customer_contact_name = StringField(
+        _('customer contact name'),
         validators=[],
-        description=_('supplier contact name'),
+        description=_('customer contact name'),
         render_kw={
-            'placeholder': _('supplier contact name'),
+            'placeholder': _('customer contact name'),
             'rel': 'tooltip',
-            'title': _('supplier contact name'),
+            'title': _('customer contact name'),
         }
     )
     delivery_way = StringField(
@@ -383,16 +383,16 @@ class BuyerOrderAddForm(FlaskForm):
             'title': _('order note'),
         }
     )
-    amount_order = DecimalField(
-        _('amount order'),
+    amount_delivery = DecimalField(
+        _('amount delivery'),
         validators=[
-            AmountBuyerOrderValidate()
+            AmountDeliveryValidate()
         ],
-        description=_('amount order'),
+        description=_('amount delivery'),
         render_kw={
-            'placeholder': _('amount order'),
+            'placeholder': _('amount delivery'),
             'rel': 'tooltip',
-            'title': _('amount order'),
+            'title': _('amount delivery'),
             'type': 'number',
             'disabled': 'disabled',
         }
@@ -405,70 +405,70 @@ class BuyerOrderAddForm(FlaskForm):
         '数据行删除',
         validators=[],
     )
-    buyer_order_items = FieldList(
-        FormField(BuyerOrderItemsAddForm),
-        label='订单明细',
+    delivery_items = FieldList(
+        FormField(DeliveryItemsAddForm),
+        label='出货明细',
         min_entries=1,
         max_entries=12,
     )
 
 
-class BuyerOrderEditForm(FlaskForm):
+class DeliveryEditForm(FlaskForm):
     uid = SelectField(
-        _('buyer order user'),
+        _('delivery user'),
         validators=[],
         coerce=int,
-        description=_('buyer order user'),
+        description=_('delivery user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('buyer order user'),
+            'title': _('delivery user'),
         }
     )
-    supplier_cid = IntegerField(
-        _('supplier company id'),
+    customer_cid = IntegerField(
+        _('customer company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('supplier company id'),
+        description=_('customer company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('supplier company id'),
-            'placeholder': _('supplier company id'),
+            'title': _('customer company id'),
+            'placeholder': _('customer company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    supplier_company_name = StringField(
-        _('supplier company name'),
+    customer_company_name = StringField(
+        _('customer company name'),
         validators=[],
-        description=_('supplier company name'),
+        description=_('customer company name'),
         render_kw={
-            'placeholder': _('supplier company name'),
+            'placeholder': _('customer company name'),
             'rel': 'tooltip',
-            'title': _('supplier company name'),
+            'title': _('customer company name'),
         }
     )
-    supplier_contact_id = IntegerField(
-        _('supplier contact id'),
+    customer_contact_id = IntegerField(
+        _('customer contact id'),
         validators=[
             DataRequired(),
         ],
         # default=0,
-        description=_('supplier contact id'),
+        description=_('customer contact id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('supplier contact id'),
+            'title': _('customer contact id'),
             'type': 'hidden',
         }
     )
-    supplier_contact_name = StringField(
-        _('supplier contact name'),
+    customer_contact_name = StringField(
+        _('customer contact name'),
         validators=[],
-        description=_('supplier contact name'),
+        description=_('customer contact name'),
         render_kw={
-            'placeholder': _('supplier contact name'),
+            'placeholder': _('customer contact name'),
             'rel': 'tooltip',
-            'title': _('supplier contact name'),
+            'title': _('customer contact name'),
         }
     )
     delivery_way = StringField(
@@ -492,25 +492,25 @@ class BuyerOrderEditForm(FlaskForm):
         }
     )
     note = StringField(
-        _('buyer order note'),
+        _('delivery note'),
         validators=[],
-        description=_('buyer order note'),
+        description=_('delivery note'),
         render_kw={
-            'placeholder': _('buyer order note'),
+            'placeholder': _('delivery note'),
             'rel': 'tooltip',
-            'title': _('buyer order note'),
+            'title': _('delivery note'),
         }
     )
-    amount_order = DecimalField(
-        _('amount order'),
+    amount_delivery = DecimalField(
+        _('amount delivery'),
         validators=[
-            AmountBuyerOrderValidate()
+            AmountDeliveryValidate()
         ],
-        description=_('amount order'),
+        description=_('amount delivery'),
         render_kw={
-            'placeholder': _('amount order'),
+            'placeholder': _('amount delivery'),
             'rel': 'tooltip',
-            'title': _('amount order'),
+            'title': _('amount delivery'),
             'type': 'number',
             'readonly': 'readonly',
         }
@@ -523,9 +523,9 @@ class BuyerOrderEditForm(FlaskForm):
         '数据行删除',
         validators=[],
     )
-    buyer_order_items = FieldList(
-        FormField(BuyerOrderItemsEditForm),
-        label='订单明细',
+    delivery_items_items = FieldList(
+        FormField(DeliveryItemsEditForm),
+        label='出货明细',
         min_entries=1,
         max_entries=12,
     )

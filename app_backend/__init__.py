@@ -122,9 +122,9 @@ from app_backend.views.quotation_items import bp_quotation_items
 from app_backend.views.enquiry import bp_enquiry
 from app_backend.views.enquiry_items import bp_enquiry_items
 from app_backend.views.buyer_order import bp_buyer_order
-from app_backend.views.buyer_purchase import bp_buyer_purchase
+from app_backend.views.purchase import bp_purchase
 from app_backend.views.sales_order import bp_sales_order
-from app_backend.views.sales_delivery import bp_sales_delivery
+from app_backend.views.delivery import bp_delivery
 from app_backend.views.warehouse import bp_warehouse
 from app_backend.views.rack import bp_rack
 from app_backend.views.inventory import bp_inventory
@@ -151,9 +151,9 @@ app.register_blueprint(bp_quotation_items)
 app.register_blueprint(bp_enquiry)
 app.register_blueprint(bp_enquiry_items)
 app.register_blueprint(bp_buyer_order)
-app.register_blueprint(bp_buyer_purchase)
+app.register_blueprint(bp_purchase)
 app.register_blueprint(bp_sales_order)
-app.register_blueprint(bp_sales_delivery)
+app.register_blueprint(bp_delivery)
 app.register_blueprint(bp_warehouse)
 app.register_blueprint(bp_rack)
 app.register_blueprint(bp_inventory)

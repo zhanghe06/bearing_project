@@ -5,7 +5,7 @@
 @author: zhanghe
 @software: PyCharm
 @file: purchase.py
-@time: 2018-08-31 17:16
+@time: 2019-02-11 16:36
 """
 
 
@@ -25,7 +25,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, \
     DecimalField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress
+    IPAddress, Optional
 from wtforms.fields import FieldList, FormField, HiddenField
 
 from app_backend.forms import SelectBS, CheckBoxBS
@@ -43,9 +43,9 @@ role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 class AmountPurchaseValidate(object):
     """
-    采购总金额校验（总金额小于1亿）
-    采购数量 1-10000
-    采购单价 0.00-1000000.00
+    进货总金额校验（总金额小于1亿）
+    进货数量 1-10000
+    进货单价 0.00-1000000.00
     """
 
     def __init__(self, message=None):
@@ -63,19 +63,19 @@ class AmountPurchaseValidate(object):
             raise ValidationError(self.message or '数据超出限制')
 
 
-class QuotationSearchForm(FlaskForm):
+class PurchaseSearchForm(FlaskForm):
     uid = SelectField(
-        _('quotation user'),
+        _('purchase user'),
         validators=[
             InputRequired(),  # 可以为0
         ],
         default=default_choice_option_int,
         coerce=int,
         # choices=quotation_brand_choices,
-        description=_('quotation user'),
+        description=_('purchase user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('quotation user'),
+            'title': _('purchase user'),
         }
     )
     supplier_cid = IntegerField(
@@ -106,8 +106,8 @@ class QuotationSearchForm(FlaskForm):
 
     start_create_time = DateField(
         _('start time'),
-        validators=[],
-        default=datetime.utcnow() - timedelta(days=365),
+        validators=[Optional()],
+        # default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -118,8 +118,8 @@ class QuotationSearchForm(FlaskForm):
     )
     end_create_time = DateField(
         _('end time'),
-        validators=[],
-        default=datetime.utcnow() + timedelta(days=1),
+        validators=[Optional()],
+        # default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),
@@ -140,7 +140,7 @@ class QuotationSearchForm(FlaskForm):
     )
 
 
-class PurchaseItemAddForm(FlaskForm):
+class PurchaseItemsAddForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         kwargs['csrf_enabled'] = False  # disable csrf
         FlaskForm.__init__(self, *args, **kwargs)
@@ -155,28 +155,26 @@ class PurchaseItemAddForm(FlaskForm):
             'title': _('purchase id'),
         }
     )
-    quotation_production_model = StringField(
-        _('quotation production model'),
+    custom_production_brand = StringField(
+        _('custom production brand'),
         validators=[],
-        default='',
-        description=_('quotation production model'),
+        description=_('custom production brand'),
         render_kw={
-            'placeholder': _('quotation production model'),
+            'placeholder': _('custom production brand'),
             'rel': 'tooltip',
-            'title': _('quotation production model'),
+            'title': _('custom production brand'),
             'autocomplete': 'off',
         }
     )
-    quotation_quantity = IntegerField(
-        _('quotation quantity'),
+    custom_production_model = StringField(
+        _('custom production model'),
         validators=[],
-        default=0,
-        description=_('quotation quantity'),
+        description=_('custom production model'),
         render_kw={
-            'placeholder': _('quotation quantity'),
+            'placeholder': _('custom production model'),
             'rel': 'tooltip',
-            'title': _('quotation quantity'),
-            'type': 'number',
+            'title': _('custom production model'),
+            'autocomplete': 'off',
         }
     )
     production_id = IntegerField(
@@ -278,18 +276,9 @@ class PurchaseItemAddForm(FlaskForm):
             'title': _('delivery time'),
         }
     )
-    status_ordered = BooleanField(
-        _('ordered status'),
-        default=False,
-        validators=[],
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('ordered status'),
-        }
-    )
 
 
-class PurchaseItemEditForm(PurchaseItemAddForm):
+class PurchaseItemsEditForm(PurchaseItemsAddForm):
     id = IntegerField(
         _('production id'),
         validators=[
@@ -308,38 +297,40 @@ class PurchaseAddForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
+        default=default_choice_option_int,
         coerce=int,
+        # choices=quotation_brand_choices,
         description=_('purchase user'),
         render_kw={
             'rel': 'tooltip',
             'title': _('purchase user'),
         }
     )
-    cid = IntegerField(
-        _('supplier id'),
+    supplier_cid = IntegerField(
+        _('supplier company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('supplier id'),
+        description=_('supplier company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('supplier id'),
-            'placeholder': _('supplier id'),
+            'title': _('supplier company id'),
+            'placeholder': _('supplier company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    supplier_company_name = StringField(
+        _('supplier company name'),
         validators=[],
-        description=_('company name'),
+        description=_('supplier company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('supplier company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('supplier company name'),
         }
     )
-    contact_id = IntegerField(
+    supplier_contact_id = IntegerField(
         _('supplier contact id'),
         validators=[
             DataRequired(),
@@ -352,7 +343,7 @@ class PurchaseAddForm(FlaskForm):
             'type': 'hidden',
         }
     )
-    contact_name = StringField(
+    supplier_contact_name = StringField(
         _('supplier contact name'),
         validators=[],
         description=_('supplier contact name'),
@@ -372,26 +363,24 @@ class PurchaseAddForm(FlaskForm):
             'title': _('delivery way'),
         }
     )
-    note = StringField(
-        _('purchase note'),
+    type_tax = BooleanField(
+        _('type tax'),
+        default=True,
         validators=[],
-        description=_('purchase note'),
         render_kw={
-            'placeholder': _('purchase note'),
             'rel': 'tooltip',
-            'title': _('purchase note'),
+            'title': _('type tax'),
+            'checked': 'checked',
         }
     )
-    status_order = SelectField(
-        _('order status'),
-        validators=[
-            InputRequired(),
-        ],
-        coerce=int,
-        description=_('order status'),
+    note = StringField(
+        _('order note'),
+        validators=[],
+        description=_('order note'),
         render_kw={
+            'placeholder': _('order note'),
             'rel': 'tooltip',
-            'title': _('order status'),
+            'title': _('order note'),
         }
     )
     amount_purchase = DecimalField(
@@ -417,69 +406,69 @@ class PurchaseAddForm(FlaskForm):
         validators=[],
     )
     purchase_items = FieldList(
-        FormField(PurchaseItemAddForm),
-        label='采购明细',
+        FormField(PurchaseItemsAddForm),
+        label='进货明细',
         min_entries=1,
         max_entries=12,
     )
 
 
-class QuotationEditForm(FlaskForm):
+class PurchaseEditForm(FlaskForm):
     uid = SelectField(
-        _('quotation user'),
+        _('purchase user'),
         validators=[],
         coerce=int,
-        description=_('quotation user'),
+        description=_('purchase user'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('quotation user'),
+            'title': _('purchase user'),
         }
     )
-    cid = IntegerField(
-        _('customer id'),
+    supplier_cid = IntegerField(
+        _('supplier company id'),
         validators=[
             DataRequired(),
         ],
-        description=_('customer id'),
+        description=_('supplier company id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer id'),
-            'placeholder': _('customer id'),
+            'title': _('supplier company id'),
+            'placeholder': _('supplier company id'),
             'autocomplete': 'off',
             'type': 'hidden',
         }
     )
-    company_name = StringField(
-        _('company name'),
+    supplier_company_name = StringField(
+        _('supplier company name'),
         validators=[],
-        description=_('company name'),
+        description=_('supplier company name'),
         render_kw={
-            'placeholder': _('company name'),
+            'placeholder': _('supplier company name'),
             'rel': 'tooltip',
-            'title': _('company name'),
+            'title': _('supplier company name'),
         }
     )
-    contact_id = IntegerField(
-        _('customer contact id'),
+    supplier_contact_id = IntegerField(
+        _('supplier contact id'),
         validators=[
             DataRequired(),
         ],
         # default=0,
-        description=_('customer contact id'),
+        description=_('supplier contact id'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('customer contact id'),
+            'title': _('supplier contact id'),
             'type': 'hidden',
         }
     )
-    contact_name = StringField(
-        _('customer contact name'),
+    supplier_contact_name = StringField(
+        _('supplier contact name'),
         validators=[],
-        description=_('customer contact name'),
+        description=_('supplier contact name'),
         render_kw={
-            'placeholder': _('customer contact name'),
+            'placeholder': _('supplier contact name'),
             'rel': 'tooltip',
-            'title': _('customer contact name'),
+            'title': _('supplier contact name'),
         }
     )
     delivery_way = StringField(
@@ -492,38 +481,36 @@ class QuotationEditForm(FlaskForm):
             'title': _('delivery way'),
         }
     )
-    note = StringField(
-        _('quotation note'),
+    type_tax = BooleanField(
+        _('type tax'),
+        default=True,
         validators=[],
-        description=_('quotation note'),
-        render_kw={
-            'placeholder': _('quotation note'),
-            'rel': 'tooltip',
-            'title': _('quotation note'),
-        }
-    )
-    status_order = SelectField(
-        _('order status'),
-        validators=[
-            InputRequired(),
-        ],
-        coerce=int,
-        description=_('order status'),
         render_kw={
             'rel': 'tooltip',
-            'title': _('order status'),
+            'title': _('type tax'),
+            'checked': 'checked',
         }
     )
-    amount_quotation = DecimalField(
-        _('amount quotation'),
+    note = StringField(
+        _('purchase note'),
+        validators=[],
+        description=_('purchase note'),
+        render_kw={
+            'placeholder': _('purchase note'),
+            'rel': 'tooltip',
+            'title': _('purchase note'),
+        }
+    )
+    amount_purchase = DecimalField(
+        _('amount purchase'),
         validators=[
             AmountPurchaseValidate()
         ],
-        description=_('amount quotation'),
+        description=_('amount purchase'),
         render_kw={
-            'placeholder': _('amount quotation'),
+            'placeholder': _('amount purchase'),
             'rel': 'tooltip',
-            'title': _('amount quotation'),
+            'title': _('amount purchase'),
             'type': 'number',
             'readonly': 'readonly',
         }
@@ -536,9 +523,9 @@ class QuotationEditForm(FlaskForm):
         '数据行删除',
         validators=[],
     )
-    purchase_items = FieldList(
-        FormField(PurchaseItemEditForm),
-        label='入库明细',
+    purchase_items_items = FieldList(
+        FormField(PurchaseItemsEditForm),
+        label='进货明细',
         min_entries=1,
         max_entries=12,
     )

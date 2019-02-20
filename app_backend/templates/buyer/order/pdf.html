@@ -76,44 +76,45 @@
 {#                    <span class="glyphicon glyphicon-globe"#}
 {#                          aria-hidden="true"></span> #}
                     <img style="height: 20px; width: 88px; margin-bottom: 5px" src="{{ url_for('static', filename='img/skf.png') }}" height="20px" width="88px"> {{ COMPANY_NAME_CN }}
-{#                    <small class="pull-right">{{ _('Print Date') }}: {{ moment(quotation_info.update_time).format('YYYY-MM-DD') }}</small>#}
-                    <small class="pull-right">{{ _('Print Date') }}: {{ quotation_print_date }}</small>
+{#                    <small class="pull-right">{{ _('Print Date') }}: {{ moment(buyer_order_info.update_time).format('YYYY-MM-DD') }}</small>#}
+                    <small class="pull-right">{{ _('Print Date') }}: {{ buyer_order_print_date }}</small>
                     <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
                     <small>{{ COMPANY_NAME_EN }}</small>
                 </h4>
             </div><!-- /.col -->
         </div>
         <div class="text-center">
-            <h3 style="margin-top: 0"><u>{{ _('Quotation') }}</u></h3>
+            <h3 style="margin-top: 0"><u>{{ _('Buyer Order') }}</u></h3>
         </div>
         <!-- info row -->
         <div class="row preview-info">
             <div class="col-xs-8">
-                <strong>客户名称: {{ quotation_info.cid | customer_company_name }}</strong>
+                <strong>{{ _('Supplier Name') }}: {{ buyer_order_info.supplier_cid | supplier_company_name }}</strong>
                 <address>
                     <br>
-                    客户地址: {{ customer_info.company_address }}<br>
-                    联系人: {{ customer_contact_info.name }}
-                    <small>{{ customer_contact_info.salutation }}</small>
+                    {{ _('Supplier Address') }}: {{ supplier_info.company_address }}<br>
+                    {{ _('Contacter') }}: {{ supplier_contact_info.name }}
+                    <small>{{ supplier_contact_info.salutation }}</small>
                     <br>
-                    手机: {{ customer_contact_info.mobile }}<br/>
-                    电话: {{ customer_contact_info.tel or customer_info.company_tel }}<br/>
-                    传真: {{ customer_contact_info.fax or customer_info.company_fax }}<br/>
-                    邮箱: {{ customer_contact_info.email or customer_info.company_email }}
+                    {{ _('Mobile') }}: {{ supplier_contact_info.mobile }}<br/>
+                    {{ _('Tel') }}: {{ supplier_contact_info.tel or supplier_info.company_tel }}<br/>
+                    {{ _('Fax') }}: {{ supplier_contact_info.fax or supplier_info.company_fax }}<br/>
+                    {{ _('Email') }}: {{ supplier_contact_info.email or supplier_info.company_email }}
                 </address>
             </div><!-- /.col -->
             <div class="col-xs-4">
-{#                <b>报价单号: XABJ{{ moment(quotation_info.create_time).format('YYMMDDHHmmss') }}</b><br/>#}
-                <b>报价单号: {{ quotation_code }}</b><br/>
-                <b>报价效期:</b> 一周<br/>
+{#                <b>报价单号: XABJ{{ moment(buyer_order_info.create_time).format('YYMMDDHHmmss') }}</b><br/>#}
+                <b>采购单号: {{ buyer_order_code }}</b><br/>
+{#                <b>报价效期:</b> 一周#}
+                <br/>
                 <br/>
                 报价人: {{ user_info.name }}
                 <small>{{ user_info.salutation }}</small>
                 <br>
-                手机: {{ user_info.mobile }}<br/>
-                电话: {{ user_info.tel }}<br/>
-                传真: {{ user_info.fax }}<br/>
-                邮箱: {{ user_info.email }}
+                {{ _('Mobile') }}: {{ user_info.mobile }}<br/>
+                {{ _('Tel') }}: {{ user_info.tel }}<br/>
+                {{ _('Fax') }}: {{ user_info.fax }}<br/>
+                {{ _('Email') }}: {{ user_info.email }}
             </div><!-- /.col -->
         </div><!-- /.row -->
 
@@ -134,16 +135,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for quotation_item in quotation_items %}
+                    {% for buyer_order_item in buyer_order_items %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ quotation_item.production_brand }}</td>
-                        <td>{{ quotation_item.enquiry_production_model or quotation_item.production_model }}</td>
-                        <td>{{ quotation_item.production_sku }}</td>
-                        <td class="text-right">{{ '{:,}'.format(quotation_item.quantity) }}</td>
-                        <td class="text-right">￥{{ '{:,}'.format(quotation_item.unit_price) }}</td>
-                        <td class="text-right">￥{{ '{:,}'.format(quotation_item.quantity*quotation_item.unit_price) }}</td>
-                        <td>{{ quotation_item.delivery_time }}</td>
+                        <td>{{ buyer_order_item.production_brand }}</td>
+                        <td>{{ buyer_order_item.enquiry_production_model or buyer_order_item.production_model }}</td>
+                        <td>{{ buyer_order_item.production_sku }}</td>
+                        <td class="text-right">{{ '{:,}'.format(buyer_order_item.quantity) }}</td>
+                        <td class="text-right">￥{{ '{:,}'.format(buyer_order_item.unit_price) }}</td>
+                        <td class="text-right">￥{{ '{:,}'.format(buyer_order_item.quantity*buyer_order_item.unit_price) }}</td>
+                        <td>{{ buyer_order_item.delivery_time }}</td>
                     </tr>
                     {% endfor %}
 
@@ -170,7 +171,7 @@
                 <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                     <ol>
                         <li>产品按照原产标准提供。</li>
-                        <li>发货方式: {{ quotation_info.delivery_way | default('默认方式') }}。</li>
+                        <li>发货方式: {{ buyer_order_info.delivery_way | default('默认方式') }}。</li>
 {#                        <li>含16%增值税。</li>#}
                         <li>空运费以实际产生费用为准。</li>
                     </ol>
@@ -196,7 +197,7 @@
 {#                        </tr>#}
                         <tr>
                             <th>{{ _('Total') }}:</th>
-                            <td>￥{{ '{:,}'.format(quotation_info.amount_quotation) }}</td>
+                            <td>￥{{ '{:,}'.format(buyer_order_info.amount_order) }}</td>
                         </tr>
                     </table>
                 </div>

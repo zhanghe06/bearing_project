@@ -4,8 +4,8 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: purchase_item.py
-@time: 2018-08-31 17:16
+@file: stock_out_items.py
+@time: 2019-02-11 17:32
 """
 
 

@@ -163,13 +163,13 @@ permission_sales_orders_section_stats = BasePermission(SalesOrdersSectionNeed('s
 
 # -------------------------------------------------------------
 # 销售出货板块操作权限（创建、查询、导出、统计）
-SalesDeliverySectionNeed = partial(SectionActionNeed, 'sales_delivery')
-SalesDeliverySectionNeed.__doc__ = """A need with the section preset to `"sales_delivery"`."""
+DeliverySectionNeed = partial(SectionActionNeed, 'delivery')
+DeliverySectionNeed.__doc__ = """A need with the section preset to `"delivery"`."""
 
-permission_sales_delivery_section_add = BasePermission(SalesDeliverySectionNeed('add'))
-permission_sales_delivery_section_search = BasePermission(SalesDeliverySectionNeed('search'))
-permission_sales_delivery_section_export = BasePermission(SalesDeliverySectionNeed('export'))
-permission_sales_delivery_section_stats = BasePermission(SalesDeliverySectionNeed('stats'))
+permission_delivery_section_add = BasePermission(DeliverySectionNeed('add'))
+permission_delivery_section_search = BasePermission(DeliverySectionNeed('search'))
+permission_delivery_section_export = BasePermission(DeliverySectionNeed('export'))
+permission_delivery_section_stats = BasePermission(DeliverySectionNeed('stats'))
 
 # -------------------------------------------------------------
 # 采购订单板块操作权限（创建、查询、导出、统计）
@@ -183,13 +183,13 @@ permission_buyer_orders_section_stats = BasePermission(BuyerOrdersSectionNeed('s
 
 # -------------------------------------------------------------
 # 采购进货板块操作权限（创建、查询、导出、统计）
-BuyerPurchaseSectionNeed = partial(SectionActionNeed, 'buyer_purchase')
-BuyerPurchaseSectionNeed.__doc__ = """A need with the section preset to `"buyer_purchase"`."""
+PurchaseSectionNeed = partial(SectionActionNeed, 'purchase')
+PurchaseSectionNeed.__doc__ = """A need with the section preset to `"purchase"`."""
 
-permission_buyer_purchase_section_add = BasePermission(BuyerPurchaseSectionNeed('add'))
-permission_buyer_purchase_section_search = BasePermission(BuyerPurchaseSectionNeed('search'))
-permission_buyer_purchase_section_export = BasePermission(BuyerPurchaseSectionNeed('export'))
-permission_buyer_purchase_section_stats = BasePermission(BuyerPurchaseSectionNeed('stats'))
+permission_purchase_section_add = BasePermission(PurchaseSectionNeed('add'))
+permission_purchase_section_search = BasePermission(PurchaseSectionNeed('search'))
+permission_purchase_section_export = BasePermission(PurchaseSectionNeed('export'))
+permission_purchase_section_stats = BasePermission(PurchaseSectionNeed('stats'))
 
 # =============================================================
 # 因客户、报价有所有者，明细操作需要校验所有者身份，下面单独配置明细权限
@@ -466,44 +466,44 @@ class SalesOrdersItemAuditPermission(BasePermission):
 
 # -------------------------------------------------------------
 # 销售出货明细操作权限（读取、更新、删除、打印、审核）
-SalesDeliveryItemNeed = partial(SectionActionItemNeed, 'sales_delivery')
-SalesDeliveryItemNeed.__doc__ = """A need with the section preset to `"sales_delivery"`."""
+DeliveryItemNeed = partial(SectionActionItemNeed, 'delivery')
+DeliveryItemNeed.__doc__ = """A need with the section preset to `"delivery"`."""
 
-SalesDeliveryItemGetNeed = partial(SalesDeliveryItemNeed, 'get')
-SalesDeliveryItemEditNeed = partial(SalesDeliveryItemNeed, 'edit')
-SalesDeliveryItemDelNeed = partial(SalesDeliveryItemNeed, 'del')
-SalesDeliveryItemPrintNeed = partial(SalesDeliveryItemNeed, 'print')
-SalesDeliveryItemAuditNeed = partial(SalesDeliveryItemNeed, 'audit')
+DeliveryItemGetNeed = partial(DeliveryItemNeed, 'get')
+DeliveryItemEditNeed = partial(DeliveryItemNeed, 'edit')
+DeliveryItemDelNeed = partial(DeliveryItemNeed, 'del')
+DeliveryItemPrintNeed = partial(DeliveryItemNeed, 'print')
+DeliveryItemAuditNeed = partial(DeliveryItemNeed, 'audit')
 
 
-class SalesDeliveryItemGetPermission(BasePermission):
+class DeliveryItemGetPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = SalesDeliveryItemGetNeed(unicode(sales_delivery_id))
-        super(SalesDeliveryItemGetPermission, self).__init__(need)
+        need = DeliveryItemGetNeed(unicode(sales_delivery_id))
+        super(DeliveryItemGetPermission, self).__init__(need)
 
 
-class SalesDeliveryItemEditPermission(BasePermission):
+class DeliveryItemEditPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = SalesDeliveryItemEditNeed(unicode(sales_delivery_id))
-        super(SalesDeliveryItemEditPermission, self).__init__(need)
+        need = DeliveryItemEditNeed(unicode(sales_delivery_id))
+        super(DeliveryItemEditPermission, self).__init__(need)
 
 
-class SalesDeliveryItemDelPermission(BasePermission):
+class DeliveryItemDelPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = SalesDeliveryItemDelNeed(unicode(sales_delivery_id))
-        super(SalesDeliveryItemDelPermission, self).__init__(need)
+        need = DeliveryItemDelNeed(unicode(sales_delivery_id))
+        super(DeliveryItemDelPermission, self).__init__(need)
 
 
-class SalesDeliveryItemPrintPermission(BasePermission):
+class DeliveryItemPrintPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = SalesDeliveryItemPrintNeed(unicode(sales_delivery_id))
-        super(SalesDeliveryItemPrintPermission, self).__init__(need)
+        need = DeliveryItemPrintNeed(unicode(sales_delivery_id))
+        super(DeliveryItemPrintPermission, self).__init__(need)
 
 
-class SalesDeliveryItemAuditPermission(BasePermission):
+class DeliveryItemAuditPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = SalesDeliveryItemAuditNeed(unicode(sales_delivery_id))
-        super(SalesDeliveryItemAuditPermission, self).__init__(need)
+        need = DeliveryItemAuditNeed(unicode(sales_delivery_id))
+        super(DeliveryItemAuditPermission, self).__init__(need)
 
 
 # -------------------------------------------------------------
@@ -530,10 +530,10 @@ class BuyerOrdersItemEditPermission(BasePermission):
         super(BuyerOrdersItemEditPermission, self).__init__(need)
 
 
-class BuyerOrderItemsDelPermission(BasePermission):
+class BuyerOrderItemDelPermission(BasePermission):
     def __init__(self, order_id):
         need = BuyerOrdersItemDelNeed(unicode(order_id))
-        super(BuyerOrderItemsDelPermission, self).__init__(need)
+        super(BuyerOrderItemDelPermission, self).__init__(need)
 
 
 class BuyerOrdersItemPrintPermission(BasePermission):
@@ -550,41 +550,41 @@ class BuyerOrdersItemAuditPermission(BasePermission):
 
 # -------------------------------------------------------------
 # 采购进货明细操作权限（读取、更新、删除、打印、审核）
-BuyerPurchaseItemNeed = partial(SectionActionItemNeed, 'buyer_purchase')
-BuyerPurchaseItemNeed.__doc__ = """A need with the section preset to `"buyer_purchase"`."""
+PurchaseItemNeed = partial(SectionActionItemNeed, 'purchase')
+PurchaseItemNeed.__doc__ = """A need with the section preset to `"purchase"`."""
 
-BuyerPurchaseItemGetNeed = partial(BuyerPurchaseItemNeed, 'get')
-BuyerPurchaseItemEditNeed = partial(BuyerPurchaseItemNeed, 'edit')
-BuyerPurchaseItemDelNeed = partial(BuyerPurchaseItemNeed, 'del')
-BuyerPurchaseItemPrintNeed = partial(BuyerPurchaseItemNeed, 'print')
-BuyerPurchaseItemAuditNeed = partial(BuyerPurchaseItemNeed, 'audit')
+PurchaseItemGetNeed = partial(PurchaseItemNeed, 'get')
+PurchaseItemEditNeed = partial(PurchaseItemNeed, 'edit')
+PurchaseItemDelNeed = partial(PurchaseItemNeed, 'del')
+PurchaseItemPrintNeed = partial(PurchaseItemNeed, 'print')
+PurchaseItemAuditNeed = partial(PurchaseItemNeed, 'audit')
 
 
-class BuyerPurchaseItemGetPermission(BasePermission):
+class PurchaseItemGetPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = BuyerPurchaseItemGetNeed(unicode(buyer_purchase_id))
-        super(BuyerPurchaseItemGetPermission, self).__init__(need)
+        need = PurchaseItemGetNeed(unicode(buyer_purchase_id))
+        super(PurchaseItemGetPermission, self).__init__(need)
 
 
-class BuyerPurchaseItemEditPermission(BasePermission):
+class PurchaseItemEditPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = BuyerPurchaseItemEditNeed(unicode(buyer_purchase_id))
-        super(BuyerPurchaseItemEditPermission, self).__init__(need)
+        need = PurchaseItemEditNeed(unicode(buyer_purchase_id))
+        super(PurchaseItemEditPermission, self).__init__(need)
 
 
-class BuyerPurchaseItemDelPermission(BasePermission):
+class PurchaseItemDelPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = BuyerPurchaseItemDelNeed(unicode(buyer_purchase_id))
-        super(BuyerPurchaseItemDelPermission, self).__init__(need)
+        need = PurchaseItemDelNeed(unicode(buyer_purchase_id))
+        super(PurchaseItemDelPermission, self).__init__(need)
 
 
-class BuyerPurchaseItemPrintPermission(BasePermission):
+class PurchaseItemPrintPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = BuyerPurchaseItemPrintNeed(unicode(buyer_purchase_id))
-        super(BuyerPurchaseItemPrintPermission, self).__init__(need)
+        need = PurchaseItemPrintNeed(unicode(buyer_purchase_id))
+        super(PurchaseItemPrintPermission, self).__init__(need)
 
 
-class BuyerPurchaseItemAuditPermission(BasePermission):
+class PurchaseItemAuditPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = BuyerPurchaseItemAuditNeed(unicode(buyer_purchase_id))
-        super(BuyerPurchaseItemAuditPermission, self).__init__(need)
+        need = PurchaseItemAuditNeed(unicode(buyer_purchase_id))
+        super(PurchaseItemAuditPermission, self).__init__(need)

@@ -13,6 +13,41 @@ def to_dict(self):
 Base.to_dict = to_dict
 
 
+class BankAccount(Base):
+    __tablename__ = 'bank_account'
+
+    id = Column(Integer, primary_key=True)
+    bank_name = Column(String(100), nullable=False, server_default=text("''"))
+    type_bank = Column(Integer, nullable=False, server_default=text("'0'"))
+    initial_balance = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    closing_balance = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    note = Column(String(64), nullable=False, server_default=text("''"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
+class BankAccountItems(Base):
+    __tablename__ = 'bank_account_items'
+    __table_args__ = (
+        Index('type_current', 'type_current', 'cid'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    bank_id = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
+    type_current = Column(Integer, nullable=False, server_default=text("'0'"))
+    cid = Column(Integer, nullable=False, server_default=text("'0'"))
+    company_name = Column(String(100), nullable=False, server_default=text("''"))
+    note = Column(String(64), nullable=False, server_default=text("''"))
+    type_account = Column(Integer, nullable=False, server_default=text("'0'"))
+    amount = Column(Numeric(8, 2), nullable=False, server_default=text("'0.00'"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
 class BuyerOrder(Base):
     __tablename__ = 'buyer_order'
 
@@ -59,6 +94,40 @@ class BuyerOrderItems(Base):
     unit_price = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     note = Column(String(64), nullable=False, server_default=text("''"))
     type_tax = Column(Integer, nullable=False, server_default=text("'1'"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
+class CashAccount(Base):
+    __tablename__ = 'cash_account'
+
+    id = Column(Integer, primary_key=True)
+    cash_name = Column(String(100), nullable=False, server_default=text("''"))
+    initial_balance = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    closing_balance = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    note = Column(String(64), nullable=False, server_default=text("''"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
+class CashAccountItems(Base):
+    __tablename__ = 'cash_account_items'
+    __table_args__ = (
+        Index('type_current', 'type_current', 'cid'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    cash_id = Column(Integer, nullable=False, server_default=text("'0'"))
+    type_current = Column(Integer, nullable=False, server_default=text("'0'"))
+    cid = Column(Integer, nullable=False, server_default=text("'0'"))
+    company_name = Column(String(100), nullable=False, server_default=text("''"))
+    note = Column(String(64), nullable=False, server_default=text("''"))
+    type_account = Column(Integer, nullable=False, server_default=text("'0'"))
+    amount = Column(Numeric(8, 2), nullable=False, server_default=text("'0.00'"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
     delete_time = Column(DateTime)
     create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
@@ -355,7 +424,7 @@ class Purchase(Base):
     amount_production = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     amount_shipping = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     amount_adjustment = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
-    amount_delivery = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    amount_purchase = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
     note = Column(String(256), nullable=False, server_default=text("''"))
     type_tax = Column(Integer, nullable=False, server_default=text("'1'"))
     audit_uid = Column(Integer, nullable=False, server_default=text("'0'"))

@@ -128,7 +128,7 @@
                         <th>{{ _('production sku') }}</th>
                         <th class="text-right" style="min-width: 2em">{{ _('quantity') }}</th>
                         <th class="text-right">{{ _('Tax unit price') }}</th>
-                        <th class="text-right">{{ _('Subtotal') }}</th>
+{#                        <th class="text-right">{{ _('Subtotal') }}</th>#}
                         <th style="min-width: 3em">{{ _('delivery time') }}</th>
                     </tr>
                     </thead>
@@ -140,8 +140,9 @@
                         <td>{{ enquiry_item.enquiry_production_model or enquiry_item.production_model }}</td>
                         <td>{{ enquiry_item.production_sku }}</td>
                         <td class="text-right">{{ '{:,}'.format(enquiry_item.quantity) }}</td>
-                        <td class="text-right">￥{{ '{:,}'.format(enquiry_item.unit_price) }}</td>
-                        <td class="text-right">￥{{ '{:,}'.format(enquiry_item.quantity*enquiry_item.unit_price) }}</td>
+                        <td class="text-right"></td>
+{#                        <td class="text-right">￥{{ '{:,}'.format(enquiry_item.unit_price) }}</td>#}
+{#                        <td class="text-right">￥{{ '{:,}'.format(enquiry_item.quantity*enquiry_item.unit_price) }}</td>#}
                         <td>{{ enquiry_item.delivery_time }}</td>
                     </tr>
                     {% endfor %}
@@ -165,7 +166,7 @@
                 </p>
             </div><!-- /.col -->
             <div class="col-xs-6">
-                <p class="lead">备注:</p>
+                <p class="lead">{{ _('note') }}:</p>
                 <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                     <ol>
                         <li>产品按照原产标准提供。</li>
@@ -178,9 +179,9 @@
 
             </div><!-- /.col -->
             <div class="col-xs-6">
-                <p class="lead">{{ _('Amount') }}:</p>
-                <div class="table-responsive">
-                    <table class="table">
+{#                <p class="lead">{{ _('Amount') }}:</p>#}
+{#                <div class="table-responsive">#}
+{#                    <table class="table">#}
 {#                        <tr>#}
 {#                            <th style="width:50%">Subtotal:</th>#}
 {#                            <td>$250.30</td>#}
@@ -193,12 +194,12 @@
 {#                            <th>运费:</th>#}
 {#                            <td>￥0.00</td>#}
 {#                        </tr>#}
-                        <tr>
-                            <th>{{ _('Total') }}:</th>
-                            <td>￥{{ '{:,}'.format(enquiry_info.amount_enquiry) }}</td>
-                        </tr>
-                    </table>
-                </div>
+{#                        <tr>#}
+{#                            <th>{{ _('Total') }}:</th>#}
+{#                            <td>￥{{ '{:,}'.format(enquiry_info.amount_enquiry) }}</td>#}
+{#                        </tr>#}
+{#                    </table>#}
+{#                </div>#}
             </div><!-- /.col -->
         </div><!-- /.row -->
 

@@ -5,40 +5,40 @@
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
-                   onclick="$('#menu-sales-order').trigger('click')">{{ _('sales orders management') }}</a></li>
-            <li class="active">{{ _('sales orders add') }}</li>
+                   onclick="$('#menu-purchase').trigger('click')">{{ _('purchase management') }}</a></li>
+            <li class="active">{{ _('purchase add') }}</li>
         </ol>
 
         <form class="form-inline" id="search_form" method="post">
             {{ form.csrf_token }}
 
-            <div class="form-group{% if form.customer_cid.errors or form.customer_company_name.errors %} has-error{% endif %}">
-                {{ form.customer_cid() }}
-                {{ form.customer_company_name.label() }}
+            <div class="form-group{% if form.supplier_cid.errors or form.supplier_company_name.errors %} has-error{% endif %}">
+                {{ form.supplier_cid() }}
+                {{ form.supplier_company_name.label() }}
                 <div class="input-group">
-                    {{ form.customer_company_name(
+                    {{ form.supplier_company_name(
                         class="form-control input-sm",
-                        title=form.customer_cid.errors|join(', ') or form.customer_company_name.errors|join(', '),
+                        title=form.supplier_cid.errors|join(', ') or form.supplier_company_name.errors|join(', '),
                         autocomplete="off"
                         ) }}
-                    <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
+                    <span class="input-group-addon glyphicon glyphicon-option-horizontal supplier_select_search_btn"
                           style="top: 0; cursor:pointer;" data-toggle="modal"
-                          data-target="#customer_select_modal"></span>
+                          data-target="#supplier_select_modal"></span>
                 </div>
             </div>
-            <div class="form-group{% if form.customer_contact_id.errors or form.customer_contact_name.errors %} has-error{% endif %}">
-                {{ form.customer_contact_id() }}
-                {{ form.customer_contact_name.label() }}
+            <div class="form-group{% if form.supplier_contact_id.errors or form.supplier_contact_name.errors %} has-error{% endif %}">
+                {{ form.supplier_contact_id() }}
+                {{ form.supplier_contact_name.label() }}
                 <div class="input-group">
-                    {{ form.customer_contact_name(
+                    {{ form.supplier_contact_name(
                         class="form-control input-sm",
-                        title=form.customer_contact_id.errors|join(', ') or form.customer_contact_name.errors|join(', '),
+                        title=form.supplier_contact_id.errors|join(', ') or form.supplier_contact_name.errors|join(', '),
                         autocomplete="off"
                         )
                     }}
-                    <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_contact_select_search_btn"
+                    <span class="input-group-addon glyphicon glyphicon-option-horizontal supplier_contact_select_search_btn"
                           style="top: 0; cursor:pointer;" data-toggle="modal"
-                          data-target="#customer_contact_select_modal"></span>
+                          data-target="#supplier_contact_select_modal"></span>
                 </div>
             </div>
             <div class="form-group{% if form.delivery_way.errors %} has-error{% endif %}">
@@ -62,9 +62,9 @@
 {#                {{ form.status_order.label() }}#}
 {#                {{ form.status_order(class="form-control input-sm", title=form.status_order.errors|join(', ')) }}#}
 {#            </div>#}
-            <div class="form-group{% if form.amount_order.errors %} has-error{% endif %}">
-                {{ form.amount_order.label() }}
-                {{ form.amount_order(class="form-control input-sm", title=form.amount_order.errors|join(', ')) }}
+            <div class="form-group{% if form.amount_purchase.errors %} has-error{% endif %}">
+                {{ form.amount_purchase.label() }}
+                {{ form.amount_purchase(class="form-control input-sm", title=form.amount_purchase.errors|join(', ')) }}
             </div>
 
             <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
@@ -96,7 +96,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for info in form.sales_order_items %}
+                    {% for info in form.buyer_order_items %}
                         <tr class="text-muted items_line">
                             <td><span readonly="readonly" class="form-control input-sm">{{ loop.index }}</span></td>
                             <td class="bg-warning{% if info.custom_production_brand.errors %} has-error{% endif %}">
@@ -168,11 +168,11 @@
         <hr/>
     </div>
 
-    <!-- 客户搜索 -->
-    {% include "modal/customer_select.html" %}
+    <!-- 渠道搜索 -->
+    {% include "modal/supplier_select.html" %}
 
     <!-- 联系方式搜索 -->
-    {% include "modal/customer_contact_select.html" %}
+    {% include "modal/supplier_contact_select.html" %}
 
     <!-- 产品搜索 -->
     {% include "modal/production_select.html" %}
@@ -181,12 +181,12 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- 客户搜索 -->
-{% include "modal/customer_select_js.html" %}
+<!-- 渠道搜索 -->
+{% include "modal/supplier_select_js.html" %}
 <!-- 联系方式搜索 -->
-{% include "modal/customer_contact_select_js.html" %}
+{% include "modal/supplier_contact_select_js.html" %}
 <!-- 产品搜索 -->
 {% include "modal/production_select_js.html" %}
-<!-- 销售订单总额 -->
-<script src="{{ url_for('static', filename='js/common/amount_sales_orders.js', v='1.5.24') }}"></script>
+<!-- 采购进货总额 -->
+<script src="{{ url_for('static', filename='js/common/amount_purchase.js', v='1.5.24') }}"></script>
 {% endblock %}

@@ -36,13 +36,13 @@ from app_backend import (
 from app_backend.api.buyer_order import get_buyer_order_rows, edit_buyer_order, get_buyer_order_pagination, \
     add_buyer_order, get_buyer_order_row_by_id
 from app_backend.api.buyer_order_items import add_buyer_order_items, get_buyer_order_items_rows, edit_buyer_order_items, delete_buyer_order_items
-from app_backend.api.quotation import get_quotation_user_list_choices
+from app_backend.api.buyer_order import get_buyer_order_user_list_choices
 from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
 from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.forms.buyer_order import BuyerOrderSearchForm, BuyerOrderAddForm, BuyerOrderEditForm, BuyerOrderItemsEditForm
 from app_backend.models.bearing_project import BuyerOrder
-from app_backend.permissions import permission_buyer_orders_section_export, BuyerOrderItemsDelPermission
+from app_backend.permissions import permission_buyer_orders_section_export, BuyerOrderItemDelPermission
 from app_backend.signals.buyer_orders import signal_buyer_orders_status_delete
 from app_common.maps.default import default_choice_option_int
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
@@ -72,7 +72,7 @@ def lists():
 
     # 搜索条件
     form = BuyerOrderSearchForm(request.form)
-    form.uid.choices = get_quotation_user_list_choices()
+    form.uid.choices = get_buyer_order_user_list_choices()
     # app.logger.info('')
 
     search_condition = [
@@ -114,7 +114,7 @@ def lists():
             # 检查删除权限
             permitted = True
             for order_id in order_ids:
-                buyer_orders_item_del_permission = BuyerOrderItemsDelPermission(order_id)
+                buyer_orders_item_del_permission = BuyerOrderItemDelPermission(order_id)
                 if not buyer_orders_item_del_permission.can():
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
@@ -327,7 +327,7 @@ def edit(buyer_order_id):
         form.supplier_cid.data = buyer_order_info.supplier_cid
         form.supplier_contact_id.data = buyer_order_info.supplier_contact_id
         form.type_tax.data = buyer_order_info.type_tax
-        form.amount_buyer_orders.data = buyer_order_info.amount_order
+        form.amount_order.data = buyer_order_info.amount_order
         # form.buyer_order_items = buyer_order_items
         while len(form.buyer_order_items) > 0:
             form.buyer_order_items.pop_entry()
@@ -499,10 +499,10 @@ def preview(buyer_order_id):
     buyer_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
-    supplier_info = get_supplier_row_by_id(buyer_order_info.cid)
+    supplier_info = get_supplier_row_by_id(buyer_order_info.supplier_cid)
 
     # 获取渠道联系方式
-    supplier_contact_info = get_supplier_contact_row_by_id(buyer_order_info.contact_id)
+    supplier_contact_info = get_supplier_contact_row_by_id(buyer_order_info.supplier_contact_id)
 
     # 获取询价人员信息
     user_info = get_user_row_by_id(buyer_order_info.uid)
@@ -511,7 +511,7 @@ def preview(buyer_order_id):
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('enquiry edit')
+    document_info['TITLE'] = _('buyer order preview')
 
     template_name = 'buyer/order/preview.html'
 
@@ -549,10 +549,10 @@ def pdf(buyer_order_id):
     buyer_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
-    supplier_info = get_supplier_row_by_id(buyer_order_info.cid)
+    supplier_info = get_supplier_row_by_id(buyer_order_info.supplier_cid)
 
     # 获取客户联系方式
-    supplier_contact_info = get_supplier_contact_row_by_id(buyer_order_info.contact_id)
+    supplier_contact_info = get_supplier_contact_row_by_id(buyer_order_info.supplier_contact_id)
 
     # 获取询价人员信息
     user_info = get_user_row_by_id(buyer_order_info.uid)
@@ -561,7 +561,7 @@ def pdf(buyer_order_id):
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('enquiry edit')
+    document_info['TITLE'] = _('buyer order pdf')
 
     template_name = 'buyer/order/pdf.html'
 
@@ -609,7 +609,7 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
-    buyer_orders_item_del_permission = BuyerOrderItemsDelPermission(buyer_order_id)
+    buyer_orders_item_del_permission = BuyerOrderItemDelPermission(buyer_order_id)
     if not buyer_orders_item_del_permission.can():
         ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)

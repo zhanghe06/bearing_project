@@ -256,6 +256,16 @@ class SalesOrderItemAddForm(FlaskForm):
             'max': 1000000.00,
         }
     )
+    type_tax = BooleanField(
+        _('type tax'),
+        default=True,
+        validators=[],
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('type tax'),
+            'checked': 'checked',
+        }
+    )
     note = StringField(
         _('note'),
         validators=[],
@@ -363,6 +373,16 @@ class SalesOrderAddForm(FlaskForm):
             'title': _('delivery way'),
         }
     )
+    type_tax = BooleanField(
+        _('type tax'),
+        default=True,
+        validators=[],
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('type tax'),
+            'checked': 'checked',
+        }
+    )
     note = StringField(
         _('sales order note'),
         validators=[],
@@ -386,15 +406,15 @@ class SalesOrderAddForm(FlaskForm):
         }
     )
     amount_order = DecimalField(
-        _('amount sales order'),
+        _('amount order'),
         validators=[
             AmountSalesOrderValidate()
         ],
-        description=_('amount sales order'),
+        description=_('amount order'),
         render_kw={
-            'placeholder': _('amount sales order'),
+            'placeholder': _('amount order'),
             'rel': 'tooltip',
-            'title': _('amount sales order'),
+            'title': _('amount order'),
             'type': 'number',
             'disabled': 'disabled',
         }
@@ -483,6 +503,16 @@ class SalesOrderEditForm(FlaskForm):
             'title': _('delivery way'),
         }
     )
+    type_tax = BooleanField(
+        _('type tax'),
+        default=True,
+        validators=[],
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('type tax'),
+            'checked': 'checked',
+        }
+    )
     note = StringField(
         _('sales order note'),
         validators=[],
@@ -510,11 +540,11 @@ class SalesOrderEditForm(FlaskForm):
         validators=[
             AmountSalesOrderValidate()
         ],
-        description=_('amount sales order'),
+        description=_('amount order'),
         render_kw={
-            'placeholder': _('amount sales order'),
+            'placeholder': _('amount order'),
             'rel': 'tooltip',
-            'title': _('amount sales order'),
+            'title': _('amount order'),
             'type': 'number',
             'readonly': 'readonly',
         }

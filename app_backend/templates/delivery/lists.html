@@ -5,8 +5,8 @@
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
-                   onclick="$('#menu-sales-order').trigger('click')">{{ _('sales orders management') }}</a></li>
-            <li class="active">{{ _('sales orders lists') }}</li>
+                   onclick="$('#menu-delivery').trigger('click')">{{ _('delivery management') }}</a></li>
+            <li class="active">{{ _('delivery lists') }}</li>
         </ol>
         <form method="post">
             <div class="panel panel-default">
@@ -72,16 +72,16 @@
                     <tr>
                         <th>
                             <label>
-                                <input class="select_all" name="sales_order_ids" title="{{ _('Select All') }}"
+                                <input class="select_all" name="delivery_ids" title="{{ _('Select All') }}"
                                        rel="tooltip" type="checkbox" value=""/>
                                 {{ _('Select All') }}
                             </label>
                         </th>
-                        <th>{{ _('sales order code') }}</th>
-                        <th>{{ _('sales order user') }}</th>
+                        <th>{{ _('delivery code') }}</th>
+                        <th>{{ _('delivery user') }}</th>
                         <th>{{ _('customer company') }}</th>
-                        <th class="text-right">{{ _('sales order amount') }}</th>
-                        <th>{{ _('sales order note') }}</th>
+                        <th class="text-right">{{ _('delivery amount') }}</th>
+                        <th>{{ _('delivery note') }}</th>
                         <th>{{ _('create time') }}</th>
                         <th>{{ _('update time') }}</th>
                         <th>{{ _('operation') }}</th>
@@ -92,14 +92,14 @@
                         <tr class="text-muted item">
                             <td>
                                 <label>
-                                    <input class="select_item" name="sales_order_id" title="{{ _('Select') }}"
+                                    <input class="select_item" name="delivery_id" title="{{ _('Select') }}"
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td><a href="{{ url_for('sales_order.edit', sales_order_id=info.id) }}">{{ g.BUYER_ORDER_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
+                            <td><a href="{{ url_for('delivery.edit', delivery_id=info.id) }}">{{ g.BUYER_ORDER_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
                             <td>{{ info.uid | user_name }}</td>
                             <td>{{ info.customer_cid | customer_company_name }}</td>
-                            <td class="text-right">{{ '{:,}'.format(info.amount_order) }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.amount_delivery) }}</td>
                             <td>{{ info.note }}</td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
@@ -107,7 +107,7 @@
                                 <!-- Split button -->
                                 <div class="btn-group btn-group-sm">
                                     <a class="btn btn-default"
-                                       href="{{ url_for('sales_order.edit', sales_order_id=info.id, next=request.path) }}">
+                                       href="{{ url_for('delivery.edit', delivery_id=info.id, next=request.path) }}">
                                         <span class="glyphicon glyphicon-pencil"></span> {{ _('Edit') }}
                                     </a>
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
@@ -117,19 +117,19 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         <li>
-                                            <a href="javascript:void(0);" onclick="sales_order_delete({{ info.id }})">
+                                            <a href="javascript:void(0);" onclick="delivery_delete({{ info.id }})">
                                                 <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
                                             </a>
                                         </li>
                                         <li role="separator" class="divider" style="margin: 0"></li>
                                         <li>
-                                            <a href="{{ url_for('sales_order.preview', sales_order_id=info.id, next=request.path) }}"
+                                            <a href="{{ url_for('delivery.preview', delivery_id=info.id, next=request.path) }}"
                                                target="_blank">
                                                 <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ url_for('sales_order.pdf', sales_order_id=info.id) }}"
+                                            <a href="{{ url_for('delivery.pdf', delivery_id=info.id) }}"
                                                target="_blank">
                                                 <span class="glyphicon glyphicon-download-alt"></span> {{ _('Download') }}
                                             </a>
@@ -144,7 +144,7 @@
                 </table>
                 {# 翻页 #}
                 {% from "macros.html" import render_pagination_post %}
-                {{ render_pagination_post(pagination, 'sales_order.lists') }}
+                {{ render_pagination_post(pagination, 'delivery.lists') }}
             </div>
         </form>
     </div>
@@ -159,12 +159,12 @@
     {% include "modal/customer_select_js.html" %}
 
     <script>
-        // 销售订单删除
-        function sales_order_delete (sales_order_id) {
+        // 销售出货删除
+        function delivery_delete (delivery_id) {
             if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
-                $.getJSON('{{ url_for('sales_order.ajax_delete') }}',
+                $.getJSON('{{ url_for('delivery.ajax_delete') }}',
                     {
-                        sales_order_id: sales_order_id
+                        delivery_id: delivery_id
                     }, function (data) {
                         if (data.result === true) {
                             alert(data.msg)
