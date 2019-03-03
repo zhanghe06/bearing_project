@@ -20,12 +20,12 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
     IPAddress
-from app_common.maps.default import default_choices_int, default_choice_option_int, default_choice_option_str
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int, default_search_choice_option_str
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 
 from copy import copy
 
-company_type_choices = copy(default_choices_int)
+company_type_choices = copy(default_search_choices_int)
 company_type_choices.extend(iteritems(TYPE_COMPANY_DICT))
 
 

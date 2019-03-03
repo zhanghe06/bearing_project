@@ -68,7 +68,7 @@ from app_backend.permissions import (
     QuotationItemDelPermission,
 )
 from app_backend.signals.quotation import signal_quotation_status_delete
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
@@ -119,7 +119,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_choice_option_int:
+            if form.uid.data != default_search_choice_option_int:
                 search_condition.append(Quotation.uid == form.uid.data)
             if form.customer_cid.data and form.customer_company_name.data:
                 search_condition.append(Quotation.customer_cid == form.customer_cid.data)
@@ -200,7 +200,6 @@ def info(quotation_id):
     quotation_item_get_permission = QuotationItemGetPermission(quotation_id)
     if not quotation_item_get_permission.can():
         abort(403)
-    # 详情数据
     quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
     if not quotation_info:
@@ -209,24 +208,36 @@ def info(quotation_id):
     if quotation_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
-    # 公司信息
-    company_info = get_customer_row_by_id(quotation_info.customer_cid)
+    quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
+    quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
 
-    template_name = 'quotation/info.html'
+    # 获取客户公司信息
+    customer_info = get_customer_row_by_id(quotation_info.customer_cid)
+
+    # 获取客户联系方式
+    customer_contact_info = get_customer_contact_row_by_id(quotation_info.customer_contact_id)
+
+    # 获取报价人员信息
+    user_info = get_user_row_by_id(quotation_info.uid)
+
+    quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('quotation info')
 
-    # 获取明细
-    quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
+    template_name = 'quotation/info.html'
 
-    # 渲染模板
     return render_template(
         template_name,
+        quotation_id=quotation_id,
         quotation_info=quotation_info,
+        customer_info=customer_info,
+        customer_contact_info=customer_contact_info,
+        user_info=user_info,
         quotation_items=quotation_items,
-        company_info=company_info,
+        quotation_print_date=quotation_print_date,
+        quotation_code=quotation_code,
         **document_info
     )
 
@@ -252,6 +263,52 @@ def add():
 
     # 进入创建页面
     if request.method == 'GET':
+
+        # 克隆单据
+        from_type = request.args.get('from_type')
+        from_id = request.args.get('from_id', type=int)
+        # 克隆单据 - 报价单
+        if from_type == 'quotation' and from_id:
+            quotation_id = from_id
+            quotation_info = get_quotation_row_by_id(quotation_id)
+            # 检查资源是否存在
+            if not quotation_info:
+                abort(404)
+            # 检查资源是否删除
+            if quotation_info.status_delete == STATUS_DEL_OK:
+                abort(410)
+
+            # 获取明细
+            quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
+            # 表单赋值
+            form.uid.data = quotation_info.uid
+            form.customer_cid.data = quotation_info.customer_cid
+            form.customer_contact_id.data = quotation_info.customer_contact_id
+            form.delivery_way.data = quotation_info.delivery_way
+            form.note.data = quotation_info.note
+            form.status_order.data = quotation_info.status_order
+            form.amount_quotation.data = quotation_info.amount_quotation
+            # form.quotation_items = quotation_items
+            while len(form.quotation_items) > 0:
+                form.quotation_items.pop_entry()
+            for quotation_item in quotation_items:
+                quotation_item_form = QuotationItemEditForm()
+                quotation_item_form.id = quotation_item.id
+                quotation_item_form.quotation_id = quotation_item.quotation_id
+                quotation_item_form.uid = quotation_item.uid
+                quotation_item_form.enquiry_production_model = quotation_item.enquiry_production_model
+                quotation_item_form.enquiry_quantity = quotation_item.enquiry_quantity
+                quotation_item_form.production_id = quotation_item.production_id
+                quotation_item_form.production_brand = quotation_item.production_brand
+                quotation_item_form.production_model = quotation_item.production_model
+                quotation_item_form.production_sku = quotation_item.production_sku
+                quotation_item_form.note = quotation_item.note
+                quotation_item_form.quantity = quotation_item.quantity
+                quotation_item_form.unit_price = quotation_item.unit_price
+                quotation_item_form.delivery_time = quotation_item.delivery_time
+                quotation_item_form.status_ordered = quotation_item.status_ordered
+                form.quotation_items.append_entry(quotation_item_form)
+
         # 渲染页面
         return render_template(
             template_name,
@@ -595,7 +652,7 @@ def preview(quotation_id):
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quotation edit')
+    document_info['TITLE'] = _('quotation preview')
 
     template_name = 'quotation/preview.html'
 
@@ -645,7 +702,7 @@ def pdf(quotation_id):
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quotation edit')
+    document_info['TITLE'] = _('quotation download')
 
     template_name = 'quotation/pdf.html'
 

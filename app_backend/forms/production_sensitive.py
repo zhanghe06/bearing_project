@@ -22,7 +22,7 @@ from wtforms.widgets import html_params
 
 from app_backend.api.production import get_production_row
 from app_backend.models.bearing_project import Production
-from app_common.maps.default import default_choice_option_str, default_choice_option_int
+from app_common.maps.default import default_search_choice_option_str, default_search_choice_option_int
 
 
 class ProductionSensitiveSearchForm(FlaskForm):
@@ -57,7 +57,7 @@ class ProductionSensitiveSearchForm(FlaskForm):
     production_brand = SelectField(
         _('production brand'),
         validators=[],  # 字符类型，非必填
-        default=default_choice_option_str,
+        default=default_search_choice_option_str,
         description=_('production brand'),
         render_kw={
             'rel': 'tooltip',

@@ -20,12 +20,12 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
     IPAddress, Optional
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 
 from copy import copy
 
-company_type_choices = copy(default_choices_int)
+company_type_choices = copy(default_search_choices_int)
 company_type_choices.extend(iteritems(TYPE_COMPANY_DICT))
 
 
@@ -49,7 +49,7 @@ class SupplierSearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         choices=company_type_choices,
         description=_('company type'),
@@ -60,7 +60,7 @@ class SupplierSearchForm(FlaskForm):
     )
     owner_uid = SelectField(
         _('owner uid'),
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         # validators=[],
         coerce=int,
         description=_('owner uid'),
@@ -193,7 +193,7 @@ class SupplierAddForm(FlaskForm):
         validators=[
             InputRequired(),
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         description=_('company type'),
         render_kw={
@@ -207,7 +207,7 @@ class SupplierAddForm(FlaskForm):
         validators=[
             InputRequired(),
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         description=_('owner uid'),
         render_kw={
@@ -315,7 +315,7 @@ class SupplierEditForm(FlaskForm):
         validators=[
             InputRequired(),
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         description=_('company type'),
         render_kw={
@@ -329,7 +329,7 @@ class SupplierEditForm(FlaskForm):
         validators=[
             InputRequired(),
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         description=_('owner uid'),
         render_kw={

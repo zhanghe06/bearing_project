@@ -71,7 +71,7 @@ from app_backend.permissions import (
     EnquiryItemDelPermission,
 )
 from app_backend.signals.enquiry import signal_enquiry_status_delete
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
@@ -122,7 +122,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_choice_option_int:
+            if form.uid.data != default_search_choice_option_int:
                 search_condition.append(Enquiry.uid == form.uid.data)
             if form.supplier_cid.data and form.supplier_company_name.data:
                 search_condition.append(Enquiry.supplier_cid == form.supplier_cid.data)

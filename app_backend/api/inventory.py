@@ -109,3 +109,14 @@ def get_inventory_pagination(page=1, per_page=10, *args, **kwargs):
     """
     rows = db_instance.get_pagination(Inventory, page, per_page, *args, **kwargs)
     return rows
+
+
+def get_distinct_inventory_brand(*args, **kwargs):
+    """
+    获取品牌
+    :param args:
+    :param kwargs:
+    :return: List
+    """
+    field = 'production_brand'
+    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Inventory, field, *args, **kwargs))

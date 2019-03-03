@@ -542,7 +542,7 @@ def forbidden(error):
 
 @app.errorhandler(404)
 def not_found(error):
-    flash(_('Not Found'), 'warning')
+    flash(error.description or _('Not Found'), 'warning')
     return render_template('http_exception/404.html'), 404
 
 

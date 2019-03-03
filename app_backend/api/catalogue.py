@@ -14,7 +14,7 @@ from sqlalchemy.sql import func
 from app_backend import db
 from app_common.libs.mysql_orm_op import DbInstance
 from app_backend.models.bearing_project import Catalogue
-from app_common.maps.default import default_choices_int
+from app_common.maps.default import default_search_choices_int
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 from app_common.maps.status_order import STATUS_ORDER_OK

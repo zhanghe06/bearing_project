@@ -31,13 +31,13 @@ from wtforms.fields import FieldList, FormField, HiddenField
 from app_backend.forms import SelectBS, CheckBoxBS
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 # from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 
 from copy import copy
 
 from app_common.maps.type_tax import TYPE_TAX_CHOICES
 
-role_id_choices = copy(default_choices_int)
+role_id_choices = copy(default_search_choices_int)
 role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 
@@ -69,7 +69,7 @@ class SalesOrderSearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         # choices=sales_order_brand_choices,
         description=_('sales order user'),

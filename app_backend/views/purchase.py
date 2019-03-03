@@ -34,7 +34,7 @@ from app_backend import (
 from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.signals.purchase import signal_purchase_status_delete
 
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_backend.api.purchase import add_purchase, get_purchase_user_list_choices, get_purchase_rows, \
     get_purchase_pagination, edit_purchase, get_purchase_row_by_id
 from app_backend.api.purchase_items import add_purchase_items, edit_purchase_items
@@ -91,7 +91,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_choice_option_int:
+            if form.uid.data != default_search_choice_option_int:
                 search_condition.append(Purchase.uid == form.uid.data)
             if form.supplier_cid.data and form.supplier_company_name.data:
                 search_condition.append(Purchase.cid == form.supplier_cid.data)

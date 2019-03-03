@@ -346,8 +346,13 @@ class Inventory(Base):
 
     id = Column(Integer, primary_key=True)
     production_id = Column(Integer, nullable=False, index=True)
+    production_brand = Column(String(32), nullable=False, server_default=text("''"))
+    production_model = Column(String(64), nullable=False, server_default=text("''"))
+    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
     warehouse_id = Column(Integer, nullable=False)
+    warehouse_name = Column(String(100), nullable=False, server_default=text("''"))
     rack_id = Column(Integer, nullable=False)
+    rack_name = Column(String(16), nullable=False, server_default=text("''"))
     stock_qty = Column(Integer, nullable=False)
     note = Column(String(256), nullable=False, server_default=text("''"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))

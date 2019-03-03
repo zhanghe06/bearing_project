@@ -1,10 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-inventory').trigger('click')">{{ _('inventory management') }}</a></li>
+            <li class="active">{{ _('inventory add') }}</li>
+        </ol>
+        {#        <div class="col-md-8 col-sm-offset-2">#}
+        <form id="inventory_add" class="form-horizontal items_line" method="post" action="">
+            {{ form.csrf_token }}
+            <div class="form-group{% if form.production_brand.errors %} has-error{% endif %}">
+                {{ form.production_brand.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.production_brand(class="form-control production_brand", title=form.production_brand.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.production_brand.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.production_id.errors or form.production_model.errors %} has-error{% endif %}">
+                {{ form.production_model.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        {{ form.production_model(class="form-control production_model", title=form.production_id.errors|join(', ') or form.production_model.errors|join(', ')) }}
+                        {{ form.production_id() }}
+                        <span class="input-group-addon glyphicon glyphicon-option-horizontal production_select_search_btn"
+                              style="top: 0; cursor:pointer;" data-toggle="modal"
+                              data-target="#production_select_modal"></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.production_model.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.production_sku.errors %} has-error{% endif %}">
+                {{ form.production_sku.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.production_sku(class="form-control production_sku", title=form.production_sku.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.production_sku.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.warehouse_id.errors %} has-error{% endif %}">
+                {{ form.warehouse_id.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.warehouse_id(class="form-control", title=form.warehouse_id.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.warehouse_id.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.rack_id.errors %} has-error{% endif %}">
+                {{ form.rack_id.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.rack_id(class="form-control", title=form.rack_id.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.rack_id.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.stock_qty.errors %} has-error{% endif %}">
+                {{ form.stock_qty.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.stock_qty(class="form-control", title=form.stock_qty.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.stock_qty.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.note.errors %} has-error{% endif %}">
+                {{ form.note.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.note(class="form-control", title=form.note.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.note.description }}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-load"
+                            data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
+                    <button type="reset" class="btn btn-default">{{ _('Reset') }}</button>
+                    <button class="btn btn-default" onclick="history.back();return false">{{ _('Go Back') }}</button>
+                </div>
+            </div>
+        </form>
+        {#        </div>#}
+    </div>
+
+    <!-- 产品搜索 -->
+    {% include "modal/production_select.html" %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <!-- 产品搜索 -->
+    {% include "modal/production_select_js.html" %}
+    <script>
+        $(function () {
+            //级联选择
+            $('#warehouse_id').change(function () {
+                $('#rack_id').get(0).selectedIndex = 0
+                $('#inventory_add').submit()
+            })
+        })
+    </script>
+{% endblock %}

@@ -24,7 +24,7 @@ from wtforms.validators import InputRequired, DataRequired, Length, NumberRange,
 
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int, default_search_choice_option_str
 
 from copy import copy
 
@@ -35,7 +35,7 @@ class InventorySearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         description=_('warehouse name'),
         render_kw={
@@ -48,12 +48,33 @@ class InventorySearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         description=_('rack name'),
         render_kw={
             'rel': 'tooltip',
             'title': _('rack name'),
+        }
+    )
+    production_brand = SelectField(
+        _('production brand'),
+        validators=[],  # 字符类型，非必填
+        default=default_search_choice_option_str,
+        description=_('production brand'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('production brand'),
+        }
+    )
+    production_model = StringField(
+        _('production model'),
+        validators=[],
+        description=_('production model'),
+        render_kw={
+            'placeholder': _('production model'),
+            'rel': 'tooltip',
+            'title': _('production model'),
+            'autocomplete': 'off',
         }
     )
     op = IntegerField(
@@ -69,25 +90,65 @@ class InventorySearchForm(FlaskForm):
 
 
 class InventoryAddForm(FlaskForm):
-    product_id = IntegerField(
-        _('product id'),
+    production_id = IntegerField(
+        _('production id'),
+        validators=[
+            DataRequired(),
+        ],
+        render_kw={
+            'type': 'hidden',
+        }
+    )
+    production_brand = StringField(
+        _('production brand'),
         validators=[
             DataRequired(),
         ],
         default='',
-        description=_('product id'),
+        description='产品品牌（例如：SKF、FAG、NSK...）',
         render_kw={
-            'placeholder': _('product id'),
+            'placeholder': _('production brand'),
             'rel': 'tooltip',
-            'title': _('product id'),
+            'title': _('production brand'),
+            'autocomplete': 'off',
+            'readonly': 'readonly',
+        }
+    )
+    production_model = StringField(
+        _('production model'),
+        validators=[
+            DataRequired(),
+        ],
+        default='',
+        description='产品型号（例如：7008CEGA/HCP4A）',
+        render_kw={
+            'placeholder': _('production model'),
+            'rel': 'tooltip',
+            'title': _('production model'),
+            'autocomplete': 'off',
+        }
+    )
+    production_sku = StringField(
+        _('production sku'),
+        validators=[
+            DataRequired(),
+            Length(min=2, max=16),
+        ],
+        description='单位（Pcs:个,Pair:对,Set:组）',
+        render_kw={
+            'placeholder': _('production sku'),
+            'rel': 'tooltip',
+            'title': _('production sku'),
+            'autocomplete': 'off',
+            'readonly': 'readonly',
         }
     )
     warehouse_id = SelectField(
         _('warehouse name'),
         validators=[
-            InputRequired(),  # 可以为0
+            DataRequired(),
         ],
-        default=default_choice_option_int,
+        default=0,
         coerce=int,
         description=_('warehouse name'),
         render_kw={
@@ -98,14 +159,31 @@ class InventoryAddForm(FlaskForm):
     rack_id = SelectField(
         _('rack name'),
         validators=[
-            InputRequired(),  # 可以为0
+            DataRequired(),
         ],
-        default=default_choice_option_int,
+        default=0,
         coerce=int,
         description=_('rack name'),
         render_kw={
             'rel': 'tooltip',
             'title': _('rack name'),
+        }
+    )
+    stock_qty = IntegerField(
+        _('stock quantity'),
+        validators=[
+            DataRequired(),
+        ],
+        default=1,
+        description=_('stock quantity'),
+        render_kw={
+            'placeholder': _('stock quantity'),
+            'rel': 'tooltip',
+            'title': _('stock quantity'),
+            'type': 'number',
+            'step': 1,
+            'min': 1,
+            'max': 10000,
         }
     )
     note = StringField(
@@ -121,5 +199,5 @@ class InventoryAddForm(FlaskForm):
     )
 
 
-class InventoryEditForm(FlaskForm):
+class InventoryEditForm(InventoryAddForm):
     pass

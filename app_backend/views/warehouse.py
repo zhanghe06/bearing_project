@@ -56,7 +56,7 @@ from app_backend.permissions import (
     permission_warehouse_section_stats,
     permission_role_stock_keeper,
     permission_role_administrator)
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
@@ -102,7 +102,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.id.data != default_choice_option_int:
+            if form.id.data != default_search_choice_option_int:
                 search_condition.append(Warehouse.id == form.id.data)
             if form.address.data:
                 search_condition.append(Warehouse.address == form.address.data)

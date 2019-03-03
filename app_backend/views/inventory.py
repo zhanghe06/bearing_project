@@ -26,15 +26,18 @@ from flask import (
 )
 from flask_babel import gettext as _
 from flask_login import login_required
+from werkzeug import exceptions
+from werkzeug.exceptions import HTTPException
 
 from app_backend import app
 from app_backend import excel
+from app_backend.api.production import get_production_row_by_id
 from app_backend.api.warehouse import (
     get_warehouse_choices,
-)
+    get_warehouse_row_by_id)
 from app_backend.api.rack import (
     get_rack_choices,
-)
+    get_rack_row_by_id)
 from app_backend.api.inventory import (
     get_inventory_pagination,
     get_inventory_row_by_id,
@@ -42,7 +45,7 @@ from app_backend.api.inventory import (
     edit_inventory,
     # inventory_current_stats,
     # inventory_former_stats,
-)
+    get_distinct_inventory_brand)
 from app_backend.api.inventory import (
     get_inventory_rows,
     # get_distinct_brand,
@@ -60,7 +63,8 @@ from app_backend.permissions import (
     permission_inventory_section_stats,
     permission_role_stock_keeper,
     permission_role_administrator)
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int, default_search_choices_str, \
+    default_search_choice_option_str
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
@@ -75,6 +79,13 @@ DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 PER_PAGE_BACKEND = app.config.get('PER_PAGE_BACKEND', 20)
 AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
+
+
+def get_inventory_brand_choices():
+    inventory_brand_list = copy(default_search_choices_str)
+    distinct_brand = get_distinct_inventory_brand(status_delete=STATUS_DEL_NO)
+    inventory_brand_list.extend([(brand, brand) for brand in distinct_brand])
+    return inventory_brand_list
 
 
 @bp_inventory.route('/lists.html', methods=['GET', 'POST'])
@@ -94,6 +105,7 @@ def lists():
     form = InventorySearchForm(request.form)
     form.warehouse_id.choices = get_warehouse_choices()
     form.rack_id.choices = get_rack_choices(form.warehouse_id.data)
+    form.production_brand.choices = get_inventory_brand_choices()
     # app.logger.info('')
 
     search_condition = [
@@ -107,10 +119,14 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.warehouse_id.data != default_choice_option_int:
+            if form.warehouse_id.data != default_search_choice_option_int:
                 search_condition.append(Inventory.warehouse_id == form.warehouse_id.data)
-            if form.rack_id.data != default_choice_option_int:
+            if form.rack_id.data != default_search_choice_option_int:
                 search_condition.append(Inventory.rack_id == form.rack_id.data)
+            if form.production_brand.data != default_search_choice_option_str:
+                search_condition.append(Inventory.production_brand == form.production_brand.data)
+            if form.production_model.data:
+                search_condition.append(Inventory.production_model.like('%%%s%%' % form.production_model.data))
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
@@ -198,6 +214,9 @@ def add():
     # 加载创建表单
     form = InventoryAddForm(request.form)
 
+    form.warehouse_id.choices = get_warehouse_choices(option_type='create')
+    form.rack_id.choices = get_rack_choices(form.warehouse_id.data, option_type='create')
+
     # 进入创建页面
     if request.method == 'GET':
         # 渲染页面
@@ -220,9 +239,29 @@ def add():
 
         # 表单校验成功
         current_time = datetime.utcnow()
+        # 获取产品信息
+        production_info = get_production_row_by_id(form.production_id.data)
+        if not production_info:
+            abort(404, exceptions.NotFound(description='production'))
+        # 获取仓库信息
+        warehouse_info = get_warehouse_row_by_id(form.warehouse_id.data)
+        if not warehouse_info:
+            abort(404, exceptions.NotFound(description='warehouse'))
+        # 获取货架信息
+        rack_info = get_rack_row_by_id(form.rack_id.data)
+        if not rack_info:
+            abort(404, exceptions.NotFound(description='rack'))
         inventory_data = {
+            'production_id': form.production_id.data,
+            'production_brand': production_info.production_brand,
+            'production_model': production_info.production_model,
+            'production_sku': production_info.production_sku,
             'warehouse_id': form.warehouse_id.data,
-            'name': form.name.data,
+            'warehouse_name': warehouse_info.name,
+            'rack_id': form.rack_id.data,
+            'rack_name': rack_info.name,
+            'stock_qty': form.stock_qty.data,
+            'note': form.note.data,
             'create_time': current_time,
             'update_time': current_time,
         }
@@ -261,6 +300,9 @@ def edit(inventory_id):
     # 加载编辑表单
     form = InventoryEditForm(request.form)
 
+    form.warehouse_id.choices = get_warehouse_choices(option_type='create')
+    form.rack_id.choices = get_rack_choices(inventory_info.warehouse_id, option_type='create')
+
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('inventory edit')
@@ -268,10 +310,14 @@ def edit(inventory_id):
     # 进入编辑页面
     if request.method == 'GET':
         # 表单赋值
+        form.production_id.data = inventory_info.production_id
+        form.production_brand.data = inventory_info.production_brand
+        form.production_model.data = inventory_info.production_model
+        form.production_sku.data = inventory_info.production_sku
         form.warehouse_id.data = inventory_info.warehouse_id
-        form.name.data = inventory_info.name
-        form.create_time.data = inventory_info.create_time
-        form.update_time.data = inventory_info.update_time
+        form.rack_id.data = inventory_info.rack_id
+        form.stock_qty.data = inventory_info.stock_qty
+        form.note.data = inventory_info.note
         # 渲染页面
         return render_template(
             template_name,
@@ -293,9 +339,30 @@ def edit(inventory_id):
             )
         # 表单校验成功
         current_time = datetime.utcnow()
+        # 获取产品信息
+        production_info = get_production_row_by_id(form.production_id.data)
+        if not production_info:
+            abort(404, exceptions.NotFound(description='production'))
+        # 获取仓库信息
+        warehouse_info = get_warehouse_row_by_id(form.warehouse_id.data)
+        if not warehouse_info:
+            abort(404, exceptions.NotFound(description='warehouse'))
+        # 获取货架信息
+        rack_info = get_rack_row_by_id(form.rack_id.data)
+        if not rack_info:
+            abort(404, exceptions.NotFound(description='rack'))
         inventory_data = {
+            'production_id': form.production_id.data,
+            'production_brand': production_info.production_brand,
+            'production_model': production_info.production_model,
+            'production_sku': production_info.production_sku,
             'warehouse_id': form.warehouse_id.data,
-            'name': form.name.data,
+            'warehouse_name': warehouse_info.name,
+            'rack_id': form.rack_id.data,
+            'rack_name': rack_info.name,
+            'stock_qty': form.stock_qty.data,
+            'note': form.note.data,
+            'create_time': current_time,
             'update_time': current_time,
         }
         result = edit_inventory(inventory_id, inventory_data)
@@ -312,6 +379,29 @@ def edit(inventory_id):
                 form=form,
                 **document_info
             )
+
+
+@bp_inventory.route('/<int:inventory_id>/transfer.html')
+@login_required
+def transfer(inventory_id):
+    """
+    库存转移
+    :param inventory_id:
+    :return:
+    """
+    # 详情数据
+    inventory_info = get_inventory_row_by_id(inventory_id)
+    # 检查资源是否存在
+    if not inventory_info:
+        abort(404)
+    # 检查资源是否删除
+    if inventory_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('inventory transfer')
+    # 渲染模板
+    return render_template('inventory/info.html', inventory_info=inventory_info, **document_info)
 
 
 @bp_inventory.route('/ajax/del', methods=['GET', 'POST'])

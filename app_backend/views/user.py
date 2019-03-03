@@ -57,7 +57,7 @@ from app_backend.permissions import (
     UserItemEditPermission,
     UserItemDelPermission,
     permission_role_administrator)
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
@@ -77,7 +77,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_manager_user_list():
-    manager_user_list = copy(default_choices_int)
+    manager_user_list = copy(default_search_choices_int)
     user_list = get_user_rows(**{'role_id': TYPE_ROLE_MANAGER})
     manager_user_list.extend([(0, '-')])
     manager_user_list.extend([(user.id, user.name) for user in user_list])
@@ -115,9 +115,9 @@ def lists():
         else:
             if form.name.data:
                 search_condition.append(User.name == form.name.data)
-            if form.role_id.data != default_choice_option_int:
+            if form.role_id.data != default_search_choice_option_int:
                 search_condition.append(User.role_id == form.role_id.data)
-            if form.parent_id.data != default_choice_option_int:
+            if form.parent_id.data != default_search_choice_option_int:
                 search_condition.append(User.parent_id == form.parent_id.data)
             if form.start_create_time.data:
                 search_condition.append(User.create_time >= form.start_create_time.data)

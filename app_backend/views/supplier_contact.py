@@ -71,7 +71,7 @@ from app_backend.permissions import (
     SupplierItemEditPermission,
     SupplierItemDelPermission,
 )
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
@@ -92,7 +92,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_sales_user_list():
-    sales_user_list = deepcopy(default_choices_int)
+    sales_user_list = deepcopy(default_search_choices_int)
     user_list = get_user_rows(**{'role_id': TYPE_ROLE_SALES})
     sales_user_list.extend([(0, '-')])
     sales_user_list.extend([(user.id, user.name) for user in user_list])

@@ -58,7 +58,7 @@ from app_backend.permissions import (
     permission_production_section_stats,
     permission_role_administrator,
 )
-from app_common.maps.default import default_choices_str, default_choice_option_str
+from app_common.maps.default import default_search_choices_str, default_search_choice_option_str
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO,
@@ -78,7 +78,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_production_brand_choices():
-    production_brand_list = copy(default_choices_str)
+    production_brand_list = copy(default_search_choices_str)
     distinct_brand = get_distinct_production_brand(status_delete=STATUS_DEL_NO)
     production_brand_list.extend([(brand, brand) for brand in distinct_brand])
     return production_brand_list
@@ -113,7 +113,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.production_brand.data != default_choice_option_str:
+            if form.production_brand.data != default_search_choice_option_str:
                 search_condition.append(Production.production_brand == form.production_brand.data)
             if form.production_model.data:
                 search_condition.append(Production.production_model.like('%%%s%%' % form.production_model.data))
@@ -210,7 +210,7 @@ def search():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.production_brand.data != default_choice_option_str:
+            if form.production_brand.data != default_search_choice_option_str:
                 search_condition.append(Production.production_brand == form.production_brand.data)
             if form.production_model.data:
                 search_condition.append(Production.production_model.like('%s%%' % form.production_model.data))

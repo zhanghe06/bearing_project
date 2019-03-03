@@ -123,7 +123,7 @@ INSERT INTO `rack` VALUES (4, 2, 'D-020101', 0, NULL, '2018-03-14 10:00:00', '20
 
 -- 插入库存信息
 TRUNCATE TABLE `inventory`;
-INSERT INTO `inventory` VALUES (1, 1, 1, 1, 100, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `inventory` VALUES (2, 1, 1, 2, 20, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `inventory` VALUES (3, 2, 1, 1, 20, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `inventory` VALUES (4, 2, 1, 2, 80, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `inventory` VALUES (1, 1, 'SKF', '7008CEGA/P4A', 'Pcs', 1, '保税仓储中心', 1, 'A-010201', 100, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `inventory` VALUES (2, 1, 'SKF', '7008CEGA/P4A', 'Pcs', 1, '保税仓储中心', 2, 'B-020101', 20, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `inventory` VALUES (3, 2, 'SKF', '7012CEGA/P4A', 'Pcs', 1, '保税仓储中心', 1, 'A-010201', 20, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `inventory` VALUES (4, 2, 'SKF', '7012CEGA/P4A', 'Pcs', 1, '保税仓储中心', 2, 'B-020101', 80, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');

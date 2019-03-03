@@ -32,7 +32,7 @@ from flask_login import login_required
 from app_backend.api.quotation_items import get_quotation_items_pagination, get_quotation_items_rows
 from app_backend.forms.price import PriceSearchForm
 from app_backend.models.bearing_project import QuotationItems
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)

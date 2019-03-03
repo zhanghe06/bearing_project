@@ -24,11 +24,11 @@ from wtforms.validators import InputRequired, DataRequired, Length, NumberRange,
 
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 
 from copy import deepcopy
 
-role_id_choices = deepcopy(default_choices_int)
+role_id_choices = deepcopy(default_search_choices_int)
 role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 
@@ -53,7 +53,7 @@ class UserSearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         choices=role_id_choices,
         description=_('user role'),
@@ -65,7 +65,7 @@ class UserSearchForm(FlaskForm):
     parent_id = SelectField(
         _('user leader'),
         validators=[],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         description=_('user leader'),
         render_kw={
@@ -187,7 +187,7 @@ class UserAddForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         choices=role_id_choices,
         description=_('user role'),
@@ -199,7 +199,7 @@ class UserAddForm(FlaskForm):
     parent_id = SelectField(
         _('user leader'),
         validators=[],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         description=_('user leader'),
         render_kw={
@@ -296,7 +296,7 @@ class UserEditForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         choices=role_id_choices,
         description=_('user role'),
@@ -308,7 +308,7 @@ class UserEditForm(FlaskForm):
     parent_id = SelectField(
         _('user leader'),
         validators=[],
-        default=default_choice_option_int,
+        default=default_search_choice_option_int,
         coerce=int,
         description=_('user leader'),
         render_kw={

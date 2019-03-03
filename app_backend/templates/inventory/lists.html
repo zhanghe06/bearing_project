@@ -36,6 +36,15 @@
                                 {{ form.rack_id(class="form-control") }}
                             </div>
 
+                            <div class="form-group form-group-sm{% if form.production_brand.errors %} has-error{% endif %}">
+                                {{ form.production_brand.label() }}
+                                {{ form.production_brand(class="form-control") }}
+                            </div>
+                            <div class="form-group form-group-sm{% if form.production_model.errors %} has-error{% endif %}">
+                                {{ form.production_model.label() }}
+                                {{ form.production_model(class="form-control") }}
+                            </div>
+
                             <button type="submit" class="btn-sm btn-primary" name="op"
                                     value="0">{{ _('Search') }}</button>
                             <button type="submit" class="btn-sm btn-primary" name="op"
@@ -59,14 +68,14 @@
                                 {{ _('Select All') }}
                             </label>
                         </th>
-                        <th>{{ _('production id') }}</th>
                         <th>{{ _('production brand') }}</th>
                         <th>{{ _('production model') }}</th>
                         <th>{{ _('warehouse name') }}</th>
                         <th>{{ _('rack name') }}</th>
                         <th>{{ _('stock quantity') }}</th>
+                        <th>{{ _('production sku') }}</th>
                         <th>{{ _('inventory note') }}</th>
-                        <th>{{ _('create time') }}</th>
+{#                        <th>{{ _('create time') }}</th>#}
                         <th>{{ _('update time') }}</th>
                         <th>{{ _('operation') }}</th>
                     </tr>
@@ -80,7 +89,6 @@
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td>{{ info.production_id }}</td>
                             <td>{{ info.production_id | production_brand }}</td>
                             <td><a href="{{ url_for('production.info', production_id=info.production_id) }}"
                                    rel="tooltip"
@@ -88,8 +96,9 @@
                             <td>{{ info.warehouse_id | warehouse_name }}</td>
                             <td>{{ info.rack_id | rack_name }}</td>
                             <td class="text-right">{{ info.stock_qty }}</td>
+                            <td>{{ info.production_sku }}</td>
                             <td>{{ info.note | default('-', True) }}</td>
-                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+{#                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}
                             <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td>
                                 <!-- Split button -->
@@ -107,6 +116,11 @@
                                         <li>
                                             <a href="javascript:void(0);" onclick="inventory_delete({{ info.id }})">
                                                 <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url_for('inventory.transfer', inventory_id=info.id, next=request.path) }}">
+                                                <span class="glyphicon glyphicon-retweet"></span> {{ _('Warehouse shifting') }}
                                             </a>
                                         </li>
                                     </ul>

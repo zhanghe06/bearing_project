@@ -16,7 +16,7 @@ from app_backend.api.customer import get_customer_rows_by_ids
 from app_backend.api.user import get_user_rows_by_ids
 from app_common.libs.mysql_orm_op import DbInstance
 from app_backend.models.bearing_project import Purchase
-from app_common.maps.default import default_choices_int
+from app_common.maps.default import default_search_choices_int
 from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
@@ -136,7 +136,7 @@ def get_distinct_purchase_uid(*args, **kwargs):
 
 
 def get_purchase_user_list_choices():
-    purchase_user_list = copy(default_choices_int)
+    purchase_user_list = copy(default_search_choices_int)
     uid_list = get_distinct_purchase_uid(status_delete=STATUS_DEL_NO)
     user_rows = get_user_rows_by_ids(uid_list)
     purchase_user_list.extend([(user.id, user.name) for user in user_rows])

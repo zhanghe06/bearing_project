@@ -67,7 +67,7 @@ from app_backend.permissions import (
     QuotationItemEditPermission,
     QuotationItemDelPermission,
 )
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)

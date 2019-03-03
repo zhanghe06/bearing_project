@@ -14,9 +14,15 @@ from flask_babel import lazy_gettext as _
 
 
 # 整数索引（默认）
-default_choices_int = [(-1, _('All'))]  # 需要copy, 不要直接引用
-default_choice_option_int = -1
+default_search_choices_int = [(-1, _('All'))]  # 需要copy, 不要直接引用
+default_search_choice_option_int = -1
+
+default_select_choices_int = [(0, _('Choose an option'))]  # 需要copy, 不要直接引用
+default_select_choice_option_int = 0
 
 # 字符索引
-default_choices_str = [('', _('All'))]  # 需要copy, 不要直接引用
-default_choice_option_str = ''
+default_search_choices_str = [('', _('All'))]  # 需要copy, 不要直接引用
+default_search_choice_option_str = ''
+
+default_select_choices_str = [('', _('Choose an option'))]  # 需要copy, 不要直接引用
+default_select_choice_option_str = ''

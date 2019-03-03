@@ -24,7 +24,7 @@ from wtforms.validators import InputRequired, DataRequired, Length, NumberRange,
 
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_choices_str, default_choice_option_str
+from app_common.maps.default import default_search_choices_str, default_search_choice_option_str
 
 from copy import deepcopy
 
@@ -33,7 +33,7 @@ class CatalogueSearchForm(FlaskForm):
     product_brand = SelectField(
         _('product brand'),
         validators=[],  # 字符类型，非必填
-        default=default_choice_option_str,
+        default=default_search_choice_option_str,
         description=_('product brand'),
         render_kw={
             'rel': 'tooltip',

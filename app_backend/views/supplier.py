@@ -43,7 +43,7 @@ from app_backend.models.bearing_project import Supplier
 from app_backend.permissions import permission_supplier_section_export, SupplierItemDelPermission, \
     permission_supplier_section_search, SupplierItemGetPermission, permission_supplier_section_stats
 from app_backend.signals.supplier import signal_supplier_status_delete
-from app_common.maps.default import default_choice_option_int, default_choices_int
+from app_common.maps.default import default_search_choice_option_int, default_search_choices_int
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
 from app_common.maps.type_company import TYPE_COMPANY_CHOICES
 from app_common.maps.type_role import TYPE_ROLE_SALES
@@ -60,7 +60,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_sales_user_list():
-    sales_user_list = deepcopy(default_choices_int)
+    sales_user_list = deepcopy(default_search_choices_int)
     user_list = get_user_rows(**{'role_id': TYPE_ROLE_SALES})
     sales_user_list.extend([(0, '-')])
     sales_user_list.extend([(user.id, user.name) for user in user_list])
@@ -98,9 +98,9 @@ def lists():
         else:
             if form.company_name.data:
                 search_condition.append(Supplier.company_name.like('%%%s%%' % form.company_name.data))
-            if form.company_type.data != default_choice_option_int:
+            if form.company_type.data != default_search_choice_option_int:
                 search_condition.append(Supplier.company_type == form.company_type.data)
-            if form.owner_uid.data != default_choice_option_int:
+            if form.owner_uid.data != default_search_choice_option_int:
                 search_condition.append(Supplier.owner_uid == form.owner_uid.data)
             if form.start_create_time.data:
                 search_condition.append(Supplier.create_time >= form.start_create_time.data)
@@ -210,7 +210,7 @@ def search():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.company_type.data != default_choice_option_int:
+            if form.company_type.data != default_search_choice_option_int:
                 search_condition.append(Supplier.company_type == form.company_type.data)
             if form.company_name.data:
                 search_condition.append(Supplier.company_name.like('%%%s%%' % form.company_name.data))

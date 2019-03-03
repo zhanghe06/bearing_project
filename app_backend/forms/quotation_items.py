@@ -31,13 +31,13 @@ from wtforms.fields import FieldList, FormField
 from app_backend.forms import SelectBS, CheckBoxBS
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 # from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_choices_int, default_choice_option_int
+from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 
 from copy import deepcopy
 
 from app_common.maps.type_tax import TYPE_TAX_CHOICES
 
-role_id_choices = deepcopy(default_choices_int)
+role_id_choices = deepcopy(default_search_choices_int)
 role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 

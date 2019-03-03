@@ -44,7 +44,7 @@ from app_backend.forms.sales_order import SalesOrderSearchForm, SalesOrderAddFor
 from app_backend.models.bearing_project import SalesOrder
 from app_backend.permissions import permission_sales_orders_section_export, SalesOrdersItemDelPermission
 from app_backend.signals.sales_orders import signal_sales_orders_status_delete
-from app_common.maps.default import default_choice_option_int
+from app_common.maps.default import default_search_choice_option_int
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
 
 from app_common.tools.date_time import time_utc_to_local, time_local_to_utc
@@ -87,7 +87,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_choice_option_int:
+            if form.uid.data != default_search_choice_option_int:
                 search_condition.append(SalesOrder.uid == form.uid.data)
             if form.customer_cid.data and form.customer_company_name.data:
                 search_condition.append(SalesOrder.cid == form.customer_cid.data)

@@ -8,7 +8,6 @@
 @time: 2018-03-17 21:59
 """
 
-
 import random
 from os.path import abspath
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -19,9 +18,9 @@ class Captcha(object):
     验证码（生成）
     """
     # map:将str函数作用于后面序列的每一个元素
-    _letter_cases = "abcdefghjkmnpqrstuvwxy"  # 小写字母, 去除可能干扰的i, l, o, z
+    _letter_cases = "abcdefghjkmnprtuvwxy"  # 小写字母, 去除可能干扰的o, i, l, z, s, q
     _upper_cases = _letter_cases.upper()  # 大写字母
-    _numbers = ''.join(map(str, range(3, 10)))  # 数字, 去除可能干扰的0, 1, 2
+    _numbers = ''.join(map(str, range(3, 5) + range(6, 9)))  # 数字, 去除可能干扰的0, 1, 2, 5, 9
     init_chars = ''.join((_upper_cases, _numbers))
 
     def __init__(self,
