@@ -27,7 +27,6 @@ from flask import (
 from flask_babel import gettext as _
 from flask_login import login_required
 from werkzeug import exceptions
-from werkzeug.exceptions import HTTPException
 
 from app_backend import app
 from app_backend import excel
@@ -45,7 +44,7 @@ from app_backend.api.inventory import (
     edit_inventory,
     # inventory_current_stats,
     # inventory_former_stats,
-    get_distinct_inventory_brand)
+    get_distinct_inventory_brand, transfer_inventory)
 from app_backend.api.inventory import (
     get_inventory_rows,
     # get_distinct_brand,
@@ -54,7 +53,9 @@ from app_backend.forms.inventory import (
     InventorySearchForm,
     InventoryAddForm,
     InventoryEditForm,
+    InventoryTransferForm,
 )
+
 from app_backend.models.bearing_project import Inventory
 from app_backend.permissions import (
     permission_inventory_section_add,
@@ -381,7 +382,7 @@ def edit(inventory_id):
             )
 
 
-@bp_inventory.route('/<int:inventory_id>/transfer.html')
+@bp_inventory.route('/<int:inventory_id>/transfer.html', methods=['GET', 'POST'])
 @login_required
 def transfer(inventory_id):
     """
@@ -389,7 +390,6 @@ def transfer(inventory_id):
     :param inventory_id:
     :return:
     """
-    # 详情数据
     inventory_info = get_inventory_row_by_id(inventory_id)
     # 检查资源是否存在
     if not inventory_info:
@@ -397,11 +397,66 @@ def transfer(inventory_id):
     # 检查资源是否删除
     if inventory_info.status_delete == STATUS_DEL_OK:
         abort(410)
+
+    template_name = 'inventory/transfer.html'
+
+    # 加载编辑表单
+    form = InventoryTransferForm(request.form)
+
+    form.warehouse_id.choices = get_warehouse_choices(option_type='create')
+    form.rack_id.choices = get_rack_choices(inventory_info.warehouse_id, option_type='create')
+
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('inventory transfer')
-    # 渲染模板
-    return render_template('inventory/info.html', inventory_info=inventory_info, **document_info)
+
+    # 进入编辑页面
+    if request.method == 'GET':
+        # 表单赋值
+        form.production_id.data = inventory_info.production_id
+        form.production_brand.data = inventory_info.production_brand
+        form.production_model.data = inventory_info.production_model
+        form.production_sku.data = inventory_info.production_sku
+        form.warehouse_id.data = inventory_info.warehouse_id
+        form.rack_id.data = inventory_info.rack_id
+        form.warehouse_name_from.data = inventory_info.warehouse_name
+        form.rack_name_from.data = inventory_info.rack_name
+        form.stock_qty.data = inventory_info.stock_qty
+        form.note.data = inventory_info.note
+        # 渲染页面
+        return render_template(
+            template_name,
+            inventory_id=inventory_id,
+            form=form,
+            **document_info
+        )
+
+    # 处理编辑请求
+    if request.method == 'POST':
+        # 表单校验失败
+        if not form.validate_on_submit():
+            flash(_('Transfer Failure'), 'danger')
+            return render_template(
+                template_name,
+                inventory_id=inventory_id,
+                form=form,
+                **document_info
+            )
+        # 表单校验成功
+        try:
+            transfer_inventory(inventory_id, form.warehouse_id.data, form.rack_id.data, form.stock_qty.data)
+            # 编辑操作成功
+            flash(_('Transfer Success'), 'success')
+            return redirect(request.args.get('next') or url_for('inventory.lists'))
+        except Exception as e:
+            # 编辑操作失败
+            flash('%s, %s' % (_('Transfer Failure'), e.message), 'danger')
+            return render_template(
+                template_name,
+                inventory_id=inventory_id,
+                form=form,
+                **document_info
+            )
 
 
 @bp_inventory.route('/ajax/del', methods=['GET', 'POST'])

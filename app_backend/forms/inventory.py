@@ -201,3 +201,45 @@ class InventoryAddForm(FlaskForm):
 
 class InventoryEditForm(InventoryAddForm):
     pass
+
+
+class InventoryTransferForm(InventoryAddForm):
+    production_model = StringField(
+        _('production model'),
+        validators=[
+            DataRequired(),
+        ],
+        default='',
+        description='产品型号（例如：7008CEGA/HCP4A）',
+        render_kw={
+            'placeholder': _('production model'),
+            'rel': 'tooltip',
+            'title': _('production model'),
+            'autocomplete': 'off',
+            'readonly': 'readonly',
+        }
+    )
+    warehouse_name_from = StringField(
+        _('original warehouse'),
+        validators=[
+            DataRequired(),
+        ],
+        description=_('original warehouse'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('original warehouse'),
+            'readonly': 'readonly',
+        }
+    )
+    rack_name_from = StringField(
+        _('original rack'),
+        validators=[
+            DataRequired(),
+        ],
+        description=_('original rack'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('original rack'),
+            'readonly': 'readonly',
+        }
+    )

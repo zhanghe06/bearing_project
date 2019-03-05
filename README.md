@@ -477,7 +477,7 @@ brew install cairo pango gdk-pixbuf libffi
 - [x] 复制单据
 - [ ] 资源版本
 - [ ] 防止盗链
-- [ ] 库存移位
+- [x] 库存移位
 - [ ] 滚动升级
 - [ ] 性能测试
 - [ ] 压力测试

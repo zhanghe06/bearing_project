@@ -12,7 +12,7 @@ from datetime import datetime
 from sqlalchemy.sql import func
 from app_backend import db
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import Inventory
+from app_backend.models.bearing_project import Inventory, Warehouse, Rack
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 from app_common.maps.status_order import STATUS_ORDER_OK
@@ -120,3 +120,86 @@ def get_distinct_inventory_brand(*args, **kwargs):
     """
     field = 'production_brand'
     return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Inventory, field, *args, **kwargs))
+
+
+def transfer_inventory(inventory_id, warehouse_id, rack_id, num):
+    """
+    库存移位
+    :param inventory_id:
+    :param warehouse_id:
+    :param rack_id:
+    :param num:
+    :return: Boole
+    :except:
+    """
+    try:
+        inventory_obj_from = db_instance.db_instance.session.query(Inventory).filter(Inventory.id == inventory_id)
+        inventory_info_from = inventory_obj_from.first()
+
+        # 数量校验
+        if inventory_info_from.stock_qty < num or num < 0:
+            raise Exception('Quantity out of range')
+        # 库位校验
+        if inventory_info_from.warehouse_id == warehouse_id and inventory_info_from.rack_id == rack_id:
+            raise Exception('Same warehouse rack')
+
+        current_time = datetime.utcnow()
+
+        # 1、原始库位操作
+        if inventory_info_from.stock_qty == num:
+            # 清空原库
+            inventory_obj_from.delete()
+        else:
+            # 更新原库
+            inventory_data = {
+                'stock_qty': inventory_info_from.stock_qty - num,
+                'update_time': current_time,
+            }
+            inventory_obj_from.update(inventory_data)
+
+        # 2、目标库位操作
+
+        # 查询目标库位的同型号记录
+        inventory_obj_to = db_instance.db_instance.session.query(Inventory).filter(
+            Inventory.warehouse_id == warehouse_id,
+            Inventory.rack_id == rack_id,
+            Inventory.production_id == inventory_info_from.production_id,
+        )
+        inventory_info_to = inventory_obj_to.first()
+
+        if inventory_info_to:
+            # 更新记录
+            inventory_data = {
+                'stock_qty': inventory_info_to.stock_qty + num,
+                'update_time': current_time,
+            }
+            inventory_obj_to.update(inventory_data)
+        else:
+            # 插入记录
+            # 获取仓库
+            warehouse_info = db_instance.db_instance.session.query(Warehouse).filter(Warehouse.id == warehouse_id).first()
+            if not warehouse_info:
+                raise Exception('Warehouse not found')
+            # 获取仓位
+            rack_info = db_instance.db_instance.session.query(Rack).filter(Rack.id == rack_id).first()
+            if not rack_info:
+                raise Exception('Rack not found')
+            inventory_data = Inventory(
+                production_id=inventory_info_from.production_id,
+                production_brand=inventory_info_from.production_brand,
+                production_model=inventory_info_from.production_model,
+                production_sku=inventory_info_from.production_sku,
+                warehouse_id=warehouse_id,
+                warehouse_name=warehouse_info.warehouse_name,
+                rack_id=rack_id,
+                rack_name=rack_info.rack_name,
+                stock_qty=num,
+                note=inventory_info_from.note,
+            )
+            db_instance.db_instance.session.add(inventory_data)
+
+        db_instance.db_instance.session.commit()
+        return True
+    except Exception as e:
+        db_instance.db_instance.session.rollback()
+        raise e
