@@ -290,6 +290,10 @@ def add():
         production_data = {
             'production_brand': form.production_brand.data.upper(),
             'production_model': form.production_model.data.upper(),
+            'production_sku': form.production_sku.data,
+            'ind': form.ind.data,
+            'oud': form.oud.data,
+            'wid': form.wid.data,
             'note': form.note.data,
             'create_time': current_time,
             'update_time': current_time,
@@ -340,6 +344,9 @@ def edit(production_id):
         form.production_brand.data = production_info.production_brand
         form.production_model.data = production_info.production_model
         form.production_sku.data = production_info.production_sku
+        form.ind.data = production_info.ind
+        form.oud.data = production_info.oud
+        form.wid.data = production_info.wid
         form.note.data = production_info.note
         form.create_time.data = production_info.create_time
         form.update_time.data = production_info.update_time
@@ -368,6 +375,9 @@ def edit(production_id):
             'production_brand': form.production_brand.data.upper(),
             'production_model': form.production_model.data.upper(),
             'production_sku': form.production_sku.data,
+            'ind': form.ind.data,
+            'oud': form.oud.data,
+            'wid': form.wid.data,
             'note': form.note.data,
             'update_time': current_time,
         }

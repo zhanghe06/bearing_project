@@ -146,6 +146,51 @@ class ProductionAddForm(FlaskForm):
             'autocomplete': 'off',
         }
     )
+    ind = IntegerField(
+        _('ind'),
+        validators=[],
+        default=0,
+        description=_('ind'),
+        render_kw={
+            'placeholder': _('ind'),
+            'rel': 'tooltip',
+            'title': _('ind'),
+            'type': 'number',
+            'step': 1,
+            'min': 1,
+            'max': 10000,
+        }
+    )
+    oud = IntegerField(
+        _('oud'),
+        validators=[],
+        default=0,
+        description=_('oud'),
+        render_kw={
+            'placeholder': _('oud'),
+            'rel': 'tooltip',
+            'title': _('oud'),
+            'type': 'number',
+            'step': 1,
+            'min': 1,
+            'max': 10000,
+        }
+    )
+    wid = IntegerField(
+        _('wid'),
+        validators=[],
+        default=0,
+        description=_('wid'),
+        render_kw={
+            'placeholder': _('wid'),
+            'rel': 'tooltip',
+            'title': _('wid'),
+            'type': 'number',
+            'step': 1,
+            'min': 1,
+            'max': 10000,
+        }
+    )
     note = StringField(
         _('production note'),
         validators=[],
@@ -160,7 +205,7 @@ class ProductionAddForm(FlaskForm):
     )
 
 
-class ProductionEditForm(FlaskForm):
+class ProductionEditForm(ProductionAddForm):
     """
     编辑表单
     """
@@ -173,56 +218,18 @@ class ProductionEditForm(FlaskForm):
             'type': 'hidden',
         }
     )
-    production_brand = StringField(
-        _('production brand'),
-        validators=[
-            DataRequired(),
-            Length(min=2, max=16),
-        ],
-        description='产品品牌（例如：SKF、FAG、NSK...）',
-        render_kw={
-            'placeholder': _('production brand'),
-            'rel': 'tooltip',
-            'title': _('production brand'),
-            'autocomplete': 'off',
-        }
-    )
     production_model = StringField(
         _('production model'),
         validators=[
             DataRequired(),
             EditProductionModelRepeatValidate(),
         ],
+        default='',
         description='产品型号（例如：7008CEGA/HCP4A）',
         render_kw={
             'placeholder': _('production model'),
             'rel': 'tooltip',
             'title': _('production model'),
-            'autocomplete': 'off',
-        }
-    )
-    production_sku = StringField(
-        _('production sku'),
-        validators=[
-            DataRequired(),
-            Length(min=2, max=16),
-        ],
-        description='单位（Pcs:个,Pair:对,Set:组）',
-        render_kw={
-            'placeholder': _('production sku'),
-            'rel': 'tooltip',
-            'title': _('production sku'),
-            'autocomplete': 'off',
-        }
-    )
-    note = StringField(
-        _('production note'),
-        validators=[],
-        description='产品备注（例如：最小起订量12个）',
-        render_kw={
-            'placeholder': _('production note'),
-            'rel': 'tooltip',
-            'title': _('production note'),
             'autocomplete': 'off',
         }
     )

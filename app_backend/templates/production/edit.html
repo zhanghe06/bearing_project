@@ -38,6 +38,33 @@
                     <span class="help-block hidden-xs">{{ form.production_sku.description }}</span>
                 </div>
             </div>
+            <div class="form-group{% if form.ind.errors %} has-error{% endif %}">
+                {{ form.ind.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.ind(class="form-control", title=form.ind.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.ind.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.oud.errors %} has-error{% endif %}">
+                {{ form.oud.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.oud(class="form-control", title=form.oud.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.oud.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.wid.errors %} has-error{% endif %}">
+                {{ form.wid.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.wid(class="form-control", title=form.wid.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.wid.description }}</span>
+                </div>
+            </div>
             <div class="form-group{% if form.note.errors %} has-error{% endif %}">
                 {{ form.note.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">

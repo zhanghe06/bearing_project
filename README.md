@@ -9,8 +9,11 @@
 - [x] 产品管理
 - [x] 员工管理
 - [x] 报价管理
-- [ ] 订单管理
+- [x] 询价管理
+- [x] 订单管理
 - [x] 库存管理
+- [ ] 成本管理
+- [ ] 价格管理
 - [ ] 财务管理
 - [x] 会话管理
 - [x] 消息管理
@@ -50,6 +53,8 @@ pip install PyMongo
 pip install Pillow
 pip install elasticsearch
 pip install user-agents
+pip install celery
+pip install librabbitmq
 pip install six
 pip install future
 pip install supervisor      # 当前主版本3只支持py2，将来主版本4(未发布)会支持py3
@@ -476,6 +481,7 @@ brew install cairo pango gdk-pixbuf libffi
 - [ ] 导入检测
 - [x] 复制单据
 - [ ] 资源版本
+- [ ] 价格图表
 - [ ] 防止盗链
 - [x] 库存移位
 - [ ] 滚动升级

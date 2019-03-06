@@ -76,15 +76,15 @@
 {#                    <span class="glyphicon glyphicon-globe"#}
 {#                          aria-hidden="true"></span> #}
                     <img style="height: 20px; width: 88px; margin-bottom: 5px" src="{{ url_for('static', filename='img/skf.png') }}" height="20px" width="88px"> {{ COMPANY_NAME_CN }}
-{#                    <small class="pull-right">{{ _('Print Date') }}: {{ moment(quotation_info.update_time).format('YYYY-MM-DD') }}</small>#}
-                    <small class="pull-right">{{ _('Print Date') }}: {{ quotation_print_date }}</small>
+{#                    <small class="pull-right">{{ _('Print Date') }}: {{ moment(enquiry_info.update_time).format('YYYY-MM-DD') }}</small>#}
+                    <small class="pull-right">{{ _('Print Date') }}: {{ enquiry_print_date }}</small>
                     <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
                     <small>{{ COMPANY_NAME_EN }}</small>
                 </h4>
             </div><!-- /.col -->
         </div>
         <div class="text-center">
-            <h3 style="margin-top: 0"><u>{{ _('Quotation') }}</u>
+            <h3 style="margin-top: 0"><u>{{ _('Enquiry') }}</u>
                 <button class="btn-sm btn-default hidden-print pull-right" onclick="window.print();">
                     <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}
                 </button>
@@ -93,24 +93,24 @@
         <!-- info row -->
         <div class="row preview-info">
             <div class="col-xs-8">
-                <strong>{{ _('Customer Name') }}: {{ quotation_info.customer_cid | customer_company_name }}</strong>
+                <strong>{{ _('Supplier Name') }}: {{ enquiry_info.supplier_cid | supplier_company_name }}</strong>
                 <address>
                     <br>
-                    {{ _('Customer Address') }}: {{ customer_info.company_address }}<br>
-                    {{ _('Contacter') }}: {{ customer_contact_info.name }}
-                    <small>{{ customer_contact_info.salutation }}</small>
+                    {{ _('Supplier Address') }}: {{ supplier_info.company_address }}<br>
+                    {{ _('Contacter') }}: {{ supplier_contact_info.name }}
+                    <small>{{ supplier_contact_info.salutation }}</small>
                     <br>
-                    {{ _('Mobile') }}: {{ customer_contact_info.mobile }}<br/>
-                    {{ _('Tel') }}: {{ customer_contact_info.tel or customer_info.company_tel }}<br/>
-                    {{ _('Fax') }}: {{ customer_contact_info.fax or customer_info.company_fax }}<br/>
-                    {{ _('Email') }}: {{ customer_contact_info.email or customer_info.company_email }}
+                    {{ _('Mobile') }}: {{ supplier_contact_info.mobile }}<br/>
+                    {{ _('Tel') }}: {{ supplier_contact_info.tel or supplier_info.company_tel }}<br/>
+                    {{ _('Fax') }}: {{ supplier_contact_info.fax or supplier_info.company_fax }}<br/>
+                    {{ _('Email') }}: {{ supplier_contact_info.email or supplier_info.company_email }}
                 </address>
             </div><!-- /.col -->
             <div class="col-xs-4">
-                <b>{{ _('Quotation Code') }}: {{ quotation_code }}</b><br/>
-                <b>{{ _('Quotation Expiry Date') }}:</b> 一周<br/>
+                <b>{{ _('Enquiry Code') }}: {{ enquiry_code }}</b><br/>
+                <b>{{ _('Enquiry Expiry Date') }}:</b> 一周<br/>
                 <br/>
-                {{ _('Offerer') }}: {{ user_info.name }}
+                {{ _('Inquirer') }}: {{ user_info.name }}
                 <small>{{ user_info.salutation }}</small>
                 <br>
                 {{ _('Mobile') }}: {{ user_info.mobile }}<br/>
@@ -132,21 +132,22 @@
                         <th>{{ _('production sku') }}</th>
                         <th class="text-right" style="min-width: 2em">{{ _('quantity') }}</th>
                         <th class="text-right">{{ _('Tax unit price') }}</th>
-                        <th class="text-right">{{ _('Subtotal') }}</th>
+{#                        <th class="text-right">{{ _('Subtotal') }}</th>#}
                         <th style="min-width: 3em">{{ _('delivery time') }}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for quotation_item in quotation_items %}
+                    {% for enquiry_item in enquiry_items %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ quotation_item.production_brand }}</td>
-                        <td>{{ quotation_item.enquiry_production_model or quotation_item.production_model }}</td>
-                        <td>{{ quotation_item.production_sku }}</td>
-                        <td class="text-right">{{ '{:,}'.format(quotation_item.quantity) }}</td>
-                        <td class="text-right">￥{{ '{:,}'.format(quotation_item.unit_price) }}</td>
-                        <td class="text-right">￥{{ '{:,}'.format(quotation_item.quantity*quotation_item.unit_price) }}</td>
-                        <td>{{ quotation_item.delivery_time }}</td>
+                        <td>{{ enquiry_item.production_brand }}</td>
+                        <td>{{ enquiry_item.enquiry_production_model or enquiry_item.production_model }}</td>
+                        <td>{{ enquiry_item.production_sku }}</td>
+                        <td class="text-right">{{ '{:,}'.format(enquiry_item.quantity) }}</td>
+                        <td class="text-right"></td>
+{#                        <td class="text-right">￥{{ '{:,}'.format(enquiry_item.unit_price) }}</td>#}
+{#                        <td class="text-right">￥{{ '{:,}'.format(enquiry_item.quantity*enquiry_item.unit_price) }}</td>#}
+                        <td>{{ enquiry_item.delivery_time }}</td>
                     </tr>
                     {% endfor %}
 
@@ -173,7 +174,7 @@
                 <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                     <ol>
                         <li>产品按照原产标准提供。</li>
-                        <li>发货方式: {{ quotation_info.delivery_way | default('默认方式') }}。</li>
+                        <li>发货方式: {{ enquiry_info.delivery_way | default('默认方式') }}。</li>
 {#                        <li>含16%增值税。</li>#}
                         <li>空运费以实际产生费用为准。</li>
                     </ol>
@@ -182,9 +183,9 @@
 
             </div><!-- /.col -->
             <div class="col-xs-6">
-                <p class="lead">{{ _('Amount') }}:</p>
-                <div class="table-responsive">
-                    <table class="table">
+{#                <p class="lead">{{ _('Amount') }}:</p>#}
+{#                <div class="table-responsive">#}
+{#                    <table class="table">#}
 {#                        <tr>#}
 {#                            <th style="width:50%">Subtotal:</th>#}
 {#                            <td>$250.30</td>#}
@@ -197,12 +198,12 @@
 {#                            <th>运费:</th>#}
 {#                            <td>￥0.00</td>#}
 {#                        </tr>#}
-                        <tr>
-                            <th>{{ _('Total') }}:</th>
-                            <td>￥{{ '{:,}'.format(quotation_info.amount_quotation) }}</td>
-                        </tr>
-                    </table>
-                </div>
+{#                        <tr>#}
+{#                            <th>{{ _('Total') }}:</th>#}
+{#                            <td>￥{{ '{:,}'.format(enquiry_info.amount_enquiry) }}</td>#}
+{#                        </tr>#}
+{#                    </table>#}
+{#                </div>#}
             </div><!-- /.col -->
         </div><!-- /.row -->
 

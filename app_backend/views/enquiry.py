@@ -212,24 +212,36 @@ def info(enquiry_id):
     if enquiry_info.status_delete == STATUS_DEL_OK:
         abort(410)
 
-    # 公司信息
-    company_info = get_supplier_row_by_id(enquiry_info.supplier_cid)
+    enquiry_print_date = time_utc_to_local(enquiry_info.update_time).strftime('%Y-%m-%d')
+    enquiry_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(enquiry_info.create_time).strftime('%y%m%d%H%M%S'))
 
-    template_name = 'enquiry/info.html'
+    # 获取渠道公司信息
+    supplier_info = get_supplier_row_by_id(enquiry_info.supplier_cid)
+
+    # 获取渠道联系方式
+    supplier_contact_info = get_supplier_contact_row_by_id(enquiry_info.supplier_contact_id)
+
+    # 获取询价人员信息
+    user_info = get_user_row_by_id(enquiry_info.uid)
+
+    enquiry_items = get_enquiry_items_rows(enquiry_id=enquiry_id)
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('enquiry info')
 
-    # 获取明细
-    enquiry_items = get_enquiry_items_rows(enquiry_id=enquiry_id)
+    template_name = 'enquiry/info.html'
 
-    # 渲染模板
     return render_template(
         template_name,
+        enquiry_id=enquiry_id,
         enquiry_info=enquiry_info,
+        supplier_info=supplier_info,
+        supplier_contact_info=supplier_contact_info,
+        user_info=user_info,
         enquiry_items=enquiry_items,
-        company_info=company_info,
+        enquiry_print_date=enquiry_print_date,
+        enquiry_code=enquiry_code,
         **document_info
     )
 

@@ -19,7 +19,7 @@ from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress
+    IPAddress, Optional
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int, default_search_choice_option_str
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 
@@ -76,8 +76,8 @@ class PriceSearchForm(FlaskForm):
     )
     start_create_time = DateField(
         _('start time'),
-        validators=[],
-        default=datetime.utcnow() - timedelta(days=365),
+        validators=[Optional()],
+        # default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -88,8 +88,8 @@ class PriceSearchForm(FlaskForm):
     )
     end_create_time = DateField(
         _('end time'),
-        validators=[],
-        default=datetime.utcnow() + timedelta(days=1),
+        validators=[Optional()],
+        # default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),

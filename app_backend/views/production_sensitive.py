@@ -117,9 +117,9 @@ def lists():
             if form.customer_cid.data and form.customer_company_name.data:
                 search_condition.append(ProductionSensitive.customer_cid == form.customer_cid.data)
             if form.production_brand.data != default_search_choice_option_str:
-                search_condition.append(ProductionSensitive.production_sensitive_brand == form.production_brand.data)
+                search_condition.append(ProductionSensitive.production_brand == form.production_brand.data)
             if form.production_model.data:
-                search_condition.append(ProductionSensitive.production_sensitive_model.like('%%%s%%' % form.production_model.data))
+                search_condition.append(ProductionSensitive.production_model.like('%%%s%%' % form.production_model.data))
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
