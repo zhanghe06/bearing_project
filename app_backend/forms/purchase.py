@@ -523,7 +523,7 @@ class PurchaseEditForm(FlaskForm):
         '数据行删除',
         validators=[],
     )
-    purchase_items_items = FieldList(
+    purchase_items = FieldList(
         FormField(PurchaseItemsEditForm),
         label='进货明细',
         min_entries=1,

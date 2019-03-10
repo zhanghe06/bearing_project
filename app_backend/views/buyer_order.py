@@ -479,6 +479,56 @@ def edit(buyer_order_id):
             )
 
 
+@bp_buyer_order.route('/<int:buyer_order_id>/info.html')
+@login_required
+def info(buyer_order_id):
+    """
+    订单详情
+    :param buyer_order_id:
+    :return:
+    """
+    buyer_order_info = get_buyer_order_row_by_id(buyer_order_id)
+    # 检查资源是否存在
+    if not buyer_order_info:
+        abort(404)
+    # 检查资源是否删除
+    if buyer_order_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    buyer_order_print_date = time_utc_to_local(buyer_order_info.update_time).strftime('%Y-%m-%d')
+    buyer_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
+
+    # 获取渠道公司信息
+    supplier_info = get_supplier_row_by_id(buyer_order_info.supplier_cid)
+
+    # 获取渠道联系方式
+    supplier_contact_info = get_supplier_contact_row_by_id(buyer_order_info.supplier_contact_id)
+
+    # 获取询价人员信息
+    user_info = get_user_row_by_id(buyer_order_info.uid)
+
+    buyer_order_items = get_buyer_order_items_rows(buyer_order_id=buyer_order_id)
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('buyer order info')
+
+    template_name = 'buyer/order/info.html'
+
+    return render_template(
+        template_name,
+        buyer_order_id=buyer_order_id,
+        buyer_order_info=buyer_order_info,
+        supplier_info=supplier_info,
+        supplier_contact_info=supplier_contact_info,
+        user_info=user_info,
+        buyer_order_items=buyer_order_items,
+        buyer_order_print_date=buyer_order_print_date,
+        buyer_order_code=buyer_order_code,
+        **document_info
+    )
+
+
 @bp_buyer_order.route('/<int:buyer_order_id>/preview.html')
 @login_required
 def preview(buyer_order_id):
@@ -548,10 +598,10 @@ def pdf(buyer_order_id):
     buyer_order_print_date = time_utc_to_local(buyer_order_info.update_time).strftime('%Y-%m-%d')
     buyer_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
-    # 获取客户公司信息
+    # 获取渠道公司信息
     supplier_info = get_supplier_row_by_id(buyer_order_info.supplier_cid)
 
-    # 获取客户联系方式
+    # 获取渠道联系方式
     supplier_contact_info = get_supplier_contact_row_by_id(buyer_order_info.supplier_contact_id)
 
     # 获取询价人员信息

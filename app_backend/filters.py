@@ -62,51 +62,59 @@ def filter_user_name(user_id):
 
 
 @app.template_filter('customer_company_name')
-def filter_customer_company_name(customer_id):
+def filter_customer_company_name(customer_id, default='-'):
     """
     客户公司名称
     :param customer_id:
+    :param default:
     :return:
     """
+    if not customer_id:
+        return default
     customer_info = get_customer_row_by_id(customer_id)
-    return customer_info.company_name if customer_info else '-'
+    return customer_info.company_name if customer_info else default
 
 
 @app.template_filter('customer_contact_name')
-def filter_customer_contact_name(contact_id):
+def filter_customer_contact_name(contact_id, default='-'):
     """
     客户联系人员
     :param contact_id:
+    :param default:
     :return:
     """
     if not contact_id:
-        return '-'
+        return default
     customer_contact_info = get_customer_contact_row_by_id(contact_id)
-    return customer_contact_info.name if customer_contact_info else '-'
+    return customer_contact_info.name if customer_contact_info else default
 
 
 @app.template_filter('supplier_company_name')
-def filter_supplier_company_name(supplier_id):
+def filter_supplier_company_name(supplier_id, default='-'):
     """
     渠道公司名称
     :param supplier_id:
+    :param default:
     :return:
     """
+    if not supplier_id:
+        return default
     supplier_info = get_supplier_row_by_id(supplier_id)
-    return supplier_info.company_name if supplier_info else '-'
+    return supplier_info.company_name if supplier_info else default
 
 
 @app.template_filter('supplier_contact_name')
-def filter_supplier_contact_name(contact_id):
+def filter_supplier_contact_name(contact_id, default='-'):
     """
     渠道联系人员
     :param contact_id:
+    :param default:
     :return:
     """
     if not contact_id:
-        return '-'
+        return default
     supplier_contact_info = get_supplier_contact_row_by_id(contact_id)
-    return supplier_contact_info.name if supplier_contact_info else '-'
+    return supplier_contact_info.name if supplier_contact_info else default
 
 
 @app.template_filter('warehouse_name')

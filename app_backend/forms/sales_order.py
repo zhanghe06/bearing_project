@@ -25,7 +25,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, \
     DecimalField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress
+    IPAddress, Optional
 from wtforms.fields import FieldList, FormField, HiddenField
 
 from app_backend.forms import SelectBS, CheckBoxBS
@@ -106,8 +106,8 @@ class SalesOrderSearchForm(FlaskForm):
 
     start_create_time = DateField(
         _('start time'),
-        validators=[],
-        default=datetime.utcnow() - timedelta(days=365),
+        validators=[Optional()],
+        # default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -118,8 +118,8 @@ class SalesOrderSearchForm(FlaskForm):
     )
     end_create_time = DateField(
         _('end time'),
-        validators=[],
-        default=datetime.utcnow() + timedelta(days=1),
+        validators=[Optional()],
+        # default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),

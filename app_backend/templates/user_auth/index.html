@@ -108,7 +108,7 @@
                             <div class="col-sm-12">
                                 <div class="checkbox">
                                     <label>
-                                        {{ form.remember }} {{ _('Remember me') }}
+                                        {{ form.remember(checked=form.remember.data) }} {{- _('Remember me') -}}
                                     </label>
                                 </div>
                             </div>

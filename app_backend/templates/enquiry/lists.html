@@ -121,6 +121,11 @@
                                                 <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="{{ url_for('enquiry.add', from_type='enquiry', from_id=info.id) }}">
+                                                <span class="glyphicon glyphicon-duplicate"></span> {{ _('Clone') }}
+                                            </a>
+                                        </li>
                                         <li role="separator" class="divider" style="margin: 0"></li>
                                         <li>
                                             <a href="{{ url_for('enquiry.preview', enquiry_id=info.id, next=request.path) }}"

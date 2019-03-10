@@ -188,60 +188,6 @@ def lists():
     )
 
 
-@bp_quotation.route('/<int:quotation_id>/info.html')
-@login_required
-def info(quotation_id):
-    """
-    报价详情
-    :param quotation_id:
-    :return:
-    """
-    # 检查读取权限
-    quotation_item_get_permission = QuotationItemGetPermission(quotation_id)
-    if not quotation_item_get_permission.can():
-        abort(403)
-    quotation_info = get_quotation_row_by_id(quotation_id)
-    # 检查资源是否存在
-    if not quotation_info:
-        abort(404)
-    # 检查资源是否删除
-    if quotation_info.status_delete == STATUS_DEL_OK:
-        abort(410)
-
-    quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
-    quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
-
-    # 获取客户公司信息
-    customer_info = get_customer_row_by_id(quotation_info.customer_cid)
-
-    # 获取客户联系方式
-    customer_contact_info = get_customer_contact_row_by_id(quotation_info.customer_contact_id)
-
-    # 获取报价人员信息
-    user_info = get_user_row_by_id(quotation_info.uid)
-
-    quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
-
-    # 文档信息
-    document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('quotation info')
-
-    template_name = 'quotation/info.html'
-
-    return render_template(
-        template_name,
-        quotation_id=quotation_id,
-        quotation_info=quotation_info,
-        customer_info=customer_info,
-        customer_contact_info=customer_contact_info,
-        user_info=user_info,
-        quotation_items=quotation_items,
-        quotation_print_date=quotation_print_date,
-        quotation_code=quotation_code,
-        **document_info
-    )
-
-
 @bp_quotation.route('/add.html', methods=['GET', 'POST'])
 @login_required
 @permission_quotation_section_add.require(http_exception=403)
@@ -618,6 +564,60 @@ def edit(quotation_id):
                 form=form,
                 **document_info
             )
+
+
+@bp_quotation.route('/<int:quotation_id>/info.html')
+@login_required
+def info(quotation_id):
+    """
+    报价详情
+    :param quotation_id:
+    :return:
+    """
+    # 检查读取权限
+    quotation_item_get_permission = QuotationItemGetPermission(quotation_id)
+    if not quotation_item_get_permission.can():
+        abort(403)
+    quotation_info = get_quotation_row_by_id(quotation_id)
+    # 检查资源是否存在
+    if not quotation_info:
+        abort(404)
+    # 检查资源是否删除
+    if quotation_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
+    quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
+
+    # 获取客户公司信息
+    customer_info = get_customer_row_by_id(quotation_info.customer_cid)
+
+    # 获取客户联系方式
+    customer_contact_info = get_customer_contact_row_by_id(quotation_info.customer_contact_id)
+
+    # 获取报价人员信息
+    user_info = get_user_row_by_id(quotation_info.uid)
+
+    quotation_items = get_quotation_items_rows(quotation_id=quotation_id)
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('quotation info')
+
+    template_name = 'quotation/info.html'
+
+    return render_template(
+        template_name,
+        quotation_id=quotation_id,
+        quotation_info=quotation_info,
+        customer_info=customer_info,
+        customer_contact_info=customer_contact_info,
+        user_info=user_info,
+        quotation_items=quotation_items,
+        quotation_print_date=quotation_print_date,
+        quotation_code=quotation_code,
+        **document_info
+    )
 
 
 @bp_quotation.route('/<int:quotation_id>/preview.html')

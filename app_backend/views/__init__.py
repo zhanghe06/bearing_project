@@ -16,8 +16,8 @@ import json
 import traceback
 import user_agents
 
+
 from flask import current_app, Response
-from sqlalchemy.exc import OperationalError
 from flask import send_from_directory
 from flask_principal import (
     identity_changed,
@@ -573,7 +573,17 @@ def too_many_requests(error):
 
 @app.errorhandler(500)
 def internal_server_error(error):
-    flash(_('Internal Server Error'), 'warning')
+    # Redis 连接失败
+    from redis import ConnectionError
+    if isinstance(error, ConnectionError):
+        return jsonify({'error': error.message})
+
+    # MariaDB 连接失败
+    from sqlalchemy.exc import OperationalError
+    if isinstance(error, OperationalError):
+        return jsonify({'error': error.message})
+
+    flash(getattr(error, 'description', None) or getattr(error, 'message', None) or _('Internal Server Error'), 'warning')
     return render_template('http_exception/500.html'), 500
 
 

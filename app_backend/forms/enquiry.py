@@ -326,6 +326,7 @@ class EnquiryAddForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
+        default=0,
         description=_('supplier company id'),
         render_kw={
             'rel': 'tooltip',
@@ -350,6 +351,7 @@ class EnquiryAddForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
+        default=0,
         description=_('supplier contact id'),
         render_kw={
             'rel': 'tooltip',
@@ -445,6 +447,7 @@ class EnquiryEditForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
+        default=0,
         description=_('supplier company id'),
         render_kw={
             'rel': 'tooltip',
@@ -469,7 +472,7 @@ class EnquiryEditForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
-        # default=0,
+        default=0,
         description=_('supplier contact id'),
         render_kw={
             'rel': 'tooltip',

@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 from flask_babel import lazy_gettext as _
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, HiddenField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
     IPAddress
 
@@ -196,6 +196,10 @@ class InventoryAddForm(FlaskForm):
             'rel': 'tooltip',
             'title': _('note'),
         }
+    )
+    warehouse_changed = HiddenField(
+        _('warehouse changed'),
+        default='',
     )
 
 

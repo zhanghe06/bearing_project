@@ -23,23 +23,26 @@ from flask import (
     abort,
     jsonify,
     Blueprint,
-)
+    g)
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
+from flask_weasyprint import render_pdf, HTML, CSS
 
 from app_backend import (
     app,
     excel,
 )
 from app_backend.api.supplier import get_supplier_row_by_id
+from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
 from app_backend.signals.purchase import signal_purchase_status_delete
 
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_backend.api.purchase import add_purchase, get_purchase_user_list_choices, get_purchase_rows, \
     get_purchase_pagination, edit_purchase, get_purchase_row_by_id
-from app_backend.api.purchase_items import add_purchase_items, edit_purchase_items
-from app_backend.api.user import get_user_choices
-from app_backend.forms.purchase import PurchaseSearchForm
+from app_backend.api.purchase_items import add_purchase_items, edit_purchase_items, get_purchase_items_rows, \
+    delete_purchase_items
+from app_backend.api.user import get_user_choices, get_user_row_by_id
+from app_backend.forms.purchase import PurchaseSearchForm, PurchaseEditForm, PurchaseItemsEditForm
 from app_backend.forms.purchase import PurchaseAddForm
 from app_common.maps.status_order import STATUS_ORDER_CHOICES
 from app_common.maps.status_delete import (
@@ -58,6 +61,8 @@ from app_backend.permissions import (
 )
 
 # 定义蓝图
+from app_common.tools.date_time import time_utc_to_local
+
 bp_purchase = Blueprint('purchase', __name__, url_prefix='/purchase')
 
 # 加载配置
@@ -291,6 +296,345 @@ def add():
                 form=form,
                 **document_info
             )
+
+
+@bp_purchase.route('/<int:purchase_id>/edit.html', methods=['GET', 'POST'])
+@login_required
+def edit(purchase_id):
+    """
+    采购进货编辑
+    """
+    # 检查编辑权限
+    # enquiry_item_edit_permission = EnquiryItemEditPermission(enquiry_id)
+    # if not enquiry_item_edit_permission.can():
+    #     abort(403)
+
+    purchase_info = get_purchase_row_by_id(purchase_id)
+    # 检查资源是否存在
+    if not purchase_info:
+        abort(404)
+    # 检查资源是否删除
+    if purchase_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    template_name = 'purchase/edit.html'
+
+    # 加载编辑表单
+    form = PurchaseEditForm(request.form)
+    form.uid.choices = get_user_choices()
+    # form.status_order.choices = STATUS_ORDER_CHOICES
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('purchase edit')
+
+    # 进入编辑页面
+    if request.method == 'GET':
+        # 获取明细
+        purchase_items = get_purchase_items_rows(purchase_id=purchase_id)
+        # 表单赋值
+        form.uid.data = purchase_info.uid
+        form.supplier_cid.data = purchase_info.supplier_cid
+        form.supplier_contact_id.data = purchase_info.supplier_contact_id
+        form.type_tax.data = purchase_info.type_tax
+        form.amount_purchase.data = purchase_info.amount_purchase
+        # form.buyer_order_items = buyer_order_items
+        while len(form.purchase_items) > 0:
+            form.purchase_items.pop_entry()
+        for purchase_item in purchase_items:
+            purchase_item_form = PurchaseItemsEditForm()
+            purchase_item_form.id = purchase_item.id
+            purchase_item_form.purchase_id = purchase_item.purchase_id
+            purchase_item_form.uid = purchase_item.uid
+            purchase_item_form.production_id = purchase_item.production_id
+            purchase_item_form.production_brand = purchase_item.production_brand
+            purchase_item_form.production_model = purchase_item.production_model
+            purchase_item_form.production_sku = purchase_item.production_sku
+            purchase_item_form.quantity = purchase_item.quantity
+            purchase_item_form.unit_price = purchase_item.unit_price
+            purchase_item_form.note = purchase_item.note
+            purchase_item_form.type_tax = purchase_item.type_tax
+            form.purchase_items.append_entry(purchase_item_form)
+
+        # 渲染页面
+        return render_template(
+            template_name,
+            purchase_id=purchase_id,
+            form=form,
+            **document_info
+        )
+
+    # 处理编辑请求
+    if request.method == 'POST':
+        # 增删数据行不需要校验表单
+
+        # 表单新增空行
+        if form.data_line_add.data is not None:
+            if form.purchase_items.max_entries and len(
+                    form.purchase_items.entries) >= form.purchase_items.max_entries:
+                flash('最多创建%s条记录' % form.purchase_items.max_entries, 'danger')
+            else:
+                form.purchase_items.append_entry()
+
+            return render_template(
+                template_name,
+                purchase_id=purchase_id,
+                form=form,
+                **document_info
+            )
+        # 表单删除一行
+        if form.data_line_del.data is not None:
+            if form.purchase_items.min_entries and len(
+                    form.purchase_items.entries) <= form.purchase_items.min_entries:
+                flash('最少保留%s条记录' % form.purchase_items.min_entries, 'danger')
+            else:
+                data_line_index = form.data_line_del.data
+                form.purchase_items.entries.pop(data_line_index)
+
+            return render_template(
+                template_name,
+                purchase_id=purchase_id,
+                form=form,
+                **document_info
+            )
+
+        # 表单校验失败
+        if not form.validate_on_submit():
+            flash(_('Edit Failure'), 'danger')
+            # flash(form.errors, 'danger')
+            # flash(form.purchase_items.errors, 'danger')
+            return render_template(
+                template_name,
+                purchase_id=purchase_id,
+                form=form,
+                **document_info
+            )
+        # 表单校验成功
+
+        # 获取明细
+        purchase_items = get_purchase_items_rows(purchase_id=purchase_id)
+        purchase_items_ids = [item.id for item in purchase_items]
+
+        # 数据新增、数据删除、数据修改
+
+        purchase_items_ids_new = []
+        amount_purchase = 0
+        for purchase_item in form.purchase_items.entries:
+            # 错误
+            if purchase_item.form.id.data and purchase_item.form.id.data not in purchase_items_ids:
+                continue
+
+            purchase_item_data = {
+                'purchase_id': purchase_id,
+                'uid': form.uid.data,
+                'supplier_cid': form.supplier_cid.data,
+                'supplier_company_name': get_supplier_row_by_id(form.supplier_cid.data).company_name,
+                'production_id': purchase_item.form.production_id.data,
+                'production_brand': purchase_item.form.production_brand.data,
+                'production_model': purchase_item.form.production_model.data,
+                'production_sku': purchase_item.form.production_sku.data,
+                'quantity': purchase_item.form.quantity.data,
+                'unit_price': purchase_item.form.unit_price.data,
+                'note': purchase_item.form.note.data,
+                'type_tax': form.type_tax.data,
+            }
+
+            if not purchase_item.form.id.data:
+                # 新增
+                add_purchase_items(purchase_item_data)
+                amount_purchase += purchase_item_data['quantity'] * purchase_item_data['unit_price']
+            else:
+                # 修改
+                edit_purchase_items(purchase_item.form.id.data, purchase_item_data)
+                amount_purchase += purchase_item_data['quantity'] * purchase_item_data['unit_price']
+                purchase_items_ids_new.append(purchase_item.form.id.data)
+        # 删除
+        purchase_items_ids_del = list(set(purchase_items_ids) - set(purchase_items_ids_new))
+        for purchase_items_id in purchase_items_ids_del:
+            delete_purchase_items(purchase_items_id)
+
+        # 更新销售出货
+        current_time = datetime.utcnow()
+        purchase_data = {
+            'uid': form.uid.data,
+            'supplier_cid': form.supplier_cid.data,
+            'supplier_contact_id': form.supplier_contact_id.data,
+            'type_tax': form.type_tax.data,
+            'amount_production': amount_purchase,
+            'amount_order': amount_purchase,
+            'update_time': current_time,
+        }
+        result = edit_purchase(purchase_id, purchase_data)
+
+        # 编辑操作成功
+        if result:
+            flash(_('Edit Success'), 'success')
+            return redirect(request.args.get('next') or url_for('purchase.lists'))
+        # 编辑操作失败
+        else:
+            flash(_('Edit Failure'), 'danger')
+            return render_template(
+                template_name,
+                purchase_id=purchase_id,
+                form=form,
+                **document_info
+            )
+
+
+@bp_purchase.route('/<int:purchase_id>/info.html')
+@login_required
+def info(purchase_id):
+    """
+    出货详情
+    :param purchase_id:
+    :return:
+    """
+    purchase_info = get_purchase_row_by_id(purchase_id)
+    # 检查资源是否存在
+    if not purchase_info:
+        abort(404)
+    # 检查资源是否删除
+    if purchase_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    purchase_print_date = time_utc_to_local(purchase_info.update_time).strftime('%Y-%m-%d')
+    purchase_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(purchase_info.create_time).strftime('%y%m%d%H%M%S'))
+
+    # 获取渠道公司信息
+    supplier_info = get_supplier_row_by_id(purchase_info.supplier_cid)
+
+    # 获取渠道联系方式
+    supplier_contact_info = get_supplier_contact_row_by_id(purchase_info.supplier_contact_id)
+
+    # 获取进货人员信息
+    user_info = get_user_row_by_id(purchase_info.uid)
+
+    purchase_items = get_purchase_items_rows(purchase_id=purchase_id)
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('purchase info')
+
+    template_name = 'purchase/info.html'
+
+    return render_template(
+        template_name,
+        purchase_id=purchase_id,
+        purchase_info=purchase_info,
+        supplier_info=supplier_info,
+        supplier_contact_info=supplier_contact_info,
+        user_info=user_info,
+        purchase_items=purchase_items,
+        purchase_print_date=purchase_print_date,
+        purchase_code=purchase_code,
+        **document_info
+    )
+
+
+@bp_purchase.route('/<int:purchase_id>/preview.html')
+@login_required
+def preview(purchase_id):
+    """
+    打印预览
+    :param purchase_id:
+    :return:
+    """
+    purchase_info = get_purchase_row_by_id(purchase_id)
+    # 检查资源是否存在
+    if not purchase_info:
+        abort(404)
+    # 检查资源是否删除
+    if purchase_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    purchase_print_date = time_utc_to_local(purchase_info.update_time).strftime('%Y-%m-%d')
+    purchase_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(purchase_info.create_time).strftime('%y%m%d%H%M%S'))
+
+    # 获取渠道公司信息
+    supplier_info = get_supplier_row_by_id(purchase_info.supplier_cid)
+
+    # 获取渠道联系方式
+    supplier_contact_info = get_supplier_contact_row_by_id(purchase_info.supplier_contact_id)
+
+    # 获取进货人员信息
+    user_info = get_user_row_by_id(purchase_info.uid)
+
+    purchase_items = get_purchase_items_rows(purchase_id=purchase_id)
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('purchase preview')
+
+    template_name = 'purchase/preview.html'
+
+    return render_template(
+        template_name,
+        purchase_id=purchase_id,
+        purchase_info=purchase_info,
+        supplier_info=supplier_info,
+        supplier_contact_info=supplier_contact_info,
+        user_info=user_info,
+        purchase_items=purchase_items,
+        purchase_print_date=purchase_print_date,
+        purchase_code=purchase_code,
+        **document_info
+    )
+
+
+@bp_purchase.route('/<int:purchase_id>.pdf')
+@login_required
+def pdf(purchase_id):
+    """
+    文件下载
+    :param purchase_id:
+    :return:
+    """
+    purchase_info = get_purchase_row_by_id(purchase_id)
+    # 检查资源是否存在
+    if not purchase_info:
+        abort(404)
+    # 检查资源是否删除
+    if purchase_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    purchase_print_date = time_utc_to_local(purchase_info.update_time).strftime('%Y-%m-%d')
+    purchase_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(purchase_info.create_time).strftime('%y%m%d%H%M%S'))
+
+    # 获取渠道公司信息
+    supplier_info = get_supplier_row_by_id(purchase_info.supplier_cid)
+
+    # 获取渠道联系方式
+    supplier_contact_info = get_supplier_contact_row_by_id(purchase_info.supplier_contact_id)
+
+    # 获取进货人员信息
+    user_info = get_user_row_by_id(purchase_info.uid)
+
+    purchase_items = get_purchase_items_rows(purchase_id=purchase_id)
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('purchase pdf')
+
+    template_name = 'purchase/pdf.html'
+
+    html = render_template(
+        template_name,
+        purchase_id=purchase_id,
+        purchase_info=purchase_info,
+        supplier_info=supplier_info,
+        supplier_contact_info=supplier_contact_info,
+        user_info=user_info,
+        purchase_items=purchase_items,
+        purchase_print_date=purchase_print_date,
+        purchase_code=purchase_code,
+        **document_info
+    )
+    # return html
+    return render_pdf(
+        html=HTML(string=html),
+        stylesheets=[CSS(string='@page {size:A4; margin:35px;}')],
+        download_filename='销售出货.pdf'.encode('utf-8')
+    )
 
 
 @bp_purchase.route('/ajax/del', methods=['GET', 'POST'])

@@ -84,7 +84,7 @@
             </div><!-- /.col -->
         </div>
         <div class="text-center">
-            <h3 style="margin-top: 0"><u>{{ _('Quotation') }}</u></h3>
+            <h3 style="margin-top: 0"><u>{{ _('Purchase') }}</u></h3>
         </div>
         <!-- info row -->
         <div class="row preview-info">
@@ -125,8 +125,8 @@
                         <th style="min-width: 2em">{{ _('#') }}</th>
                         <th style="min-width: 2em">{{ _('production brand') }}</th>
                         <th style="min-width: 4em">{{ _('production model') }}</th>
-                        <th>{{ _('production sku') }}</th>
                         <th class="text-right" style="min-width: 2em">{{ _('quantity') }}</th>
+                        <th>{{ _('production sku') }}</th>
                         <th class="text-right">{{ _('Tax unit price') }}</th>
                         <th class="text-right">{{ _('Subtotal') }}</th>
                         <th style="min-width: 3em">{{ _('delivery time') }}</th>
@@ -138,8 +138,8 @@
                         <td>{{ loop.index }}</td>
                         <td>{{ purchase_item.production_brand }}</td>
                         <td>{{ purchase_item.enquiry_production_model or purchase_item.production_model }}</td>
-                        <td>{{ purchase_item.production_sku }}</td>
                         <td class="text-right">{{ '{:,}'.format(purchase_item.quantity) }}</td>
+                        <td>{{ purchase_item.production_sku }}</td>
                         <td class="text-right">￥{{ '{:,}'.format(purchase_item.unit_price) }}</td>
                         <td class="text-right">￥{{ '{:,}'.format(purchase_item.quantity*purchase_item.unit_price) }}</td>
                         <td>{{ purchase_item.delivery_time }}</td>

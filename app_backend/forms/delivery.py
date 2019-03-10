@@ -523,7 +523,7 @@ class DeliveryEditForm(FlaskForm):
         '数据行删除',
         validators=[],
     )
-    delivery_items_items = FieldList(
+    delivery_items = FieldList(
         FormField(DeliveryItemsEditForm),
         label='出货明细',
         min_entries=1,

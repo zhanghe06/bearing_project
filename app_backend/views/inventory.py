@@ -229,6 +229,14 @@ def add():
 
     # 处理创建请求
     if request.method == 'POST':
+        # 修改仓库 - 不做校验
+        if form.warehouse_changed.data:
+            form.warehouse_changed.data = ''
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Add Failure'), 'danger')
@@ -329,6 +337,14 @@ def edit(inventory_id):
 
     # 处理编辑请求
     if request.method == 'POST':
+        # 修改仓库 - 不做校验
+        if form.warehouse_changed.data:
+            form.warehouse_changed.data = ''
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')

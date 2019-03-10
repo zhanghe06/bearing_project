@@ -125,8 +125,8 @@
                         <th style="min-width: 2em">{{ _('#') }}</th>
                         <th style="min-width: 2em">{{ _('production brand') }}</th>
                         <th style="min-width: 4em">{{ _('production model') }}</th>
-                        <th>{{ _('production sku') }}</th>
                         <th class="text-right" style="min-width: 2em">{{ _('quantity') }}</th>
+                        <th>{{ _('production sku') }}</th>
                         <th class="text-right">{{ _('Tax unit price') }}</th>
 {#                        <th class="text-right">{{ _('Subtotal') }}</th>#}
                         <th style="min-width: 3em">{{ _('delivery time') }}</th>
@@ -138,8 +138,8 @@
                         <td>{{ loop.index }}</td>
                         <td>{{ enquiry_item.production_brand }}</td>
                         <td>{{ enquiry_item.enquiry_production_model or enquiry_item.production_model }}</td>
-                        <td>{{ enquiry_item.production_sku }}</td>
                         <td class="text-right">{{ '{:,}'.format(enquiry_item.quantity) }}</td>
+                        <td>{{ enquiry_item.production_sku }}</td>
                         <td class="text-right"></td>
 {#                        <td class="text-right">￥{{ '{:,}'.format(enquiry_item.unit_price) }}</td>#}
 {#                        <td class="text-right">￥{{ '{:,}'.format(enquiry_item.quantity*enquiry_item.unit_price) }}</td>#}

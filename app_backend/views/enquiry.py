@@ -191,61 +191,6 @@ def lists():
     )
 
 
-@bp_enquiry.route('/<int:enquiry_id>/info.html')
-@login_required
-def info(enquiry_id):
-    """
-    询价详情
-    :param enquiry_id:
-    :return:
-    """
-    # 检查读取权限
-    enquiry_item_get_permission = EnquiryItemGetPermission(enquiry_id)
-    if not enquiry_item_get_permission.can():
-        abort(403)
-    # 详情数据
-    enquiry_info = get_enquiry_row_by_id(enquiry_id)
-    # 检查资源是否存在
-    if not enquiry_info:
-        abort(404)
-    # 检查资源是否删除
-    if enquiry_info.status_delete == STATUS_DEL_OK:
-        abort(410)
-
-    enquiry_print_date = time_utc_to_local(enquiry_info.update_time).strftime('%Y-%m-%d')
-    enquiry_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(enquiry_info.create_time).strftime('%y%m%d%H%M%S'))
-
-    # 获取渠道公司信息
-    supplier_info = get_supplier_row_by_id(enquiry_info.supplier_cid)
-
-    # 获取渠道联系方式
-    supplier_contact_info = get_supplier_contact_row_by_id(enquiry_info.supplier_contact_id)
-
-    # 获取询价人员信息
-    user_info = get_user_row_by_id(enquiry_info.uid)
-
-    enquiry_items = get_enquiry_items_rows(enquiry_id=enquiry_id)
-
-    # 文档信息
-    document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('enquiry info')
-
-    template_name = 'enquiry/info.html'
-
-    return render_template(
-        template_name,
-        enquiry_id=enquiry_id,
-        enquiry_info=enquiry_info,
-        supplier_info=supplier_info,
-        supplier_contact_info=supplier_contact_info,
-        user_info=user_info,
-        enquiry_items=enquiry_items,
-        enquiry_print_date=enquiry_print_date,
-        enquiry_code=enquiry_code,
-        **document_info
-    )
-
-
 @bp_enquiry.route('/add.html', methods=['GET', 'POST'])
 @login_required
 @permission_enquiry_section_add.require(http_exception=403)
@@ -267,6 +212,52 @@ def add():
 
     # 进入创建页面
     if request.method == 'GET':
+
+        # 克隆单据
+        from_type = request.args.get('from_type')
+        from_id = request.args.get('from_id', type=int)
+        # 克隆单据 - 报价单
+        if from_type == 'enquiry' and from_id:
+            enquiry_id = from_id
+            enquiry_info = get_enquiry_row_by_id(enquiry_id)
+            # 检查资源是否存在
+            if not enquiry_info:
+                abort(404)
+            # 检查资源是否删除
+            if enquiry_info.status_delete == STATUS_DEL_OK:
+                abort(410)
+
+            # 获取明细
+            enquiry_items = get_enquiry_items_rows(enquiry_id=enquiry_id)
+            # 表单赋值
+            form.uid.data = enquiry_info.uid
+            form.supplier_cid.data = enquiry_info.supplier_cid
+            form.supplier_contact_id.data = enquiry_info.supplier_contact_id
+            form.delivery_way.data = enquiry_info.delivery_way
+            form.note.data = enquiry_info.note
+            form.status_order.data = enquiry_info.status_order
+            form.amount_enquiry.data = enquiry_info.amount_enquiry
+            # form.enquiry_items = enquiry_items
+            while len(form.enquiry_items) > 0:
+                form.enquiry_items.pop_entry()
+            for enquiry_item in enquiry_items:
+                enquiry_item_form = EnquiryItemEditForm()
+                enquiry_item_form.id = enquiry_item.id
+                enquiry_item_form.enquiry_id = enquiry_item.enquiry_id
+                enquiry_item_form.uid = enquiry_item.uid
+                enquiry_item_form.enquiry_production_model = enquiry_item.enquiry_production_model
+                enquiry_item_form.enquiry_quantity = enquiry_item.enquiry_quantity
+                enquiry_item_form.production_id = enquiry_item.production_id
+                enquiry_item_form.production_brand = enquiry_item.production_brand
+                enquiry_item_form.production_model = enquiry_item.production_model
+                enquiry_item_form.production_sku = enquiry_item.production_sku
+                enquiry_item_form.note = enquiry_item.note
+                enquiry_item_form.quantity = enquiry_item.quantity
+                enquiry_item_form.unit_price = enquiry_item.unit_price
+                enquiry_item_form.delivery_time = enquiry_item.delivery_time
+                enquiry_item_form.status_ordered = enquiry_item.status_ordered
+                form.enquiry_items.append_entry(enquiry_item_form)
+
         # 渲染页面
         return render_template(
             template_name,
@@ -570,6 +561,61 @@ def edit(enquiry_id):
                 form=form,
                 **document_info
             )
+
+
+@bp_enquiry.route('/<int:enquiry_id>/info.html')
+@login_required
+def info(enquiry_id):
+    """
+    询价详情
+    :param enquiry_id:
+    :return:
+    """
+    # 检查读取权限
+    enquiry_item_get_permission = EnquiryItemGetPermission(enquiry_id)
+    if not enquiry_item_get_permission.can():
+        abort(403)
+    # 详情数据
+    enquiry_info = get_enquiry_row_by_id(enquiry_id)
+    # 检查资源是否存在
+    if not enquiry_info:
+        abort(404)
+    # 检查资源是否删除
+    if enquiry_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    enquiry_print_date = time_utc_to_local(enquiry_info.update_time).strftime('%Y-%m-%d')
+    enquiry_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(enquiry_info.create_time).strftime('%y%m%d%H%M%S'))
+
+    # 获取渠道公司信息
+    supplier_info = get_supplier_row_by_id(enquiry_info.supplier_cid)
+
+    # 获取渠道联系方式
+    supplier_contact_info = get_supplier_contact_row_by_id(enquiry_info.supplier_contact_id)
+
+    # 获取询价人员信息
+    user_info = get_user_row_by_id(enquiry_info.uid)
+
+    enquiry_items = get_enquiry_items_rows(enquiry_id=enquiry_id)
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('enquiry info')
+
+    template_name = 'enquiry/info.html'
+
+    return render_template(
+        template_name,
+        enquiry_id=enquiry_id,
+        enquiry_info=enquiry_info,
+        supplier_info=supplier_info,
+        supplier_contact_info=supplier_contact_info,
+        user_info=user_info,
+        enquiry_items=enquiry_items,
+        enquiry_print_date=enquiry_print_date,
+        enquiry_code=enquiry_code,
+        **document_info
+    )
 
 
 @bp_enquiry.route('/<int:enquiry_id>/preview.html')
