@@ -36,6 +36,10 @@ docker/Nginx/logs/
 # Redis
 docker/Redis/data/
 
+# RabbitMQ
+docker/RabbitMQ/data/
+
+
 # Config
 config/*
 !config/__init__.py
