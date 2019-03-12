@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-warehouse').trigger('click')">{{ _('warehouse management') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-rack').trigger('click')">{{ _('rack management') }}</a></li>
+            <li class="active">{{ _('rack add') }}</li>
+        </ol>
+        <form class="form-horizontal" method="post" action="">
+            {{ form.csrf_token }}
+            <div class="form-group{% if form.warehouse_id.errors %} has-error{% endif %}">
+                {{ form.warehouse_id.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.warehouse_id(class="form-control", title=form.warehouse_id.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.warehouse_id.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.name.errors %} has-error{% endif %}">
+                {{ form.name.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.name(class="form-control", title=form.name.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.name.description }}</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-load"
+                            data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
+                    <button type="reset" class="btn btn-default">{{ _('Reset') }}</button>
+                    <button class="btn btn-default" onclick="history.back();return false">{{ _('Go Back') }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

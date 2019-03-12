@@ -71,44 +71,8 @@ class RackAddForm(FlaskForm):
     warehouse_id = SelectField(
         _('warehouse name'),
         validators=[
-            InputRequired(),  # 可以为0
-        ],
-        default=default_search_choice_option_int,
-        coerce=int,
-        description=_('warehouse name'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('warehouse name'),
-        }
-    )
-    name = StringField(
-        _('rack name'),
-        validators=[],
-        default='',
-        description=_('rack name'),
-        render_kw={
-            'placeholder': _('rack name'),
-            'rel': 'tooltip',
-            'title': _('rack name'),
-        }
-    )
-
-
-class RackEditForm(FlaskForm):
-    id = IntegerField(
-        _('rack id'),
-        validators=[
             DataRequired(),
         ],
-        render_kw={
-            'type': 'hidden',
-        }
-    )
-    warehouse_id = SelectField(
-        _('warehouse name'),
-        validators=[
-            InputRequired(),  # 可以为0
-        ],
         default=default_search_choice_option_int,
         coerce=int,
         description=_('warehouse name'),
@@ -128,13 +92,8 @@ class RackEditForm(FlaskForm):
             'title': _('rack name'),
         }
     )
-    create_time = DateField(
-        _('create time'),
-        validators=[DataRequired()],
-        description=_('create time')
-    )
-    update_time = DateField(
-        _('update time'),
-        validators=[DataRequired()],
-        description=_('update time')
-    )
+
+
+class RackEditForm(RackAddForm):
+    pass
+

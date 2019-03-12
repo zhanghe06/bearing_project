@@ -217,6 +217,10 @@ typeahead
 
 ## 会话管理
 
+`粘性 session`，这是指将用户`session`中的数据缓存至某进程的内存中，并将同一用户的后续请求路由到同一个进程。
+
+本项目保存在`Redis`这样的带有过期时间的缓存中，进而支持**云原生**。
+
 user-agents, User Agents 解析库
 
 https://pypi.python.org/pypi/user-agents/

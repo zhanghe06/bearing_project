@@ -92,9 +92,9 @@
                             <th class="bg-warning">{{ _('enquiry production model') }}</th>
                             <th>{{ _('production brand') }}</th>
                             <th>{{ _('production model') }}</th>
-                            <th>{{ _('quantity') }}</th>
+                            <th class="text-right">{{ _('quantity') }}</th>
                             <th>{{ _('production sku') }}</th>
-                            <th>{{ _('unit price') }}</th>
+                            <th class="text-right">{{ _('unit price') }}</th>
                             <th>{{ _('delivery time') }}</th>
                             <th>{{ _('note') }}</th>
                             <th>{{ _('create time') }}</th>
@@ -115,12 +115,12 @@
                                 <td class="bg-warning">{{ info.enquiry_production_model }}</td>
                                 <td>{{ info.production_brand }}</td>
                                 <td>{{ info.production_model }}</td>
-                                <td>{{ info.quantity }}</td>
+                                <td class="text-right">{{ '{:,}'.format(info.quantity) }}</td>
                                 <td>{{ info.production_sku }}</td>
-                                <td>{{ info.unit_price }}</td>
+                                <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
                                 <td>{{ info.delivery_time }}</td>
                                 <td>{{ info.note }}</td>
-                                <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                                <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm') }}</td>
         {#                        <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}
                             </tr>
                         {% endfor %}

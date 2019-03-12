@@ -33,6 +33,8 @@ from app_backend import (
 )
 
 # 定义蓝图
+from app_backend.api.customer import get_customer_row_by_id
+from app_backend.api.customer_contact import get_customer_contact_row_by_id
 from app_backend.api.sales_order import get_sales_order_rows, edit_sales_order, get_sales_order_pagination, \
     add_sales_order, get_sales_order_row_by_id
 from app_backend.api.sales_order_items import add_sales_order_items, get_sales_order_items_rows, edit_sales_order_items, delete_sales_order_items
@@ -325,8 +327,8 @@ def edit(sales_order_id):
         sales_order_items = get_sales_order_items_rows(sales_order_id=sales_order_id)
         # 表单赋值
         form.uid.data = sales_order_info.uid
-        form.customer_cid.data = sales_order_info.supplier_cid
-        form.customer_contact_id.data = sales_order_info.supplier_contact_id
+        form.customer_cid.data = sales_order_info.customer_cid
+        form.customer_contact_id.data = sales_order_info.customer_contact_id
         form.type_tax.data = sales_order_info.type_tax
         form.amount_order.data = sales_order_info.amount_order
         # form.sales_order_items = sales_order_items
@@ -480,6 +482,56 @@ def edit(sales_order_id):
             )
 
 
+@bp_sales_order.route('/<int:sales_order_id>/info.html')
+@login_required
+def info(sales_order_id):
+    """
+    订单详情
+    :param sales_order_id:
+    :return:
+    """
+    sales_order_info = get_sales_order_row_by_id(sales_order_id)
+    # 检查资源是否存在
+    if not sales_order_info:
+        abort(404)
+    # 检查资源是否删除
+    if sales_order_info.status_delete == STATUS_DEL_OK:
+        abort(410)
+
+    sales_order_print_date = time_utc_to_local(sales_order_info.update_time).strftime('%Y-%m-%d')
+    sales_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
+
+    # 获取渠道公司信息
+    customer_info = get_customer_row_by_id(sales_order_info.customer_cid)
+
+    # 获取渠道联系方式
+    customer_contact_info = get_customer_contact_row_by_id(sales_order_info.customer_contact_id)
+
+    # 获取询价人员信息
+    user_info = get_user_row_by_id(sales_order_info.uid)
+
+    sales_order_items = get_sales_order_items_rows(sales_order_id=sales_order_id)
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('sales order info')
+
+    template_name = 'sales/order/info.html'
+
+    return render_template(
+        template_name,
+        sales_order_id=sales_order_id,
+        sales_order_info=sales_order_info,
+        customer_info=customer_info,
+        customer_contact_info=customer_contact_info,
+        user_info=user_info,
+        sales_order_items=sales_order_items,
+        sales_order_print_date=sales_order_print_date,
+        sales_order_code=sales_order_code,
+        **document_info
+    )
+
+
 @bp_sales_order.route('/<int:sales_order_id>/preview.html')
 @login_required
 def preview(sales_order_id):
@@ -500,10 +552,10 @@ def preview(sales_order_id):
     sales_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
-    supplier_info = get_supplier_row_by_id(sales_order_info.supplier_cid)
+    customer_info = get_customer_row_by_id(sales_order_info.customer_cid)
 
     # 获取渠道联系方式
-    supplier_contact_info = get_supplier_contact_row_by_id(sales_order_info.supplier_contact_id)
+    customer_contact_info = get_customer_contact_row_by_id(sales_order_info.customer_contact_id)
 
     # 获取询价人员信息
     user_info = get_user_row_by_id(sales_order_info.uid)
@@ -520,8 +572,8 @@ def preview(sales_order_id):
         template_name,
         sales_order_id=sales_order_id,
         sales_order_info=sales_order_info,
-        supplier_info=supplier_info,
-        supplier_contact_info=supplier_contact_info,
+        customer_info=customer_info,
+        customer_contact_info=customer_contact_info,
         user_info=user_info,
         sales_order_items=sales_order_items,
         sales_order_print_date=sales_order_print_date,
@@ -550,10 +602,10 @@ def pdf(sales_order_id):
     sales_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
-    supplier_info = get_supplier_row_by_id(sales_order_info.supplier_cid)
+    customer_info = get_customer_row_by_id(sales_order_info.customer_cid)
 
     # 获取客户联系方式
-    supplier_contact_info = get_supplier_contact_row_by_id(sales_order_info.supplier_contact_id)
+    customer_contact_info = get_customer_contact_row_by_id(sales_order_info.customer_contact_id)
 
     # 获取询价人员信息
     user_info = get_user_row_by_id(sales_order_info.uid)
@@ -570,8 +622,8 @@ def pdf(sales_order_id):
         template_name,
         sales_order_id=sales_order_id,
         sales_order_info=sales_order_info,
-        supplier_info=supplier_info,
-        supplier_contact_info=supplier_contact_info,
+        customer_info=customer_info,
+        customer_contact_info=customer_contact_info,
         user_info=user_info,
         sales_order_items=sales_order_items,
         sales_order_print_date=sales_order_print_date,

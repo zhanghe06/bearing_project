@@ -393,18 +393,18 @@ class SalesOrderAddForm(FlaskForm):
             'title': _('sales order note'),
         }
     )
-    status_order = SelectField(
-        _('sales order status'),
-        validators=[
-            InputRequired(),
-        ],
-        coerce=int,
-        description=_('sales order status'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('sales order status'),
-        }
-    )
+    # status_order = SelectField(
+    #     _('sales order status'),
+    #     validators=[
+    #         InputRequired(),
+    #     ],
+    #     coerce=int,
+    #     description=_('sales order status'),
+    #     render_kw={
+    #         'rel': 'tooltip',
+    #         'title': _('sales order status'),
+    #     }
+    # )
     amount_order = DecimalField(
         _('amount order'),
         validators=[

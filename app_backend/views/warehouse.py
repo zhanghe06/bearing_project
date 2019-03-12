@@ -287,8 +287,8 @@ def edit(warehouse_id):
         form.linkman.data = warehouse_info.linkman
         form.tel.data = warehouse_info.tel
         form.fax.data = warehouse_info.fax
-        form.create_time.data = warehouse_info.create_time
-        form.update_time.data = warehouse_info.update_time
+        # form.create_time.data = warehouse_info.create_time
+        # form.update_time.data = warehouse_info.update_time
         # 渲染页面
         return render_template(
             template_name,
