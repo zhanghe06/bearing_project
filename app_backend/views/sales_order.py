@@ -26,6 +26,7 @@ from flask import (
 )
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
+from flask_principal import IdentityContext
 from flask_weasyprint import render_pdf, HTML, CSS
 from app_backend import (
     app,
@@ -39,9 +40,7 @@ from app_backend.api.sales_order import get_sales_order_rows, edit_sales_order, 
     add_sales_order, get_sales_order_row_by_id
 from app_backend.api.sales_order_items import add_sales_order_items, get_sales_order_items_rows, edit_sales_order_items, delete_sales_order_items
 from app_backend.api.sales_order import get_sales_order_user_list_choices
-from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
 from app_backend.api.user import get_user_choices, get_user_row_by_id
-from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.forms.sales_order import SalesOrderSearchForm, SalesOrderAddForm, SalesOrderEditForm, SalesOrderItemEditForm
 from app_backend.models.bearing_project import SalesOrder
 from app_backend.permissions import permission_sales_orders_section_export, SalesOrdersItemDelPermission
@@ -244,7 +243,7 @@ def add():
                 'sales_order_id': sales_order_id,
                 'uid': form.uid.data,
                 'customer_cid': form.customer_cid.data,
-                'customer_company_name': get_supplier_row_by_id(form.customer_cid.data).company_name,
+                'customer_company_name': get_customer_row_by_id(form.customer_cid.data).company_name,
                 'custom_production_brand': sales_order_item.form.custom_production_brand.data,
                 'custom_production_model': sales_order_item.form.custom_production_model.data,
                 'production_id': sales_order_item.form.production_id.data,
@@ -339,8 +338,6 @@ def edit(sales_order_id):
             sales_order_item_form.id = sales_order_item.id
             sales_order_item_form.sales_order_id = sales_order_item.sales_order_id
             sales_order_item_form.uid = sales_order_item.uid
-            # sales_order_item_form.supplier_cid = sales_order_item.supplier_cid
-            # sales_order_item_form.supplier_company_name = sales_order_item.supplier_company_name
             sales_order_item_form.custom_production_brand = sales_order_item.custom_production_brand
             sales_order_item_form.custom_production_model = sales_order_item.custom_production_model
             sales_order_item_form.production_id = sales_order_item.production_id
@@ -426,7 +423,7 @@ def edit(sales_order_id):
                 'sales_order_id': sales_order_id,
                 'uid': form.uid.data,
                 'customer_cid': form.customer_cid.data,
-                'customer_company_name': get_supplier_row_by_id(form.customer_cid.data).company_name,
+                'customer_company_name': get_customer_row_by_id(form.customer_cid.data).company_name,
                 'custom_production_brand': sales_order_item.form.custom_production_brand.data,
                 'custom_production_model': sales_order_item.form.custom_production_model.data,
                 'production_id': sales_order_item.form.production_id.data,

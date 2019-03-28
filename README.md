@@ -498,3 +498,4 @@ brew install cairo pango gdk-pixbuf libffi
 - [ ] 性能测试
 - [ ] 压力测试
 - [x] 打印页面
+- [ ] 独立仓库

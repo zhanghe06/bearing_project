@@ -58,7 +58,7 @@
                                 {{ _('Select All') }}
                             </label>
                         </th>
-                        <th>{{ _('production brand') }}</th>
+                        <th class="text-right">{{ _('production brand') }}</th>
                         <th>{{ _('production model') }}</th>
                         <th>{{ _('production sku') }}</th>
                         <th>{{ _('ind') }}</th>
@@ -72,14 +72,14 @@
                     </thead>
                     <tbody>
                     {% for info in pagination.items %}
-                        <tr class="text-muted item">
+                        <tr class="text-muted item{% if info.id | status_sensitive %} danger{% endif %}">
                             <td>
                                 <label>
                                     <input class="select_item" name="production_id" title="{{ _('Select') }}"
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td>{{ info.production_brand }}</td>
+                            <td class="text-right">{{ info.production_brand }}</td>
                             <td><a href="{{ url_for('production.info', production_id=info.id) }}" rel="tooltip"
                                    title="{{ _('Click details') }}">{{ info.production_model }}</a></td>
                             <td>{{ info.production_sku }}</td>

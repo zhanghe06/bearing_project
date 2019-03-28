@@ -195,6 +195,8 @@ def transfer_inventory(inventory_id, warehouse_id, rack_id, num):
                 rack_name=rack_info.rack_name,
                 stock_qty=num,
                 note=inventory_info_from.note,
+                create_time=current_time,
+                update_time=current_time,
             )
             db_instance.db_instance.session.add(inventory_data)
 

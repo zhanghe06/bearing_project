@@ -55,6 +55,7 @@
                     </li>
                 </ul>
             </li>
+        {%- if permission_role_administrator.can() or permission_role_sales.can() -%}
             <li{% if 'customer/' in request.path %} class="active"{% endif %}>
                 <a id="menu-customer" href="#"><i class="fa fa-table fa-fw"></i> {{ _('customer management') }}<span
                         class="fa arrow"></span></a>
@@ -76,6 +77,8 @@
                     </li>
                 </ul>
             </li>
+        {% endif %}
+        {%- if permission_role_administrator.can() or permission_role_purchaser.can() -%}
             <li{% if 'supplier/' in request.path %} class="active"{% endif %}>
                 <a id="menu-supplier" href="#"><i class="fa fa-tags fa-fw"></i> {{ _('supplier management') }}<span
                         class="fa arrow"></span></a>
@@ -97,6 +100,7 @@
                     </li>
                 </ul>
             </li>
+        {% endif %}
             <li{% if 'quotation/' in request.path %} class="active"{% endif %}>
                 <a id="menu-quotation" href="#"><i class="fa fa-file-text fa-fw"></i> {{ _('quotation management') }}<span
                         class="fa arrow"></span></a>
@@ -133,6 +137,7 @@
                     </li>
                 </ul>
             </li>
+        {%- if permission_role_administrator.can() or permission_role_sales.can() -%}
             <li{% if 'sales/' in request.path %} class="active"{% endif %}>
                 <a id="menu-sales" href="#"><i class="fa fa-briefcase fa-fw"></i> {{ _('sales management') }}<span
                         class="fa arrow"></span></a>
@@ -166,6 +171,8 @@
                     </li>
                 </ul>
             </li>
+        {% endif %}
+        {%- if permission_role_administrator.can() or permission_role_sales.can() -%}
             <li{% if 'buyer/' in request.path %} class="active"{% endif %}>
                 <a id="menu-buyer" href="#"><i class="fa fa-cart-plus fa-fw"></i> {{ _('buyer management') }}<span
                         class="fa arrow"></span></a>
@@ -199,6 +206,8 @@
                     </li>
                 </ul>
             </li>
+        {% endif %}
+        {%- if permission_role_administrator.can() or permission_role_stock_keeper.can() -%}
             <li{% if 'warehouse/' in request.path %} class="active"{% endif %}>
                 <a id="menu-warehouse" href="#"><i
                         class="fa fa-building fa-fw"></i> {{ _('warehouse management') }}<span
@@ -223,6 +232,7 @@
                     </li>
                 </ul>
             </li>
+        {% endif %}
             <li{% if 'inventory/' in request.path %} class="active"{% endif %}>
                 <a id="menu-inventory" href="#"><i class="fa fa-cubes fa-fw"></i> {{ _('inventory management') }}<span
                         class="fa arrow"></span></a>
@@ -257,6 +267,7 @@
                     </li>
                 </ul>
             </li>
+        {%- if permission_role_administrator.can() or permission_role_accountant.can() -%}
             <li{% if 'accountant/' in request.path %} class="active"{% endif %}>
                 <a id="menu-accountant" href="#"><i
                         class="fa fa-bar-chart fa-fw"></i> {{ _('accountant management') }}<span
@@ -270,6 +281,7 @@
                     </li>
                 </ul>
             </li>
+        {% endif %}
             <li{% if 'system/' in request.path %} class="active"{% endif %}>
                 <a id="menu-system" href="#"><i class="fa fa-cog fa-fw"></i> {{ _('system management') }}<span
                         class="fa arrow"></span></a>

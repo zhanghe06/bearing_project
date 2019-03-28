@@ -40,6 +40,16 @@ def get_customer_row(*args, **kwargs):
     return db_instance.get_row(Customer, *args, **kwargs)
 
 
+def get_customer_latest(*args, **kwargs):
+    """
+    获取信息
+    :param args:
+    :param kwargs:
+    :return: None/object
+    """
+    return db_instance.get_latest(Customer, *args, **kwargs)
+
+
 def get_customer_rows(*args, **kwargs):
     """
     获取列表
@@ -109,6 +119,16 @@ def get_customer_pagination(page=1, per_page=10, *args, **kwargs):
     """
     rows = db_instance.get_pagination(Customer, page, per_page, *args, **kwargs)
     return rows
+
+
+def count_customer(*args, **kwargs):
+    """
+    计数
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    return db_instance.count(Customer, *args, **kwargs)
 
 
 def customer_middleman_stats(time_based='hour'):

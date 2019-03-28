@@ -45,6 +45,16 @@ def get_sales_order_row(*args, **kwargs):
     return db_instance.get_row(SalesOrder, *args, **kwargs)
 
 
+def get_sales_order_latest(*args, **kwargs):
+    """
+    获取信息
+    :param args:
+    :param kwargs:
+    :return: None/object
+    """
+    return db_instance.get_latest(SalesOrder, *args, **kwargs)
+
+
 def get_sales_order_rows(*args, **kwargs):
     """
     获取列表

@@ -106,6 +106,7 @@ from app_backend.models import bearing_project
 
 from app_backend import views
 
+from app_backend.views.permissions import bp_permissions
 from app_backend.views.captcha import bp_captcha
 from app_backend.views.customer import bp_customer
 from app_backend.views.customer_contact import bp_customer_contact
@@ -135,6 +136,7 @@ from app_backend.views.system import bp_system
 from app_backend.views.price import bp_price
 
 # 注册蓝图
+app.register_blueprint(bp_permissions)
 app.register_blueprint(bp_captcha)
 app.register_blueprint(bp_customer)
 app.register_blueprint(bp_customer_contact)

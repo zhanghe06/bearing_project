@@ -9,7 +9,7 @@ function compute_total_amount () {
         sum += j
     })
 
-    $('input#amount_order').val(sum.toFixed(2).replace(/\d(?=(\d{12})+\.)/g, '$&,'))
+    $('input#amount_purchase').val(sum.toFixed(2).replace(/\d(?=(\d{12})+\.)/g, '$&,'))
 }
 
 // 更新数据重新汇总金额

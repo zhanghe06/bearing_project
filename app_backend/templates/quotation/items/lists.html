@@ -99,7 +99,7 @@
                             {#                                       rel="tooltip" type="checkbox" value="{{ info.id }}"/>#}
                             {#                            </label>#}
                             {#                        </td>#}
-                            <td><a href="{{ url_for('quotation.info', quotation_id=info.quotation_id) }}">
+                            <td><a href="{{ url_for('quotation.info', quotation_id=info.quotation_id) }}" target="_blank">
                                 {{ g.QUOTATION_PREFIX }}{{ moment(info.quotation_id | quotation_create_time).format('YYMMDDHHmmss') }}</a>
                             </td>
                             <td>{{ info.customer_cid | customer_company_name }}</td>

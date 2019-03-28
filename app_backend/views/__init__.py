@@ -15,6 +15,7 @@ from datetime import datetime
 import json
 import traceback
 import user_agents
+import six
 
 
 from flask import current_app, Response
@@ -25,8 +26,8 @@ from flask_principal import (
     AnonymousIdentity,
     identity_loaded,
     RoleNeed,
-    UserNeed
-)
+    UserNeed,
+    IdentityContext)
 
 from flask import (
     g,
@@ -46,10 +47,13 @@ from flask_login import (
     user_loaded_from_cookie
 )
 
+from app_backend.models.bearing_project import Customer, Quotation, SalesOrder
+
 from app_backend.api.login_user import get_login_user_row_by_id
 from app_backend.api.user import get_user_rows
-from app_backend.api.customer import get_customer_rows
-from app_backend.api.quotation import get_quotation_rows
+from app_backend.api.customer import get_customer_rows, get_customer_latest
+from app_backend.api.quotation import get_quotation_rows, get_quotation_latest
+from app_backend.api.sales_order import get_sales_order_latest
 from app_backend.api.role import get_role_row_by_id
 
 from app_backend import app, oauth_github, oauth_qq, oauth_weibo
@@ -60,7 +64,8 @@ from app_backend.permissions import (
     SectionActionNeed,
     SectionActionItemNeed,
     permission_role_administrator,
-)
+    permission_role_default, permission_role_sales, permission_role_manager, permission_role_stock_keeper,
+    permission_role_accountant, permission_role_purchaser)
 from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
     TYPE_ROLE_PURCHASER,
@@ -68,6 +73,8 @@ from app_common.maps.type_role import (
     TYPE_ROLE_SYSTEM,
     TYPE_ROLE_STOREKEEPER,
 )
+
+from app_common.maps.status_delete import STATUS_DEL_NO
 
 # 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
@@ -195,13 +202,13 @@ def on_identity_loaded(sender, identity):
         customer_rows = get_customer_rows(**customer_rows_condition)
         for customer_row in customer_rows:
             # 客户读取权限
-            identity.provides.add(SectionActionItemNeed('customer', 'get', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'get', six.text_type(customer_row.id)))
             # 客户编辑权限
-            identity.provides.add(SectionActionItemNeed('customer', 'edit', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'edit', six.text_type(customer_row.id)))
             # 客户删除权限
-            identity.provides.add(SectionActionItemNeed('customer', 'del', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'del', six.text_type(customer_row.id)))
             # 客户打印权限
-            identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'print', six.text_type(customer_row.id)))
         # 报价-----------------------------------------------------------------------
         quotation_rows_condition = {
             'uid': current_user.id
@@ -209,13 +216,13 @@ def on_identity_loaded(sender, identity):
         quotation_rows = get_quotation_rows(**quotation_rows_condition)
         for quotation_row in quotation_rows:
             # 报价读取权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'get', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'get', six.text_type(quotation_row.id)))
             # 报价编辑权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'edit', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'edit', six.text_type(quotation_row.id)))
             # 报价删除权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'del', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'del', six.text_type(quotation_row.id)))
             # 报价打印权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'print', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'print', six.text_type(quotation_row.id)))
 
     # 角色 - 采购
     if current_user.role_id == TYPE_ROLE_PURCHASER:
@@ -247,13 +254,13 @@ def on_identity_loaded(sender, identity):
         customer_rows = get_customer_rows(**customer_rows_condition)
         for customer_row in customer_rows:
             # 客户读取权限
-            identity.provides.add(SectionActionItemNeed('customer', 'get', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'get', six.text_type(customer_row.id)))
             # 客户编辑权限
-            identity.provides.add(SectionActionItemNeed('customer', 'edit', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'edit', six.text_type(customer_row.id)))
             # 客户删除权限
-            identity.provides.add(SectionActionItemNeed('customer', 'del', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'del', six.text_type(customer_row.id)))
             # 客户打印权限
-            identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'print', six.text_type(customer_row.id)))
         # 报价-----------------------------------------------------------------------
         quotation_rows_condition = {
             'uid': current_user.id
@@ -261,13 +268,13 @@ def on_identity_loaded(sender, identity):
         quotation_rows = get_quotation_rows(**quotation_rows_condition)
         for quotation_row in quotation_rows:
             # 报价读取权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'get', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'get', six.text_type(quotation_row.id)))
             # 报价编辑权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'edit', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'edit', six.text_type(quotation_row.id)))
             # 报价删除权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'del', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'del', six.text_type(quotation_row.id)))
             # 报价打印权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'print', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'print', six.text_type(quotation_row.id)))
 
     # 角色 - 经理
     if current_user.role_id == TYPE_ROLE_MANAGER:
@@ -303,13 +310,13 @@ def on_identity_loaded(sender, identity):
         customer_rows = get_customer_rows(**customer_rows_condition)
         for customer_row in customer_rows:
             # 客户读取权限
-            identity.provides.add(SectionActionItemNeed('customer', 'get', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'get', six.text_type(customer_row.id)))
             # 客户编辑权限
-            identity.provides.add(SectionActionItemNeed('customer', 'edit', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'edit', six.text_type(customer_row.id)))
             # 客户删除权限
-            identity.provides.add(SectionActionItemNeed('customer', 'del', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'del', six.text_type(customer_row.id)))
             # 客户打印权限
-            identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
+            identity.provides.add(SectionActionItemNeed('customer', 'print', six.text_type(customer_row.id)))
         # 报价-----------------------------------------------------------------------
         quotation_rows_condition = {
             'uid': current_user.id
@@ -317,15 +324,15 @@ def on_identity_loaded(sender, identity):
         quotation_rows = get_quotation_rows(**quotation_rows_condition)
         for quotation_row in quotation_rows:
             # 报价读取权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'get', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'get', six.text_type(quotation_row.id)))
             # 报价编辑权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'edit', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'edit', six.text_type(quotation_row.id)))
             # 报价删除权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'del', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'del', six.text_type(quotation_row.id)))
             # 报价打印权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'print', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'print', six.text_type(quotation_row.id)))
             # 报价审核权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'audit', unicode(quotation_row.id)))
+            identity.provides.add(SectionActionItemNeed('quotation', 'audit', six.text_type(quotation_row.id)))
 
         # 版块明细操作权限 - 所属销售（经理）
         sales_rows_condition = {
@@ -340,13 +347,13 @@ def on_identity_loaded(sender, identity):
             customer_rows = get_customer_rows(**customer_rows_condition)
             for customer_row in customer_rows:
                 # 客户读取权限
-                identity.provides.add(SectionActionItemNeed('customer', 'get', unicode(customer_row.id)))
+                identity.provides.add(SectionActionItemNeed('customer', 'get', six.text_type(customer_row.id)))
                 # 客户编辑权限
-                identity.provides.add(SectionActionItemNeed('customer', 'edit', unicode(customer_row.id)))
+                identity.provides.add(SectionActionItemNeed('customer', 'edit', six.text_type(customer_row.id)))
                 # 客户删除权限
-                identity.provides.add(SectionActionItemNeed('customer', 'del', unicode(customer_row.id)))
+                identity.provides.add(SectionActionItemNeed('customer', 'del', six.text_type(customer_row.id)))
                 # 客户打印权限
-                identity.provides.add(SectionActionItemNeed('customer', 'print', unicode(customer_row.id)))
+                identity.provides.add(SectionActionItemNeed('customer', 'print', six.text_type(customer_row.id)))
             # 报价-----------------------------------------------------------------------
             quotation_rows_condition = {
                 'uid': sales_item.id
@@ -354,15 +361,15 @@ def on_identity_loaded(sender, identity):
             quotation_rows = get_quotation_rows(**quotation_rows_condition)
             for quotation_row in quotation_rows:
                 # 报价读取权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'get', unicode(quotation_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'get', six.text_type(quotation_row.id)))
                 # 报价编辑权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'edit', unicode(quotation_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'edit', six.text_type(quotation_row.id)))
                 # 报价删除权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'del', unicode(quotation_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'del', six.text_type(quotation_row.id)))
                 # 报价打印权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'print', unicode(quotation_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'print', six.text_type(quotation_row.id)))
                 # 报价审核权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'audit', unicode(quotation_row.id)))
+                identity.provides.add(SectionActionItemNeed('quotation', 'audit', six.text_type(quotation_row.id)))
 
     # 角色 - 库管
     if current_user.role_id == TYPE_ROLE_STOREKEEPER:
@@ -459,7 +466,29 @@ def home():
     """
     document_info = DOCUMENT_INFO.copy()
     document_info['TITLE'] = _('personal information')
-    return render_template('home.html', **document_info)
+
+    latest_customer = get_customer_latest(
+        Customer.owner_uid == current_user.id,
+        Customer.status_delete == STATUS_DEL_NO
+    )
+
+    latest_quotation = get_quotation_latest(
+        Quotation.uid == current_user.id,
+        Quotation.status_delete == STATUS_DEL_NO
+    )
+
+    latest_transaction = get_sales_order_latest(
+        SalesOrder.uid == current_user.id,
+        SalesOrder.status_delete == STATUS_DEL_NO
+    )
+
+    return render_template(
+        'home.html',
+        latest_customer=latest_customer,
+        latest_quotation=latest_quotation,
+        latest_transaction=latest_transaction,
+        **document_info
+    )
 
 
 @app.route('/logout/')

@@ -13,17 +13,21 @@ from __future__ import unicode_literals
 import json
 
 from app_backend import app
-from app_backend.api.customer import get_customer_row_by_id
+from app_backend.api.customer import get_customer_row_by_id, count_customer
 from app_backend.api.customer_contact import get_customer_contact_row_by_id
 from app_backend.api.enquiry import get_enquiry_row_by_id
-from app_backend.api.quotation import get_quotation_row_by_id
+from app_backend.api.quotation import get_quotation_row_by_id, count_quotation
 from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
 from app_backend.api.user import get_user_row_by_id
 from app_backend.api.warehouse import get_warehouse_row_by_id
 from app_backend.api.rack import get_rack_row_by_id
 from app_backend.api.production import get_production_row_by_id
+from app_backend.api.production_sensitive import get_production_sensitive_row
+from app_backend.api.sales_order import count_sales_order
+from app_backend.models.bearing_project import Customer, Quotation, SalesOrder
 from app_common.maps.status_default import STATUS_DEFAULT_DICT
+from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.maps.type_auth import TYPE_AUTH_DICT
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 from app_common.maps.type_role import TYPE_ROLE_DICT
@@ -241,3 +245,59 @@ def filter_status_default(status_default_id):
     :return:
     """
     return STATUS_DEFAULT_DICT.get(status_default_id, '')
+
+
+@app.template_filter('count_customer')
+def filter_count_customer(user_id=None):
+    """
+    客户计数
+    :param user_id:
+    :return:
+    """
+    if not user_id:
+        return 0
+    count = count_customer(Customer.owner_uid == user_id)
+    return count
+
+
+@app.template_filter('count_quotation')
+def filter_count_quotation(user_id=None):
+    """
+    报价计数
+    :param user_id:
+    :return:
+    """
+    if not user_id:
+        return 0
+    count = count_quotation(Quotation.uid == user_id)
+    return count
+
+
+@app.template_filter('count_transaction')
+def filter_count_transaction(user_id=None):
+    """
+    成交计数
+    :param user_id:
+    :return:
+    """
+    if not user_id:
+        return 0
+    count = count_sales_order(SalesOrder.uid == user_id)
+    return count
+
+
+@app.template_filter('status_sensitive')
+def filter_status_sensitive(production_id):
+    """
+    敏感状态
+    :param production_id:
+    :return:
+    """
+    if not production_id:
+        return False
+    condition = {
+        'production_id': production_id,
+        'status_delete': STATUS_DEL_NO
+    }
+    production_sensitive_info = get_production_sensitive_row(**condition)
+    return True if production_sensitive_info else False

@@ -32,3 +32,23 @@ $ sh db_init.sh
 $ sh db_dump.sh [db_name]
 $ sh db_dump_all.sh
 ```
+
+### 监控指标
+
+- QPS   每秒处理的查询数
+- TPS   每秒处理的事务数（InnoDB）
+- IOPS  每秒磁盘进行的I/O操作次数
+
+计算方式
+```
+# QPS
+Questions = SHOW GLOBAL STATUS LIKE 'Questions';
+Uptime = SHOW GLOBAL STATUS LIKE 'Uptime';
+QPS=Questions/Uptime
+
+# TPS
+Com_commit = SHOW GLOBAL STATUS LIKE 'Com_commit';
+Com_rollback = SHOW GLOBAL STATUS LIKE 'Com_rollback';
+Uptime = SHOW GLOBAL STATUS LIKE 'Uptime';
+TPS=(Com_commit + Com_rollback)/Uptime
+```

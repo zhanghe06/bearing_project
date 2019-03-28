@@ -254,6 +254,19 @@ class PurchaseItemsAddForm(FlaskForm):
             'max': 1000000.00,
         }
     )
+    rack_id = SelectField(
+        _('rack name'),
+        validators=[
+            DataRequired(),
+        ],
+        default=0,
+        coerce=int,
+        description=_('rack name'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('rack name'),
+        }
+    )
     note = StringField(
         _('note'),
         validators=[],
@@ -353,6 +366,19 @@ class PurchaseAddForm(FlaskForm):
             'title': _('supplier contact name'),
         }
     )
+    warehouse_id = SelectField(
+        _('warehouse name'),
+        validators=[
+            DataRequired(),
+        ],
+        default=default_search_choice_option_int,
+        coerce=int,
+        description=_('warehouse name'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('warehouse name'),
+        }
+    )
     delivery_way = StringField(
         _('delivery way'),
         validators=[],
@@ -397,6 +423,10 @@ class PurchaseAddForm(FlaskForm):
             'disabled': 'disabled',
         }
     )
+    warehouse_changed = HiddenField(
+        _('warehouse changed'),
+        default='',
+    )
     data_line_add = IntegerField(
         '数据行新增',
         validators=[],
@@ -413,116 +443,7 @@ class PurchaseAddForm(FlaskForm):
     )
 
 
-class PurchaseEditForm(FlaskForm):
-    uid = SelectField(
-        _('purchase user'),
-        validators=[],
-        coerce=int,
-        description=_('purchase user'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('purchase user'),
-        }
-    )
-    supplier_cid = IntegerField(
-        _('supplier company id'),
-        validators=[
-            DataRequired(),
-        ],
-        description=_('supplier company id'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('supplier company id'),
-            'placeholder': _('supplier company id'),
-            'autocomplete': 'off',
-            'type': 'hidden',
-        }
-    )
-    supplier_company_name = StringField(
-        _('supplier company name'),
-        validators=[],
-        description=_('supplier company name'),
-        render_kw={
-            'placeholder': _('supplier company name'),
-            'rel': 'tooltip',
-            'title': _('supplier company name'),
-        }
-    )
-    supplier_contact_id = IntegerField(
-        _('supplier contact id'),
-        validators=[
-            DataRequired(),
-        ],
-        # default=0,
-        description=_('supplier contact id'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('supplier contact id'),
-            'type': 'hidden',
-        }
-    )
-    supplier_contact_name = StringField(
-        _('supplier contact name'),
-        validators=[],
-        description=_('supplier contact name'),
-        render_kw={
-            'placeholder': _('supplier contact name'),
-            'rel': 'tooltip',
-            'title': _('supplier contact name'),
-        }
-    )
-    delivery_way = StringField(
-        _('delivery way'),
-        validators=[],
-        description=_('delivery way'),
-        render_kw={
-            'placeholder': _('delivery way'),
-            'rel': 'tooltip',
-            'title': _('delivery way'),
-        }
-    )
-    type_tax = BooleanField(
-        _('type tax'),
-        default=True,
-        validators=[],
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('type tax'),
-            'checked': 'checked',
-        }
-    )
-    note = StringField(
-        _('purchase note'),
-        validators=[],
-        description=_('purchase note'),
-        render_kw={
-            'placeholder': _('purchase note'),
-            'rel': 'tooltip',
-            'title': _('purchase note'),
-        }
-    )
-    amount_purchase = DecimalField(
-        _('amount purchase'),
-        validators=[
-            AmountPurchaseValidate()
-        ],
-        description=_('amount purchase'),
-        render_kw={
-            'placeholder': _('amount purchase'),
-            'rel': 'tooltip',
-            'title': _('amount purchase'),
-            'type': 'number',
-            'readonly': 'readonly',
-        }
-    )
-    data_line_add = IntegerField(
-        '数据行新增',
-        validators=[],
-    )
-    data_line_del = IntegerField(
-        '数据行删除',
-        validators=[],
-    )
+class PurchaseEditForm(PurchaseAddForm):
     purchase_items = FieldList(
         FormField(PurchaseItemsEditForm),
         label='进货明细',

@@ -254,6 +254,19 @@ class DeliveryItemsAddForm(FlaskForm):
             'max': 1000000.00,
         }
     )
+    rack_id = SelectField(
+        _('rack name'),
+        validators=[
+            DataRequired(),
+        ],
+        default=0,
+        coerce=int,
+        description=_('rack name'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('rack name'),
+        }
+    )
     note = StringField(
         _('note'),
         validators=[],
@@ -353,6 +366,19 @@ class DeliveryAddForm(FlaskForm):
             'title': _('customer contact name'),
         }
     )
+    warehouse_id = SelectField(
+        _('warehouse name'),
+        validators=[
+            DataRequired(),
+        ],
+        default=default_search_choice_option_int,
+        coerce=int,
+        description=_('warehouse name'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('warehouse name'),
+        }
+    )
     delivery_way = StringField(
         _('delivery way'),
         validators=[],
@@ -397,6 +423,10 @@ class DeliveryAddForm(FlaskForm):
             'disabled': 'disabled',
         }
     )
+    warehouse_changed = HiddenField(
+        _('warehouse changed'),
+        default='',
+    )
     data_line_add = IntegerField(
         '数据行新增',
         validators=[],
@@ -413,116 +443,7 @@ class DeliveryAddForm(FlaskForm):
     )
 
 
-class DeliveryEditForm(FlaskForm):
-    uid = SelectField(
-        _('delivery user'),
-        validators=[],
-        coerce=int,
-        description=_('delivery user'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('delivery user'),
-        }
-    )
-    customer_cid = IntegerField(
-        _('customer company id'),
-        validators=[
-            DataRequired(),
-        ],
-        description=_('customer company id'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('customer company id'),
-            'placeholder': _('customer company id'),
-            'autocomplete': 'off',
-            'type': 'hidden',
-        }
-    )
-    customer_company_name = StringField(
-        _('customer company name'),
-        validators=[],
-        description=_('customer company name'),
-        render_kw={
-            'placeholder': _('customer company name'),
-            'rel': 'tooltip',
-            'title': _('customer company name'),
-        }
-    )
-    customer_contact_id = IntegerField(
-        _('customer contact id'),
-        validators=[
-            DataRequired(),
-        ],
-        # default=0,
-        description=_('customer contact id'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('customer contact id'),
-            'type': 'hidden',
-        }
-    )
-    customer_contact_name = StringField(
-        _('customer contact name'),
-        validators=[],
-        description=_('customer contact name'),
-        render_kw={
-            'placeholder': _('customer contact name'),
-            'rel': 'tooltip',
-            'title': _('customer contact name'),
-        }
-    )
-    delivery_way = StringField(
-        _('delivery way'),
-        validators=[],
-        description=_('delivery way'),
-        render_kw={
-            'placeholder': _('delivery way'),
-            'rel': 'tooltip',
-            'title': _('delivery way'),
-        }
-    )
-    type_tax = BooleanField(
-        _('type tax'),
-        default=True,
-        validators=[],
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('type tax'),
-            'checked': 'checked',
-        }
-    )
-    note = StringField(
-        _('delivery note'),
-        validators=[],
-        description=_('delivery note'),
-        render_kw={
-            'placeholder': _('delivery note'),
-            'rel': 'tooltip',
-            'title': _('delivery note'),
-        }
-    )
-    amount_delivery = DecimalField(
-        _('amount delivery'),
-        validators=[
-            AmountDeliveryValidate()
-        ],
-        description=_('amount delivery'),
-        render_kw={
-            'placeholder': _('amount delivery'),
-            'rel': 'tooltip',
-            'title': _('amount delivery'),
-            'type': 'number',
-            'readonly': 'readonly',
-        }
-    )
-    data_line_add = IntegerField(
-        '数据行新增',
-        validators=[],
-    )
-    data_line_del = IntegerField(
-        '数据行删除',
-        validators=[],
-    )
+class DeliveryEditForm(DeliveryAddForm):
     delivery_items = FieldList(
         FormField(DeliveryItemsEditForm),
         label='出货明细',

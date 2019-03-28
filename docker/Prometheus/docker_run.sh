@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+[ -d ${PWD}/conf ] || mkdir -p ${PWD}/conf
+
 docker run \
     --name prometheus \
     -d \
-    -p 127.0.0.1:9090:9090 \
-    quay.io/prometheus/prometheus
+    -p 9090:9090 \
+    -v ${PWD}/conf/prometheus.yml:/etc/prometheus/prometheus.yml \
+    prom/prometheus

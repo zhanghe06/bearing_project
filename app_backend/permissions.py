@@ -12,6 +12,7 @@ from __future__ import unicode_literals
 
 from collections import namedtuple
 from functools import partial
+import six
 
 from flask_principal import Permission, RoleNeed
 
@@ -21,7 +22,7 @@ class BasePermission(Permission):
     自定义权限控制
     """
     def allows(self, identity):
-        return True  # 权限全局开关 (True:禁用权限控制, False:开启权限控制)
+        return False  # 权限全局开关 (True:禁用权限控制, False:开启权限控制)
 
 
 SectionActionNeed = namedtuple('Need', ['section', 'action'])
@@ -211,25 +212,25 @@ CustomerItemPrintNeed = partial(CustomerItemNeed, 'print')
 
 class CustomerItemGetPermission(BasePermission):
     def __init__(self, customer_id):
-        need = CustomerItemGetNeed(unicode(customer_id))
+        need = CustomerItemGetNeed(six.text_type(customer_id))
         super(CustomerItemGetPermission, self).__init__(need)
 
 
 class CustomerItemEditPermission(BasePermission):
     def __init__(self, customer_id):
-        need = CustomerItemEditNeed(unicode(customer_id))
+        need = CustomerItemEditNeed(six.text_type(customer_id))
         super(CustomerItemEditPermission, self).__init__(need)
 
 
 class CustomerItemDelPermission(BasePermission):
     def __init__(self, customer_id):
-        need = CustomerItemDelNeed(unicode(customer_id))
+        need = CustomerItemDelNeed(six.text_type(customer_id))
         super(CustomerItemDelPermission, self).__init__(need)
 
 
 class CustomerItemPrintPermission(BasePermission):
     def __init__(self, customer_id):
-        need = CustomerItemPrintNeed(unicode(customer_id))
+        need = CustomerItemPrintNeed(six.text_type(customer_id))
         super(CustomerItemPrintPermission, self).__init__(need)
 
 
@@ -246,25 +247,25 @@ SupplierItemPrintNeed = partial(SupplierItemNeed, 'print')
 
 class SupplierItemGetPermission(BasePermission):
     def __init__(self, supplier_id):
-        need = SupplierItemGetNeed(unicode(supplier_id))
+        need = SupplierItemGetNeed(six.text_type(supplier_id))
         super(SupplierItemGetPermission, self).__init__(need)
 
 
 class SupplierItemEditPermission(BasePermission):
     def __init__(self, supplier_id):
-        need = SupplierItemEditNeed(unicode(supplier_id))
+        need = SupplierItemEditNeed(six.text_type(supplier_id))
         super(SupplierItemEditPermission, self).__init__(need)
 
 
 class SupplierItemDelPermission(BasePermission):
     def __init__(self, supplier_id):
-        need = SupplierItemDelNeed(unicode(supplier_id))
+        need = SupplierItemDelNeed(six.text_type(supplier_id))
         super(SupplierItemDelPermission, self).__init__(need)
 
 
 class SupplierItemPrintPermission(BasePermission):
     def __init__(self, supplier_id):
-        need = SupplierItemPrintNeed(unicode(supplier_id))
+        need = SupplierItemPrintNeed(six.text_type(supplier_id))
         super(SupplierItemPrintPermission, self).__init__(need)
 
 
@@ -281,25 +282,25 @@ UserItemPrintNeed = partial(UserItemNeed, 'print')
 
 class UserItemGetPermission(BasePermission):
     def __init__(self, user_id):
-        need = UserItemGetNeed(unicode(user_id))
+        need = UserItemGetNeed(six.text_type(user_id))
         super(UserItemGetPermission, self).__init__(need)
 
 
 class UserItemEditPermission(BasePermission):
     def __init__(self, user_id):
-        need = UserItemEditNeed(unicode(user_id))
+        need = UserItemEditNeed(six.text_type(user_id))
         super(UserItemEditPermission, self).__init__(need)
 
 
 class UserItemDelPermission(BasePermission):
     def __init__(self, user_id):
-        need = UserItemDelNeed(unicode(user_id))
+        need = UserItemDelNeed(six.text_type(user_id))
         super(UserItemDelPermission, self).__init__(need)
 
 
 class UserItemPrintPermission(BasePermission):
     def __init__(self, user_id):
-        need = UserItemPrintNeed(unicode(user_id))
+        need = UserItemPrintNeed(six.text_type(user_id))
         super(UserItemPrintPermission, self).__init__(need)
 
 
@@ -316,25 +317,25 @@ class UserItemPrintPermission(BasePermission):
 #
 # class ProductionItemGetPermission(BasePermission):
 #     def __init__(self, production_id):
-#         need = ProductionItemGetNeed(unicode(production_id))
+#         need = ProductionItemGetNeed(six.text_type(production_id))
 #         super(ProductionItemGetPermission, self).__init__(need)
 #
 #
 # class ProductionItemEditPermission(BasePermission):
 #     def __init__(self, production_id):
-#         need = ProductionItemEditNeed(unicode(production_id))
+#         need = ProductionItemEditNeed(six.text_type(production_id))
 #         super(ProductionItemEditPermission, self).__init__(need)
 #
 #
 # class ProductionItemDelPermission(BasePermission):
 #     def __init__(self, production_id):
-#         need = ProductionItemDelNeed(unicode(production_id))
+#         need = ProductionItemDelNeed(six.text_type(production_id))
 #         super(ProductionItemDelPermission, self).__init__(need)
 #
 #
 # class ProductionItemPrintPermission(BasePermission):
 #     def __init__(self, production_id):
-#         need = ProductionItemPrintNeed(unicode(production_id))
+#         need = ProductionItemPrintNeed(six.text_type(production_id))
 #         super(ProductionItemPrintPermission, self).__init__(need)
 
 
@@ -352,31 +353,31 @@ QuotationItemAuditNeed = partial(QuotationItemNeed, 'audit')
 
 class QuotationItemGetPermission(BasePermission):
     def __init__(self, quotation_id):
-        need = QuotationItemGetNeed(unicode(quotation_id))
+        need = QuotationItemGetNeed(six.text_type(quotation_id))
         super(QuotationItemGetPermission, self).__init__(need)
 
 
 class QuotationItemEditPermission(BasePermission):
     def __init__(self, quotation_id):
-        need = QuotationItemEditNeed(unicode(quotation_id))
+        need = QuotationItemEditNeed(six.text_type(quotation_id))
         super(QuotationItemEditPermission, self).__init__(need)
 
 
 class QuotationItemDelPermission(BasePermission):
     def __init__(self, quotation_id):
-        need = QuotationItemDelNeed(unicode(quotation_id))
+        need = QuotationItemDelNeed(six.text_type(quotation_id))
         super(QuotationItemDelPermission, self).__init__(need)
 
 
 class QuotationItemPrintPermission(BasePermission):
     def __init__(self, quotation_id):
-        need = QuotationItemPrintNeed(unicode(quotation_id))
+        need = QuotationItemPrintNeed(six.text_type(quotation_id))
         super(QuotationItemPrintPermission, self).__init__(need)
 
 
 class QuotationItemAuditPermission(BasePermission):
     def __init__(self, quotation_id):
-        need = QuotationItemAuditNeed(unicode(quotation_id))
+        need = QuotationItemAuditNeed(six.text_type(quotation_id))
         super(QuotationItemAuditPermission, self).__init__(need)
 
 
@@ -394,31 +395,31 @@ EnquiryItemAuditNeed = partial(EnquiryItemNeed, 'audit')
 
 class EnquiryItemGetPermission(BasePermission):
     def __init__(self, enquiry_id):
-        need = EnquiryItemGetNeed(unicode(enquiry_id))
+        need = EnquiryItemGetNeed(six.text_type(enquiry_id))
         super(EnquiryItemGetPermission, self).__init__(need)
 
 
 class EnquiryItemEditPermission(BasePermission):
     def __init__(self, enquiry_id):
-        need = EnquiryItemEditNeed(unicode(enquiry_id))
+        need = EnquiryItemEditNeed(six.text_type(enquiry_id))
         super(EnquiryItemEditPermission, self).__init__(need)
 
 
 class EnquiryItemDelPermission(BasePermission):
     def __init__(self, enquiry_id):
-        need = EnquiryItemDelNeed(unicode(enquiry_id))
+        need = EnquiryItemDelNeed(six.text_type(enquiry_id))
         super(EnquiryItemDelPermission, self).__init__(need)
 
 
 class EnquiryItemPrintPermission(BasePermission):
     def __init__(self, enquiry_id):
-        need = EnquiryItemPrintNeed(unicode(enquiry_id))
+        need = EnquiryItemPrintNeed(six.text_type(enquiry_id))
         super(EnquiryItemPrintPermission, self).__init__(need)
 
 
 class EnquiryItemAuditPermission(BasePermission):
     def __init__(self, enquiry_id):
-        need = EnquiryItemAuditNeed(unicode(enquiry_id))
+        need = EnquiryItemAuditNeed(six.text_type(enquiry_id))
         super(EnquiryItemAuditPermission, self).__init__(need)
 
 
@@ -436,31 +437,31 @@ SalesOrdersItemAuditNeed = partial(SalesOrdersItemNeed, 'audit')
 
 class SalesOrdersItemGetPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemGetNeed(unicode(order_id))
+        need = SalesOrdersItemGetNeed(six.text_type(order_id))
         super(SalesOrdersItemGetPermission, self).__init__(need)
 
 
 class SalesOrdersItemEditPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemEditNeed(unicode(order_id))
+        need = SalesOrdersItemEditNeed(six.text_type(order_id))
         super(SalesOrdersItemEditPermission, self).__init__(need)
 
 
 class SalesOrdersItemDelPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemDelNeed(unicode(order_id))
+        need = SalesOrdersItemDelNeed(six.text_type(order_id))
         super(SalesOrdersItemDelPermission, self).__init__(need)
 
 
 class SalesOrdersItemPrintPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemPrintNeed(unicode(order_id))
+        need = SalesOrdersItemPrintNeed(six.text_type(order_id))
         super(SalesOrdersItemPrintPermission, self).__init__(need)
 
 
 class SalesOrdersItemAuditPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemAuditNeed(unicode(order_id))
+        need = SalesOrdersItemAuditNeed(six.text_type(order_id))
         super(SalesOrdersItemAuditPermission, self).__init__(need)
 
 
@@ -478,31 +479,31 @@ DeliveryItemAuditNeed = partial(DeliveryItemNeed, 'audit')
 
 class DeliveryItemGetPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = DeliveryItemGetNeed(unicode(sales_delivery_id))
+        need = DeliveryItemGetNeed(six.text_type(sales_delivery_id))
         super(DeliveryItemGetPermission, self).__init__(need)
 
 
 class DeliveryItemEditPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = DeliveryItemEditNeed(unicode(sales_delivery_id))
+        need = DeliveryItemEditNeed(six.text_type(sales_delivery_id))
         super(DeliveryItemEditPermission, self).__init__(need)
 
 
 class DeliveryItemDelPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = DeliveryItemDelNeed(unicode(sales_delivery_id))
+        need = DeliveryItemDelNeed(six.text_type(sales_delivery_id))
         super(DeliveryItemDelPermission, self).__init__(need)
 
 
 class DeliveryItemPrintPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = DeliveryItemPrintNeed(unicode(sales_delivery_id))
+        need = DeliveryItemPrintNeed(six.text_type(sales_delivery_id))
         super(DeliveryItemPrintPermission, self).__init__(need)
 
 
 class DeliveryItemAuditPermission(BasePermission):
     def __init__(self, sales_delivery_id):
-        need = DeliveryItemAuditNeed(unicode(sales_delivery_id))
+        need = DeliveryItemAuditNeed(six.text_type(sales_delivery_id))
         super(DeliveryItemAuditPermission, self).__init__(need)
 
 
@@ -520,31 +521,31 @@ BuyerOrdersItemAuditNeed = partial(BuyerOrdersItemNeed, 'audit')
 
 class BuyerOrdersItemGetPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemGetNeed(unicode(order_id))
+        need = BuyerOrdersItemGetNeed(six.text_type(order_id))
         super(BuyerOrdersItemGetPermission, self).__init__(need)
 
 
 class BuyerOrdersItemEditPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemEditNeed(unicode(order_id))
+        need = BuyerOrdersItemEditNeed(six.text_type(order_id))
         super(BuyerOrdersItemEditPermission, self).__init__(need)
 
 
 class BuyerOrderItemDelPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemDelNeed(unicode(order_id))
+        need = BuyerOrdersItemDelNeed(six.text_type(order_id))
         super(BuyerOrderItemDelPermission, self).__init__(need)
 
 
 class BuyerOrdersItemPrintPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemPrintNeed(unicode(order_id))
+        need = BuyerOrdersItemPrintNeed(six.text_type(order_id))
         super(BuyerOrdersItemPrintPermission, self).__init__(need)
 
 
 class BuyerOrdersItemAuditPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemAuditNeed(unicode(order_id))
+        need = BuyerOrdersItemAuditNeed(six.text_type(order_id))
         super(BuyerOrdersItemAuditPermission, self).__init__(need)
 
 
@@ -562,29 +563,29 @@ PurchaseItemAuditNeed = partial(PurchaseItemNeed, 'audit')
 
 class PurchaseItemGetPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = PurchaseItemGetNeed(unicode(buyer_purchase_id))
+        need = PurchaseItemGetNeed(six.text_type(buyer_purchase_id))
         super(PurchaseItemGetPermission, self).__init__(need)
 
 
 class PurchaseItemEditPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = PurchaseItemEditNeed(unicode(buyer_purchase_id))
+        need = PurchaseItemEditNeed(six.text_type(buyer_purchase_id))
         super(PurchaseItemEditPermission, self).__init__(need)
 
 
 class PurchaseItemDelPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = PurchaseItemDelNeed(unicode(buyer_purchase_id))
+        need = PurchaseItemDelNeed(six.text_type(buyer_purchase_id))
         super(PurchaseItemDelPermission, self).__init__(need)
 
 
 class PurchaseItemPrintPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = PurchaseItemPrintNeed(unicode(buyer_purchase_id))
+        need = PurchaseItemPrintNeed(six.text_type(buyer_purchase_id))
         super(PurchaseItemPrintPermission, self).__init__(need)
 
 
 class PurchaseItemAuditPermission(BasePermission):
     def __init__(self, buyer_purchase_id):
-        need = PurchaseItemAuditNeed(unicode(buyer_purchase_id))
+        need = PurchaseItemAuditNeed(six.text_type(buyer_purchase_id))
         super(PurchaseItemAuditPermission, self).__init__(need)

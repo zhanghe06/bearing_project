@@ -35,7 +35,9 @@ from app_backend import (
 )
 from app_backend.api.customer import get_customer_row_by_id
 from app_backend.api.customer_contact import get_customer_contact_row_by_id
+from app_backend.api.rack import get_rack_choices
 from app_backend.api.supplier import get_supplier_row_by_id
+from app_backend.api.warehouse import get_warehouse_choices
 from app_backend.signals.delivery import signal_delivery_status_delete
 
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
@@ -185,7 +187,10 @@ def add():
     form = DeliveryAddForm(request.form)
     form.uid.choices = get_user_choices()
     form.uid.data = current_user.id
-    # form.contact_id.choices = default_choices_int
+    form.warehouse_id.choices = get_warehouse_choices(option_type='create')
+    # 内嵌表单货架选项
+    for item_form in form.delivery_items:
+        item_form.rack_id.choices = get_rack_choices(form.warehouse_id.data, option_type='create')
 
     # 进入创建页面
     if request.method == 'GET':
@@ -198,6 +203,14 @@ def add():
 
     # 处理创建请求
     if request.method == 'POST':
+        # 修改仓库 - 不做校验
+        if form.warehouse_changed.data:
+            form.warehouse_changed.data = ''
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
 
         # 表单新增空行
         if form.data_line_add.data is not None:
@@ -206,6 +219,9 @@ def add():
                 flash('最多创建%s条记录' % form.delivery_items.max_entries, 'danger')
             else:
                 form.delivery_items.append_entry()
+                # 内嵌表单货架选项
+                for item_form in form.delivery_items:
+                    item_form.rack_id.choices = get_rack_choices(form.warehouse_id.data, option_type='create')
 
             return render_template(
                 template_name,
@@ -246,26 +262,29 @@ def add():
             'customer_cid': form.customer_cid.data,
             'customer_contact_id': form.customer_contact_id.data,
             # 'type_delivery': form.type_delivery.data,
+            'warehouse_id': form.warehouse_id.data,
             'create_time': current_time,
             'update_time': current_time,
         }
         delivery_id = add_delivery(delivery_data)
 
         amount_delivery = 0
-        for quotation_item in form.delivery_items.entries:
+        for delivery_item in form.delivery_items.entries:
             current_time = datetime.utcnow()
             delivery_item_data = {
                 'delivery_id': delivery_id,
                 'uid': form.uid.data,
                 'customer_cid': form.customer_cid.data,
-                'customer_company_name': get_supplier_row_by_id(form.customer_cid.data).company_name,
-                'production_id': quotation_item.form.production_id.data,
-                'production_brand': quotation_item.form.production_brand.data,
-                'production_model': quotation_item.form.production_model.data,
-                'production_sku': quotation_item.form.production_sku.data,
-                'note': quotation_item.form.note.data,
-                'quantity': quotation_item.form.quantity.data,
-                'unit_price': quotation_item.form.unit_price.data,
+                'customer_company_name': get_customer_row_by_id(form.customer_cid.data).company_name,
+                'production_id': delivery_item.form.production_id.data,
+                'production_brand': delivery_item.form.production_brand.data,
+                'production_model': delivery_item.form.production_model.data,
+                'production_sku': delivery_item.form.production_sku.data,
+                'warehouse_id': form.warehouse_id.data,
+                'rack_id': delivery_item.form.rack_id.data,
+                'note': delivery_item.form.note.data,
+                'quantity': delivery_item.form.quantity.data,
+                'unit_price': delivery_item.form.unit_price.data,
                 'create_time': current_time,
                 'update_time': current_time,
             }
@@ -325,7 +344,10 @@ def edit(delivery_id):
     # 加载编辑表单
     form = DeliveryEditForm(request.form)
     form.uid.choices = get_user_choices()
-    # form.status_order.choices = STATUS_ORDER_CHOICES
+    form.warehouse_id.choices = get_warehouse_choices(option_type='update')
+    # 内嵌表单货架选项
+    for item_form in form.delivery_items:
+        item_form.rack_id.choices = get_rack_choices(form.warehouse_id.data, option_type='update')
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -340,6 +362,7 @@ def edit(delivery_id):
         form.customer_cid.data = delivery_info.customer_cid
         form.customer_contact_id.data = delivery_info.customer_contact_id
         form.type_tax.data = delivery_info.type_tax
+        form.warehouse_id.data = delivery_info.warehouse_id
         form.amount_delivery.data = delivery_info.amount_delivery
         # form.buyer_order_items = buyer_order_items
         while len(form.delivery_items) > 0:
@@ -359,10 +382,14 @@ def edit(delivery_id):
             delivery_item_form.production_sku = delivery_item.production_sku
             delivery_item_form.quantity = delivery_item.quantity
             delivery_item_form.unit_price = delivery_item.unit_price
+            delivery_item_form.rack_id = delivery_item.rack_id
             delivery_item_form.note = delivery_item.note
             delivery_item_form.type_tax = delivery_item.type_tax
             form.delivery_items.append_entry(delivery_item_form)
 
+        # 内嵌表单货架选项
+        for item_form in form.delivery_items:
+            item_form.rack_id.choices = get_rack_choices(form.warehouse_id.data, option_type='update')
         # 渲染页面
         return render_template(
             template_name,
@@ -373,6 +400,14 @@ def edit(delivery_id):
 
     # 处理编辑请求
     if request.method == 'POST':
+        # 修改仓库 - 不做校验
+        if form.warehouse_changed.data:
+            form.warehouse_changed.data = ''
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
         # 增删数据行不需要校验表单
 
         # 表单新增空行
@@ -382,6 +417,9 @@ def edit(delivery_id):
                 flash('最多创建%s条记录' % form.delivery_items.max_entries, 'danger')
             else:
                 form.delivery_items.append_entry()
+                # 内嵌表单货架选项
+                for item_form in form.delivery_items:
+                    item_form.rack_id.choices = get_rack_choices(form.warehouse_id.data, option_type='update')
 
             return render_template(
                 template_name,
@@ -444,6 +482,8 @@ def edit(delivery_id):
                 'production_sku': delivery_item.form.production_sku.data,
                 'quantity': delivery_item.form.quantity.data,
                 'unit_price': delivery_item.form.unit_price.data,
+                'warehouse_id': form.warehouse_id.data,
+                'rack_id': delivery_item.form.rack_id.data,
                 'note': delivery_item.form.note.data,
                 'type_tax': form.type_tax.data,
             }
@@ -470,7 +510,8 @@ def edit(delivery_id):
             'customer_contact_id': form.customer_contact_id.data,
             'type_tax': form.type_tax.data,
             'amount_production': amount_delivery,
-            'amount_order': amount_delivery,
+            'amount_delivery': amount_delivery,
+            'warehouse_id': form.warehouse_id.data,
             'update_time': current_time,
         }
         result = edit_delivery(delivery_id, delivery_data)

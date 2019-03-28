@@ -51,6 +51,30 @@ class DbInstance(object):
             .filter_by(**kwargs) \
             .first()
 
+    def get_latest(self, model_class, *args, **kwargs):
+        """
+        获取信息
+        Usage:
+            # 方式一
+            get_latest(User, User.id > 1)
+            # 方式二
+            test_condition = {
+                'name': "Larry"
+            }
+            get_latest(User, **test_condition)
+        :param model_class:
+        :param args:
+        :param kwargs:
+        :return: None/object
+        """
+        model_pk = inspect(model_class).primary_key[0]
+        return self.db_instance.session \
+            .query(model_class) \
+            .filter(*args) \
+            .filter_by(**kwargs) \
+            .order_by(model_pk.desc()) \
+            .first()
+
     def get_rows(self, model_class, *args, **kwargs):
         """
         获取列表信息

@@ -6,6 +6,34 @@
             {#        <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>#}
             <li class="active">{{ _('personal information') }}</li>
         </ol>
+        <section id="statistics">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong class="panel-title">{{ _('Statistics') }}
+                        <span class="glyphicon glyphicon-stats pull-right"></span>
+                    </strong>
+                </div>
+                <table class="table table-bordered text-center">
+                    <tr>
+                        <td class="col-lg-4 col-md-4 col-sm-4">
+                            <span class="text-muted center-block">{{ _('Total number of customer') }}</span>
+                            <h2 class="center-block">{{ current_user.id | count_customer }}</h2>
+                            <span class="text-muted center-block">{{ _('Latest customer') }}: {% if latest_customer %}{{ moment(latest_customer.create_time).format('YYYY-MM-DD HH:mm') }}{% else %}-{% endif %}</span>
+                        </td>
+                        <td class="col-lg-4 col-md-4 col-sm-4">
+                            <span class="text-muted center-block">{{ _('Total number of quotation') }}</span>
+                            <h2 class="center-block">{{ current_user.id | count_quotation }}</h2>
+                            <span class="text-muted center-block">{{ _('Latest quotation') }}: {% if latest_quotation %}{{ moment(latest_quotation.create_time).format('YYYY-MM-DD HH:mm') }}{% else %}-{% endif %}</span>
+                        </td>
+                        <td class="col-lg-4 col-md-4 col-sm-4">
+                            <span class="text-muted center-block">{{ _('Total number of transaction') }}</span>
+                            <h2 class="center-block">{{ current_user.id | count_transaction }}</h2>
+                            <span class="text-muted center-block">{{ _('Latest transaction') }}: {% if latest_transaction %}{{ moment(latest_transaction.create_time).format('YYYY-MM-DD HH:mm') }}{% else %}-{% endif %}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
         <div class="col-md-8 col-sm-offset-2 text-center">
             <h2 class="sub-header">{{ _('Welcome') }}</h2>
             <p>

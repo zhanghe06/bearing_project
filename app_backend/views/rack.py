@@ -205,7 +205,7 @@ def add():
 
     # 加载创建表单
     form = RackAddForm(request.form)
-    form.warehouse_id.choices = get_warehouse_choices(option_type='select')
+    form.warehouse_id.choices = get_warehouse_choices(option_type='create')
 
     # 进入创建页面
     if request.method == 'GET':
@@ -269,7 +269,7 @@ def edit(rack_id):
 
     # 加载编辑表单
     form = RackEditForm(request.form)
-    form.warehouse_id.choices = get_warehouse_choices(option_type='select')
+    form.warehouse_id.choices = get_warehouse_choices(option_type='update')
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()

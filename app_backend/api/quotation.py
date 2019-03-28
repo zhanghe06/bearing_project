@@ -44,6 +44,16 @@ def get_quotation_row(*args, **kwargs):
     return db_instance.get_row(Quotation, *args, **kwargs)
 
 
+def get_quotation_latest(*args, **kwargs):
+    """
+    获取信息
+    :param args:
+    :param kwargs:
+    :return: None/object
+    """
+    return db_instance.get_latest(Quotation, *args, **kwargs)
+
+
 def get_quotation_rows(*args, **kwargs):
     """
     获取列表

@@ -18,6 +18,7 @@ from app_common.maps.default import default_search_choices_int, default_select_c
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 from app_common.maps.status_order import STATUS_ORDER_OK
+from app_common.maps.status_delete import STATUS_DEL_NO
 
 db_instance = DbInstance(db)
 
@@ -106,11 +107,12 @@ def get_warehouse_pagination(page=1, per_page=10, *args, **kwargs):
 def get_warehouse_choices(option_type='search'):
     """
     获取选项
-    :param option_type: 'search'/'create'
+    :param option_type: 'search'/'create'/'update'
     :return:
     """
     warehouse_choices = copy(default_search_choices_int) if option_type == 'search' else copy(
         default_select_choices_int)
-    warehouse_list = map(lambda x: (getattr(x, 'id'), getattr(x, 'name')), db_instance.get_rows(Warehouse))
+    warehouse_list = map(lambda x: (getattr(x, 'id'), getattr(x, 'name')),
+                         db_instance.get_rows(Warehouse, Warehouse.status_delete == STATUS_DEL_NO))
     warehouse_choices.extend(warehouse_list)
     return warehouse_choices

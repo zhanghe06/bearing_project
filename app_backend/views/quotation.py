@@ -791,6 +791,71 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
 
+@bp_quotation.route('/ajax/audit', methods=['GET', 'POST'])
+@login_required
+def ajax_audit():
+    """
+    报价审核
+    :return:
+    """
+    ajax_success_msg = AJAX_SUCCESS_MSG.copy()
+    ajax_failure_msg = AJAX_FAILURE_MSG.copy()
+
+    # 检查请求方法
+    if not (request.method == 'GET' and request.is_xhr):
+        ext_msg = _('Method Not Allowed')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查请求参数
+    quotation_id = request.args.get('quotation_id', 0, type=int)
+    if not quotation_id:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查删除权限
+    quotation_item_del_permission = QuotationItemDelPermission(quotation_id)
+    if not quotation_item_del_permission.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    quotation_info = get_quotation_row_by_id(quotation_id)
+    # 检查资源是否存在
+    if not quotation_info:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查资源是否删除
+    if quotation_info.status_delete == STATUS_DEL_OK:
+        ext_msg = _('Already deleted')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_success_msg)
+
+    current_time = datetime.utcnow()
+    quotation_data = {
+        'status_delete': STATUS_DEL_OK,
+        'delete_time': current_time,
+        'update_time': current_time,
+    }
+    result = edit_quotation(quotation_id, quotation_data)
+    if result:
+        # 发送删除信号
+        signal_data = {
+            'quotation_id': quotation_id,
+            'status_delete': STATUS_DEL_OK,
+            'current_time': current_time,
+        }
+        signal_quotation_status_delete.send(app, **signal_data)
+
+        ajax_success_msg['msg'] = _('Del Success')
+        return jsonify(ajax_success_msg)
+    else:
+        ajax_failure_msg['msg'] = _('Del Failure')
+        return jsonify(ajax_failure_msg)
+
+
 # @bp_quotation.route('/ajax/stats', methods=['GET', 'POST'])
 # @login_required
 # def ajax_stats():
