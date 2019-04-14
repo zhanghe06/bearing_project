@@ -134,10 +134,10 @@ def transfer_inventory(inventory_id, warehouse_id, rack_id, num):
     """
     try:
         inventory_obj_from = db_instance.db_instance.session.query(Inventory).filter(Inventory.id == inventory_id)
-        inventory_info_from = inventory_obj_from.first()
+        inventory_info_from = inventory_obj_from.first()  # type: Inventory
 
         # 数量校验
-        if inventory_info_from.stock_qty < num or num < 0:
+        if inventory_info_from.stock_qty_current < num or num < 0:
             raise Exception('Quantity out of range')
         # 库位校验
         if inventory_info_from.warehouse_id == warehouse_id and inventory_info_from.rack_id == rack_id:
@@ -146,13 +146,13 @@ def transfer_inventory(inventory_id, warehouse_id, rack_id, num):
         current_time = datetime.utcnow()
 
         # 1、原始库位操作
-        if inventory_info_from.stock_qty == num:
+        if inventory_info_from.stock_qty_current == num:
             # 清空原库
             inventory_obj_from.delete()
         else:
             # 更新原库
             inventory_data = {
-                'stock_qty': inventory_info_from.stock_qty - num,
+                'stock_qty_current': inventory_info_from.stock_qty_current - num,
                 'update_time': current_time,
             }
             inventory_obj_from.update(inventory_data)
@@ -170,7 +170,7 @@ def transfer_inventory(inventory_id, warehouse_id, rack_id, num):
         if inventory_info_to:
             # 更新记录
             inventory_data = {
-                'stock_qty': inventory_info_to.stock_qty + num,
+                'stock_qty_current': inventory_info_to.stock_qty_current + num,
                 'update_time': current_time,
             }
             inventory_obj_to.update(inventory_data)
@@ -193,7 +193,7 @@ def transfer_inventory(inventory_id, warehouse_id, rack_id, num):
                 warehouse_name=warehouse_info.warehouse_name,
                 rack_id=rack_id,
                 rack_name=rack_info.rack_name,
-                stock_qty=num,
+                stock_qty_current=num,
                 note=inventory_info_from.note,
                 create_time=current_time,
                 update_time=current_time,

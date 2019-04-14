@@ -1,4 +1,4 @@
-USE bearing_project;
+USE `bearing_project`;
 
 -- 插入用户信息
 TRUNCATE TABLE `user`;
@@ -261,31 +261,10 @@ INSERT INTO `rack` VALUES (4, 2, 'D-020101', 0, NULL, '2018-03-14 10:00:00', '20
 
 -- 插入库存信息
 TRUNCATE TABLE `inventory`;
-INSERT INTO `inventory` VALUES (1, 1, 'SKF', '7008CEGA/P4A', 'Pcs', 1, '保税仓储中心', 1, 'A-010201', 100, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `inventory` VALUES (2, 1, 'SKF', '7008CEGA/P4A', 'Pcs', 1, '保税仓储中心', 2, 'B-020101', 20, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `inventory` VALUES (3, 2, 'SKF', '7012CEGA/P4A', 'Pcs', 1, '保税仓储中心', 1, 'A-010201', 20, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `inventory` VALUES (4, 2, 'SKF', '7012CEGA/P4A', 'Pcs', 1, '保税仓储中心', 2, 'B-020101', 80, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-
--- 插入仓库信息
-TRUNCATE TABLE `warehouse`;
-INSERT INTO `warehouse` VALUES (1, '保税仓储中心', '保税区', '小马', '021-66662222', '021-66668888', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `warehouse` VALUES (2, '无人分拣中心', '郊区', '老马', '021-22226666', '021-88886666', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-
-
--- 插入货架信息
-TRUNCATE TABLE `rack`;
-INSERT INTO `rack` VALUES (1, 1, 'A-010201', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `rack` VALUES (2, 1, 'B-020101', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `rack` VALUES (3, 2, 'C-010201', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `rack` VALUES (4, 2, 'D-020101', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-
-
--- 插入库存信息
-TRUNCATE TABLE `inventory`;
-INSERT INTO `inventory` VALUES (1, 1, 'SKF', '7008CEGA/P4A', 'Pcs', 1, '保税仓储中心', 1, 'A-010201', 100, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `inventory` VALUES (2, 1, 'SKF', '7008CEGA/P4A', 'Pcs', 1, '保税仓储中心', 2, 'B-020101', 20, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `inventory` VALUES (3, 2, 'SKF', '7012CEGA/P4A', 'Pcs', 1, '保税仓储中心', 1, 'A-010201', 20, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
-INSERT INTO `inventory` VALUES (4, 2, 'SKF', '7012CEGA/P4A', 'Pcs', 1, '保税仓储中心', 2, 'B-020101', 80, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `inventory` VALUES (1, 1, 'SKF', '7008CEGA/P4A', 'Pcs', 1, '保税仓储中心', 1, 'A-010201', 100, 100, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `inventory` VALUES (2, 1, 'SKF', '7008CEGA/P4A', 'Pcs', 1, '保税仓储中心', 2, 'B-020101', 20, 20, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `inventory` VALUES (3, 2, 'SKF', '7012CEGA/P4A', 'Pcs', 1, '保税仓储中心', 1, 'A-010201', 20, 20, 'SNFA', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
+INSERT INTO `inventory` VALUES (4, 2, 'SKF', '7012CEGA/P4A', 'Pcs', 1, '保税仓储中心', 2, 'B-020101', 80, 80, '', 0, NULL, '2018-03-14 10:00:00', '2018-03-14 10:00:00');
 
 
 -- 插入销售订单

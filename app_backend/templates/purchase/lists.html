@@ -96,7 +96,7 @@
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td><a href="{{ url_for('purchase.edit', purchase_id=info.id) }}">{{ g.BUYER_ORDER_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
+                            <td><a href="{{ url_for('purchase.edit', purchase_id=info.id) }}">{{ g.PURCHASE_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
                             <td>{{ info.uid | user_name }}</td>
                             <td>{{ info.supplier_cid | supplier_company_name }}</td>
                             <td class="text-right">{{ '{:,}'.format(info.amount_purchase) }}</td>

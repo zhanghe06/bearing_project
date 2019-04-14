@@ -11,10 +11,11 @@
 
 from __future__ import unicode_literals
 
-from flask_babel import lazy_gettext as _
-
 import os
 from datetime import timedelta
+
+from flask_babel import lazy_gettext as _
+from future.moves.urllib.parse import quote_plus
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -57,7 +58,7 @@ DB_MYSQL = {
 }
 
 SQLALCHEMY_DATABASE_URI_MYSQL = \
-    'mysql+mysqldb://%(user)s:%(passwd)s@%(host)s:%(port)s/%(db)s?charset=utf8' % DB_MYSQL
+    'mysql+mysqldb://%(user)s:%(passwd)s@%(host)s:%(port)s/%(db)s?charset=utf8mb4' % DB_MYSQL
 
 SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI_MYSQL
 # SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # 打开自动提交 官方已经移除(http://flask-sqlalchemy.pocoo.org/2.1/changelog/#version-2-0)
@@ -78,6 +79,29 @@ REDIS = {
 
 REDIS_URL = 'redis://:%s@%s' % (REDIS['password'], REDIS['host']) \
     if REDIS.get('password') else 'redis://%s' % REDIS['host']
+
+
+# Mongodb
+MONGODB = {
+    'host': HOST,
+    'port': 27017,
+    'user': '',
+    'password': '',
+}
+
+MONGODB_URL = 'mongodb://%s:%s@%s' % (quote_plus(MONGODB['user']), quote_plus(MONGODB['password']), MONGODB['host']) \
+    if MONGODB.get('user') and MONGODB.get('password') else 'mongodb://%s' % (MONGODB['host'],)
+
+
+# RabbitMQ
+RABBITMQ = {
+    'host': HOST,
+    'port': 5672,
+    'virtual_host': '/',
+    'heartbeat_interval': 0,    # 默认None,根据server配置检测心跳是否正常;0:不检测心跳,server端将不会主动断开连接
+    'connection_attempts': 5,   # 最大重试次数
+    'retry_delay': 3,           # 重试等待时间
+}
 
 
 DOCUMENT_INFO = {

@@ -2,10 +2,38 @@
 
 [http://www.rabbitmq.com](http://www.rabbitmq.com)
 
+[https://pika.readthedocs.io/en/stable/](https://pika.readthedocs.io/en/stable/)
+
 
 ### 社区最佳实践
 
 [http://www.rabbitmq.com/best-practices.html](http://www.rabbitmq.com/best-practices.html)
+
+
+### 架构图
+
+```graph
+graph TD
+
+    P1((producer 1)) --> | message | EX1[exchange]
+    P2((producer 2)) --> | message | EX1[exchange]
+    P3((producer 3)) --> | message | EX2[exchange]
+
+    EX1[exchange] --> RK1[Routing Key 1]
+    EX1[exchange] --> RK2[Routing Key 2]
+    EX2[exchange] --> RK3[Routing Key 3]
+
+    RK1[Routing Key 1] --> Q1(Queue 1)
+    RK2[Routing Key 2] --> Q2(Queue 2)
+    RK3[Routing Key 2] --> Q3(Queue 3)
+
+    Q1(Queue 1) --> BK1[Binding Key 1]
+    Q2(Queue 2) --> BK2[Binding Key 2]
+    Q3(Queue 3) --> BK2[Binding Key 2]
+
+    BK1[Binding Key] --> | message | C1((consumer 1))
+    BK2[Binding Key] --> | message | C2((consumer 2))
+```
 
 
 ### Producer 生产者

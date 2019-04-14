@@ -72,7 +72,7 @@
                         <th>{{ _('production model') }}</th>
                         <th>{{ _('warehouse name') }}</th>
                         <th>{{ _('rack name') }}</th>
-                        <th>{{ _('stock quantity') }}</th>
+                        <th class="text-right">{{ _('stock quantity') }}</th>
                         <th>{{ _('production sku') }}</th>
                         <th>{{ _('inventory note') }}</th>
 {#                        <th>{{ _('create time') }}</th>#}
@@ -95,7 +95,7 @@
                                    title="{{ _('Click details') }}">{{ info.production_id | production_model }}</a></td>
                             <td>{{ info.warehouse_id | warehouse_name }}</td>
                             <td>{{ info.rack_id | rack_name }}</td>
-                            <td class="text-right">{{ info.stock_qty }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.stock_qty_current) }}</td>
                             <td>{{ info.production_sku }}</td>
                             <td>{{ info.note | default('-', True) }}</td>
 {#                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}

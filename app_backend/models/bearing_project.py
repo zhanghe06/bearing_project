@@ -658,7 +658,7 @@ class User(Base):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(20, u'utf8_bin'), nullable=False, server_default=text("''"))
+    name = Column(String(20, u'utf8mb4_bin'), nullable=False, server_default=text("''"))
     salutation = Column(String(20), nullable=False, server_default=text("''"))
     mobile = Column(String(20), nullable=False, server_default=text("''"))
     tel = Column(String(20), nullable=False, server_default=text("''"))
@@ -681,8 +681,8 @@ class UserAuth(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, nullable=False, index=True, server_default=text("'0'"))
     type_auth = Column(Integer, nullable=False, server_default=text("'0'"))
-    auth_key = Column(String(60, u'utf8_bin'), nullable=False, server_default=text("''"))
-    auth_secret = Column(String(60, u'utf8_bin'), nullable=False, server_default=text("''"))
+    auth_key = Column(String(60, u'utf8mb4_bin'), nullable=False, server_default=text("''"))
+    auth_secret = Column(String(60, u'utf8mb4_bin'), nullable=False, server_default=text("''"))
     status_verified = Column(Integer, nullable=False, server_default=text("'0'"))
     create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))

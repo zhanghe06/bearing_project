@@ -11,6 +11,7 @@
         {#        <div class="col-md-8 col-sm-offset-2">#}
         <form id="inventory_transfer" class="form-horizontal items_line" method="post" action="">
             {{ form.csrf_token }}
+            {{ form.warehouse_changed }}
             <div class="form-group{% if form.production_brand.errors %} has-error{% endif %}">
                 {{ form.production_brand.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">
@@ -133,6 +134,7 @@
             //级联选择
             $('#warehouse_id').change(function () {
                 $('#rack_id').get(0).selectedIndex = 0
+                $('#warehouse_changed').attr('value','y');
                 $('#inventory_transfer').submit()
             })
         })

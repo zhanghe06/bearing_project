@@ -215,8 +215,8 @@ def add():
     # 加载创建表单
     form = InventoryAddForm(request.form)
 
-    form.warehouse_id.choices = get_warehouse_choices(option_type='create')
-    form.rack_id.choices = get_rack_choices(form.warehouse_id.data, option_type='create')
+    form.warehouse_id.choices = get_warehouse_choices(option_type='update')
+    form.rack_id.choices = get_rack_choices(form.warehouse_id.data, option_type='update')
 
     # 进入创建页面
     if request.method == 'GET':
@@ -269,7 +269,7 @@ def add():
             'warehouse_name': warehouse_info.name,
             'rack_id': form.rack_id.data,
             'rack_name': rack_info.name,
-            'stock_qty': form.stock_qty.data,
+            'stock_qty_current': form.stock_qty.data,
             'note': form.note.data,
             'create_time': current_time,
             'update_time': current_time,
@@ -296,7 +296,7 @@ def edit(inventory_id):
     """
     库存编辑
     """
-    inventory_info = get_inventory_row_by_id(inventory_id)
+    inventory_info = get_inventory_row_by_id(inventory_id)  # type: Inventory
     # 检查资源是否存在
     if not inventory_info:
         abort(404)
@@ -309,8 +309,8 @@ def edit(inventory_id):
     # 加载编辑表单
     form = InventoryEditForm(request.form)
 
-    form.warehouse_id.choices = get_warehouse_choices(option_type='create')
-    form.rack_id.choices = get_rack_choices(inventory_info.warehouse_id, option_type='create')
+    form.warehouse_id.choices = get_warehouse_choices(option_type='update')
+    form.rack_id.choices = get_rack_choices(form.warehouse_id.data or inventory_info.warehouse_id, option_type='update')
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -325,7 +325,7 @@ def edit(inventory_id):
         form.production_sku.data = inventory_info.production_sku
         form.warehouse_id.data = inventory_info.warehouse_id
         form.rack_id.data = inventory_info.rack_id
-        form.stock_qty.data = inventory_info.stock_qty
+        form.stock_qty.data = inventory_info.stock_qty_current
         form.note.data = inventory_info.note
         # 渲染页面
         return render_template(
@@ -377,7 +377,7 @@ def edit(inventory_id):
             'warehouse_name': warehouse_info.name,
             'rack_id': form.rack_id.data,
             'rack_name': rack_info.name,
-            'stock_qty': form.stock_qty.data,
+            'stock_qty_current': form.stock_qty.data,
             'note': form.note.data,
             'create_time': current_time,
             'update_time': current_time,
@@ -406,7 +406,7 @@ def transfer(inventory_id):
     :param inventory_id:
     :return:
     """
-    inventory_info = get_inventory_row_by_id(inventory_id)
+    inventory_info = get_inventory_row_by_id(inventory_id)  # type: Inventory
     # 检查资源是否存在
     if not inventory_info:
         abort(404)
@@ -419,8 +419,8 @@ def transfer(inventory_id):
     # 加载编辑表单
     form = InventoryTransferForm(request.form)
 
-    form.warehouse_id.choices = get_warehouse_choices(option_type='create')
-    form.rack_id.choices = get_rack_choices(inventory_info.warehouse_id, option_type='create')
+    form.warehouse_id.choices = get_warehouse_choices(option_type='update')
+    form.rack_id.choices = get_rack_choices(form.warehouse_id.data or inventory_info.warehouse_id, option_type='update')
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -437,7 +437,7 @@ def transfer(inventory_id):
         form.rack_id.data = inventory_info.rack_id
         form.warehouse_name_from.data = inventory_info.warehouse_name
         form.rack_name_from.data = inventory_info.rack_name
-        form.stock_qty.data = inventory_info.stock_qty
+        form.stock_qty.data = inventory_info.stock_qty_current
         form.note.data = inventory_info.note
         # 渲染页面
         return render_template(
@@ -449,6 +449,14 @@ def transfer(inventory_id):
 
     # 处理编辑请求
     if request.method == 'POST':
+        # 修改仓库 - 不做校验
+        if form.warehouse_changed.data:
+            form.warehouse_changed.data = ''
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Transfer Failure'), 'danger')

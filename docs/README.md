@@ -6,6 +6,7 @@
 ```bash
 npm install -g gitbook-cli
 cd docs
+gitbook install
 gitbook init
 ```
 

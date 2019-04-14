@@ -55,6 +55,7 @@ pip install elasticsearch
 pip install user-agents
 pip install celery
 pip install librabbitmq
+pip install retry
 pip install six
 pip install future
 pip install supervisor      # 当前主版本3只支持py2，将来主版本4(未发布)会支持py3

@@ -12,6 +12,9 @@ Get Docker CE for CentOS
 参考: https://docs.docker.com/install/linux/docker-ce/centos/
 
 
+Docker 中国官方镜像加速 registry mirror [https://registry.docker-cn.com](https://registry.docker-cn.com)
+
+
 ### 错误调试
 
 拉取镜像报错

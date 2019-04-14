@@ -22,7 +22,7 @@ class BasePermission(Permission):
     自定义权限控制
     """
     def allows(self, identity):
-        return False  # 权限全局开关 (True:禁用权限控制, False:开启权限控制)
+        return True  # 权限全局开关 (True:禁用权限控制, False:开启权限控制)
 
 
 SectionActionNeed = namedtuple('Need', ['section', 'action'])

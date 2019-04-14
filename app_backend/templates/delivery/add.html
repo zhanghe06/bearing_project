@@ -59,7 +59,7 @@
                 {{ form.uid(class="form-control input-sm", title=form.uid.errors|join(', ')) }}
             </div>
             <div class="form-group{% if form.type_tax.errors %} has-error{% endif %}">
-                {{ form.type_tax() }}
+                {{ form.type_tax(checked=form.type_tax.data) }}
                 {{ form.type_tax.label(rel="tooltip", title=form.type_tax.errors|join(', ')) }}
             </div>
 

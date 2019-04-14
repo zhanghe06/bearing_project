@@ -10,7 +10,7 @@ docker run \
     -P"$MYSQL_PORT_3306_TCP_PORT" \
     -uroot \
     -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD" \
-    --default-character-set=utf8 \
+    --default-character-set=utf8mb4 \
     "$MYSQL_ENV_MYSQL_DATABASE" \
     -e "set global slow_query_log=0;
     show variables like '\'%low_query_log%\'';

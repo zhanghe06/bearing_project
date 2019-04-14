@@ -496,7 +496,7 @@ def info(sales_order_id):
         abort(410)
 
     sales_order_print_date = time_utc_to_local(sales_order_info.update_time).strftime('%Y-%m-%d')
-    sales_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
+    sales_order_code = '%s%s' % (g.SALES_ORDER_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
     customer_info = get_customer_row_by_id(sales_order_info.customer_cid)
@@ -546,7 +546,7 @@ def preview(sales_order_id):
         abort(410)
 
     sales_order_print_date = time_utc_to_local(sales_order_info.update_time).strftime('%Y-%m-%d')
-    sales_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
+    sales_order_code = '%s%s' % (g.SALES_ORDER_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
     customer_info = get_customer_row_by_id(sales_order_info.customer_cid)
@@ -596,7 +596,7 @@ def pdf(sales_order_id):
         abort(410)
 
     sales_order_print_date = time_utc_to_local(sales_order_info.update_time).strftime('%Y-%m-%d')
-    sales_order_code = '%s%s' % (g.ENQUIRIES_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
+    sales_order_code = '%s%s' % (g.SALES_ORDER_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
     customer_info = get_customer_row_by_id(sales_order_info.customer_cid)

@@ -1,9 +1,12 @@
-DROP DATABASE IF EXISTS `bearing_project`;
-CREATE DATABASE `bearing_project` /*!40100 DEFAULT CHARACTER SET utf8 */;
+--
+-- Current Database: `bearing_project`
+--
 
+-- DROP DATABASE IF EXISTS `bearing_project`;
 
-use bearing_project;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `bearing_project` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 
+USE `bearing_project`;
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -21,7 +24,7 @@ CREATE TABLE `user` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户全局注册表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户全局注册表';
 
 
 DROP TABLE IF EXISTS `user_auth`;
@@ -37,7 +40,7 @@ CREATE TABLE `user_auth` (
   PRIMARY KEY (`id`),
   KEY (`user_id`),
   UNIQUE (`type_auth`, `auth_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户认证表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户认证表';
 
 
 DROP TABLE IF EXISTS `role`;
@@ -49,7 +52,7 @@ CREATE TABLE `role` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色权限表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限表';
 
 
 DROP TABLE IF EXISTS `customer`;
@@ -68,7 +71,7 @@ CREATE TABLE `customer` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户表';
 
 
 DROP TABLE IF EXISTS `customer_invoice`;
@@ -85,7 +88,7 @@ CREATE TABLE `customer_invoice` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户开票资料';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户开票资料';
 
 
 DROP TABLE IF EXISTS `customer_contact`;
@@ -108,7 +111,7 @@ CREATE TABLE `customer_contact` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY (`cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户联系方式';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户联系方式';
 
 
 DROP TABLE IF EXISTS `supplier`;
@@ -127,7 +130,7 @@ CREATE TABLE `supplier` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应厂商';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='供应厂商';
 
 
 DROP TABLE IF EXISTS `supplier_invoice`;
@@ -144,7 +147,7 @@ CREATE TABLE `supplier_invoice` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应厂商开票资料';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='供应厂商开票资料';
 
 
 DROP TABLE IF EXISTS `supplier_contact`;
@@ -167,7 +170,7 @@ CREATE TABLE `supplier_contact` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY (`cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应厂商联系方式';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='供应厂商联系方式';
 
 
 DROP TABLE IF EXISTS `production`;
@@ -202,7 +205,7 @@ CREATE TABLE `production` (
   PRIMARY KEY (`id`),
   KEY (`production_model`),
   UNIQUE (`production_brand`, `production_model`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品明细';
 
 
 DROP TABLE IF EXISTS `catalogue`;
@@ -239,7 +242,7 @@ CREATE TABLE `catalogue` (
   KEY (`production_model`),
   KEY (`production_model_old`),
   UNIQUE (`production_brand`, `production_model`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品型录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品型录';
 
 
 DROP TABLE IF EXISTS `category`;
@@ -253,7 +256,7 @@ CREATE TABLE `category` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY (`main_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品类别';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品类别';
 
 
 DROP TABLE IF EXISTS `warehouse`;
@@ -270,7 +273,7 @@ CREATE TABLE `warehouse` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='仓库';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='仓库';
 
 
 DROP TABLE IF EXISTS `rack`;
@@ -283,7 +286,7 @@ CREATE TABLE `rack` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='货架';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='货架';
 
 
 DROP TABLE IF EXISTS `inventory`;
@@ -306,7 +309,7 @@ CREATE TABLE `inventory` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY (`production_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='库存明细';
 
 
 DROP TABLE IF EXISTS `quotation`;
@@ -335,7 +338,7 @@ CREATE TABLE `quotation` (
   PRIMARY KEY (`id`),
   KEY (`uid`),
   KEY (`customer_cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报价总表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='报价总表';
 
 
 DROP TABLE IF EXISTS `quotation_items`;
@@ -366,7 +369,7 @@ CREATE TABLE `quotation_items` (
   KEY (`uid`),
   KEY (`customer_cid`),
   KEY (`production_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报价明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='报价明细';
 
 
 DROP TABLE IF EXISTS `enquiry`;
@@ -395,7 +398,7 @@ CREATE TABLE `enquiry` (
   PRIMARY KEY (`id`),
   KEY (`uid`),
   KEY (`supplier_cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='询价总表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='询价总表';
 
 
 DROP TABLE IF EXISTS `enquiry_items`;
@@ -426,7 +429,7 @@ CREATE TABLE `enquiry_items` (
   KEY (`uid`),
   KEY (`supplier_cid`),
   KEY (`production_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='询价明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='询价明细';
 
 
 DROP TABLE IF EXISTS `sales_order`;
@@ -456,7 +459,7 @@ CREATE TABLE `sales_order` (
   PRIMARY KEY (`id`),
   KEY (`uid`),
   KEY (`customer_cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='销售订单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='销售订单';
 
 
 DROP TABLE IF EXISTS `sales_order_items`;
@@ -486,7 +489,7 @@ CREATE TABLE `sales_order_items` (
   KEY (`uid`),
   KEY (`customer_cid`),
   KEY (`production_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='销售订单明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='销售订单明细';
 
 
 DROP TABLE IF EXISTS `buyer_order`;
@@ -516,7 +519,7 @@ CREATE TABLE `buyer_order` (
   PRIMARY KEY (`id`),
   KEY (`uid`),
   KEY (`supplier_cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购订单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='采购订单';
 
 
 DROP TABLE IF EXISTS `buyer_order_items`;
@@ -546,7 +549,7 @@ CREATE TABLE `buyer_order_items` (
   KEY (`uid`),
   KEY (`supplier_cid`),
   KEY (`production_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购订单明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='采购订单明细';
 
 
 DROP TABLE IF EXISTS `delivery`;
@@ -578,7 +581,7 @@ CREATE TABLE `delivery` (
   KEY (`uid`),
   KEY (`sales_order_id`),
   KEY (`customer_cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='出货清单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='出货清单';
 
 
 DROP TABLE IF EXISTS `delivery_items`;
@@ -611,7 +614,7 @@ CREATE TABLE `delivery_items` (
   KEY (`sales_order_id`),
   KEY (`customer_cid`),
   KEY (`production_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='出货清单明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='出货清单明细';
 
 
 DROP TABLE IF EXISTS `purchase`;
@@ -643,7 +646,7 @@ CREATE TABLE `purchase` (
   KEY (`uid`),
   KEY (`buyer_order_id`),
   KEY (`supplier_cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='进货清单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='进货清单';
 
 
 DROP TABLE IF EXISTS `purchase_items`;
@@ -674,7 +677,7 @@ CREATE TABLE `purchase_items` (
   KEY (`buyer_order_id`),
   KEY (`supplier_cid`),
   KEY (`production_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='进货清单明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='进货清单明细';
 
 
 DROP TABLE IF EXISTS `production_sensitive`;
@@ -695,7 +698,7 @@ CREATE TABLE `production_sensitive` (
   KEY (`customer_cid`),
   KEY (`production_id`),
   UNIQUE (`customer_cid`, `production_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='敏感型号';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='敏感型号';
 
 
 DROP TABLE IF EXISTS `bank_account`;
@@ -711,7 +714,7 @@ CREATE TABLE `bank_account` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='银行总账';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='银行总账';
 
 
 DROP TABLE IF EXISTS `bank_account_items`;
@@ -731,7 +734,7 @@ CREATE TABLE `bank_account_items` (
   PRIMARY KEY (`id`),
   KEY (`bank_id`),
   KEY (`type_current`, `cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='银行明细账';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='银行明细账';
 
 
 DROP TABLE IF EXISTS `cash_account`;
@@ -746,7 +749,7 @@ CREATE TABLE `cash_account` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='现金总账';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='现金总账';
 
 
 DROP TABLE IF EXISTS `cash_account_items`;
@@ -765,7 +768,7 @@ CREATE TABLE `cash_account_items` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY (`type_current`, `cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='现金明细账';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='现金明细账';
 
 
 

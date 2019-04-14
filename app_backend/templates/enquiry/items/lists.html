@@ -100,7 +100,7 @@
                             {#                            </label>#}
                             {#                        </td>#}
                             <td><a href="{{ url_for('enquiry.info', enquiry_id=info.enquiry_id) }}" target="_blank">
-                                {{ g.QUOTATION_PREFIX }}{{ moment(info.enquiry_id | enquiry_create_time).format('YYMMDDHHmmss') }}</a>
+                                {{ g.ENQUIRIES_PREFIX }}{{ moment(info.enquiry_id | enquiry_create_time).format('YYMMDDHHmmss') }}</a>
                             </td>
                             <td>{{ info.supplier_cid | supplier_company_name }}</td>
                             <td class="bg-warning">{{ info.enquiry_production_model }}</td>
