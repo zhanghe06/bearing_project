@@ -17,7 +17,7 @@ from flask_babel import lazy_gettext as _
 # 审核状态（0:等待审核,1:审核成功,2:审核失败）
 STATUS_AUDIT_NO = 0
 STATUS_AUDIT_OK = 1
-STATUS_AUDIT_ER = 1
+STATUS_AUDIT_ER = 2
 
 STATUS_AUDIT_DICT = {
     0: _('Pending Audit'),  # 等待审核

@@ -27,6 +27,8 @@ CSRF_ENABLED = True
 # >>> os.urandom(24)
 SECRET_KEY = '\x03\xabjR\xbbg\x82\x0b{\x96f\xca\xa8\xbdM\xb0x\xdbK%\xf2\x07\r\x8c'
 
+WTF_CSRF_SECRET_KEY = '\x19p\xcf\x02\xe5\xe8\xb2\x93\x18V\x1b\xdeb\xb7\xa8\x9e\xbc\x1a\xadi:\xe3\xeaT'
+
 PREFERRED_URL_SCHEME = 'https'
 
 
@@ -67,7 +69,7 @@ SQLALCHEMY_POOL_SIZE = 5        # 默认 pool_size=5
 SQLALCHEMY_MAX_OVERFLOW = 10    # 默认 10 连接池达到最大值后可以创建的连接数
 SQLALCHEMY_POOL_TIMEOUT = 10    # 默认 10秒
 SQLALCHEMY_POOL_RECYCLE = 500   # 配置要小于 数据库配置 wait_timeout
-SQLALCHEMY_ECHO = False
+SQLALCHEMY_ECHO = False         # 是否打印SQL语句
 
 
 # 缓存，队列

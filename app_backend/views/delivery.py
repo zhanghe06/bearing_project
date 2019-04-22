@@ -42,7 +42,7 @@ from app_backend.signals.delivery import signal_delivery_status_delete
 
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_backend.api.delivery import add_delivery, get_delivery_user_list_choices, get_delivery_rows, \
-    get_delivery_pagination, edit_delivery, get_delivery_row_by_id
+    get_delivery_pagination, edit_delivery, get_delivery_row_by_id, audit_delivery, cancel_audit_delivery
 from app_backend.api.delivery_items import add_delivery_items, edit_delivery_items, get_delivery_items_rows, \
     delete_delivery_items
 from app_backend.api.user import get_user_choices, get_user_row_by_id
@@ -51,7 +51,12 @@ from app_backend.forms.delivery import DeliveryAddForm
 from app_common.maps.status_order import STATUS_ORDER_CHOICES
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
-    STATUS_DEL_NO)
+    STATUS_DEL_NO
+)
+from app_common.maps.status_audit import (
+    STATUS_AUDIT_OK,
+    STATUS_AUDIT_NO
+)
 
 from app_backend.models.bearing_project import Delivery
 from app_backend.permissions import (
@@ -62,6 +67,7 @@ from app_backend.permissions import (
     DeliveryItemGetPermission,
     DeliveryItemEditPermission,
     DeliveryItemDelPermission,
+    DeliveryItemAuditPermission,
 )
 
 
@@ -749,4 +755,72 @@ def ajax_delete():
         return jsonify(ajax_success_msg)
     else:
         ajax_failure_msg['msg'] = _('Del Failure')
+        return jsonify(ajax_failure_msg)
+
+
+@bp_delivery.route('/ajax/audit', methods=['GET', 'POST'])
+@login_required
+def ajax_audit():
+    """
+    销售出货审核
+    :return:
+    """
+    ajax_success_msg = AJAX_SUCCESS_MSG.copy()
+    ajax_failure_msg = AJAX_FAILURE_MSG.copy()
+
+    # 检查请求方法
+    if not (request.method == 'GET' and request.is_xhr):
+        ext_msg = _('Method Not Allowed')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查请求参数
+    delivery_id = request.args.get('delivery_id', 0, type=int)
+    audit_status = request.args.get('audit_status', 0, type=int)
+    if not delivery_id:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    if audit_status not in [STATUS_AUDIT_NO, STATUS_AUDIT_OK]:
+        ext_msg = _('Status not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查审核权限
+    delivery_item_audit_permission = DeliveryItemAuditPermission(delivery_id)
+    if not delivery_item_audit_permission.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    delivery_info = get_delivery_row_by_id(delivery_id)
+    # 检查资源是否存在
+    if not delivery_info:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查资源是否删除
+    if delivery_info.status_delete == STATUS_DEL_OK:
+        ext_msg = _('Already deleted')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查审核状态是否变化
+    if delivery_info.status_audit == audit_status:
+        ext_msg = _('Already audited')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    try:
+        if audit_status == STATUS_AUDIT_OK:
+            result = audit_delivery(delivery_id)
+        else:
+            result = cancel_audit_delivery(delivery_id)
+        if result:
+            ajax_success_msg['msg'] = _('Audit Success')
+            return jsonify(ajax_success_msg)
+        else:
+            ajax_failure_msg['msg'] = _('Audit Failure')
+            return jsonify(ajax_failure_msg)
+    except Exception as e:
+        ajax_failure_msg['msg'] = e.message
         return jsonify(ajax_failure_msg)

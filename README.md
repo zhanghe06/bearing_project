@@ -426,6 +426,40 @@ https://github.com/wtforms/wtforms/blob/79840898a3e17b0ae535d9fdcff9537ef0e190b0
 Version 2.2 新增了`required`属性的渲染, 注意: `hidden`类型的文本框不会校验`required`属性
 
 
+## Ajax CSRF Protection
+
+https://flask-wtf.readthedocs.io/en/stable/csrf.html
+
+Setup
+```
+from flask_wtf.csrf import CSRFProtect
+
+csrf = CSRFProtect(app)
+```
+
+JavaScript Requests
+```
+<script type="text/javascript">
+    var csrf_token = "{{ csrf_token() }}";
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrf_token);
+            }
+        }
+    });
+</script>
+```
+
+
+# Flask-CORS
+
+A Flask extension for handling Cross Origin Resource Sharing (CORS), making cross-origin AJAX possible.
+
+https://flask-cors.readthedocs.io/en/latest/
+
+
 ## 本地事务的幂等性
 
 - select，天生幂等

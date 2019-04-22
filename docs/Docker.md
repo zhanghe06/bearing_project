@@ -54,7 +54,7 @@ registry-1.docker.io.	35	IN	A	34.228.211.243
 ;; MSG SIZE  rcvd: 177
 ```
 
-向hosts添加可用域名解析（有时候这一步都需要）
+向hosts添加可用域名解析（有时候这一步不需要）
 ```
 echo '52.22.201.61 registry-1.docker.io' >> /etc/hosts
 ```

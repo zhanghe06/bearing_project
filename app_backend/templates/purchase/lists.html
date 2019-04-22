@@ -84,6 +84,7 @@
                         <th>{{ _('purchase note') }}</th>
                         <th>{{ _('create time') }}</th>
                         <th>{{ _('update time') }}</th>
+                        <th>{{ _('audit status') }}</th>
                         <th>{{ _('operation') }}</th>
                     </tr>
                     </thead>
@@ -96,13 +97,14 @@
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td><a href="{{ url_for('purchase.edit', purchase_id=info.id) }}">{{ g.PURCHASE_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
+                            <td><a href="{{ url_for('purchase.info', purchase_id=info.id) }}" target="_blank">{{ g.PURCHASE_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
                             <td>{{ info.uid | user_name }}</td>
                             <td>{{ info.supplier_cid | supplier_company_name }}</td>
                             <td class="text-right">{{ '{:,}'.format(info.amount_purchase) }}</td>
                             <td>{{ info.note }}</td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>{{ info.status_audit | status_audit }}</td>
                             <td style="min-width: 8em;">
                                 <!-- Split button -->
                                 <div class="btn-group btn-group-sm">

@@ -30,7 +30,7 @@ def gen_models(app_name):
     :return:
     """
     file_path = os.path.join(BASE_DIR, '%s/models/bearing_project.py' % app_name)
-    cmd = 'sqlacodegen %s --noinflect --outfile %s' % (SQLALCHEMY_DATABASE_URI, file_path)
+    cmd = b'sqlacodegen %s --noinflect --outfile %s' % (SQLALCHEMY_DATABASE_URI, file_path)
 
     output = os.popen(cmd)
     result = output.read()

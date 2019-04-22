@@ -88,6 +88,15 @@
                 <button class="btn-sm btn-default hidden-print pull-right" onclick="window.print();">
                     <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}
                 </button>
+                {% if quotation_info.status_audit == 0 %}
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="quotation_audit({{ quotation_info.id }}, 1);">
+                    <span class="glyphicon glyphicon-ok"></span> {{ _('Audit') }}
+                </button>
+                {% else %}
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="quotation_audit({{ quotation_info.id }}, 0);">
+                    <span class="glyphicon glyphicon-remove"></span> {{ _('Cancel Audit') }}
+                </button>
+                {% endif %}
             </h3>
         </div>
         <!-- info row -->
@@ -242,6 +251,24 @@
         $(document).ready(function () {
             flask_moment_render_all()
         })
+    </script>
+    <script>
+        // 报价审核
+        function quotation_audit (quotation_id, audit_status) {
+            $.getJSON('{{ url_for('quotation.ajax_audit') }}',
+                {
+                    quotation_id: quotation_id,
+                    audit_status: audit_status
+                }, function (data) {
+                    if (data.result === true) {
+                        alert(data.msg)
+                    } else {
+                        alert(data.msg)
+                    }
+                    window.location.reload()
+                })
+            return false
+        }
     </script>
 {% endblock %}
 </body>

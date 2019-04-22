@@ -193,7 +193,8 @@
             $('.rack_id').selectedIndex = 0
             $('#warehouse_changed').attr('value','y');
             $('#purchase_edit').submit()
-        })
+        });
+        compute_total_amount();
     })
 </script>
 {% endblock %}

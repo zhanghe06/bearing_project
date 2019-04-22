@@ -84,6 +84,7 @@
                         <th>{{ _('delivery note') }}</th>
                         <th>{{ _('create time') }}</th>
                         <th>{{ _('update time') }}</th>
+                        <th>{{ _('audit status') }}</th>
                         <th>{{ _('operation') }}</th>
                     </tr>
                     </thead>
@@ -96,13 +97,14 @@
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td><a href="{{ url_for('delivery.edit', delivery_id=info.id) }}">{{ g.DELIVERY_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
+                            <td><a href="{{ url_for('delivery.info', delivery_id=info.id) }}" target="_blank">{{ g.DELIVERY_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
                             <td>{{ info.uid | user_name }}</td>
                             <td>{{ info.customer_cid | customer_company_name }}</td>
                             <td class="text-right">{{ '{:,}'.format(info.amount_delivery) }}</td>
                             <td>{{ info.note }}</td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>{{ info.status_audit | status_audit }}</td>
                             <td style="min-width: 8em;">
                                 <!-- Split button -->
                                 <div class="btn-group btn-group-sm">
@@ -186,5 +188,17 @@
                 $('#search_form').submit()
             })
         })
+    </script>
+
+    <script>
+        var csrf_token = "{{ csrf_token() }}";
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                }
+            }
+        });
     </script>
 {% endblock %}

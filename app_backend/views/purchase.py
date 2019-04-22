@@ -40,12 +40,13 @@ from app_backend.signals.purchase import signal_purchase_status_delete
 
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_backend.api.purchase import add_purchase, get_purchase_user_list_choices, get_purchase_rows, \
-    get_purchase_pagination, edit_purchase, get_purchase_row_by_id
+    get_purchase_pagination, edit_purchase, get_purchase_row_by_id, audit_purchase, cancel_audit_purchase
 from app_backend.api.purchase_items import add_purchase_items, edit_purchase_items, get_purchase_items_rows, \
     delete_purchase_items
 from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.forms.purchase import PurchaseSearchForm, PurchaseEditForm, PurchaseItemsEditForm
 from app_backend.forms.purchase import PurchaseAddForm
+from app_common.maps.status_audit import STATUS_AUDIT_NO, STATUS_AUDIT_OK
 from app_common.maps.status_order import STATUS_ORDER_CHOICES
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -60,7 +61,7 @@ from app_backend.permissions import (
     PurchaseItemGetPermission,
     PurchaseItemEditPermission,
     PurchaseItemDelPermission,
-)
+    PurchaseItemAuditPermission)
 
 # 定义蓝图
 from app_common.tools.date_time import time_utc_to_local
@@ -740,4 +741,72 @@ def ajax_delete():
         return jsonify(ajax_success_msg)
     else:
         ajax_failure_msg['msg'] = _('Del Failure')
+        return jsonify(ajax_failure_msg)
+
+
+@bp_purchase.route('/ajax/audit', methods=['GET', 'POST'])
+@login_required
+def ajax_audit():
+    """
+    销售进货审核
+    :return:
+    """
+    ajax_success_msg = AJAX_SUCCESS_MSG.copy()
+    ajax_failure_msg = AJAX_FAILURE_MSG.copy()
+
+    # 检查请求方法
+    if not (request.method == 'GET' and request.is_xhr):
+        ext_msg = _('Method Not Allowed')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查请求参数
+    purchase_id = request.args.get('purchase_id', 0, type=int)
+    audit_status = request.args.get('audit_status', 0, type=int)
+    if not purchase_id:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    if audit_status not in [STATUS_AUDIT_NO, STATUS_AUDIT_OK]:
+        ext_msg = _('Status not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查审核权限
+    purchase_item_audit_permission = PurchaseItemAuditPermission(purchase_id)
+    if not purchase_item_audit_permission.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    purchase_info = get_purchase_row_by_id(purchase_id)
+    # 检查资源是否存在
+    if not purchase_info:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查资源是否删除
+    if purchase_info.status_delete == STATUS_DEL_OK:
+        ext_msg = _('Already deleted')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查审核状态是否变化
+    if purchase_info.status_audit == audit_status:
+        ext_msg = _('Already audited')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    try:
+        if audit_status == STATUS_AUDIT_OK:
+            result = audit_purchase(purchase_id)
+        else:
+            result = cancel_audit_purchase(purchase_id)
+        if result:
+            ajax_success_msg['msg'] = _('Audit Success')
+            return jsonify(ajax_success_msg)
+        else:
+            ajax_failure_msg['msg'] = _('Audit Failure')
+            return jsonify(ajax_failure_msg)
+    except Exception as e:
+        ajax_failure_msg['msg'] = e.message
         return jsonify(ajax_failure_msg)

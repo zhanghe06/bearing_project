@@ -63,9 +63,9 @@
     <![endif]-->
 </head>
 
-<body onload="window.print();window.close()">
+{#<body onload="window.print();window.close()">#}
 {#<body onload="window.print();">#}
-{#<body>#}
+<body>
 <div class="wrapper">
     <!-- Main content -->
     <section class="preview">
@@ -84,7 +84,20 @@
             </div><!-- /.col -->
         </div>
         <div class="text-center">
-            <h3 style="margin-top: 0"><u>{{ _('Purchase') }}</u></h3>
+            <h3 style="margin-top: 0"><u>{{ _('Purchase') }}</u>
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="window.print();">
+                    <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}
+                </button>
+                {% if purchase_info.status_audit == 0 %}
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="purchase_audit({{ purchase_info.id }}, 1);">
+                    <span class="glyphicon glyphicon-ok"></span> {{ _('Audit') }}
+                </button>
+                {% else %}
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="purchase_audit({{ purchase_info.id }}, 0);">
+                    <span class="glyphicon glyphicon-remove"></span> {{ _('Cancel Audit') }}
+                </button>
+                {% endif %}
+            </h3>
         </div>
         <!-- info row -->
         <div class="row preview-info">
@@ -131,7 +144,6 @@
                         <th>{{ _('rack name') }}</th>
                         <th class="text-right">{{ _('Tax unit price') }}</th>
                         <th class="text-right">{{ _('Subtotal') }}</th>
-                        <th style="min-width: 3em">{{ _('purchase time') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -146,7 +158,6 @@
                         <td>{{ purchase_item.rack_id | rack_name }}</td>
                         <td class="text-right">￥{{ '{:,}'.format(purchase_item.unit_price) }}</td>
                         <td class="text-right">￥{{ '{:,}'.format(purchase_item.quantity*purchase_item.unit_price) }}</td>
-                        <td>{{ purchase_item.purchase_time }}</td>
                     </tr>
                     {% endfor %}
 
@@ -242,6 +253,24 @@
         $(document).ready(function () {
             flask_moment_render_all()
         })
+    </script>
+    <script>
+        // 送货审核
+        function purchase_audit (purchase_id, audit_status) {
+            $.getJSON('{{ url_for('purchase.ajax_audit') }}',
+                {
+                    purchase_id: purchase_id,
+                    audit_status: audit_status
+                }, function (data) {
+                    if (data.result === true) {
+                        alert(data.msg)
+                    } else {
+                        alert(data.msg)
+                    }
+                    window.location.reload()
+                })
+            return false
+        }
     </script>
 {% endblock %}
 </body>

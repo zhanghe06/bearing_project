@@ -47,6 +47,8 @@ from flask_login import (
     user_loaded_from_cookie
 )
 
+from flask_wtf.csrf import CSRFError
+
 from app_backend.models.bearing_project import Customer, Quotation, SalesOrder
 
 from app_backend.api.login_user import get_login_user_row_by_id
@@ -553,6 +555,11 @@ def test_permission_role_administrator():
 #             time.sleep(0.2)
 #             yield i
 #     return Response(stream_with_context(generate()))
+
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    return jsonify({'result': False, 'msg': e.description}), 400
 
 
 @app.errorhandler(401)

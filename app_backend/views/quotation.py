@@ -766,7 +766,7 @@ def ajax_delete():
     if quotation_info.status_delete == STATUS_DEL_OK:
         ext_msg = _('Already deleted')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_success_msg)
+        return jsonify(ajax_failure_msg)
 
     current_time = datetime.utcnow()
     quotation_data = {
@@ -804,55 +804,53 @@ def ajax_audit():
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     # 检查请求参数
     quotation_id = request.args.get('quotation_id', 0, type=int)
+    audit_status = request.args.get('audit_status', 0, type=int)
     if not quotation_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
     quotation_item_del_permission = QuotationItemDelPermission(quotation_id)
     if not quotation_item_del_permission.can():
         ext_msg = _('Permission Denied')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
     quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
     if not quotation_info:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
     # 检查资源是否删除
     if quotation_info.status_delete == STATUS_DEL_OK:
         ext_msg = _('Already deleted')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_success_msg)
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查审核状态是否变化
+    if quotation_info.status_audit == audit_status:
+        ext_msg = _('Already audited')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
 
     current_time = datetime.utcnow()
     quotation_data = {
-        'status_delete': STATUS_DEL_OK,
-        'delete_time': current_time,
+        'status_audit': audit_status,
+        'audit_time': current_time,
         'update_time': current_time,
     }
     result = edit_quotation(quotation_id, quotation_data)
     if result:
-        # 发送删除信号
-        signal_data = {
-            'quotation_id': quotation_id,
-            'status_delete': STATUS_DEL_OK,
-            'current_time': current_time,
-        }
-        signal_quotation_status_delete.send(app, **signal_data)
-
-        ajax_success_msg['msg'] = _('Del Success')
+        ajax_success_msg['msg'] = _('Audit Success')
         return jsonify(ajax_success_msg)
     else:
-        ajax_failure_msg['msg'] = _('Del Failure')
+        ajax_failure_msg['msg'] = _('Audit Failure')
         return jsonify(ajax_failure_msg)
 
 

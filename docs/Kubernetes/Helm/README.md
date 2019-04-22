@@ -1,5 +1,9 @@
 # Helm（Docker for Mac）
 
+Helm把Kubernetes资源(比如deployments、services或 ingress等) 打包到一个chart中，而chart被保存到chart仓库。通过chart仓库可用来存储和分享chart。
+
+Helm使发布可配置，支持发布应用配置的版本管理，简化了Kubernetes部署应用的版本控制、打包、发布、删除、更新等操作。
+
 https://github.com/helm/helm
 
 https://helm.sh/

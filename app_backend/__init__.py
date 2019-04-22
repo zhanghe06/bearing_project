@@ -18,6 +18,7 @@ from logging.config import dictConfig
 from config import current_config
 
 from flask import Flask
+from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 from flask_moment import Moment
 from flask_oauthlib.client import OAuth
@@ -40,6 +41,9 @@ app.session_interface = RedisSessionInterface(
     redis=redis_client,
     prefix=app.config['REDIS_SESSION_PREFIX_BACKEND'],
 )
+
+# CSRF Protection AJAX requests
+csrf = CSRFProtect(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)  # setup_app 方法已淘汰

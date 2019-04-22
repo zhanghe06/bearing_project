@@ -63,9 +63,9 @@
     <![endif]-->
 </head>
 
-<body onload="window.print();window.close()">
+{#<body onload="window.print();window.close()">#}
 {#<body onload="window.print();">#}
-{#<body>#}
+<body>
 <div class="wrapper">
     <!-- Main content -->
     <section class="preview">
@@ -76,35 +76,48 @@
 {#                    <span class="glyphicon glyphicon-globe"#}
 {#                          aria-hidden="true"></span> #}
                     <img style="height: 20px; width: 88px; margin-bottom: 5px" src="{{ url_for('static', filename='img/skf.png') }}" height="20px" width="88px"> {{ COMPANY_NAME_CN }}
-{#                    <small class="pull-right">{{ _('Print Date') }}: {{ moment(purchase_info.update_time).format('YYYY-MM-DD') }}</small>#}
-                    <small class="pull-right">{{ _('Print Date') }}: {{ purchase_print_date }}</small>
+{#                    <small class="pull-right">{{ _('Print Date') }}: {{ moment(delivery_info.update_time).format('YYYY-MM-DD') }}</small>#}
+                    <small class="pull-right">{{ _('Print Date') }}: {{ delivery_print_date }}</small>
                     <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
                     <small>{{ COMPANY_NAME_EN }}</small>
                 </h4>
             </div><!-- /.col -->
         </div>
         <div class="text-center">
-            <h3 style="margin-top: 0"><u>{{ _('Purchase') }}</u></h3>
+            <h3 style="margin-top: 0"><u>{{ _('Delivery') }}</u>
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="window.print();">
+                    <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}
+                </button>
+                {% if delivery_info.status_audit == 0 %}
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="delivery_audit({{ delivery_info.id }}, 1);">
+                    <span class="glyphicon glyphicon-ok"></span> {{ _('Audit') }}
+                </button>
+                {% else %}
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="delivery_audit({{ delivery_info.id }}, 0);">
+                    <span class="glyphicon glyphicon-remove"></span> {{ _('Cancel Audit') }}
+                </button>
+                {% endif %}
+            </h3>
         </div>
         <!-- info row -->
         <div class="row preview-info">
             <div class="col-xs-8">
-                <strong>{{ _('Supplier Name') }}: {{ purchase_info.supplier_cid | supplier_company_name }}</strong>
+                <strong>{{ _('Customer Name') }}: {{ delivery_info.customer_cid | customer_company_name }}</strong>
                 <address>
                     <br>
-                    {{ _('Supplier Address') }}: {{ supplier_info.company_address }}<br>
-                    {{ _('Contacter') }}: {{ supplier_contact_info.name }}
-                    <small>{{ supplier_contact_info.salutation }}</small>
+                    {{ _('Customer Address') }}: {{ customer_info.company_address }}<br>
+                    {{ _('Contacter') }}: {{ customer_contact_info.name }}
+                    <small>{{ customer_contact_info.salutation }}</small>
                     <br>
-                    {{ _('Mobile') }}: {{ supplier_contact_info.mobile }}<br/>
-                    {{ _('Tel') }}: {{ supplier_contact_info.tel or supplier_info.company_tel }}<br/>
-                    {{ _('Fax') }}: {{ supplier_contact_info.fax or supplier_info.company_fax }}<br/>
-                    {{ _('Email') }}: {{ supplier_contact_info.email or supplier_info.company_email }}
+                    {{ _('Mobile') }}: {{ customer_contact_info.mobile }}<br/>
+                    {{ _('Tel') }}: {{ customer_contact_info.tel or customer_info.company_tel }}<br/>
+                    {{ _('Fax') }}: {{ customer_contact_info.fax or customer_info.company_fax }}<br/>
+                    {{ _('Email') }}: {{ customer_contact_info.email or customer_info.company_email }}
                 </address>
             </div><!-- /.col -->
             <div class="col-xs-4">
-                <b>{{ _('Purchase Code') }}: {{ purchase_code }}</b><br/>
-                <b>{{ _('Purchase Expiry Date') }}:</b> 一周<br/>
+                <b>{{ _('Delivery Code') }}: {{ delivery_code }}</b><br/>
+                <b>{{ _('Delivery Expiry Date') }}:</b> 一周<br/>
                 <br/>
                 {{ _('Offerer') }}: {{ user_info.name }}
                 <small>{{ user_info.salutation }}</small>
@@ -127,26 +140,22 @@
                         <th style="min-width: 4em">{{ _('production model') }}</th>
                         <th class="text-right" style="min-width: 2em">{{ _('quantity') }}</th>
                         <th>{{ _('production sku') }}</th>
-                        <th>{{ _('warehouse name') }}</th>
-                        <th>{{ _('rack name') }}</th>
                         <th class="text-right">{{ _('Tax unit price') }}</th>
                         <th class="text-right">{{ _('Subtotal') }}</th>
-                        <th style="min-width: 3em">{{ _('purchase time') }}</th>
+                        <th style="min-width: 3em">{{ _('delivery time') }}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for purchase_item in purchase_items %}
+                    {% for delivery_item in delivery_items %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ purchase_item.production_brand }}</td>
-                        <td>{{ purchase_item.enquiry_production_model or purchase_item.production_model }}</td>
-                        <td class="text-right">{{ '{:,}'.format(purchase_item.quantity) }}</td>
-                        <td>{{ purchase_item.production_sku }}</td>
-                        <td>{{ purchase_item.warehouse_id | warehouse_name }}</td>
-                        <td>{{ purchase_item.rack_id | rack_name }}</td>
-                        <td class="text-right">￥{{ '{:,}'.format(purchase_item.unit_price) }}</td>
-                        <td class="text-right">￥{{ '{:,}'.format(purchase_item.quantity*purchase_item.unit_price) }}</td>
-                        <td>{{ purchase_item.purchase_time }}</td>
+                        <td>{{ delivery_item.production_brand }}</td>
+                        <td>{{ delivery_item.enquiry_production_model or delivery_item.production_model }}</td>
+                        <td class="text-right">{{ '{:,}'.format(delivery_item.quantity) }}</td>
+                        <td>{{ delivery_item.production_sku }}</td>
+                        <td class="text-right">￥{{ '{:,}'.format(delivery_item.unit_price) }}</td>
+                        <td class="text-right">￥{{ '{:,}'.format(delivery_item.quantity*delivery_item.unit_price) }}</td>
+                        <td>{{ delivery_item.delivery_time }}</td>
                     </tr>
                     {% endfor %}
 
@@ -173,7 +182,7 @@
                 <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                     <ol>
                         <li>产品按照原产标准提供。</li>
-                        <li>发货方式: {{ purchase_info.purchase_way | default('默认方式') }}。</li>
+                        <li>发货方式: {{ delivery_info.delivery_way | default('默认方式') }}。</li>
 {#                        <li>含16%增值税。</li>#}
                         <li>空运费以实际产生费用为准。</li>
                     </ol>
@@ -199,7 +208,7 @@
 {#                        </tr>#}
                         <tr>
                             <th>{{ _('Total') }}:</th>
-                            <td>￥{{ '{:,}'.format(purchase_info.amount_purchase) }}</td>
+                            <td>￥{{ '{:,}'.format(delivery_info.amount_delivery) }}</td>
                         </tr>
                     </table>
                 </div>
@@ -242,6 +251,24 @@
         $(document).ready(function () {
             flask_moment_render_all()
         })
+    </script>
+    <script>
+        // 送货审核
+        function delivery_audit (delivery_id, audit_status) {
+            $.getJSON('{{ url_for('delivery.ajax_audit') }}',
+                {
+                    delivery_id: delivery_id,
+                    audit_status: audit_status
+                }, function (data) {
+                    if (data.result === true) {
+                        alert(data.msg)
+                    } else {
+                        alert(data.msg)
+                    }
+                    window.location.reload()
+                })
+            return false
+        }
     </script>
 {% endblock %}
 </body>

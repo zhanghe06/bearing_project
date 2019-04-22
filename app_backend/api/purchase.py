@@ -15,12 +15,13 @@ from app_backend import db
 from app_backend.api.customer import get_customer_rows_by_ids
 from app_backend.api.user import get_user_rows_by_ids
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import Purchase
+from app_backend.models.bearing_project import Purchase, PurchaseItems, Inventory, Warehouse, Rack
 from app_common.maps.default import default_search_choices_int
 from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 from app_common.maps.status_order import STATUS_ORDER_OK
+from app_common.maps.status_audit import STATUS_AUDIT_OK, STATUS_AUDIT_NO
 
 db_instance = DbInstance(db)
 
@@ -141,3 +142,128 @@ def get_purchase_user_list_choices():
     user_rows = get_user_rows_by_ids(uid_list)
     purchase_user_list.extend([(user.id, user.name) for user in user_rows])
     return purchase_user_list
+
+
+def audit_purchase(purchase_id):
+    """
+    审核信息
+    :param purchase_id:
+    :return: Number of affected rows (Example: 0/1)
+    :except:
+    """
+    try:
+        current_time = datetime.utcnow()
+
+        # 更新审核状态
+        purchase_obj = db_instance.db_instance.session.query(Purchase).filter(Purchase.id == purchase_id)
+        purchase_info = purchase_obj.first()  # type: Purchase
+        if not purchase_info:
+            raise Exception('Purchase not found')
+        if purchase_info.status_audit == STATUS_AUDIT_OK:
+            return True
+        purchase_info.status_audit = STATUS_AUDIT_OK  # 审核成功
+        purchase_info.audit_time = current_time
+        purchase_info.update_time = current_time
+
+        # 获取进货明细
+        purchase_items_obj = db_instance.db_instance.session.query(PurchaseItems).filter(PurchaseItems.purchase_id == purchase_id)
+        purchase_items = purchase_items_obj.all()
+
+        # 遍历进货型号
+        for purchase_item in purchase_items:
+            # 查询库存
+            inventory_obj = db_instance.db_instance.session.query(Inventory).filter(
+                Inventory.production_id == purchase_item.production_id,
+                Inventory.warehouse_id == purchase_item.warehouse_id,
+                Inventory.rack_id == purchase_item.rack_id,
+            )
+            inventory_info = inventory_obj.first()  # type: Inventory
+            if inventory_info:
+                # 增加库存数量
+                stock_qty_current = inventory_info.stock_qty_current + purchase_item.quantity
+                if stock_qty_current < 0:
+                    raise Exception('Inventory insufficient')
+                inventory_info.stock_qty_current = stock_qty_current
+                inventory_info.update_time = current_time
+            else:
+                # 获取仓库
+                warehouse_info = db_instance.db_instance.session.query(Warehouse).filter(
+                    Warehouse.id == purchase_item.warehouse_id).first()
+                if not warehouse_info:
+                    raise Exception('Warehouse not found')
+                # 获取仓位
+                rack_info = db_instance.db_instance.session.query(Rack).filter(Rack.id == purchase_item.rack_id).first()
+                if not rack_info:
+                    raise Exception('Rack not found')
+                # 新建库存记录
+                inventory_data = Inventory(
+                    production_id=purchase_item.production_id,
+                    production_brand=purchase_item.production_brand,
+                    production_model=purchase_item.production_model,
+                    production_sku=purchase_item.production_sku,
+                    warehouse_id=purchase_item.warehouse_id,
+                    warehouse_name=warehouse_info.name,
+                    rack_id=purchase_item.rack_id,
+                    rack_name=rack_info.name,
+                    stock_qty_current=purchase_item.quantity,
+                    note=purchase_item.note,
+                    create_time=current_time,
+                    update_time=current_time,
+                )
+                db_instance.db_instance.session.add(inventory_data)
+
+        db_instance.db_instance.session.commit()
+        return True
+    except Exception as e:
+        db_instance.db_instance.session.rollback()
+        raise e
+
+
+def cancel_audit_purchase(purchase_id):
+    """
+    取消审核
+    :param purchase_id:
+    :return: Number of affected rows (Example: 0/1)
+    :except:
+    """
+    try:
+        current_time = datetime.utcnow()
+
+        # 更新审核状态
+        purchase_obj = db_instance.db_instance.session.query(Purchase).filter(Purchase.id == purchase_id)
+        purchase_info = purchase_obj.first()  # type: Purchase
+        if not purchase_info:
+            raise Exception('Purchase not found')
+        if purchase_info.status_audit == STATUS_AUDIT_NO:
+            return True
+        purchase_info.status_audit = STATUS_AUDIT_NO  # 取消审核
+        purchase_info.audit_time = current_time
+        purchase_info.update_time = current_time
+
+        # 获取进货明细
+        purchase_items_obj = db_instance.db_instance.session.query(PurchaseItems).filter(PurchaseItems.purchase_id == purchase_id)
+        purchase_items = purchase_items_obj.all()
+
+        # 遍历进货型号
+        for purchase_item in purchase_items:
+            # 查询库存
+            inventory_obj = db_instance.db_instance.session.query(Inventory).filter(
+                Inventory.production_id == purchase_item.production_id,
+                Inventory.warehouse_id == purchase_item.warehouse_id,
+                Inventory.rack_id == purchase_item.rack_id,
+            )
+            inventory_info = inventory_obj.first()  # type: Inventory
+            if not inventory_info:
+                raise Exception('Inventory not found')
+            # 扣减库存数量
+            stock_qty_current = inventory_info.stock_qty_current - purchase_item.quantity
+            if stock_qty_current < 0:
+                raise Exception('Inventory insufficient')
+            inventory_info.stock_qty_current = stock_qty_current
+            inventory_info.update_time = current_time
+
+        db_instance.db_instance.session.commit()
+        return True
+    except Exception as e:
+        db_instance.db_instance.session.rollback()
+        raise e
