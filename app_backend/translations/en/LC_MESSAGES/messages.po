@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-04-22 16:03+0800\n"
+"POT-Creation-Date: 2019-04-22 23:41+0800\n"
 "PO-Revision-Date: 2018-05-03 13:57+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -155,20 +155,19 @@ msgstr "end time"
 #: app_backend/forms/purchase.py:132 app_backend/forms/quotation.py:131
 #: app_backend/forms/quotation_items.py:121
 #: app_backend/forms/sales_order.py:132
-#: app_backend/templates/buyer/order/lists.html:87
+#: app_backend/templates/buyer/order/lists.html:88
 #: app_backend/templates/customer/contact/lists.html:89
 #: app_backend/templates/customer/invoice/lists.html:78
 #: app_backend/templates/customer/lists.html:79
 #: app_backend/templates/delivery/lists.html:88
-#: app_backend/templates/enquiry/lists.html:87
+#: app_backend/templates/enquiry/lists.html:88
 #: app_backend/templates/inventory/lists.html:80
-#: app_backend/templates/pdf/lists.html:87
 #: app_backend/templates/production/lists.html:70
 #: app_backend/templates/production/sensitive/lists.html:83
 #: app_backend/templates/purchase/lists.html:88
 #: app_backend/templates/quotation/lists.html:88
 #: app_backend/templates/rack/lists.html:68
-#: app_backend/templates/sales/order/lists.html:87
+#: app_backend/templates/sales/order/lists.html:88
 #: app_backend/templates/supplier/contact/lists.html:88
 #: app_backend/templates/supplier/invoice/lists.html:78
 #: app_backend/templates/supplier/lists.html:79
@@ -210,7 +209,6 @@ msgstr "buyer order id"
 #: app_backend/templates/buyer/order/edit.html:79
 #: app_backend/templates/delivery/add.html:89
 #: app_backend/templates/delivery/edit.html:91
-#: app_backend/templates/pdf/add.html:89 app_backend/templates/pdf/edit.html:91
 #: app_backend/templates/sales/order/add.html:84
 #: app_backend/templates/sales/order/edit.html:79
 msgid "custom production brand"
@@ -228,7 +226,6 @@ msgstr "custom production brand"
 #: app_backend/templates/buyer/order/edit.html:80
 #: app_backend/templates/delivery/add.html:90
 #: app_backend/templates/delivery/edit.html:92
-#: app_backend/templates/pdf/add.html:90 app_backend/templates/pdf/edit.html:92
 #: app_backend/templates/sales/order/add.html:85
 #: app_backend/templates/sales/order/edit.html:80
 msgid "custom production model"
@@ -277,9 +274,9 @@ msgstr "production id"
 #: app_backend/forms/sales_order.py:201 app_backend/forms/sales_order.py:203
 #: app_backend/templates/buyer/order/add.html:87
 #: app_backend/templates/buyer/order/edit.html:82
-#: app_backend/templates/buyer/order/info.html:132
-#: app_backend/templates/buyer/order/pdf.html:128
-#: app_backend/templates/buyer/order/preview.html:128
+#: app_backend/templates/buyer/order/info.html:130
+#: app_backend/templates/buyer/order/pdf.html:126
+#: app_backend/templates/buyer/order/preview.html:126
 #: app_backend/templates/delivery/add.html:92
 #: app_backend/templates/delivery/edit.html:94
 #: app_backend/templates/delivery/info.html:139
@@ -292,8 +289,6 @@ msgstr "production id"
 #: app_backend/templates/enquiry/pdf.html:126
 #: app_backend/templates/enquiry/preview.html:126
 #: app_backend/templates/inventory/lists.html:71
-#: app_backend/templates/pdf/add.html:92 app_backend/templates/pdf/edit.html:94
-#: app_backend/templates/pdf/info.html:139
 #: app_backend/templates/price/lists.html:93
 #: app_backend/templates/production/lists.html:61
 #: app_backend/templates/production/search_modal.html:43
@@ -311,9 +306,9 @@ msgstr "production id"
 #: app_backend/templates/quotation/preview.html:126
 #: app_backend/templates/sales/order/add.html:87
 #: app_backend/templates/sales/order/edit.html:82
-#: app_backend/templates/sales/order/info.html:132
-#: app_backend/templates/sales/order/pdf.html:128
-#: app_backend/templates/sales/order/preview.html:128
+#: app_backend/templates/sales/order/info.html:130
+#: app_backend/templates/sales/order/pdf.html:126
+#: app_backend/templates/sales/order/preview.html:126
 msgid "production brand"
 msgstr "production brand"
 
@@ -358,9 +353,9 @@ msgstr "production brand"
 #: app_backend/forms/sales_order.py:215
 #: app_backend/templates/buyer/order/add.html:88
 #: app_backend/templates/buyer/order/edit.html:83
-#: app_backend/templates/buyer/order/info.html:133
-#: app_backend/templates/buyer/order/pdf.html:129
-#: app_backend/templates/buyer/order/preview.html:129
+#: app_backend/templates/buyer/order/info.html:131
+#: app_backend/templates/buyer/order/pdf.html:127
+#: app_backend/templates/buyer/order/preview.html:127
 #: app_backend/templates/delivery/add.html:93
 #: app_backend/templates/delivery/edit.html:95
 #: app_backend/templates/delivery/info.html:140
@@ -373,8 +368,6 @@ msgstr "production brand"
 #: app_backend/templates/enquiry/pdf.html:127
 #: app_backend/templates/enquiry/preview.html:127
 #: app_backend/templates/inventory/lists.html:72
-#: app_backend/templates/pdf/add.html:93 app_backend/templates/pdf/edit.html:95
-#: app_backend/templates/pdf/info.html:140
 #: app_backend/templates/price/lists.html:94
 #: app_backend/templates/production/lists.html:62
 #: app_backend/templates/production/search_modal.html:44
@@ -392,9 +385,9 @@ msgstr "production brand"
 #: app_backend/templates/quotation/preview.html:127
 #: app_backend/templates/sales/order/add.html:88
 #: app_backend/templates/sales/order/edit.html:83
-#: app_backend/templates/sales/order/info.html:133
-#: app_backend/templates/sales/order/pdf.html:129
-#: app_backend/templates/sales/order/preview.html:129
+#: app_backend/templates/sales/order/info.html:131
+#: app_backend/templates/sales/order/pdf.html:127
+#: app_backend/templates/sales/order/preview.html:127
 msgid "production model"
 msgstr "production model"
 
@@ -418,9 +411,9 @@ msgstr "production model"
 #: app_backend/forms/sales_order.py:225 app_backend/forms/sales_order.py:227
 #: app_backend/templates/buyer/order/add.html:90
 #: app_backend/templates/buyer/order/edit.html:85
-#: app_backend/templates/buyer/order/info.html:134
-#: app_backend/templates/buyer/order/pdf.html:130
-#: app_backend/templates/buyer/order/preview.html:130
+#: app_backend/templates/buyer/order/info.html:132
+#: app_backend/templates/buyer/order/pdf.html:128
+#: app_backend/templates/buyer/order/preview.html:128
 #: app_backend/templates/delivery/add.html:95
 #: app_backend/templates/delivery/edit.html:97
 #: app_backend/templates/delivery/info.html:142
@@ -433,8 +426,6 @@ msgstr "production model"
 #: app_backend/templates/enquiry/pdf.html:129
 #: app_backend/templates/enquiry/preview.html:128
 #: app_backend/templates/inventory/lists.html:76
-#: app_backend/templates/pdf/add.html:95 app_backend/templates/pdf/edit.html:97
-#: app_backend/templates/pdf/info.html:142
 #: app_backend/templates/price/lists.html:96
 #: app_backend/templates/production/lists.html:63
 #: app_backend/templates/production/search_modal.html:45
@@ -452,9 +443,9 @@ msgstr "production model"
 #: app_backend/templates/quotation/preview.html:129
 #: app_backend/templates/sales/order/add.html:90
 #: app_backend/templates/sales/order/edit.html:85
-#: app_backend/templates/sales/order/info.html:134
-#: app_backend/templates/sales/order/pdf.html:130
-#: app_backend/templates/sales/order/preview.html:130
+#: app_backend/templates/sales/order/info.html:132
+#: app_backend/templates/sales/order/pdf.html:128
+#: app_backend/templates/sales/order/preview.html:128
 msgid "production sku"
 msgstr "production sku"
 
@@ -472,9 +463,9 @@ msgstr "production sku"
 #: app_backend/forms/sales_order.py:236 app_backend/forms/sales_order.py:238
 #: app_backend/templates/buyer/order/add.html:89
 #: app_backend/templates/buyer/order/edit.html:84
-#: app_backend/templates/buyer/order/info.html:135
-#: app_backend/templates/buyer/order/pdf.html:131
-#: app_backend/templates/buyer/order/preview.html:131
+#: app_backend/templates/buyer/order/info.html:133
+#: app_backend/templates/buyer/order/pdf.html:129
+#: app_backend/templates/buyer/order/preview.html:129
 #: app_backend/templates/delivery/add.html:94
 #: app_backend/templates/delivery/edit.html:96
 #: app_backend/templates/delivery/info.html:141
@@ -486,8 +477,6 @@ msgstr "production sku"
 #: app_backend/templates/enquiry/items/lists.html:84
 #: app_backend/templates/enquiry/pdf.html:128
 #: app_backend/templates/enquiry/preview.html:129
-#: app_backend/templates/pdf/add.html:94 app_backend/templates/pdf/edit.html:96
-#: app_backend/templates/pdf/info.html:141
 #: app_backend/templates/price/lists.html:95
 #: app_backend/templates/purchase/add.html:92
 #: app_backend/templates/purchase/edit.html:94
@@ -502,9 +491,9 @@ msgstr "production sku"
 #: app_backend/templates/quotation/preview.html:128
 #: app_backend/templates/sales/order/add.html:89
 #: app_backend/templates/sales/order/edit.html:84
-#: app_backend/templates/sales/order/info.html:135
-#: app_backend/templates/sales/order/pdf.html:131
-#: app_backend/templates/sales/order/preview.html:131
+#: app_backend/templates/sales/order/info.html:133
+#: app_backend/templates/sales/order/pdf.html:129
+#: app_backend/templates/sales/order/preview.html:129
 msgid "quantity"
 msgstr "quantity"
 
@@ -562,9 +551,6 @@ msgstr "unit price"
 #: app_backend/templates/enquiry/items/lists.html:88
 #: app_backend/templates/enquiry/pdf.html:169
 #: app_backend/templates/enquiry/preview.html:169
-#: app_backend/templates/pdf/add.html:98
-#: app_backend/templates/pdf/edit.html:100
-#: app_backend/templates/pdf/info.html:181
 #: app_backend/templates/price/lists.html:99
 #: app_backend/templates/purchase/add.html:96
 #: app_backend/templates/purchase/edit.html:98
@@ -597,9 +583,9 @@ msgstr "note"
 #: app_backend/forms/sales_order.py:286 app_backend/forms/sales_order.py:288
 #: app_backend/templates/buyer/order/add.html:92
 #: app_backend/templates/buyer/order/edit.html:87
-#: app_backend/templates/buyer/order/info.html:138
-#: app_backend/templates/buyer/order/pdf.html:134
-#: app_backend/templates/buyer/order/preview.html:134
+#: app_backend/templates/buyer/order/info.html:136
+#: app_backend/templates/buyer/order/pdf.html:132
+#: app_backend/templates/buyer/order/preview.html:132
 #: app_backend/templates/delivery/info.html:147
 #: app_backend/templates/delivery/pdf.html:134
 #: app_backend/templates/delivery/preview.html:134
@@ -609,7 +595,6 @@ msgstr "note"
 #: app_backend/templates/enquiry/items/lists.html:87
 #: app_backend/templates/enquiry/pdf.html:132
 #: app_backend/templates/enquiry/preview.html:132
-#: app_backend/templates/pdf/info.html:145
 #: app_backend/templates/price/lists.html:98
 #: app_backend/templates/quotation/add.html:89
 #: app_backend/templates/quotation/edit.html:96
@@ -619,9 +604,9 @@ msgstr "note"
 #: app_backend/templates/quotation/preview.html:132
 #: app_backend/templates/sales/order/add.html:92
 #: app_backend/templates/sales/order/edit.html:87
-#: app_backend/templates/sales/order/info.html:138
-#: app_backend/templates/sales/order/pdf.html:134
-#: app_backend/templates/sales/order/preview.html:134
+#: app_backend/templates/sales/order/info.html:136
+#: app_backend/templates/sales/order/pdf.html:132
+#: app_backend/templates/sales/order/preview.html:132
 msgid "delivery time"
 msgstr "delivery time"
 
@@ -743,8 +728,6 @@ msgstr "product model"
 #: app_backend/templates/delivery/edit.html:102
 #: app_backend/templates/enquiry/add.html:92
 #: app_backend/templates/enquiry/edit.html:94
-#: app_backend/templates/pdf/add.html:100
-#: app_backend/templates/pdf/edit.html:102
 #: app_backend/templates/purchase/add.html:98
 #: app_backend/templates/purchase/edit.html:100
 #: app_backend/templates/quotation/add.html:92
@@ -963,7 +946,6 @@ msgstr "delete time"
 #: app_backend/templates/delivery/lists.html:85
 #: app_backend/templates/enquiry/items/lists.html:89
 #: app_backend/templates/enquiry/lists.html:85
-#: app_backend/templates/pdf/lists.html:85
 #: app_backend/templates/price/lists.html:100
 #: app_backend/templates/production/sensitive/lists.html:81
 #: app_backend/templates/purchase/lists.html:85
@@ -996,7 +978,6 @@ msgstr "create time"
 #: app_backend/templates/delivery/lists.html:86
 #: app_backend/templates/enquiry/lists.html:86
 #: app_backend/templates/inventory/lists.html:79
-#: app_backend/templates/pdf/lists.html:86
 #: app_backend/templates/production/sensitive/lists.html:82
 #: app_backend/templates/purchase/lists.html:86
 #: app_backend/templates/quotation/lists.html:86
@@ -1326,7 +1307,6 @@ msgstr "company bank account"
 #: app_backend/forms/delivery.py:78 app_backend/forms/delivery.py:309
 #: app_backend/forms/delivery.py:316 app_backend/forms/delivery.py:319
 #: app_backend/templates/delivery/lists.html:81
-#: app_backend/templates/pdf/lists.html:81
 msgid "delivery user"
 msgstr ""
 
@@ -1351,7 +1331,6 @@ msgstr ""
 #: app_backend/templates/delivery/pdf.html:131
 #: app_backend/templates/delivery/preview.html:131
 #: app_backend/templates/inventory/lists.html:74
-#: app_backend/templates/pdf/add.html:97 app_backend/templates/pdf/edit.html:99
 #: app_backend/templates/purchase/add.html:95
 #: app_backend/templates/purchase/edit.html:97
 #: app_backend/templates/purchase/info.html:144
@@ -1726,11 +1705,11 @@ msgstr "Zip Code"
 
 #: app_backend/templates/_footer_print.html:10
 #: app_backend/templates/buyer/order/info.html:104
-#: app_backend/templates/buyer/order/info.html:119
+#: app_backend/templates/buyer/order/info.html:117
 #: app_backend/templates/buyer/order/pdf.html:100
-#: app_backend/templates/buyer/order/pdf.html:115
+#: app_backend/templates/buyer/order/pdf.html:113
 #: app_backend/templates/buyer/order/preview.html:100
-#: app_backend/templates/buyer/order/preview.html:115
+#: app_backend/templates/buyer/order/preview.html:113
 #: app_backend/templates/delivery/info.html:113
 #: app_backend/templates/delivery/info.html:126
 #: app_backend/templates/delivery/pdf.html:100
@@ -1743,8 +1722,6 @@ msgstr "Zip Code"
 #: app_backend/templates/enquiry/pdf.html:113
 #: app_backend/templates/enquiry/preview.html:100
 #: app_backend/templates/enquiry/preview.html:113
-#: app_backend/templates/pdf/info.html:113
-#: app_backend/templates/pdf/info.html:126
 #: app_backend/templates/purchase/info.html:113
 #: app_backend/templates/purchase/info.html:126
 #: app_backend/templates/purchase/pdf.html:100
@@ -1758,21 +1735,21 @@ msgstr "Zip Code"
 #: app_backend/templates/quotation/preview.html:100
 #: app_backend/templates/quotation/preview.html:113
 #: app_backend/templates/sales/order/info.html:104
-#: app_backend/templates/sales/order/info.html:119
+#: app_backend/templates/sales/order/info.html:117
 #: app_backend/templates/sales/order/pdf.html:100
-#: app_backend/templates/sales/order/pdf.html:115
+#: app_backend/templates/sales/order/pdf.html:113
 #: app_backend/templates/sales/order/preview.html:100
-#: app_backend/templates/sales/order/preview.html:115
+#: app_backend/templates/sales/order/preview.html:113
 msgid "Tel"
 msgstr "Tel"
 
 #: app_backend/templates/_footer_print.html:11
 #: app_backend/templates/buyer/order/info.html:105
-#: app_backend/templates/buyer/order/info.html:120
+#: app_backend/templates/buyer/order/info.html:118
 #: app_backend/templates/buyer/order/pdf.html:101
-#: app_backend/templates/buyer/order/pdf.html:116
+#: app_backend/templates/buyer/order/pdf.html:114
 #: app_backend/templates/buyer/order/preview.html:101
-#: app_backend/templates/buyer/order/preview.html:116
+#: app_backend/templates/buyer/order/preview.html:114
 #: app_backend/templates/delivery/info.html:114
 #: app_backend/templates/delivery/info.html:127
 #: app_backend/templates/delivery/pdf.html:101
@@ -1785,8 +1762,6 @@ msgstr "Tel"
 #: app_backend/templates/enquiry/pdf.html:114
 #: app_backend/templates/enquiry/preview.html:101
 #: app_backend/templates/enquiry/preview.html:114
-#: app_backend/templates/pdf/info.html:114
-#: app_backend/templates/pdf/info.html:127
 #: app_backend/templates/purchase/info.html:114
 #: app_backend/templates/purchase/info.html:127
 #: app_backend/templates/purchase/pdf.html:101
@@ -1800,11 +1775,11 @@ msgstr "Tel"
 #: app_backend/templates/quotation/preview.html:101
 #: app_backend/templates/quotation/preview.html:114
 #: app_backend/templates/sales/order/info.html:105
-#: app_backend/templates/sales/order/info.html:120
+#: app_backend/templates/sales/order/info.html:118
 #: app_backend/templates/sales/order/pdf.html:101
-#: app_backend/templates/sales/order/pdf.html:116
+#: app_backend/templates/sales/order/pdf.html:114
 #: app_backend/templates/sales/order/preview.html:101
-#: app_backend/templates/sales/order/preview.html:116
+#: app_backend/templates/sales/order/preview.html:114
 msgid "Fax"
 msgstr "Fax"
 
@@ -1823,7 +1798,6 @@ msgstr "Website"
 #: app_backend/templates/enquiry/items/lists.html:58
 #: app_backend/templates/enquiry/lists.html:57
 #: app_backend/templates/inventory/lists.html:49
-#: app_backend/templates/pdf/lists.html:57
 #: app_backend/templates/price/lists.html:56
 #: app_backend/templates/production/lists.html:39
 #: app_backend/templates/production/search_modal.html:31
@@ -1869,8 +1843,6 @@ msgstr "Search"
 #: app_backend/templates/inventory/lists.html:6
 #: app_backend/templates/inventory/stats.html:6
 #: app_backend/templates/inventory/transfer.html:6
-#: app_backend/templates/pdf/add.html:6 app_backend/templates/pdf/edit.html:6
-#: app_backend/templates/pdf/lists.html:6
 #: app_backend/templates/price/lists.html:6
 #: app_backend/templates/production/add.html:6
 #: app_backend/templates/production/edit.html:6
@@ -2167,21 +2139,17 @@ msgstr "sales order stats"
 #: app_backend/templates/delivery/add.html:8
 #: app_backend/templates/delivery/edit.html:8
 #: app_backend/templates/delivery/lists.html:8
-#: app_backend/templates/pdf/add.html:8 app_backend/templates/pdf/edit.html:8
-#: app_backend/templates/pdf/lists.html:8
 msgid "delivery management"
 msgstr "delivery management"
 
 #: app_backend/templates/_left.html:165 app_backend/templates/_left.html:261
-#: app_backend/templates/delivery/lists.html:9
-#: app_backend/templates/pdf/lists.html:9 app_backend/views/delivery.py:92
+#: app_backend/templates/delivery/lists.html:9 app_backend/views/delivery.py:92
 #: app_backend/views/delivery.py:130
 msgid "delivery lists"
 msgstr "delivery lists"
 
 #: app_backend/templates/_left.html:168 app_backend/templates/_left.html:264
-#: app_backend/templates/delivery/add.html:9
-#: app_backend/templates/pdf/add.html:9 app_backend/views/delivery.py:190
+#: app_backend/templates/delivery/add.html:9 app_backend/views/delivery.py:190
 msgid "delivery add"
 msgstr "delivery add"
 
@@ -2390,20 +2358,19 @@ msgstr ""
 msgid "management homepage"
 msgstr "management homepage"
 
-#: app_backend/templates/buyer/order/lists.html:164
+#: app_backend/templates/buyer/order/lists.html:166
 #: app_backend/templates/customer/contact/lists.html:163
 #: app_backend/templates/customer/lists.html:137
 #: app_backend/templates/delivery/lists.html:166
-#: app_backend/templates/enquiry/lists.html:169
+#: app_backend/templates/enquiry/lists.html:171
 #: app_backend/templates/inventory/lists.html:146
 #: app_backend/templates/layout.html:149
-#: app_backend/templates/pdf/lists.html:164
 #: app_backend/templates/production/lists.html:130
 #: app_backend/templates/production/sensitive/lists.html:145
 #: app_backend/templates/purchase/lists.html:166
 #: app_backend/templates/quotation/lists.html:171
 #: app_backend/templates/rack/lists.html:126
-#: app_backend/templates/sales/order/lists.html:164
+#: app_backend/templates/sales/order/lists.html:166
 #: app_backend/templates/supplier/contact/lists.html:161
 #: app_backend/templates/supplier/lists.html:137
 #: app_backend/templates/user/lists.html:147
@@ -2442,7 +2409,6 @@ msgstr "buyer orders add"
 #: app_backend/templates/inventory/add.html:90
 #: app_backend/templates/inventory/edit.html:87
 #: app_backend/templates/inventory/transfer.html:115
-#: app_backend/templates/pdf/add.html:78 app_backend/templates/pdf/edit.html:80
 #: app_backend/templates/production/add.html:79
 #: app_backend/templates/production/edit.html:104
 #: app_backend/templates/production/sensitive/add.html:74
@@ -2484,7 +2450,6 @@ msgstr "Submitting"
 #: app_backend/templates/modal/production_select.html:14
 #: app_backend/templates/modal/supplier_contact_select.html:14
 #: app_backend/templates/modal/supplier_select.html:14
-#: app_backend/templates/pdf/add.html:78 app_backend/templates/pdf/edit.html:80
 #: app_backend/templates/production/add.html:79
 #: app_backend/templates/production/edit.html:104
 #: app_backend/templates/production/sensitive/add.html:74
@@ -2521,7 +2486,6 @@ msgstr "Submit"
 #: app_backend/templates/inventory/add.html:91
 #: app_backend/templates/inventory/edit.html:88
 #: app_backend/templates/inventory/transfer.html:116
-#: app_backend/templates/pdf/add.html:79 app_backend/templates/pdf/edit.html:81
 #: app_backend/templates/production/add.html:80
 #: app_backend/templates/production/edit.html:105
 #: app_backend/templates/production/sensitive/add.html:75
@@ -2547,9 +2511,9 @@ msgstr "Reset"
 
 #: app_backend/templates/buyer/order/add.html:83
 #: app_backend/templates/buyer/order/edit.html:78
-#: app_backend/templates/buyer/order/info.html:131
-#: app_backend/templates/buyer/order/pdf.html:127
-#: app_backend/templates/buyer/order/preview.html:127
+#: app_backend/templates/buyer/order/info.html:129
+#: app_backend/templates/buyer/order/pdf.html:125
+#: app_backend/templates/buyer/order/preview.html:125
 #: app_backend/templates/customer/contact/edit.html:55
 #: app_backend/templates/delivery/add.html:88
 #: app_backend/templates/delivery/edit.html:90
@@ -2561,8 +2525,6 @@ msgstr "Reset"
 #: app_backend/templates/enquiry/info.html:129
 #: app_backend/templates/enquiry/pdf.html:125
 #: app_backend/templates/enquiry/preview.html:125
-#: app_backend/templates/pdf/add.html:88 app_backend/templates/pdf/edit.html:90
-#: app_backend/templates/pdf/info.html:138
 #: app_backend/templates/purchase/add.html:88
 #: app_backend/templates/purchase/edit.html:90
 #: app_backend/templates/purchase/info.html:138
@@ -2575,9 +2537,9 @@ msgstr "Reset"
 #: app_backend/templates/quotation/preview.html:125
 #: app_backend/templates/sales/order/add.html:83
 #: app_backend/templates/sales/order/edit.html:78
-#: app_backend/templates/sales/order/info.html:131
-#: app_backend/templates/sales/order/pdf.html:127
-#: app_backend/templates/sales/order/preview.html:127
+#: app_backend/templates/sales/order/info.html:129
+#: app_backend/templates/sales/order/pdf.html:125
+#: app_backend/templates/sales/order/preview.html:125
 #: app_backend/templates/supplier/contact/edit.html:55
 msgid "#"
 msgstr "#"
@@ -2588,7 +2550,6 @@ msgstr "#"
 #: app_backend/templates/delivery/edit.html:98
 #: app_backend/templates/enquiry/add.html:88
 #: app_backend/templates/enquiry/edit.html:90
-#: app_backend/templates/pdf/add.html:96 app_backend/templates/pdf/edit.html:98
 #: app_backend/templates/purchase/add.html:94
 #: app_backend/templates/purchase/edit.html:96
 #: app_backend/templates/quotation/add.html:88
@@ -2605,8 +2566,6 @@ msgstr "unit_price"
 #: app_backend/templates/delivery/edit.html:166
 #: app_backend/templates/enquiry/add.html:152
 #: app_backend/templates/enquiry/edit.html:155
-#: app_backend/templates/pdf/add.html:154
-#: app_backend/templates/pdf/edit.html:166
 #: app_backend/templates/purchase/add.html:146
 #: app_backend/templates/purchase/edit.html:155
 #: app_backend/templates/quotation/add.html:152
@@ -2620,7 +2579,7 @@ msgstr "Add"
 #: app_backend/templates/buyer/order/add.html:160
 #: app_backend/templates/buyer/order/edit.html:142
 #: app_backend/templates/buyer/order/lists.html:61
-#: app_backend/templates/buyer/order/lists.html:121
+#: app_backend/templates/buyer/order/lists.html:123
 #: app_backend/templates/customer/contact/edit.html:108
 #: app_backend/templates/customer/contact/lists.html:62
 #: app_backend/templates/customer/contact/lists.html:127
@@ -2634,13 +2593,9 @@ msgstr "Add"
 #: app_backend/templates/enquiry/add.html:154
 #: app_backend/templates/enquiry/edit.html:157
 #: app_backend/templates/enquiry/lists.html:61
-#: app_backend/templates/enquiry/lists.html:121
+#: app_backend/templates/enquiry/lists.html:123
 #: app_backend/templates/inventory/lists.html:53
 #: app_backend/templates/inventory/lists.html:118
-#: app_backend/templates/pdf/add.html:156
-#: app_backend/templates/pdf/edit.html:168
-#: app_backend/templates/pdf/lists.html:61
-#: app_backend/templates/pdf/lists.html:121
 #: app_backend/templates/production/lists.html:43
 #: app_backend/templates/production/lists.html:107
 #: app_backend/templates/production/sensitive/lists.html:58
@@ -2658,7 +2613,7 @@ msgstr "Add"
 #: app_backend/templates/sales/order/add.html:160
 #: app_backend/templates/sales/order/edit.html:142
 #: app_backend/templates/sales/order/lists.html:61
-#: app_backend/templates/sales/order/lists.html:121
+#: app_backend/templates/sales/order/lists.html:123
 #: app_backend/templates/supplier/contact/edit.html:108
 #: app_backend/templates/supplier/contact/lists.html:61
 #: app_backend/templates/supplier/contact/lists.html:126
@@ -2711,7 +2666,6 @@ msgstr "Go Back"
 #: app_backend/templates/enquiry/info.html:80
 #: app_backend/templates/enquiry/pdf.html:80
 #: app_backend/templates/enquiry/preview.html:80
-#: app_backend/templates/pdf/info.html:80
 #: app_backend/templates/purchase/info.html:80
 #: app_backend/templates/purchase/pdf.html:80
 #: app_backend/templates/purchase/preview.html:80
@@ -2731,20 +2685,18 @@ msgid "Buyer Order"
 msgstr ""
 
 #: app_backend/templates/buyer/order/info.html:89
-#: app_backend/templates/buyer/order/lists.html:128
+#: app_backend/templates/buyer/order/lists.html:130
 #: app_backend/templates/customer/invoice/lists.html:112
 #: app_backend/templates/delivery/info.html:89
 #: app_backend/templates/delivery/lists.html:130
 #: app_backend/templates/enquiry/info.html:89
-#: app_backend/templates/enquiry/lists.html:133
-#: app_backend/templates/pdf/info.html:89
-#: app_backend/templates/pdf/lists.html:128
+#: app_backend/templates/enquiry/lists.html:135
 #: app_backend/templates/purchase/info.html:89
 #: app_backend/templates/purchase/lists.html:130
 #: app_backend/templates/quotation/info.html:89
 #: app_backend/templates/quotation/lists.html:135
 #: app_backend/templates/sales/order/info.html:89
-#: app_backend/templates/sales/order/lists.html:128
+#: app_backend/templates/sales/order/lists.html:130
 #: app_backend/templates/supplier/invoice/lists.html:112
 msgid "Print"
 msgstr "Print"
@@ -2782,7 +2734,6 @@ msgstr ""
 #: app_backend/templates/enquiry/info.html:100
 #: app_backend/templates/enquiry/pdf.html:96
 #: app_backend/templates/enquiry/preview.html:96
-#: app_backend/templates/pdf/info.html:109
 #: app_backend/templates/purchase/info.html:109
 #: app_backend/templates/purchase/pdf.html:96
 #: app_backend/templates/purchase/preview.html:96
@@ -2796,11 +2747,11 @@ msgid "Contacter"
 msgstr ""
 
 #: app_backend/templates/buyer/order/info.html:103
-#: app_backend/templates/buyer/order/info.html:118
+#: app_backend/templates/buyer/order/info.html:116
 #: app_backend/templates/buyer/order/pdf.html:99
-#: app_backend/templates/buyer/order/pdf.html:114
+#: app_backend/templates/buyer/order/pdf.html:112
 #: app_backend/templates/buyer/order/preview.html:99
-#: app_backend/templates/buyer/order/preview.html:114
+#: app_backend/templates/buyer/order/preview.html:112
 #: app_backend/templates/delivery/info.html:112
 #: app_backend/templates/delivery/info.html:125
 #: app_backend/templates/delivery/pdf.html:99
@@ -2813,8 +2764,6 @@ msgstr ""
 #: app_backend/templates/enquiry/pdf.html:112
 #: app_backend/templates/enquiry/preview.html:99
 #: app_backend/templates/enquiry/preview.html:112
-#: app_backend/templates/pdf/info.html:112
-#: app_backend/templates/pdf/info.html:125
 #: app_backend/templates/purchase/info.html:112
 #: app_backend/templates/purchase/info.html:125
 #: app_backend/templates/purchase/pdf.html:99
@@ -2828,21 +2777,21 @@ msgstr ""
 #: app_backend/templates/quotation/preview.html:99
 #: app_backend/templates/quotation/preview.html:112
 #: app_backend/templates/sales/order/info.html:103
-#: app_backend/templates/sales/order/info.html:118
+#: app_backend/templates/sales/order/info.html:116
 #: app_backend/templates/sales/order/pdf.html:99
-#: app_backend/templates/sales/order/pdf.html:114
+#: app_backend/templates/sales/order/pdf.html:112
 #: app_backend/templates/sales/order/preview.html:99
-#: app_backend/templates/sales/order/preview.html:114
+#: app_backend/templates/sales/order/preview.html:112
 #: app_common/maps/type_auth.py:27
 msgid "Mobile"
 msgstr "Mobile"
 
 #: app_backend/templates/buyer/order/info.html:106
-#: app_backend/templates/buyer/order/info.html:121
+#: app_backend/templates/buyer/order/info.html:119
 #: app_backend/templates/buyer/order/pdf.html:102
-#: app_backend/templates/buyer/order/pdf.html:117
+#: app_backend/templates/buyer/order/pdf.html:115
 #: app_backend/templates/buyer/order/preview.html:102
-#: app_backend/templates/buyer/order/preview.html:117
+#: app_backend/templates/buyer/order/preview.html:115
 #: app_backend/templates/delivery/info.html:115
 #: app_backend/templates/delivery/info.html:128
 #: app_backend/templates/delivery/pdf.html:102
@@ -2855,8 +2804,6 @@ msgstr "Mobile"
 #: app_backend/templates/enquiry/pdf.html:115
 #: app_backend/templates/enquiry/preview.html:102
 #: app_backend/templates/enquiry/preview.html:115
-#: app_backend/templates/pdf/info.html:115
-#: app_backend/templates/pdf/info.html:128
 #: app_backend/templates/purchase/info.html:115
 #: app_backend/templates/purchase/info.html:128
 #: app_backend/templates/purchase/pdf.html:102
@@ -2870,91 +2817,108 @@ msgstr "Mobile"
 #: app_backend/templates/quotation/preview.html:102
 #: app_backend/templates/quotation/preview.html:115
 #: app_backend/templates/sales/order/info.html:106
-#: app_backend/templates/sales/order/info.html:121
+#: app_backend/templates/sales/order/info.html:119
 #: app_backend/templates/sales/order/pdf.html:102
-#: app_backend/templates/sales/order/pdf.html:117
+#: app_backend/templates/sales/order/pdf.html:115
 #: app_backend/templates/sales/order/preview.html:102
-#: app_backend/templates/sales/order/preview.html:117
+#: app_backend/templates/sales/order/preview.html:115
 #: app_common/maps/type_auth.py:26
 msgid "Email"
 msgstr "Email"
 
-#: app_backend/templates/buyer/order/info.html:136
-#: app_backend/templates/buyer/order/pdf.html:132
-#: app_backend/templates/buyer/order/preview.html:132
+#: app_backend/templates/buyer/order/info.html:110
+#: app_backend/templates/buyer/order/pdf.html:106
+#: app_backend/templates/buyer/order/preview.html:106
+msgid "Buyer Order Code"
+msgstr ""
+
+#: app_backend/templates/buyer/order/info.html:113
+#: app_backend/templates/buyer/order/pdf.html:109
+#: app_backend/templates/buyer/order/preview.html:109
+#: app_backend/templates/delivery/info.html:122
+#: app_backend/templates/delivery/pdf.html:109
+#: app_backend/templates/delivery/preview.html:109
+#: app_backend/templates/purchase/info.html:122
+#: app_backend/templates/purchase/pdf.html:109
+#: app_backend/templates/purchase/preview.html:109
+#: app_backend/templates/sales/order/info.html:113
+#: app_backend/templates/sales/order/pdf.html:109
+#: app_backend/templates/sales/order/preview.html:109
+msgid "Document Maker"
+msgstr ""
+
+#: app_backend/templates/buyer/order/info.html:134
+#: app_backend/templates/buyer/order/pdf.html:130
+#: app_backend/templates/buyer/order/preview.html:130
 #: app_backend/templates/delivery/info.html:145
 #: app_backend/templates/delivery/pdf.html:132
 #: app_backend/templates/delivery/preview.html:132
 #: app_backend/templates/enquiry/info.html:134
 #: app_backend/templates/enquiry/pdf.html:130
 #: app_backend/templates/enquiry/preview.html:130
-#: app_backend/templates/pdf/info.html:143
 #: app_backend/templates/purchase/info.html:145
 #: app_backend/templates/purchase/pdf.html:132
 #: app_backend/templates/purchase/preview.html:132
 #: app_backend/templates/quotation/info.html:143
 #: app_backend/templates/quotation/pdf.html:130
 #: app_backend/templates/quotation/preview.html:130
-#: app_backend/templates/sales/order/info.html:136
-#: app_backend/templates/sales/order/pdf.html:132
-#: app_backend/templates/sales/order/preview.html:132
+#: app_backend/templates/sales/order/info.html:134
+#: app_backend/templates/sales/order/pdf.html:130
+#: app_backend/templates/sales/order/preview.html:130
 msgid "Tax unit price"
 msgstr "Tax unit price"
 
-#: app_backend/templates/buyer/order/info.html:137
-#: app_backend/templates/buyer/order/pdf.html:133
-#: app_backend/templates/buyer/order/preview.html:133
+#: app_backend/templates/buyer/order/info.html:135
+#: app_backend/templates/buyer/order/pdf.html:131
+#: app_backend/templates/buyer/order/preview.html:131
 #: app_backend/templates/delivery/info.html:146
 #: app_backend/templates/delivery/pdf.html:133
 #: app_backend/templates/delivery/preview.html:133
-#: app_backend/templates/pdf/info.html:144
 #: app_backend/templates/purchase/info.html:146
 #: app_backend/templates/purchase/pdf.html:133
 #: app_backend/templates/purchase/preview.html:133
 #: app_backend/templates/quotation/info.html:144
 #: app_backend/templates/quotation/pdf.html:131
 #: app_backend/templates/quotation/preview.html:131
-#: app_backend/templates/sales/order/info.html:137
-#: app_backend/templates/sales/order/pdf.html:133
-#: app_backend/templates/sales/order/preview.html:133
+#: app_backend/templates/sales/order/info.html:135
+#: app_backend/templates/sales/order/pdf.html:131
+#: app_backend/templates/sales/order/preview.html:131
 msgid "Subtotal"
 msgstr "Subtotal"
 
-#: app_backend/templates/buyer/order/info.html:187
-#: app_backend/templates/buyer/order/pdf.html:183
-#: app_backend/templates/buyer/order/preview.html:183
+#: app_backend/templates/buyer/order/info.html:185
+#: app_backend/templates/buyer/order/pdf.html:181
+#: app_backend/templates/buyer/order/preview.html:181
 #: app_backend/templates/delivery/info.html:198
 #: app_backend/templates/delivery/pdf.html:185
 #: app_backend/templates/delivery/preview.html:185
-#: app_backend/templates/pdf/info.html:194
 #: app_backend/templates/purchase/info.html:196
 #: app_backend/templates/purchase/pdf.html:185
 #: app_backend/templates/purchase/preview.html:185
 #: app_backend/templates/quotation/info.html:194
 #: app_backend/templates/quotation/pdf.html:181
 #: app_backend/templates/quotation/preview.html:181
-#: app_backend/templates/sales/order/info.html:187
-#: app_backend/templates/sales/order/pdf.html:183
-#: app_backend/templates/sales/order/preview.html:183
+#: app_backend/templates/sales/order/info.html:185
+#: app_backend/templates/sales/order/pdf.html:181
+#: app_backend/templates/sales/order/preview.html:181
 msgid "Amount"
 msgstr "Amount"
 
-#: app_backend/templates/buyer/order/info.html:203
-#: app_backend/templates/buyer/order/pdf.html:199
-#: app_backend/templates/buyer/order/preview.html:199
+#: app_backend/templates/buyer/order/info.html:201
+#: app_backend/templates/buyer/order/pdf.html:197
+#: app_backend/templates/buyer/order/preview.html:197
 #: app_backend/templates/delivery/info.html:214
 #: app_backend/templates/delivery/pdf.html:201
 #: app_backend/templates/delivery/preview.html:201
-#: app_backend/templates/pdf/info.html:210
 #: app_backend/templates/purchase/info.html:212
 #: app_backend/templates/purchase/pdf.html:201
 #: app_backend/templates/purchase/preview.html:201
 #: app_backend/templates/quotation/info.html:210
 #: app_backend/templates/quotation/pdf.html:197
 #: app_backend/templates/quotation/preview.html:197
-#: app_backend/templates/sales/order/info.html:203
-#: app_backend/templates/sales/order/pdf.html:199
-#: app_backend/templates/sales/order/preview.html:199
+#: app_backend/templates/sales/order/info.html:201
+#: app_backend/templates/sales/order/pdf.html:197
+#: app_backend/templates/sales/order/preview.html:197
 msgid "Total"
 msgstr "Total"
 
@@ -2972,7 +2936,6 @@ msgstr "buyer orders lists"
 #: app_backend/templates/enquiry/items/lists.html:17
 #: app_backend/templates/enquiry/lists.html:17
 #: app_backend/templates/inventory/lists.html:17
-#: app_backend/templates/pdf/lists.html:17
 #: app_backend/templates/price/lists.html:16
 #: app_backend/templates/production/lists.html:17
 #: app_backend/templates/production/search_modal.html:11
@@ -3003,7 +2966,6 @@ msgstr "Search toolbar"
 #: app_backend/templates/enquiry/items/lists.html:19
 #: app_backend/templates/enquiry/lists.html:19
 #: app_backend/templates/inventory/lists.html:19
-#: app_backend/templates/pdf/lists.html:19
 #: app_backend/templates/price/lists.html:17
 #: app_backend/templates/price/lists.html:71
 #: app_backend/templates/price/lists.html:144
@@ -3036,7 +2998,6 @@ msgstr "Resize"
 #: app_backend/templates/enquiry/items/lists.html:60
 #: app_backend/templates/enquiry/lists.html:59
 #: app_backend/templates/inventory/lists.html:51
-#: app_backend/templates/pdf/lists.html:59
 #: app_backend/templates/price/lists.html:58
 #: app_backend/templates/production/lists.html:41
 #: app_backend/templates/production/sensitive/lists.html:56
@@ -3067,8 +3028,6 @@ msgstr "Export"
 #: app_backend/templates/enquiry/lists.html:77
 #: app_backend/templates/inventory/lists.html:66
 #: app_backend/templates/inventory/lists.html:68
-#: app_backend/templates/pdf/lists.html:75
-#: app_backend/templates/pdf/lists.html:77
 #: app_backend/templates/production/lists.html:56
 #: app_backend/templates/production/lists.html:58
 #: app_backend/templates/production/sensitive/lists.html:71
@@ -3110,23 +3069,31 @@ msgstr "supplier company"
 msgid "buyer order amount"
 msgstr "buyer order amount"
 
-#: app_backend/templates/buyer/order/lists.html:95
+#: app_backend/templates/buyer/order/lists.html:87
+#: app_backend/templates/delivery/lists.html:87
+#: app_backend/templates/enquiry/lists.html:87
+#: app_backend/templates/purchase/lists.html:87
+#: app_backend/templates/quotation/lists.html:87
+#: app_backend/templates/sales/order/lists.html:87
+msgid "audit status"
+msgstr ""
+
+#: app_backend/templates/buyer/order/lists.html:96
 #: app_backend/templates/customer/contact/lists.html:97
 #: app_backend/templates/customer/contact/search_modal.html:53
 #: app_backend/templates/customer/invoice/lists.html:86
 #: app_backend/templates/customer/lists.html:87
 #: app_backend/templates/customer/search_modal.html:56
 #: app_backend/templates/delivery/lists.html:96
-#: app_backend/templates/enquiry/lists.html:95
+#: app_backend/templates/enquiry/lists.html:96
 #: app_backend/templates/inventory/lists.html:88
-#: app_backend/templates/pdf/lists.html:95
 #: app_backend/templates/production/lists.html:78
 #: app_backend/templates/production/search_modal.html:53
 #: app_backend/templates/production/sensitive/lists.html:91
 #: app_backend/templates/purchase/lists.html:96
 #: app_backend/templates/quotation/lists.html:96
 #: app_backend/templates/rack/lists.html:76
-#: app_backend/templates/sales/order/lists.html:95
+#: app_backend/templates/sales/order/lists.html:96
 #: app_backend/templates/supplier/contact/lists.html:96
 #: app_backend/templates/supplier/contact/search_modal.html:53
 #: app_backend/templates/supplier/invoice/lists.html:86
@@ -3138,20 +3105,19 @@ msgstr "buyer order amount"
 msgid "Select"
 msgstr "Select"
 
-#: app_backend/templates/buyer/order/lists.html:111
+#: app_backend/templates/buyer/order/lists.html:113
 #: app_backend/templates/customer/contact/lists.html:116
 #: app_backend/templates/customer/invoice/lists.html:101
 #: app_backend/templates/customer/lists.html:104
 #: app_backend/templates/delivery/lists.html:113
-#: app_backend/templates/enquiry/lists.html:111
+#: app_backend/templates/enquiry/lists.html:113
 #: app_backend/templates/inventory/lists.html:108
-#: app_backend/templates/pdf/lists.html:111
 #: app_backend/templates/production/lists.html:97
 #: app_backend/templates/production/sensitive/lists.html:107
 #: app_backend/templates/purchase/lists.html:113
 #: app_backend/templates/quotation/lists.html:113
 #: app_backend/templates/rack/lists.html:93
-#: app_backend/templates/sales/order/lists.html:111
+#: app_backend/templates/sales/order/lists.html:113
 #: app_backend/templates/supplier/contact/lists.html:115
 #: app_backend/templates/supplier/invoice/lists.html:101
 #: app_backend/templates/supplier/lists.html:104
@@ -3160,13 +3126,12 @@ msgstr "Select"
 msgid "Edit"
 msgstr "Edit"
 
-#: app_backend/templates/buyer/order/lists.html:134
+#: app_backend/templates/buyer/order/lists.html:136
 #: app_backend/templates/delivery/lists.html:136
-#: app_backend/templates/enquiry/lists.html:139
-#: app_backend/templates/pdf/lists.html:134
+#: app_backend/templates/enquiry/lists.html:141
 #: app_backend/templates/purchase/lists.html:136
 #: app_backend/templates/quotation/lists.html:141
-#: app_backend/templates/sales/order/lists.html:134
+#: app_backend/templates/sales/order/lists.html:136
 msgid "Download"
 msgstr "Download"
 
@@ -3212,7 +3177,6 @@ msgstr "Refresh"
 
 #: app_backend/templates/customer/contact/lists.html:82
 #: app_backend/templates/delivery/lists.html:82
-#: app_backend/templates/pdf/lists.html:82
 #: app_backend/templates/price/lists.html:91
 #: app_backend/templates/quotation/items/lists.html:80
 #: app_backend/templates/quotation/lists.html:82
@@ -3220,20 +3184,17 @@ msgstr "Refresh"
 msgid "customer company"
 msgstr "customer company"
 
-#: app_backend/templates/delivery/edit.html:9
-#: app_backend/templates/pdf/edit.html:9 app_backend/views/delivery.py:360
+#: app_backend/templates/delivery/edit.html:9 app_backend/views/delivery.py:360
 msgid "delivery edit"
 msgstr ""
 
 #: app_backend/templates/delivery/info.html:87
 #: app_backend/templates/delivery/pdf.html:87
 #: app_backend/templates/delivery/preview.html:87
-#: app_backend/templates/pdf/info.html:87
 msgid "Delivery"
 msgstr ""
 
 #: app_backend/templates/delivery/info.html:93
-#: app_backend/templates/pdf/info.html:93
 #: app_backend/templates/purchase/info.html:93
 #: app_backend/templates/quotation/edit.html:74
 #: app_backend/templates/quotation/info.html:93
@@ -3241,7 +3202,6 @@ msgid "Audit"
 msgstr ""
 
 #: app_backend/templates/delivery/info.html:97
-#: app_backend/templates/pdf/info.html:97
 #: app_backend/templates/purchase/info.html:97
 #: app_backend/templates/quotation/edit.html:76
 #: app_backend/templates/quotation/info.html:97
@@ -3251,7 +3211,6 @@ msgstr ""
 #: app_backend/templates/delivery/info.html:105
 #: app_backend/templates/delivery/pdf.html:92
 #: app_backend/templates/delivery/preview.html:92
-#: app_backend/templates/pdf/info.html:105
 #: app_backend/templates/quotation/info.html:105
 #: app_backend/templates/quotation/pdf.html:92
 #: app_backend/templates/quotation/preview.html:92
@@ -3264,7 +3223,6 @@ msgstr ""
 #: app_backend/templates/delivery/info.html:108
 #: app_backend/templates/delivery/pdf.html:95
 #: app_backend/templates/delivery/preview.html:95
-#: app_backend/templates/pdf/info.html:108
 #: app_backend/templates/quotation/info.html:108
 #: app_backend/templates/quotation/pdf.html:95
 #: app_backend/templates/quotation/preview.html:95
@@ -3277,49 +3235,19 @@ msgstr ""
 #: app_backend/templates/delivery/info.html:119
 #: app_backend/templates/delivery/pdf.html:106
 #: app_backend/templates/delivery/preview.html:106
-#: app_backend/templates/pdf/info.html:119
 msgid "Delivery Code"
 msgstr ""
 
-#: app_backend/templates/delivery/info.html:120
-#: app_backend/templates/delivery/pdf.html:107
-#: app_backend/templates/delivery/preview.html:107
-#: app_backend/templates/pdf/info.html:120
-msgid "Delivery Expiry Date"
-msgstr ""
-
-#: app_backend/templates/delivery/info.html:122
-#: app_backend/templates/delivery/pdf.html:109
-#: app_backend/templates/delivery/preview.html:109
-#: app_backend/templates/pdf/info.html:122
-#: app_backend/templates/purchase/info.html:122
-#: app_backend/templates/purchase/pdf.html:109
-#: app_backend/templates/purchase/preview.html:109
-#: app_backend/templates/quotation/info.html:122
-#: app_backend/templates/quotation/pdf.html:109
-#: app_backend/templates/quotation/preview.html:109
-msgid "Offerer"
-msgstr ""
-
 #: app_backend/templates/delivery/lists.html:80
-#: app_backend/templates/pdf/lists.html:80
 msgid "delivery code"
 msgstr ""
 
 #: app_backend/templates/delivery/lists.html:83
-#: app_backend/templates/pdf/lists.html:83
 msgid "delivery amount"
 msgstr ""
 
 #: app_backend/templates/delivery/lists.html:84
-#: app_backend/templates/pdf/lists.html:84
 msgid "delivery note"
-msgstr ""
-
-#: app_backend/templates/delivery/lists.html:87
-#: app_backend/templates/purchase/lists.html:87
-#: app_backend/templates/quotation/lists.html:87
-msgid "audit status"
 msgstr ""
 
 #: app_backend/templates/enquiry/edit.html:9 app_backend/views/enquiry.py:406
@@ -3360,7 +3288,7 @@ msgstr "enquiry code"
 msgid "enquiry amount"
 msgstr "enquiry amount"
 
-#: app_backend/templates/enquiry/lists.html:126
+#: app_backend/templates/enquiry/lists.html:128
 #: app_backend/templates/quotation/lists.html:128
 msgid "Clone"
 msgstr ""
@@ -3507,12 +3435,6 @@ msgstr ""
 msgid "Purchase Code"
 msgstr ""
 
-#: app_backend/templates/purchase/info.html:120
-#: app_backend/templates/purchase/pdf.html:107
-#: app_backend/templates/purchase/preview.html:107
-msgid "Purchase Expiry Date"
-msgstr ""
-
 #: app_backend/templates/purchase/lists.html:80
 msgid "purchase code"
 msgstr ""
@@ -3553,6 +3475,12 @@ msgstr ""
 msgid "Quotation Expiry Date"
 msgstr ""
 
+#: app_backend/templates/quotation/info.html:122
+#: app_backend/templates/quotation/pdf.html:109
+#: app_backend/templates/quotation/preview.html:109
+msgid "Offerer"
+msgstr ""
+
 #: app_backend/templates/quotation/lists.html:83
 msgid "quotation amount"
 msgstr "quotation amount"
@@ -3579,6 +3507,12 @@ msgstr ""
 #: app_backend/templates/sales/order/pdf.html:87
 #: app_backend/templates/sales/order/preview.html:87
 msgid "Sales Order"
+msgstr ""
+
+#: app_backend/templates/sales/order/info.html:110
+#: app_backend/templates/sales/order/pdf.html:106
+#: app_backend/templates/sales/order/preview.html:106
+msgid "Sales Order Code"
 msgstr ""
 
 #: app_backend/templates/sales/order/lists.html:9
@@ -4517,4 +4451,10 @@ msgstr ""
 
 #~ msgid "rack id"
 #~ msgstr "rack id"
+
+#~ msgid "Delivery Expiry Date"
+#~ msgstr ""
+
+#~ msgid "Purchase Expiry Date"
+#~ msgstr ""
 

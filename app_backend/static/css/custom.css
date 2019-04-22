@@ -41,3 +41,8 @@ table.items_table tr td {
 .panel-title-sm {
     font-size: 14px;
 }
+
+.select_all_label {
+    cursor: pointer;
+    margin-bottom: 0;
+}

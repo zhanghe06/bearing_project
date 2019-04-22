@@ -789,6 +789,69 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
 
+@bp_enquiry.route('/ajax/audit', methods=['GET', 'POST'])
+@login_required
+def ajax_audit():
+    """
+    报价审核
+    :return:
+    """
+    ajax_success_msg = AJAX_SUCCESS_MSG.copy()
+    ajax_failure_msg = AJAX_FAILURE_MSG.copy()
+
+    # 检查请求方法
+    if not (request.method == 'GET' and request.is_xhr):
+        ext_msg = _('Method Not Allowed')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查请求参数
+    enquiry_id = request.args.get('enquiry_id', 0, type=int)
+    audit_status = request.args.get('audit_status', 0, type=int)
+    if not enquiry_id:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查删除权限
+    enquiry_item_del_permission = EnquiryItemDelPermission(enquiry_id)
+    if not enquiry_item_del_permission.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    enquiry_info = get_enquiry_row_by_id(enquiry_id)
+    # 检查资源是否存在
+    if not enquiry_info:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查资源是否删除
+    if enquiry_info.status_delete == STATUS_DEL_OK:
+        ext_msg = _('Already deleted')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查审核状态是否变化
+    if enquiry_info.status_audit == audit_status:
+        ext_msg = _('Already audited')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    current_time = datetime.utcnow()
+    enquiry_data = {
+        'status_audit': audit_status,
+        'audit_time': current_time,
+        'update_time': current_time,
+    }
+    result = edit_enquiry(enquiry_id, enquiry_data)
+    if result:
+        ajax_success_msg['msg'] = _('Audit Success')
+        return jsonify(ajax_success_msg)
+    else:
+        ajax_failure_msg['msg'] = _('Audit Failure')
+        return jsonify(ajax_failure_msg)
+
+
 @bp_enquiry.route('/ajax/stats', methods=['GET', 'POST'])
 @login_required
 def ajax_stats():

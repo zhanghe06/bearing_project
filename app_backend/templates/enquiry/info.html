@@ -88,6 +88,15 @@
                 <button class="btn-sm btn-default hidden-print pull-right" onclick="window.print();">
                     <span class="glyphicon glyphicon-print"></span> {{ _('Print') }}
                 </button>
+                {% if enquiry_info.status_audit == 0 %}
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="enquiry_audit({{ enquiry_info.id }}, 1);">
+                    <span class="glyphicon glyphicon-ok"></span> {{ _('Audit') }}
+                </button>
+                {% else %}
+                <button class="btn-sm btn-default hidden-print pull-right" onclick="enquiry_audit({{ enquiry_info.id }}, 0);">
+                    <span class="glyphicon glyphicon-remove"></span> {{ _('Cancel Audit') }}
+                </button>
+                {% endif %}
             </h3>
         </div>
         <!-- info row -->
@@ -219,31 +228,49 @@
 <script src="{{ url_for('static', filename='plugin/moment-2.18.1/min/moment-with-locales.min.js') }}"></script>
 
 {% block extra_js %}
-    <script>
-        moment.locale('{{ g.moment_locale }}')
+<script>
+    moment.locale('{{ g.moment_locale }}')
 
-        function flask_moment_render (elem) {
-            $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'))
-            $(elem).removeClass('flask-moment').show()
-        }
+    function flask_moment_render (elem) {
+        $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'))
+        $(elem).removeClass('flask-moment').show()
+    }
 
-        function flask_moment_render_all () {
-            $('.flask-moment').each(function () {
-                flask_moment_render(this)
-                if ($(this).data('refresh')) {
-                    (function (elem, interval) {
-                        setInterval(function () {
-                            flask_moment_render(elem)
-                        }, interval)
-                    })(this, $(this).data('refresh'))
-                }
-            })
-        }
-
-        $(document).ready(function () {
-            flask_moment_render_all()
+    function flask_moment_render_all () {
+        $('.flask-moment').each(function () {
+            flask_moment_render(this)
+            if ($(this).data('refresh')) {
+                (function (elem, interval) {
+                    setInterval(function () {
+                        flask_moment_render(elem)
+                    }, interval)
+                })(this, $(this).data('refresh'))
+            }
         })
-    </script>
+    }
+
+    $(document).ready(function () {
+        flask_moment_render_all()
+    })
+</script>
+<script>
+    // 询价审核
+    function enquiry_audit (enquiry_id, audit_status) {
+        $.getJSON('{{ url_for('enquiry.ajax_audit') }}',
+            {
+                enquiry_id: enquiry_id,
+                audit_status: audit_status
+            }, function (data) {
+                if (data.result === true) {
+                    alert(data.msg)
+                } else {
+                    alert(data.msg)
+                }
+                window.location.reload()
+            })
+        return false
+    }
+</script>
 {% endblock %}
 </body>
 

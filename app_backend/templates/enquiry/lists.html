@@ -71,10 +71,10 @@
                     <thead>
                     <tr>
                         <th>
-                            <label>
-                                <input class="select_all" name="enquiry_ids" title="{{ _('Select All') }}"
+                            <label class="select_all_label">
+                                <input class="select_all" name="enquiry_ids" title="{{- _('Select All') -}}"
                                        rel="tooltip" type="checkbox" value=""/>
-                                {{ _('Select All') }}
+                                {{- _('Select All') -}}
                             </label>
                         </th>
                         <th>{{ _('enquiry code') }}</th>
@@ -84,6 +84,7 @@
                         <th>{{ _('enquiry note') }}</th>
                         <th>{{ _('create time') }}</th>
                         <th>{{ _('update time') }}</th>
+                        <th>{{ _('audit status') }}</th>
                         <th>{{ _('operation') }}</th>
                     </tr>
                     </thead>
@@ -103,6 +104,7 @@
                             <td>{{ info.note }}</td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>{{ info.status_audit | status_audit }}</td>
                             <td style="min-width: 8em;">
                                 <!-- Split button -->
                                 <div class="btn-group btn-group-sm">

@@ -124,7 +124,7 @@ def before_request():
     g.DELIVERY_PREFIX = app.config.get('DELIVERY_PREFIX', '')  # 出货
     g.PURCHASE_PREFIX = app.config.get('PURCHASE_PREFIX', '')  # 进货
 
-    g.STATIC_RES_VER = '1.5.26'  # 静态资源版本
+    g.STATIC_RES_VER = app.config.get('STATIC_RES_VER', '1.0')  # 静态资源版本
 
 
 @identity_loaded.connect_via(app)
