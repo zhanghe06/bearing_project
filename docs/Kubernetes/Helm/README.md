@@ -119,13 +119,13 @@ tiller-deploy-664d6bdc7b-4tr4g           1/1     Running   0          77m
 ## 启动本地repo仓库服务
 
 ```
-➜  ~ helm serve --address 0.0.0.0:8879
+➜  ~ helm serve --address 0.0.0.0:8879 --repo-path ./charts_local_repo
 Regenerating index. This may take a moment.
 Now serving you on 0.0.0.0:8879
 ```
 或
 ```bash
-nohup helm serve --address 0.0.0.0:8879 --repo-path /dcos/appstore/local-repo &
+nohup helm serve --address 0.0.0.0:8879 --repo-path ./charts_local_repo &
 ```
 访问 [http://127.0.0.1:8879](http://127.0.0.1:8879)
 
@@ -137,8 +137,18 @@ stable	https://kubernetes-charts.storage.googleapis.com
 local 	http://127.0.0.1:8879/charts
 ```
 
+新增仓库
+```bash
+helm repo add my_local  http://192.168.4.1:8879
+```
+
 更新
 ```bash
-helm repo index --url=http://192.168.1.100:8879 .
+helm repo index --url=http://192.168.4.1:8879 .
 helm repo update
+```
+
+删除仓库
+```bash
+helm repo remove my_local
 ```
