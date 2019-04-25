@@ -425,44 +425,44 @@ class EnquiryItemAuditPermission(BasePermission):
 
 # -------------------------------------------------------------
 # 销售订单明细操作权限（读取、更新、删除、打印、审核）
-SalesOrdersItemNeed = partial(SectionActionItemNeed, 'sales_orders')
-SalesOrdersItemNeed.__doc__ = """A need with the section preset to `"sales_orders"`."""
+SalesOrderItemNeed = partial(SectionActionItemNeed, 'sales_orders')
+SalesOrderItemNeed.__doc__ = """A need with the section preset to `"sales_orders"`."""
 
-SalesOrdersItemGetNeed = partial(SalesOrdersItemNeed, 'get')
-SalesOrdersItemEditNeed = partial(SalesOrdersItemNeed, 'edit')
-SalesOrdersItemDelNeed = partial(SalesOrdersItemNeed, 'del')
-SalesOrdersItemPrintNeed = partial(SalesOrdersItemNeed, 'print')
-SalesOrdersItemAuditNeed = partial(SalesOrdersItemNeed, 'audit')
+SalesOrderItemGetNeed = partial(SalesOrderItemNeed, 'get')
+SalesOrderItemEditNeed = partial(SalesOrderItemNeed, 'edit')
+SalesOrderItemDelNeed = partial(SalesOrderItemNeed, 'del')
+SalesOrderItemPrintNeed = partial(SalesOrderItemNeed, 'print')
+SalesOrderItemAuditNeed = partial(SalesOrderItemNeed, 'audit')
 
 
-class SalesOrdersItemGetPermission(BasePermission):
+class SalesOrderItemGetPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemGetNeed(six.text_type(order_id))
-        super(SalesOrdersItemGetPermission, self).__init__(need)
+        need = SalesOrderItemGetNeed(six.text_type(order_id))
+        super(SalesOrderItemGetPermission, self).__init__(need)
 
 
-class SalesOrdersItemEditPermission(BasePermission):
+class SalesOrderItemEditPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemEditNeed(six.text_type(order_id))
-        super(SalesOrdersItemEditPermission, self).__init__(need)
+        need = SalesOrderItemEditNeed(six.text_type(order_id))
+        super(SalesOrderItemEditPermission, self).__init__(need)
 
 
-class SalesOrdersItemDelPermission(BasePermission):
+class SalesOrderItemDelPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemDelNeed(six.text_type(order_id))
-        super(SalesOrdersItemDelPermission, self).__init__(need)
+        need = SalesOrderItemDelNeed(six.text_type(order_id))
+        super(SalesOrderItemDelPermission, self).__init__(need)
 
 
-class SalesOrdersItemPrintPermission(BasePermission):
+class SalesOrderItemPrintPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemPrintNeed(six.text_type(order_id))
-        super(SalesOrdersItemPrintPermission, self).__init__(need)
+        need = SalesOrderItemPrintNeed(six.text_type(order_id))
+        super(SalesOrderItemPrintPermission, self).__init__(need)
 
 
-class SalesOrdersItemAuditPermission(BasePermission):
+class SalesOrderItemAuditPermission(BasePermission):
     def __init__(self, order_id):
-        need = SalesOrdersItemAuditNeed(six.text_type(order_id))
-        super(SalesOrdersItemAuditPermission, self).__init__(need)
+        need = SalesOrderItemAuditNeed(six.text_type(order_id))
+        super(SalesOrderItemAuditPermission, self).__init__(need)
 
 
 # -------------------------------------------------------------
@@ -509,44 +509,44 @@ class DeliveryItemAuditPermission(BasePermission):
 
 # -------------------------------------------------------------
 # 采购订单明细操作权限（读取、更新、删除、打印、审核）
-BuyerOrdersItemNeed = partial(SectionActionItemNeed, 'buyer_orders')
-BuyerOrdersItemNeed.__doc__ = """A need with the section preset to `"buyer_orders"`."""
+BuyerOrderItemNeed = partial(SectionActionItemNeed, 'buyer_orders')
+BuyerOrderItemNeed.__doc__ = """A need with the section preset to `"buyer_orders"`."""
 
-BuyerOrdersItemGetNeed = partial(BuyerOrdersItemNeed, 'get')
-BuyerOrdersItemEditNeed = partial(BuyerOrdersItemNeed, 'edit')
-BuyerOrdersItemDelNeed = partial(BuyerOrdersItemNeed, 'del')
-BuyerOrdersItemPrintNeed = partial(BuyerOrdersItemNeed, 'print')
-BuyerOrdersItemAuditNeed = partial(BuyerOrdersItemNeed, 'audit')
+BuyerOrderItemGetNeed = partial(BuyerOrderItemNeed, 'get')
+BuyerOrderItemEditNeed = partial(BuyerOrderItemNeed, 'edit')
+BuyerOrderItemDelNeed = partial(BuyerOrderItemNeed, 'del')
+BuyerOrderItemPrintNeed = partial(BuyerOrderItemNeed, 'print')
+BuyerOrderItemAuditNeed = partial(BuyerOrderItemNeed, 'audit')
 
 
-class BuyerOrdersItemGetPermission(BasePermission):
+class BuyerOrderItemGetPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemGetNeed(six.text_type(order_id))
-        super(BuyerOrdersItemGetPermission, self).__init__(need)
+        need = BuyerOrderItemGetNeed(six.text_type(order_id))
+        super(BuyerOrderItemGetPermission, self).__init__(need)
 
 
-class BuyerOrdersItemEditPermission(BasePermission):
+class BuyerOrderItemEditPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemEditNeed(six.text_type(order_id))
-        super(BuyerOrdersItemEditPermission, self).__init__(need)
+        need = BuyerOrderItemEditNeed(six.text_type(order_id))
+        super(BuyerOrderItemEditPermission, self).__init__(need)
 
 
 class BuyerOrderItemDelPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemDelNeed(six.text_type(order_id))
+        need = BuyerOrderItemDelNeed(six.text_type(order_id))
         super(BuyerOrderItemDelPermission, self).__init__(need)
 
 
-class BuyerOrdersItemPrintPermission(BasePermission):
+class BuyerOrderItemPrintPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemPrintNeed(six.text_type(order_id))
-        super(BuyerOrdersItemPrintPermission, self).__init__(need)
+        need = BuyerOrderItemPrintNeed(six.text_type(order_id))
+        super(BuyerOrderItemPrintPermission, self).__init__(need)
 
 
-class BuyerOrdersItemAuditPermission(BasePermission):
+class BuyerOrderItemAuditPermission(BasePermission):
     def __init__(self, order_id):
-        need = BuyerOrdersItemAuditNeed(six.text_type(order_id))
-        super(BuyerOrdersItemAuditPermission, self).__init__(need)
+        need = BuyerOrderItemAuditNeed(six.text_type(order_id))
+        super(BuyerOrderItemAuditPermission, self).__init__(need)
 
 
 # -------------------------------------------------------------

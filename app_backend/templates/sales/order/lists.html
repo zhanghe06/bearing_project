@@ -123,6 +123,11 @@
                                                 <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="{{ url_for('sales_order.add', from_type='sales_order', from_id=info.id) }}">
+                                                <span class="glyphicon glyphicon-duplicate"></span> {{ _('Clone') }}
+                                            </a>
+                                        </li>
                                         <li role="separator" class="divider" style="margin: 0"></li>
                                         <li>
                                             <a href="{{ url_for('sales_order.preview', sales_order_id=info.id, next=request.path) }}"

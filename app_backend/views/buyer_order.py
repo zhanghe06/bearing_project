@@ -171,6 +171,51 @@ def add():
 
     # 进入创建页面
     if request.method == 'GET':
+
+        # 克隆单据
+        from_type = request.args.get('from_type')
+        from_id = request.args.get('from_id', type=int)
+        # 克隆单据 - 报价单
+        if from_type == 'buyer_order' and from_id:
+            buyer_order_id = from_id
+            buyer_order_info = get_buyer_order_row_by_id(buyer_order_id)
+            # 检查资源是否存在
+            if not buyer_order_info:
+                abort(404)
+            # 检查资源是否删除
+            if buyer_order_info.status_delete == STATUS_DEL_OK:
+                abort(410)
+
+            # 获取明细
+            buyer_order_items = get_buyer_order_items_rows(buyer_order_id=buyer_order_id)
+            # 表单赋值
+            form.uid.data = buyer_order_info.uid
+            form.supplier_cid.data = buyer_order_info.supplier_cid
+            form.supplier_contact_id.data = buyer_order_info.supplier_contact_id
+            form.type_tax.data = buyer_order_info.type_tax
+            form.amount_order.data = buyer_order_info.amount_order
+            while len(form.buyer_order_items) > 0:
+                form.buyer_order_items.pop_entry()
+            for buyer_order_item in buyer_order_items:
+                buyer_order_item_form = BuyerOrderItemsEditForm()
+                buyer_order_item_form.id = buyer_order_item.id
+                buyer_order_item_form.buyer_order_id = buyer_order_item.buyer_order_id
+                buyer_order_item_form.uid = buyer_order_item.uid
+                # buyer_order_item_form.supplier_cid = buyer_order_item.supplier_cid
+                # buyer_order_item_form.supplier_company_name = buyer_order_item.supplier_company_name
+                buyer_order_item_form.custom_production_brand = buyer_order_item.custom_production_brand
+                buyer_order_item_form.custom_production_model = buyer_order_item.custom_production_model
+                buyer_order_item_form.production_id = buyer_order_item.production_id
+                buyer_order_item_form.production_brand = buyer_order_item.production_brand
+                buyer_order_item_form.production_model = buyer_order_item.production_model
+                buyer_order_item_form.production_sku = buyer_order_item.production_sku
+                buyer_order_item_form.delivery_time = buyer_order_item.delivery_time
+                buyer_order_item_form.quantity = buyer_order_item.quantity
+                buyer_order_item_form.unit_price = buyer_order_item.unit_price
+                buyer_order_item_form.note = buyer_order_item.note
+                buyer_order_item_form.type_tax = buyer_order_item.type_tax
+                form.buyer_order_items.append_entry(buyer_order_item_form)
+
         # 渲染页面
         return render_template(
             template_name,
@@ -697,6 +742,69 @@ def ajax_delete():
         return jsonify(ajax_success_msg)
     else:
         ajax_failure_msg['msg'] = _('Del Failure')
+        return jsonify(ajax_failure_msg)
+
+
+@bp_buyer_order.route('/ajax/audit', methods=['GET', 'POST'])
+@login_required
+def ajax_audit():
+    """
+    订单审核
+    :return:
+    """
+    ajax_success_msg = AJAX_SUCCESS_MSG.copy()
+    ajax_failure_msg = AJAX_FAILURE_MSG.copy()
+
+    # 检查请求方法
+    if not (request.method == 'GET' and request.is_xhr):
+        ext_msg = _('Method Not Allowed')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查请求参数
+    buyer_order_id = request.args.get('buyer_order_id', 0, type=int)
+    audit_status = request.args.get('audit_status', 0, type=int)
+    if not buyer_order_id:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查删除权限
+    buyer_order_del_permission = BuyerOrderItemDelPermission(buyer_order_id)
+    if not buyer_order_del_permission.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    buyer_order_info = get_buyer_order_row_by_id(buyer_order_id)
+    # 检查资源是否存在
+    if not buyer_order_info:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查资源是否删除
+    if buyer_order_info.status_delete == STATUS_DEL_OK:
+        ext_msg = _('Already deleted')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查审核状态是否变化
+    if buyer_order_info.status_audit == audit_status:
+        ext_msg = _('Already audited')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    current_time = datetime.utcnow()
+    buyer_order_data = {
+        'status_audit': audit_status,
+        'audit_time': current_time,
+        'update_time': current_time,
+    }
+    result = edit_buyer_order(buyer_order_id, buyer_order_data)
+    if result:
+        ajax_success_msg['msg'] = _('Audit Success')
+        return jsonify(ajax_success_msg)
+    else:
+        ajax_failure_msg['msg'] = _('Audit Failure')
         return jsonify(ajax_failure_msg)
 
 

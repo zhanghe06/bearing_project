@@ -43,7 +43,7 @@ from app_backend.api.sales_order import get_sales_order_user_list_choices
 from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.forms.sales_order import SalesOrderSearchForm, SalesOrderAddForm, SalesOrderEditForm, SalesOrderItemEditForm
 from app_backend.models.bearing_project import SalesOrder
-from app_backend.permissions import permission_sales_orders_section_export, SalesOrdersItemDelPermission
+from app_backend.permissions import permission_sales_orders_section_export, SalesOrderItemDelPermission
 from app_backend.signals.sales_orders import signal_sales_orders_status_delete
 from app_common.maps.default import default_search_choice_option_int
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
@@ -116,7 +116,7 @@ def lists():
             # 检查删除权限
             permitted = True
             for order_id in order_ids:
-                sales_orders_item_del_permission = SalesOrdersItemDelPermission(order_id)
+                sales_orders_item_del_permission = SalesOrderItemDelPermission(order_id)
                 if not sales_orders_item_del_permission.can():
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
@@ -173,6 +173,51 @@ def add():
 
     # 进入创建页面
     if request.method == 'GET':
+
+        # 克隆单据
+        from_type = request.args.get('from_type')
+        from_id = request.args.get('from_id', type=int)
+        # 克隆单据 - 报价单
+        if from_type == 'sales_order' and from_id:
+            sales_order_id = from_id
+            sales_order_info = get_sales_order_row_by_id(sales_order_id)
+            # 检查资源是否存在
+            if not sales_order_info:
+                abort(404)
+            # 检查资源是否删除
+            if sales_order_info.status_delete == STATUS_DEL_OK:
+                abort(410)
+
+            # 获取明细
+            sales_order_items = get_sales_order_items_rows(sales_order_id=sales_order_id)
+            # 表单赋值
+            form.uid.data = sales_order_info.uid
+            form.customer_cid.data = sales_order_info.customer_cid
+            form.customer_contact_id.data = sales_order_info.customer_contact_id
+            form.delivery_way.data = sales_order_info.delivery_way
+            form.note.data = sales_order_info.note
+            form.amount_order.data = sales_order_info.amount_order
+            # form.quotation_items = quotation_items
+            while len(form.sales_order_items) > 0:
+                form.sales_order_items.pop_entry()
+            for sales_order_item in sales_order_items:
+                sales_order_item_form = SalesOrderItemEditForm()
+                sales_order_item_form.id = sales_order_item.id
+                sales_order_item_form.sales_order_id = sales_order_item.sales_order_id
+                sales_order_item_form.uid = sales_order_item.uid
+                sales_order_item_form.custom_production_brand = sales_order_item.custom_production_brand
+                sales_order_item_form.custom_production_model = sales_order_item.custom_production_model
+                sales_order_item_form.production_id = sales_order_item.production_id
+                sales_order_item_form.production_brand = sales_order_item.production_brand
+                sales_order_item_form.production_model = sales_order_item.production_model
+                sales_order_item_form.production_sku = sales_order_item.production_sku
+                sales_order_item_form.delivery_time = sales_order_item.delivery_time
+                sales_order_item_form.quantity = sales_order_item.quantity
+                sales_order_item_form.unit_price = sales_order_item.unit_price
+                sales_order_item_form.note = sales_order_item.note
+                sales_order_item_form.type_tax = sales_order_item.type_tax
+                form.sales_order_items.append_entry(sales_order_item_form)
+
         # 渲染页面
         return render_template(
             template_name,
@@ -659,7 +704,7 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
 
     # 检查删除权限
-    sales_orders_item_del_permission = SalesOrdersItemDelPermission(sales_order_id)
+    sales_orders_item_del_permission = SalesOrderItemDelPermission(sales_order_id)
     if not sales_orders_item_del_permission.can():
         ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
@@ -697,6 +742,69 @@ def ajax_delete():
         return jsonify(ajax_success_msg)
     else:
         ajax_failure_msg['msg'] = _('Del Failure')
+        return jsonify(ajax_failure_msg)
+
+
+@bp_sales_order.route('/ajax/audit', methods=['GET', 'POST'])
+@login_required
+def ajax_audit():
+    """
+    订单审核
+    :return:
+    """
+    ajax_success_msg = AJAX_SUCCESS_MSG.copy()
+    ajax_failure_msg = AJAX_FAILURE_MSG.copy()
+
+    # 检查请求方法
+    if not (request.method == 'GET' and request.is_xhr):
+        ext_msg = _('Method Not Allowed')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查请求参数
+    sales_order_id = request.args.get('sales_order_id', 0, type=int)
+    audit_status = request.args.get('audit_status', 0, type=int)
+    if not sales_order_id:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    # 检查删除权限
+    sales_order_del_permission = SalesOrderItemDelPermission(sales_order_id)
+    if not sales_order_del_permission.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    sales_order_info = get_sales_order_row_by_id(sales_order_id)
+    # 检查资源是否存在
+    if not sales_order_info:
+        ext_msg = _('ID does not exist')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查资源是否删除
+    if sales_order_info.status_delete == STATUS_DEL_OK:
+        ext_msg = _('Already deleted')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    # 检查审核状态是否变化
+    if sales_order_info.status_audit == audit_status:
+        ext_msg = _('Already audited')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
+    current_time = datetime.utcnow()
+    sales_order_data = {
+        'status_audit': audit_status,
+        'audit_time': current_time,
+        'update_time': current_time,
+    }
+    result = edit_sales_order(sales_order_id, sales_order_data)
+    if result:
+        ajax_success_msg['msg'] = _('Audit Success')
+        return jsonify(ajax_success_msg)
+    else:
+        ajax_failure_msg['msg'] = _('Audit Failure')
         return jsonify(ajax_failure_msg)
 
 

@@ -19,6 +19,7 @@
                     {{ form.customer_company_name(
                         class="form-control input-sm",
                         title=form.customer_cid.errors|join(', ') or form.customer_company_name.errors|join(', '),
+                        value=form.customer_cid.data|customer_company_name(''),
                         autocomplete="off"
                         ) }}
                     <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
@@ -33,6 +34,7 @@
                     {{ form.customer_contact_name(
                         class="form-control input-sm",
                         title=form.customer_contact_id.errors|join(', ') or form.customer_contact_name.errors|join(', '),
+                        value=form.customer_contact_id.data|customer_contact_name(''),
                         autocomplete="off"
                         )
                     }}

@@ -19,6 +19,7 @@
                     {{ form.supplier_company_name(
                         class="form-control input-sm",
                         title=form.supplier_cid.errors|join(', ') or form.supplier_company_name.errors|join(', '),
+                        value=form.supplier_cid.data|supplier_company_name(''),
                         autocomplete="off"
                         ) }}
                     <span class="input-group-addon glyphicon glyphicon-option-horizontal supplier_select_search_btn"
@@ -33,6 +34,7 @@
                     {{ form.supplier_contact_name(
                         class="form-control input-sm",
                         title=form.supplier_contact_id.errors|join(', ') or form.supplier_contact_name.errors|join(', '),
+                        value=form.supplier_contact_id.data|supplier_contact_name(''),
                         autocomplete="off"
                         )
                     }}

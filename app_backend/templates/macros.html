@@ -52,9 +52,9 @@
             <ul class="pagination">
                 <li>
                     {% if pagination.has_prev %}
-                        <button class="btn btn-default" name="page" value={{ pagination.prev_num }} aria-label="Previous">
+                        <button class="btn-sm btn-default" name="page" value={{ pagination.prev_num }} aria-label="Previous">
                     {% else %}
-                        <button class="btn btn-default" type="reset" aria-label="Previous">
+                        <button class="btn-sm btn-default" type="reset" aria-label="Previous">
                     {% endif %}
                     <span aria-hidden="true">&laquo;</span>
                     </button>
@@ -63,18 +63,18 @@
                     <li>
                     {% if page %}
                         {% if page == pagination.page %}
-                            <button class="btn btn-primary" name="page" value={{ page }} aria-label="Previous">{{ page }}</button>
+                            <button class="btn-sm btn-primary" name="page" value={{ page }} aria-label="Previous">{{ page }}</button>
                                 {% else %}
-                            <button class="btn btn-default" name="page" value={{ page }} aria-label="Previous">{{ page }}</button>
+                            <button class="btn-sm btn-default" name="page" value={{ page }} aria-label="Previous">{{ page }}</button>
                         {% endif %}
                     </li>
                     {% endif %}
                 {% endfor %}
                 <li>
                     {% if pagination.has_next %}
-                        <button class="btn btn-default" name="page" value={{ pagination.next_num }} aria-label="Next">
+                        <button class="btn-sm btn-default" name="page" value={{ pagination.next_num }} aria-label="Next">
                     {% else %}
-                        <button class="btn btn-default" type="reset" aria-label="Next">
+                        <button class="btn-sm btn-default" type="reset" aria-label="Next">
                     {% endif %}
                     <span aria-hidden="true">&raquo;</span>
                     </button>

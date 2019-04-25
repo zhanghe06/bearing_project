@@ -10,6 +10,6 @@ helm install --name kubeapps --namespace kubeapps bitnami/kubeapps
 ```
 
 
-```
 
-```
+Tiller Proxy: [https://github.com/kubeapps/kubeapps/tree/master/cmd/tiller-proxy](https://github.com/kubeapps/kubeapps/tree/master/cmd/tiller-proxy)
+
