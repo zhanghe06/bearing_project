@@ -559,7 +559,10 @@ def test_permission_role_administrator():
 
 @app.errorhandler(CSRFError)
 def handle_csrf_error(e):
-    return jsonify({'result': False, 'msg': e.description}), 400
+    if request.is_xhr:
+        return jsonify({'result': False, 'msg': e.description}), 400
+    else:
+        return redirect(request.args.get('next') or url_for('index'))
 
 
 @app.errorhandler(401)
@@ -601,6 +604,12 @@ def request_entity_too_large(error):
     return render_template('http_exception/413.html'), 413
 
 
+@app.errorhandler(423)
+def locked_requests(error):
+    flash(getattr(error, 'description', None) or getattr(error, 'message', None) or _('Locked'), 'warning')
+    return render_template('http_exception/423.html'), 423
+
+
 @app.errorhandler(429)
 def too_many_requests(error):
     flash(_('Too Many Requests'), 'warning')
@@ -612,12 +621,20 @@ def internal_server_error(error):
     # Redis 连接失败
     from redis import ConnectionError
     if isinstance(error, ConnectionError):
-        return jsonify({'error': error.message})
+        if request.is_xhr:
+            return jsonify({'error': error.message})
+        flash(getattr(error, 'description', None) or getattr(error, 'message', None) or _('Internal Server Error'),
+              'warning')
+        return render_template('http_exception/500.html'), 500
 
     # MariaDB 连接失败
     from sqlalchemy.exc import OperationalError
     if isinstance(error, OperationalError):
-        return jsonify({'error': error.message})
+        if request.is_xhr:
+            return jsonify({'error': error.message})
+        flash(getattr(error, 'description', None) or getattr(error, 'message', None) or _('Internal Server Error'),
+              'warning')
+        return render_template('http_exception/500.html'), 500
 
     flash(getattr(error, 'description', None) or getattr(error, 'message', None) or _('Internal Server Error'), 'warning')
     return render_template('http_exception/500.html'), 500

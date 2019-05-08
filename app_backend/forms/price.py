@@ -34,7 +34,7 @@ class PriceSearchForm(FlaskForm):
     搜索表单
     """
     def __init__(self, *args, **kwargs):
-        kwargs['csrf_enabled'] = False  # disable csrf
+        kwargs['csrf_enabled'] = True  # enable csrf
         FlaskForm.__init__(self, *args, **kwargs)
 
     cid = IntegerField(

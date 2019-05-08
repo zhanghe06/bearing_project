@@ -73,9 +73,9 @@
                         <th>{{ _('company name') }}<br/>{{ _('company address') }}</th>
                         <th>{{ _('company site') }}</th>
                         <th>{{ _('company tel') }}<br/>{{ _('company fax') }}</th>
-                        <th>{{ _('company type') }}</th>
-                        <th>所属销售</th>
-                        <th>{{ _('create time') }}<br/>{{ _('update time') }}</th>
+{#                        <th>{{ _('company type') }}</th>#}
+{#                        <th>所属销售</th>#}
+                        <th>{{ _('create time') }}</th>
                         <th>{{ _('operation') }}</th>
                     </tr>
                     </thead>
@@ -92,9 +92,9 @@
                             </td>
                             <td>{{ info.company_site }}</td>
                             <td>{{ info.company_tel }}<br/>{{ info.company_fax }}</td>
-                            <td>{{ info.company_type | type_company }}</td>
-                            <td>{{ info.owner_uid | user_name }}</td>
-                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}<br/>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}
+{#                            <td>{{ info.company_type | type_company }}</td>#}
+{#                            <td>{{ info.owner_uid | user_name }}</td>#}
+                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}
                             </td>
                             <td style="min-width: 8em;">
                                 <!-- Split button -->

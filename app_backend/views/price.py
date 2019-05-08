@@ -30,8 +30,16 @@ from flask_babel import gettext as _
 from flask_login import login_required
 
 from app_backend.api.quotation_items import get_quotation_items_pagination, get_quotation_items_rows
+from app_backend.api.enquiry_items import get_enquiry_items_pagination, get_enquiry_items_rows
+from app_backend.api.delivery_items import get_delivery_items_pagination, get_delivery_items_rows
+from app_backend.api.purchase_items import get_purchase_items_pagination, get_purchase_items_rows
 from app_backend.forms.price import PriceSearchForm
-from app_backend.models.bearing_project import QuotationItems
+from app_backend.models.bearing_project import (
+    QuotationItems,
+    EnquiryItems,
+    DeliveryItems,
+    PurchaseItems,
+)
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -81,8 +89,17 @@ def search():
     # form.uid.choices = get_quotation_user_list_choices()
     # app.logger.info('')
 
-    search_condition = [
+    search_condition_quotation = [
         QuotationItems.status_delete == STATUS_DEL_NO,
+    ]
+    search_condition_enquiry = [
+        EnquiryItems.status_delete == STATUS_DEL_NO,
+    ]
+    search_condition_delivery = [
+        DeliveryItems.status_delete == STATUS_DEL_NO,
+    ]
+    search_condition_purchase = [
+        PurchaseItems.status_delete == STATUS_DEL_NO,
     ]
     if request.method == 'POST':
         # 表单校验失败
@@ -93,35 +110,52 @@ def search():
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
             if form.cid.data and form.company_name.data:
-                search_condition.append(QuotationItems.enquiry_cid == form.cid.data)
+                search_condition_quotation.append(QuotationItems.customer_cid == form.cid.data)
+                search_condition_enquiry.append(EnquiryItems.supplier_cid == form.cid.data)
+                search_condition_delivery.append(DeliveryItems.customer_cid == form.cid.data)
+                search_condition_purchase.append(PurchaseItems.supplier_cid == form.cid.data)
             if form.production_model.data:
-                search_condition.append(QuotationItems.production_model.like('%%%s%%' % form.production_model.data))
+                search_condition_quotation.append(QuotationItems.production_model.like('%%%s%%' % form.production_model.data))
+                search_condition_enquiry.append(EnquiryItems.production_model.like('%%%s%%' % form.production_model.data))
+                search_condition_delivery.append(DeliveryItems.production_model.like('%%%s%%' % form.production_model.data))
+                search_condition_purchase.append(PurchaseItems.production_model.like('%%%s%%' % form.production_model.data))
             if form.start_create_time.data:
-                search_condition.append(QuotationItems.create_time >= form.start_create_time.data)
+                search_condition_quotation.append(QuotationItems.create_time >= form.start_create_time.data)
+                search_condition_enquiry.append(EnquiryItems.create_time >= form.start_create_time.data)
+                search_condition_delivery.append(DeliveryItems.create_time >= form.start_create_time.data)
+                search_condition_purchase.append(PurchaseItems.create_time >= form.start_create_time.data)
             if form.end_create_time.data:
-                search_condition.append(QuotationItems.create_time <= form.end_create_time.data)
+                search_condition_quotation.append(QuotationItems.create_time <= form.end_create_time.data)
+                search_condition_enquiry.append(EnquiryItems.create_time <= form.end_create_time.data)
+                search_condition_delivery.append(DeliveryItems.create_time <= form.end_create_time.data)
+                search_condition_purchase.append(PurchaseItems.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
-            # 检查导出权限
-            if not permission_quotation_section_export.can():
-                abort(403)
-            column_names = QuotationItems.__table__.columns.keys()
-            query_sets = get_quotation_items_rows(*search_condition)
-
-            return excel.make_response_from_query_sets(
-                query_sets=query_sets,
-                column_names=column_names,
-                file_type='csv',
-                file_name='%s.csv' % _('price lists')
-            )
+        # if form.op.data == 1:
+        #     # 检查导出权限
+        #     if not permission_quotation_section_export.can():
+        #         abort(403)
+        #     column_names = QuotationItems.__table__.columns.keys()
+        #     query_sets = get_quotation_items_rows(*search_condition_quotation)
+        # 
+        #     return excel.make_response_from_query_sets(
+        #         query_sets=query_sets,
+        #         column_names=column_names,
+        #         file_type='csv',
+        #         file_name='%s.csv' % _('price lists')
+        #     )
     # 翻页数据
-    pagination = get_quotation_items_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
+    pagination_quotation = get_quotation_items_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition_quotation)
+    pagination_enquiry = get_enquiry_items_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition_enquiry)
+    pagination_delivery = get_delivery_items_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition_delivery)
+    pagination_purchase = get_purchase_items_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition_purchase)
 
     # 渲染模板
     return render_template(
         template_name,
         form=form,
-        pagination=pagination,
+        pagination_quotation=pagination_quotation,
+        pagination_enquiry=pagination_enquiry,
+        pagination_delivery=pagination_delivery,
+        pagination_purchase=pagination_purchase,
         **document_info
     )
-

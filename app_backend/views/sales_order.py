@@ -32,6 +32,7 @@ from app_backend import (
     app,
     excel,
 )
+from werkzeug import exceptions
 
 # 定义蓝图
 from app_backend.api.customer import get_customer_row_by_id
@@ -46,6 +47,7 @@ from app_backend.models.bearing_project import SalesOrder
 from app_backend.permissions import permission_sales_orders_section_export, SalesOrderItemDelPermission
 from app_backend.signals.sales_orders import signal_sales_orders_status_delete
 from app_common.maps.default import default_search_choice_option_int
+from app_common.maps.status_audit import STATUS_AUDIT_OK
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
 
 from app_common.tools.date_time import time_utc_to_local, time_local_to_utc
@@ -353,6 +355,11 @@ def edit(sales_order_id):
     # 检查资源是否删除
     if sales_order_info.status_delete == STATUS_DEL_OK:
         abort(410)
+    # 检查资源是否核准
+    if sales_order_info.status_audit == STATUS_AUDIT_OK:
+        resource = _('Order')
+        abort(exceptions.Locked.code,
+              _('The %(resource)s has been approved, it cannot be modified', resource=resource))
 
     template_name = 'sales/order/edit.html'
 

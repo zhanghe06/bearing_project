@@ -8,21 +8,25 @@
         </ol>
 
         <!--搜索-->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingSearch">
-                <h4 class="panel-title panel-title-sm">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
-                       aria-expanded="true" aria-controls="collapseSearch">
-                        {{ _('Search toolbar') }}
-                        <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right" style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip" data-placement="left"></span>
-                    </a>
-                </h4>
-            </div>
-            <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="headingSearch">
-                <div class="panel-body">
-                    <form class="form-inline" method="post">
-                        {{ form.csrf_token }}
+        <form class="form-inline" method="post">
+            {{ form.csrf_token }}
+            <div class="panel panel-default">
+
+                <div class="panel-heading" role="tab" id="headingSearch">
+                    <h4 class="panel-title panel-title-sm">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                           aria-expanded="true" aria-controls="collapseSearch">
+                            {{ _('Search toolbar') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="headingSearch">
+                    <div class="panel-body">
+
 
                         <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
                             {{ form.cid() }}
@@ -32,8 +36,7 @@
                                     class="form-control input-sm",
                                     title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
                                     autocomplete="off"
-                                    )
-                                }}
+                                    ) }}
                                 <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
                                       style="top: 0; cursor:pointer;" data-toggle="modal"
                                       data-target="#customer_select_modal"></span>
@@ -54,159 +57,297 @@
 
                         <button type="submit" class="btn btn-primary btn-sm" name="op"
                                 value="0">{{ _('Search') }}</button>
-                        <button type="submit" class="btn btn-primary btn-sm" name="op"
-                                value="1">{{ _('Export') }}</button>
-                    </form>
+                        {#                        <button type="submit" class="btn btn-primary btn-sm" name="op"#}
+                        {#                                value="1">{{ _('Export') }}</button>#}
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!--报价明细-->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="quotationItemsHead">
-                <h4 class="panel-title panel-title-sm">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#quotationItems"
-                       aria-expanded="true" aria-controls="quotationItems">
-                        {{ _('quotation items') }}
-                        <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right" style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip" data-placement="left"></span>
-                    </a>
-                </h4>
-            </div>
-            <div id="quotationItems" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="quotationItemsHead">
-                <div class="panel-body">
-                    <div class="table-responsive">
-                    {#         <table class="table table-striped">#}
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-        {#                    <th>#}
-        {#                        <label>#}
-        {#                            <input class="select_all" name="quotation_item_ids" title="{{- _('Select All') -}}"#}
-        {#                                   rel="tooltip" type="checkbox" value=""/>#}
-        {#                            {{- _('Select All') -}}#}
-        {#                        </label>#}
-        {#                    </th>#}
-                            <th>{{ _('quotation code') }}</th>
-                            <th>{{ _('customer company') }}</th>
-                            <th class="bg-warning">{{ _('enquiry production model') }}</th>
-                            <th>{{ _('production brand') }}</th>
-                            <th>{{ _('production model') }}</th>
-                            <th class="text-right">{{ _('quantity') }}</th>
-                            <th>{{ _('production sku') }}</th>
-                            <th class="text-right">{{ _('unit price') }}</th>
-                            <th>{{ _('delivery time') }}</th>
-                            <th>{{ _('note') }}</th>
-                            <th>{{ _('create time') }}</th>
-        {#                    <th>{{ _('update time') }}</th>#}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for info in pagination.items %}
-                            <tr class="text-muted item">
-        {#                        <td>#}
-        {#                            <label>#}
-        {#                                <input class="select_item" name="quotation_item_id" title="{{ _('Select') }}"#}
-        {#                                       rel="tooltip" type="checkbox" value="{{ info.id }}"/>#}
-        {#                            </label>#}
-        {#                        </td>#}
-                                <td><a href="{{ url_for('quotation.info', quotation_id=info.quotation_id) }}" target="_blank">{{ g.QUOTATION_PREFIX }}{{ moment(info.quotation_id | quotation_create_time).format('YYMMDDHHmmss') }}</a></td>
-                                <td>{{ info.customer_cid | customer_company_name }}</td>
-                                <td class="bg-warning">{{ info.enquiry_production_model }}</td>
-                                <td>{{ info.production_brand }}</td>
-                                <td>{{ info.production_model }}</td>
-                                <td class="text-right">{{ '{:,}'.format(info.quantity) }}</td>
-                                <td>{{ info.production_sku }}</td>
-                                <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
-                                <td>{{ info.delivery_time }}</td>
-                                <td>{{ info.note }}</td>
-                                <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm') }}</td>
-        {#                        <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    {# 翻页 #}
-                    {% from "macros.html" import render_pagination_post %}
-                    {{ render_pagination_post(pagination, 'quotation_item.lists') }}
+            <!--报价明细-->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="quotationItemsHead">
+                    <h4 class="panel-title panel-title-sm">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#quotationItems"
+                           aria-expanded="true" aria-controls="quotationItems">
+                            {{ _('quotation items') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
                 </div>
+                <div id="quotationItems" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="quotationItemsHead">
+                    <div class="panel-body">
+                    {% if pagination_quotation.items %}
+                        <div class="table-responsive">
+                            {#         <table class="table table-striped">#}
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>{{ _('quotation code') }}</th>
+                                    <th>{{ _('customer company') }}</th>
+                                    <th class="bg-warning">{{ _('enquiry production model') }}</th>
+                                    <th>{{ _('production brand') }}</th>
+                                    <th>{{ _('production model') }}</th>
+                                    <th class="text-right">{{ _('quantity') }}</th>
+                                    <th>{{ _('production sku') }}</th>
+                                    <th class="text-right">{{ _('unit price') }}</th>
+                                    <th>{{ _('delivery time') }}</th>
+                                    <th>{{ _('note') }}</th>
+                                    <th>{{ _('create time') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for info in pagination_quotation.items %}
+                                    <tr class="text-muted item">
+                                        <td><a href="{{ url_for('quotation.info', quotation_id=info.quotation_id) }}"
+                                               target="_blank">
+                                            {{ g.QUOTATION_PREFIX }}{{ moment(info.quotation_id | quotation_create_time).format('YYMMDDHHmmss') }}</a>
+                                        </td>
+                                        <td>{{ info.customer_cid | customer_company_name }}</td>
+                                        <td class="bg-warning">{{ info.enquiry_production_model }}</td>
+                                        <td>{{ info.production_brand }}</td>
+                                        <td>{{ info.production_model }}</td>
+                                        <td class="text-right">{{ '{:,}'.format(info.quantity) }}</td>
+                                        <td>{{ info.production_sku }}</td>
+                                        <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
+                                        <td>{{ info.delivery_time }}</td>
+                                        <td>{{ info.note }}</td>
+                                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {# 翻页 #}
+                            {% from "macros.html" import render_pagination_post %}
+                            {{ render_pagination_post(pagination_quotation, 'price.search') }}
+                        </div>
+                    {% else %}
+                        暂无
+                    {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!--销售明细-->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="ordersSalesItemsHead">
-                <h4 class="panel-title panel-title-sm">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#ordersSalesItems"
-                       aria-expanded="true" aria-controls="ordersSalesItems">
-                        {{ _('sales orders items') }}
-                        <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right" style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip" data-placement="left"></span>
-                    </a>
-                </h4>
-            </div>
-            <div id="ordersSalesItems" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="ordersSalesItemsHead">
-                <div class="panel-body">
-                    暂无
+            <!--询价明细-->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="enquiryItemsHead">
+                    <h4 class="panel-title panel-title-sm">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#enquiryItems"
+                           aria-expanded="true" aria-controls="enquiryItems">
+                            {{ _('enquiry items') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="enquiryItems" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="enquiryItemsHead">
+                    <div class="panel-body">
+                    {% if pagination_enquiry.items %}
+                        <div class="table-responsive">
+                            {#         <table class="table table-striped">#}
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>{{ _('enquiry code') }}</th>
+                                    <th>{{ _('customer company') }}</th>
+                                    <th class="bg-warning">{{ _('enquiry production model') }}</th>
+                                    <th>{{ _('production brand') }}</th>
+                                    <th>{{ _('production model') }}</th>
+                                    <th class="text-right">{{ _('quantity') }}</th>
+                                    <th>{{ _('production sku') }}</th>
+                                    <th class="text-right">{{ _('unit price') }}</th>
+                                    <th>{{ _('delivery time') }}</th>
+                                    <th>{{ _('note') }}</th>
+                                    <th>{{ _('create time') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for info in pagination_enquiry.items %}
+                                    <tr class="text-muted item">
+                                        <td><a href="{{ url_for('enquiry.info', enquiry_id=info.enquiry_id) }}"
+                                               target="_blank">
+                                            {{ g.ENQUIRIES_PREFIX }}{{ moment(info.enquiry_id | enquiry_create_time).format('YYMMDDHHmmss') }}</a>
+                                        </td>
+                                        <td>{{ info.supplier_cid | supplier_company_name }}</td>
+                                        <td class="bg-warning">{{ info.enquiry_production_model }}</td>
+                                        <td>{{ info.production_brand }}</td>
+                                        <td>{{ info.production_model }}</td>
+                                        <td class="text-right">{{ '{:,}'.format(info.quantity) }}</td>
+                                        <td>{{ info.production_sku }}</td>
+                                        <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
+                                        <td>{{ info.delivery_time }}</td>
+                                        <td>{{ info.note }}</td>
+                                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {# 翻页 #}
+                            {% from "macros.html" import render_pagination_post %}
+                            {{ render_pagination_post(pagination_enquiry, 'price.search') }}
+                        </div>
+                    {% else %}
+                        暂无
+                    {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-        <!--采购明细-->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="ordersBuyerItemsHead">
-                <h4 class="panel-title panel-title-sm">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#ordersBuyerItems"
-                       aria-expanded="true" aria-controls="ordersBuyerItems">
-                        {{ _('buyer orders items') }}
-                        <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right" style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip" data-placement="left"></span>
-                    </a>
-                </h4>
-            </div>
-            <div id="ordersBuyerItems" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="ordersBuyerItemsHead">
-                <div class="panel-body">
-                    暂无
-                </div>
-            </div>
-        </div>
-        <!--询价明细-->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="enquiryItemsHead">
-                <h4 class="panel-title panel-title-sm">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#enquiryItems"
-                       aria-expanded="true" aria-controls="enquiryItems">
-                        {{ _('enquiry items') }}
-                        <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right" style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip" data-placement="left"></span>
-                    </a>
-                </h4>
-            </div>
-            <div id="enquiryItems" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="enquiryItemsHead">
-                <div class="panel-body">
-                    暂无
-                </div>
-            </div>
-        </div>
-        <!--推荐型号-->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="recommendedProductionsHead">
-                <h4 class="panel-title panel-title-sm">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#recommendedProductions"
-                       aria-expanded="true" aria-controls="recommendedProductions">
-                        {{ _('recommended productions') }}
-                        <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right" style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip" data-placement="left"></span>
-                    </a>
-                </h4>
-            </div>
-            <div id="recommendedProductions" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="recommendedProductionsHead">
-                <div class="panel-body">
-                    暂无
-                </div>
-            </div>
-        </div>
 
+            <!--销售明细-->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="deliveryItemsHead">
+                    <h4 class="panel-title panel-title-sm">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#deliveryItems"
+                           aria-expanded="true" aria-controls="deliveryItems">
+                            {{ _('sales orders items') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="deliveryItems" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="deliveryItemsHead">
+                    <div class="panel-body">
+                    {% if pagination_delivery.items %}
+                        <div class="table-responsive">
+                            {#         <table class="table table-striped">#}
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>{{ _('delivery code') }}</th>
+                                    <th>{{ _('customer company') }}</th>
+                                    <th>{{ _('production brand') }}</th>
+                                    <th>{{ _('production model') }}</th>
+                                    <th class="text-right">{{ _('quantity') }}</th>
+                                    <th>{{ _('production sku') }}</th>
+                                    <th class="text-right">{{ _('unit price') }}</th>
+                                    <th>{{ _('delivery time') }}</th>
+                                    <th>{{ _('note') }}</th>
+                                    <th>{{ _('create time') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for info in pagination_delivery.items %}
+                                    <tr class="text-muted item">
+                                        <td><a href="{{ url_for('delivery.info', delivery_id=info.delivery_id) }}"
+                                               target="_blank">
+                                            {{ g.DELIVERY_PREFIX }}{{ moment(info.delivery_id | delivery_create_time).format('YYMMDDHHmmss') }}</a>
+                                        </td>
+                                        <td>{{ info.customer_cid | customer_company_name }}</td>
+                                        <td>{{ info.production_brand }}</td>
+                                        <td>{{ info.production_model }}</td>
+                                        <td class="text-right">{{ '{:,}'.format(info.quantity) }}</td>
+                                        <td>{{ info.production_sku }}</td>
+                                        <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
+                                        <td>{{ info.delivery_time }}</td>
+                                        <td>{{ info.note }}</td>
+                                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {# 翻页 #}
+                            {% from "macros.html" import render_pagination_post %}
+                            {{ render_pagination_post(pagination_delivery, 'price.search') }}
+                        </div>
+                    {% else %}
+                        暂无
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!--采购明细-->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="purchaseItemsHead">
+                    <h4 class="panel-title panel-title-sm">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#purchaseItems"
+                           aria-expanded="true" aria-controls="purchaseItems">
+                            {{ _('buyer orders items') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="purchaseItems" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="purchaseItemsHead">
+                    <div class="panel-body">
+                    {% if pagination_purchase.items %}
+                        <div class="table-responsive">
+                            {#         <table class="table table-striped">#}
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>{{ _('purchase code') }}</th>
+                                    <th>{{ _('supplier company') }}</th>
+                                    <th>{{ _('production brand') }}</th>
+                                    <th>{{ _('production model') }}</th>
+                                    <th class="text-right">{{ _('quantity') }}</th>
+                                    <th>{{ _('production sku') }}</th>
+                                    <th class="text-right">{{ _('unit price') }}</th>
+                                    <th>{{ _('delivery time') }}</th>
+                                    <th>{{ _('note') }}</th>
+                                    <th>{{ _('create time') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for info in pagination_purchase.items %}
+                                    <tr class="text-muted item">
+                                        <td><a href="{{ url_for('purchase.info', purchase_id=info.purchase_id) }}"
+                                               target="_blank">
+                                            {{ g.PURCHASE_PREFIX }}{{ moment(info.purchase_id | purchase_create_time).format('YYMMDDHHmmss') }}</a>
+                                        </td>
+                                        <td>{{ info.supplier_cid | supplier_company_name }}</td>
+                                        <td>{{ info.production_brand }}</td>
+                                        <td>{{ info.production_model }}</td>
+                                        <td class="text-right">{{ '{:,}'.format(info.quantity) }}</td>
+                                        <td>{{ info.production_sku }}</td>
+                                        <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
+                                        <td>{{ info.delivery_time }}</td>
+                                        <td>{{ info.note }}</td>
+                                        <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {# 翻页 #}
+                            {% from "macros.html" import render_pagination_post %}
+                            {{ render_pagination_post(pagination_purchase, 'price.search') }}
+                        </div>
+                    {% else %}
+                        暂无
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!--推荐型号-->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="recommendedProductionsHead">
+                    <h4 class="panel-title panel-title-sm">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#recommendedProductions"
+                           aria-expanded="true" aria-controls="recommendedProductions">
+                            {{ _('recommended productions') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="recommendedProductions" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="recommendedProductionsHead">
+                    <div class="panel-body">
+                        暂无
+                    </div>
+                </div>
+            </div>
+        </form>
 
     </div>
 
@@ -216,7 +357,7 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- 客户搜索 -->
-{% include "modal/customer_select_js.html" %}
+    <!-- 客户搜索 -->
+    {% include "modal/customer_select_js.html" %}
 
 {% endblock %}

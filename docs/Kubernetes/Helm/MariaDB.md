@@ -44,3 +44,8 @@ To upgrade this helm chart:
       ROOT_PASSWORD=$(kubectl get secret --namespace default my-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 --decode)
       helm upgrade my-mariadb stable/mariadb --set rootUser.password=$ROOT_PASSWORD
 ```
+
+开启外部访问
+```bash
+kubectl port-forward --namespace default svc/my-mariadb 3366:3306 &
+```

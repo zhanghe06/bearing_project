@@ -32,6 +32,8 @@ from app_backend import (
     app,
     excel,
 )
+from werkzeug import exceptions
+
 from app_backend.api.rack import get_rack_choices
 from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
@@ -336,6 +338,11 @@ def edit(purchase_id):
     # 检查资源是否删除
     if purchase_info.status_delete == STATUS_DEL_OK:
         abort(410)
+    # 检查资源是否核准
+    if purchase_info.status_audit == STATUS_AUDIT_OK:
+        resource = _('Purchase')
+        abort(exceptions.Locked.code,
+              _('The %(resource)s has been approved, it cannot be modified', resource=resource))
 
     template_name = 'purchase/edit.html'
 

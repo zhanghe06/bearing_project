@@ -33,6 +33,8 @@ from app_backend import (
     app,
     excel,
 )
+from werkzeug import exceptions
+
 from app_backend.api.customer import get_customer_row_by_id
 from app_backend.api.customer_contact import get_customer_contact_row_by_id
 from app_backend.api.rack import get_rack_choices
@@ -344,6 +346,11 @@ def edit(delivery_id):
     # 检查资源是否删除
     if delivery_info.status_delete == STATUS_DEL_OK:
         abort(410)
+    # 检查资源是否核准
+    if delivery_info.status_audit == STATUS_AUDIT_OK:
+        resource = _('Delivery')
+        abort(exceptions.Locked.code,
+              _('The %(resource)s has been approved, it cannot be modified', resource=resource))
 
     template_name = 'delivery/edit.html'
 

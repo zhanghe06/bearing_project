@@ -15,7 +15,9 @@ import json
 from app_backend import app
 from app_backend.api.customer import get_customer_row_by_id, count_customer
 from app_backend.api.customer_contact import get_customer_contact_row_by_id
+from app_backend.api.delivery import get_delivery_row_by_id
 from app_backend.api.enquiry import get_enquiry_row_by_id
+from app_backend.api.purchase import get_purchase_row_by_id
 from app_backend.api.quotation import get_quotation_row_by_id, count_quotation
 from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
@@ -31,6 +33,7 @@ from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.maps.type_auth import TYPE_AUTH_DICT
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 from app_common.maps.type_role import TYPE_ROLE_DICT
+from app_common.maps.type_tax import TYPE_TAX_DICT
 from app_common.maps.status_audit import STATUS_AUDIT_DICT
 from app_common.maps.status_order import STATUS_ORDER_DICT
 from app_backend.clients.client_redis import redis_client
@@ -187,6 +190,28 @@ def filter_enquiry_create_time(enquiry_id):
     return enquiry_info.create_time if enquiry_info else None
 
 
+@app.template_filter('delivery_create_time')
+def filter_delivery_create_time(delivery_id):
+    """
+    销货创建时间
+    :param delivery_id:
+    :return:
+    """
+    delivery_info = get_delivery_row_by_id(delivery_id)
+    return delivery_info.create_time if delivery_info else None
+
+
+@app.template_filter('purchase_create_time')
+def filter_purchase_create_time(purchase_id):
+    """
+    询价创建时间
+    :param purchase_id:
+    :return:
+    """
+    purchase_info = get_purchase_row_by_id(purchase_id)
+    return purchase_info.create_time if purchase_info else None
+
+
 @app.template_filter('type_auth')
 def filter_type_auth(type_auth_id):
     """
@@ -215,6 +240,16 @@ def filter_type_role(role_id):
     :return:
     """
     return TYPE_ROLE_DICT.get(role_id, '')
+
+
+@app.template_filter('type_tax')
+def filter_type_tax(type_tax_id):
+    """
+    含税类型
+    :param type_tax_id:
+    :return:
+    """
+    return TYPE_TAX_DICT.get(type_tax_id, '')
 
 
 @app.template_filter('status_audit')

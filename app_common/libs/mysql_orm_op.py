@@ -284,7 +284,7 @@ class DbInstance(object):
         return model_class.query \
             .filter(*args) \
             .filter_by(**kwargs) \
-            .order_by(inspect(model_class).primary_key[0].desc()) \
+            .order_by(model_class.create_time.desc()) \
             .paginate(page, per_page, False)
 
     def delete_table(self, model_class):
