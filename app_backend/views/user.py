@@ -48,7 +48,8 @@ from app_backend.forms.user import (
     UserEditForm,
 )
 from app_backend.models.bearing_project import User
-from app_backend.permissions import (
+from app_backend.permissions import permission_role_administrator
+from app_backend.permissions.user import (
     permission_user_section_add,
     permission_user_section_search,
     permission_user_section_export,
@@ -56,7 +57,7 @@ from app_backend.permissions import (
     UserItemGetPermission,
     UserItemEditPermission,
     UserItemDelPermission,
-    permission_role_administrator)
+)
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,

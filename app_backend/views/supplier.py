@@ -40,7 +40,7 @@ from app_backend.api.supplier import get_supplier_rows, edit_supplier, get_suppl
 from app_backend.api.user import get_user_rows, get_user_choices
 from app_backend.forms.supplier import SupplierSearchForm, SupplierEditForm, SupplierAddForm
 from app_backend.models.bearing_project import Supplier
-from app_backend.permissions import permission_supplier_section_export, SupplierItemDelPermission, \
+from app_backend.permissions.supplier import permission_supplier_section_export, SupplierItemDelPermission, \
     permission_supplier_section_search, SupplierItemGetPermission, permission_supplier_section_stats
 from app_backend.signals.supplier import signal_supplier_status_delete
 from app_common.maps.default import default_search_choice_option_int, default_search_choices_int

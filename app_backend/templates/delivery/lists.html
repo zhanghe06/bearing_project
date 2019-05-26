@@ -70,7 +70,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th style="min-width: 4em;">
+                        <th>
                             <label class="select_all_label">
                                 <input class="select_all" name="delivery_ids" title="{{- _('Select All') -}}"
                                        rel="tooltip" type="checkbox" value=""/>
@@ -101,7 +101,7 @@
                             <td>{{ info.uid | user_name }}</td>
                             <td>{{ info.customer_cid | customer_company_name }}</td>
                             <td class="text-right">{{ '{:,}'.format(info.amount_delivery) }}</td>
-                            <td style="max-width: 12em;">{{ info.note }}</td>
+                            <td>{{ info.note }}</td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
 {#                            <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}
                             <td>{{ info.status_audit | status_audit }}</td>

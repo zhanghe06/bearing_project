@@ -61,7 +61,7 @@ from app_common.maps.status_audit import (
 )
 
 from app_backend.models.bearing_project import Delivery
-from app_backend.permissions import (
+from app_backend.permissions.sales_delivery import (
     permission_delivery_section_add,
     permission_delivery_section_search,
     permission_delivery_section_export,

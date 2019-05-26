@@ -9,7 +9,29 @@ Get Docker CE for CentOS
 # docker -v
 # docker ps
 ```
-参考: https://docs.docker.com/install/linux/docker-ce/centos/
+参考: [https://docs.docker.com/install/linux/docker-ce/centos/](https://docs.docker.com/install/linux/docker-ce/centos/)
+
+Get Docker CE for Ubuntu
+```
+# apt-get update
+# apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+# apt-key fingerprint 0EBFCD88
+# add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+# apt-get update
+# apt-get install docker-ce docker-ce-cli containerd.io
+# docker -v
+# docker ps
+```
+参考: [https://docs.docker.com/install/linux/docker-ce/centos/](https://docs.docker.com/install/linux/docker-ce/centos/)
 
 
 Docker 中国官方镜像加速 registry mirror [https://registry.docker-cn.com](https://registry.docker-cn.com)

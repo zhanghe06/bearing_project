@@ -47,13 +47,13 @@ from app_backend.forms.production import (
     ProductionEditForm,
 )
 from app_backend.models.bearing_project import Catalogue
-from app_backend.permissions import (
-    permission_catalogue_section_add,
-    permission_catalogue_section_search,
-    permission_catalogue_section_export,
-    permission_catalogue_section_stats,
-    permission_role_administrator,
-)
+# from app_backend.permissions import (
+#     permission_catalogue_section_add,
+#     permission_catalogue_section_search,
+#     permission_catalogue_section_export,
+#     permission_catalogue_section_stats,
+#     permission_role_administrator,
+# )
 from app_common.maps.default import default_search_choices_str, default_search_choice_option_str
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -81,7 +81,7 @@ def get_production_brand_choices():
 @bp_catalogue.route('/lists.html', methods=['GET', 'POST'])
 @bp_catalogue.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
-@permission_production_section_search.require(http_exception=403)
+# @permission_production_section_search.require(http_exception=403)
 def lists(page=1):
     """
     产品列表

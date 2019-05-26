@@ -55,7 +55,7 @@ from app_common.maps.status_delete import (
     STATUS_DEL_NO)
 
 from app_backend.models.bearing_project import Purchase
-from app_backend.permissions import (
+from app_backend.permissions.buyer_purchase import (
     permission_purchase_section_add,
     permission_purchase_section_search,
     permission_purchase_section_export,

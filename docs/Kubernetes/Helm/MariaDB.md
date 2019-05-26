@@ -49,3 +49,50 @@ To upgrade this helm chart:
 ```bash
 kubectl port-forward --namespace default svc/my-mariadb 3366:3306 &
 ```
+
+## 说明
+
+主备复制架构，其中备库不对用户开放，不允许用户直接访问
+
+
+## 默认配置
+```
+[mysqld]
+skip-name-resolve
+explicit_defaults_for_timestamp
+basedir=/opt/bitnami/mariadb
+port=3306
+socket=/opt/bitnami/mariadb/tmp/mysql.sock
+tmpdir=/opt/bitnami/mariadb/tmp
+max_allowed_packet=16M
+bind-address=0.0.0.0
+pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+log-error=/opt/bitnami/mariadb/logs/mysqld.log
+character-set-server=UTF8
+collation-server=utf8_general_ci
+
+[client]
+port=3306
+socket=/opt/bitnami/mariadb/tmp/mysql.sock
+default-character-set=UTF8
+
+[manager]
+port=3306
+socket=/opt/bitnami/mariadb/tmp/mysql.sock
+pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+```
+
+## 扩展配置
+```
+slow_querry_log=on              # 慢查询
+
+log_bin=/log/mysql/mysql-bin    # 二进制日志
+binlog_format=mixed             # 二进制日志记录的格式
+max_binlog_size=1073741824      # 单个二进制日志文件的最大体积，默认1G
+sync_binlog=1|0                 # 设定是否启动二进制日志同步功能，1是实时写入（遇到commit时）
+```
+
+## RDS 功能
+
+1、模板列表、模板详情、模板创建、模板删除
+2、实例列表、实例详情、实例创建、实例删除

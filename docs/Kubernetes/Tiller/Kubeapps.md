@@ -73,3 +73,20 @@ type the token
 
 ## Step 4: Deploy WordPress
 
+
+## Using a Private Repository with Kubeapps
+
+[https://github.com/kubeapps/kubeapps/blob/master/docs/user/private-app-repository.md](https://github.com/kubeapps/kubeapps/blob/master/docs/user/private-app-repository.md)
+
+Configure the repository in Kubeapps
+```
+Configuration > App Repositories
+Name: <release_name>
+URL: http://<release_name>-chartmuseum.<namespace>:8080
+```
+
+例如：
+```
+Name: my-chartmuseum
+URL: http://my-chartmuseum-chartmuseum.default:8080
+```

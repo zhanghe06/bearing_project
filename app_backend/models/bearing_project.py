@@ -344,6 +344,26 @@ class EnquiryItems(Base):
     update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
+class Futures(Base):
+    __tablename__ = 'futures'
+    __table_args__ = (
+        Index('production_brand', 'production_brand', 'production_model', unique=True),
+    )
+
+    id = Column(Integer, primary_key=True)
+    production_id = Column(Integer, nullable=False, index=True)
+    production_brand = Column(String(16), nullable=False, server_default=text("''"))
+    production_model = Column(String(32), nullable=False, server_default=text("''"))
+    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
+    currency = Column(String(3), nullable=False, server_default=text("'CNY'"))
+    req_date = Column(Date, nullable=False, server_default=text("'0000-00-00'"))
+    acc_date = Column(Date, nullable=False, server_default=text("'0000-00-00'"))
+    status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
+    delete_time = Column(DateTime)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
 class Inventory(Base):
     __tablename__ = 'inventory'
 

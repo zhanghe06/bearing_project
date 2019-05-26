@@ -62,7 +62,7 @@ from app_backend.forms.supplier_contact import (
     SupplierContactEditForm,
     SupplierContactItemEditForm)
 from app_backend.models.bearing_project import Supplier, SupplierContact
-from app_backend.permissions import (
+from app_backend.permissions.supplier import (
     permission_supplier_section_add,
     permission_supplier_section_search,
     permission_supplier_section_export,

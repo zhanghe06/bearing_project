@@ -51,7 +51,7 @@ from app_backend.forms.customer import (
     CustomerEditForm,
 )
 from app_backend.models.bearing_project import Customer
-from app_backend.permissions import (
+from app_backend.permissions.customer import (
     permission_customer_section_add,
     permission_customer_section_search,
     permission_customer_section_export,

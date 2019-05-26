@@ -52,12 +52,12 @@ from app_backend.forms.production_sensitive import (
 )
 from app_backend.forms.production import ProductionSelectForm
 from app_backend.models.bearing_project import ProductionSensitive
-from app_backend.permissions import (
+from app_backend.permissions import permission_role_administrator
+from app_backend.permissions.production import (
     permission_production_section_add,
     permission_production_section_search,
     permission_production_section_export,
     permission_production_section_stats,
-    permission_role_administrator,
 )
 from app_common.maps.default import default_search_choices_str, default_search_choice_option_str
 from app_common.maps.status_delete import (

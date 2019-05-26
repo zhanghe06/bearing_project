@@ -44,7 +44,7 @@ from app_backend.api.sales_order import get_sales_order_user_list_choices
 from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.forms.sales_order import SalesOrderSearchForm, SalesOrderAddForm, SalesOrderEditForm, SalesOrderItemEditForm
 from app_backend.models.bearing_project import SalesOrder
-from app_backend.permissions import permission_sales_orders_section_export, SalesOrderItemDelPermission
+from app_backend.permissions.sales_order import permission_sales_order_section_export, SalesOrderItemDelPermission
 from app_backend.signals.sales_orders import signal_sales_orders_status_delete
 from app_common.maps.default import default_search_choice_option_int
 from app_common.maps.status_audit import STATUS_AUDIT_OK
@@ -101,7 +101,7 @@ def lists():
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
-            if not permission_sales_orders_section_export.can():
+            if not permission_sales_order_section_export.can():
                 abort(403)
             column_names = SalesOrder.__table__.columns.keys()
             query_sets = get_sales_order_rows(*search_condition)

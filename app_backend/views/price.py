@@ -48,7 +48,8 @@ from app_common.maps.type_company import TYPE_COMPANY_CHOICES
 from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
 )
-from app_backend.permissions import permission_customer_section_search, permission_quotation_section_export
+from app_backend.permissions.customer import permission_customer_section_search
+from app_backend.permissions.quotation import permission_quotation_section_export
 
 # 定义蓝图
 bp_price = Blueprint('price', __name__, url_prefix='/price')

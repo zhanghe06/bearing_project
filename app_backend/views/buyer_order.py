@@ -43,7 +43,7 @@ from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.forms.buyer_order import BuyerOrderSearchForm, BuyerOrderAddForm, BuyerOrderEditForm, BuyerOrderItemsEditForm
 from app_backend.models.bearing_project import BuyerOrder
-from app_backend.permissions import permission_buyer_orders_section_export, BuyerOrderItemDelPermission
+from app_backend.permissions.buyer_order import permission_buyer_order_section_export, BuyerOrderItemDelPermission
 from app_backend.signals.buyer_orders import signal_buyer_orders_status_delete
 from app_common.maps.default import default_search_choice_option_int
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
@@ -99,7 +99,7 @@ def lists():
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限
-            if not permission_buyer_orders_section_export.can():
+            if not permission_buyer_order_section_export.can():
                 abort(403)
             column_names = BuyerOrder.__table__.columns.keys()
             query_sets = get_buyer_order_rows(*search_condition)

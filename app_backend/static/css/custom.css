@@ -38,6 +38,12 @@ table.items_table tr td {
     border-top: 0;
 }
 
+table tr th,td {
+    /*overflow: hidden;*/
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .panel-title-sm {
     font-size: 14px;
 }

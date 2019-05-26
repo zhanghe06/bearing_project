@@ -57,13 +57,14 @@ from app_backend.forms.inventory import (
 )
 
 from app_backend.models.bearing_project import Inventory
-from app_backend.permissions import (
+from app_backend.permissions import permission_role_administrator, permission_role_stock_keeper
+
+from app_backend.permissions.inventory import (
     permission_inventory_section_add,
     permission_inventory_section_search,
     permission_inventory_section_export,
     permission_inventory_section_stats,
-    permission_role_stock_keeper,
-    permission_role_administrator)
+)
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int, default_search_choices_str, \
     default_search_choice_option_str
 from app_common.maps.status_delete import (

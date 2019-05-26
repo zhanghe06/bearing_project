@@ -58,7 +58,7 @@ from app_backend.forms.quotation import (
 )
 from app_backend.forms.quotation_items import QuotationItemsSearchForm
 from app_backend.models.bearing_project import Quotation, QuotationItems
-from app_backend.permissions import (
+from app_backend.permissions.quotation import (
     permission_quotation_section_add,
     permission_quotation_section_search,
     permission_quotation_section_export,

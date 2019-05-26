@@ -55,3 +55,6 @@ docs/package-lock.json
 
 # databases backup
 db/backup/*
+
+# sync
+sync/*

@@ -44,7 +44,7 @@ from app_backend import (
 )
 
 # 定义蓝图
-from app_backend.permissions import permission_supplier_section_export, SupplierItemDelPermission
+from app_backend.permissions.supplier import permission_supplier_section_export, SupplierItemDelPermission
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
 
 bp_supplier_invoice = Blueprint('supplier_invoice', __name__, url_prefix='/supplier/invoice')

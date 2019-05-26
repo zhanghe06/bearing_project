@@ -34,7 +34,7 @@ def get_user_auth_row(*args, **kwargs):
     return db_instance.get_row(UserAuth, *args, **kwargs)
 
 
-def get__auth_rows(*args, **kwargs):
+def get_user_auth_rows(*args, **kwargs):
     """
     获取列表
     :param args:

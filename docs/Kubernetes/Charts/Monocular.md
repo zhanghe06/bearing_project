@@ -30,5 +30,3 @@ my-monocular-monocular   *                 80      62s
 ```
 
 访问: [https://localhost/](https://localhost/) 进入 Monocular 界面
-
-
