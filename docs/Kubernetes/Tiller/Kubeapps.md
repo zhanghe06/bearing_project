@@ -87,6 +87,6 @@ URL: http://<release_name>-chartmuseum.<namespace>:8080
 
 例如：
 ```
-Name: my-chartmuseum
+Name: chartmuseum
 URL: http://my-chartmuseum-chartmuseum.default:8080
 ```

@@ -11,3 +11,8 @@ Docker的监控原则：
 ```bash
 docker rmi $(docker images -f "dangling=true" -q)
 ```
+
+## 显示非k8s容器
+```bash
+docker ps | grep -v k8s
+```

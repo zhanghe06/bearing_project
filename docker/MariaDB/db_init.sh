@@ -4,8 +4,8 @@ docker run \
     -it \
     --link mariadb:mysql \
     --rm \
-    -v ${PWD}/../../db/data/:/db/data/ \
-    -v ${PWD}/../../db/schema/:/db/schema/ \
+    -v ${PROJECT_PATH}/db/data/:/db/data/ \
+    -v ${PROJECT_PATH}/db/schema/:/db/schema/ \
     mariadb:10.1.23 \
     sh -c 'exec mysql \
     -h"$MYSQL_PORT_3306_TCP_ADDR" \

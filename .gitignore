@@ -55,6 +55,7 @@ docs/package-lock.json
 
 # databases backup
 db/backup/*
+!db/backup/README.md
 
 # sync
 sync/*
