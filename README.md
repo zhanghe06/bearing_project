@@ -60,9 +60,8 @@ pip install librabbitmq
 pip install retry
 pip install six
 pip install future
-pip install supervisor      # 当前主版本3只支持py2，将来主版本4(未发布)会支持py3
+pip install supervisor
 ```
-因当前`supervisor`不支持`python3`，故在`requirements.txt`中将其去掉
 
 
 ## 项目演示

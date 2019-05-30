@@ -10,6 +10,7 @@ cffi==1.11.5
 chardet==3.0.4
 click==6.7
 cssselect2==0.2.1
+decorator==4.4.0
 elasticsearch==6.3.0
 enum34==1.1.6
 eventlet==0.23.0
@@ -43,6 +44,7 @@ oauthlib==2.1.0
 pdfrw==0.4
 pika==0.13.0
 Pillow==5.2.0
+py==1.8.0
 pycparser==2.18
 pyexcel==0.5.8
 pyexcel-io==0.5.7
@@ -56,9 +58,11 @@ pytz==2018.5
 redis==2.10.6
 requests==2.20.1
 requests-oauthlib==1.0.0
+retry==0.9.2
 six==1.11.0
 sqlacodegen==1.1.6
 SQLAlchemy==1.2.10
+supervisor==4.0.3
 texttable==1.4.0
 tinycss2==0.6.1
 ua-parser==0.8.0
