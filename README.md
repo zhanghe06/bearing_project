@@ -517,6 +517,21 @@ brew install cairo pango gdk-pixbuf libffi
 <a target="_blank" href="https://link.juejin.im?target=https%3A%2F%2Fswagger.io" rel="nofollow noopener noreferrer">Swagger</a>
 ```
 
+## 配置文件
+
+配置文件可被动态修改, 以下写法因避免
+```
+print(app.config['SUCCESS_MSG'])
+SUCCESS_MSG = app.config['SUCCESS_MSG']
+SUCCESS_MSG['message'] = '123'
+print(app.config['SUCCESS_MSG'])
+```
+
+第二行应该设置为副本, 修改如下:
+```
+SUCCESS_MSG = app.config['SUCCESS_MSG'].copy()
+```
+
 
 ## TODO
 

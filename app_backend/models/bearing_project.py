@@ -347,17 +347,21 @@ class EnquiryItems(Base):
 class Futures(Base):
     __tablename__ = 'futures'
     __table_args__ = (
-        Index('production_brand', 'production_brand', 'production_model', unique=True),
+        Index('production_model', 'production_model', 'production_brand'),
     )
 
     id = Column(Integer, primary_key=True)
-    production_id = Column(Integer, nullable=False, index=True)
+    supplier_company_name = Column(String(100), nullable=False, server_default=text("''"))
     production_brand = Column(String(16), nullable=False, server_default=text("''"))
     production_model = Column(String(32), nullable=False, server_default=text("''"))
-    production_sku = Column(String(16), nullable=False, server_default=text("'Pcs'"))
     currency = Column(String(3), nullable=False, server_default=text("'CNY'"))
     req_date = Column(Date, nullable=False, server_default=text("'0000-00-00'"))
     acc_date = Column(Date, nullable=False, server_default=text("'0000-00-00'"))
+    quantity = Column(Integer, nullable=False, server_default=text("'0'"))
+    unit_price = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    sub_total = Column(Numeric(10, 2), nullable=False, server_default=text("'0.00'"))
+    note = Column(String(64), nullable=False, server_default=text("''"))
+    type_tax = Column(Integer, nullable=False, server_default=text("'1'"))
     status_delete = Column(Integer, nullable=False, server_default=text("'0'"))
     delete_time = Column(DateTime)
     create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))

@@ -1,8 +1,8 @@
 # Kubeapps
 
-https://github.com/kubeapps/kubeapps
+[https://github.com/kubeapps/kubeapps](https://github.com/kubeapps/kubeapps)
 
-https://github.com/kubeapps/kubeapps/blob/master/docs/user/getting-started.md
+[https://github.com/kubeapps/kubeapps/blob/master/docs/user/getting-started.md](https://github.com/kubeapps/kubeapps/blob/master/docs/user/getting-started.md)
 
 ## Step 1: Install Kubeapps
 ```bash

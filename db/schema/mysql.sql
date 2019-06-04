@@ -774,20 +774,23 @@ CREATE TABLE `cash_account_items` (
 DROP TABLE IF EXISTS `futures`;
 CREATE TABLE `futures` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `production_id` INT NOT NULL COMMENT '产品ID',
+  `supplier_company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '渠道公司名称',
   `production_brand` VARCHAR(16) NOT NULL DEFAULT '' COMMENT '产品品牌',
   `production_model` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '产品型号',
-  `production_sku` VARCHAR(16) NOT NULL DEFAULT 'Pcs' COMMENT '单位（Pcs:个,Pair:对,Set:组）',
   `currency` VARCHAR(3) NOT NULL DEFAULT 'CNY' COMMENT '币种',
   `req_date` DATE NOT NULL DEFAULT '0000-00-00' COMMENT '要求到货日期',
   `acc_date` DATE NOT NULL DEFAULT '0000-00-00' COMMENT '预计到货日期',
+  `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
+  `unit_price` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
+  `sub_total` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '小计',
+  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品备注',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY (`production_id`),
-  UNIQUE (`production_brand`, `production_model`)
+  KEY (`production_model`, `production_brand`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='在途期货';
 
 

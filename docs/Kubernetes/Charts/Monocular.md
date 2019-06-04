@@ -4,6 +4,10 @@
 
 The backend is a small Go REST API service, chartsvc, and background CronJobs to run the chart-repo sync command.
 
+此项目无需单独部署
+
+Kubeapps 集成了 Monocular 的 [chart-repo](https://github.com/helm/monocular/tree/master/cmd/chart-repo) 和 [chartsvc](https://github.com/helm/monocular/tree/master/cmd/chartsvc)
+
 
 ```bash
 helm repo add monocular https://helm.github.io/monocular
