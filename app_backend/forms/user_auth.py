@@ -105,6 +105,67 @@ class UserAuthForm(FlaskForm):
     remember = BooleanField(_('Remember me'), default=False)
 
 
+class UserAuthChangePasswordForm(FlaskForm):
+    """
+    修改密码
+    """
+    password_current = PasswordField(
+        _('Current Password'),
+        validators=[
+            DataRequired(_('This field is required.')),
+            Length(
+                min=6,
+                max=20,
+                message=_('Field must be between %(min)s and %(max)s characters long.', min=6, max=20)
+            ),
+        ],
+        description=_('Current Password'),
+        render_kw={
+            'placeholder': _('Current Password'),
+            'minlength': 6,
+            'maxlength': 20,
+        }
+    )
+    password_new = PasswordField(
+        _('New Password'),
+        validators=[
+            DataRequired(_('This field is required.')),
+            Length(
+                min=6,
+                max=20,
+                message=_('Field must be between %(min)s and %(max)s characters long.', min=6, max=20)
+            ),
+        ],
+        description=_('New Password'),
+        render_kw={
+            'placeholder': _('New Password'),
+            'minlength': 6,
+            'maxlength': 20,
+        }
+    )
+    password_confirm = PasswordField(
+        _('Confirm Password'),
+        validators=[
+            DataRequired(_('This field is required.')),
+            Length(
+                min=6,
+                max=20,
+                message=_('Field must be between %(min)s and %(max)s characters long.', min=6, max=20)
+            ),
+            EqualTo(
+                'password_new',
+                message='两次输入的密码不一致',
+            )
+        ],
+        description=_('Confirm Password'),
+        render_kw={
+            'placeholder': _('Confirm Password'),
+            'minlength': 6,
+            'maxlength': 20,
+        }
+    )
+
+
 class UserAuthAddForm(FlaskForm):
     """
     创建表单（字段一般带有默认选项）

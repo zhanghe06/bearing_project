@@ -10,6 +10,8 @@
 
 from __future__ import unicode_literals
 
+from datetime import datetime
+
 from flask import (
     Blueprint,
     request,
@@ -25,12 +27,12 @@ from flask_principal import (
 from flask_login import (
     current_user,
     login_user,
-)
+    fresh_login_required)
 
 from app_backend import app
 from app_backend.api.login_user import get_login_user_row_by_id
-from app_backend.api.user_auth import get_user_auth_row
-from app_backend.forms.user_auth import UserAuthForm
+from app_backend.api.user_auth import get_user_auth_row, edit_user_auth
+from app_backend.forms.user_auth import UserAuthForm, UserAuthChangePasswordForm
 from app_common.maps.status_verified import STATUS_VERIFIED_OK
 from app_common.maps.type_auth import TYPE_AUTH_ACCOUNT
 from app_common.tools.date_time import get_tc
@@ -126,3 +128,78 @@ def index():
 
         flash(_('Auth Success'), 'success')
         return redirect(request.args.get('next') or url_for('index'))
+
+
+@app.route('/change_password.html', methods=['GET', 'POST'])
+@fresh_login_required
+def change_password():
+    """
+    修改密码
+    """
+    template_name = 'user_auth/change_password.html'
+
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('change password')
+
+    # 加载表单
+    form = UserAuthChangePasswordForm(request.form)
+
+    if request.method == 'POST':
+        # 表单校验失败
+        if not form.validate_on_submit():
+            flash(_('Change Password Failure'), 'danger')
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
+
+        # 获取 user_auth_id
+        condition = {
+            'user_id': current_user.id,
+            'type_auth': TYPE_AUTH_ACCOUNT,
+        }
+        user_auth_info = get_user_auth_row(**condition)
+        if not user_auth_info:
+            flash(_('Cann\'t Change Password'), 'danger')
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
+        elif user_auth_info.auth_secret != form.password_current.data:
+            flash(_('Current Password Error'), 'danger')
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
+
+        # 表单校验成功
+        user_auth_id = user_auth_info.id
+        current_time = datetime.utcnow()
+        user_auth_data = {
+            'auth_secret': form.password_new.data,
+            'status_verified': STATUS_VERIFIED_OK,
+            'update_time': current_time,
+        }
+
+        result = edit_user_auth(user_auth_id, user_auth_data)
+        # 编辑操作成功
+        if result:
+            flash(_('Edit Success'), 'success')
+            return redirect(request.args.get('next') or url_for('change_password'))
+        # 编辑操作失败
+        else:
+            flash(_('Edit Failure'), 'danger')
+            return render_template(
+                template_name,
+                form=form,
+                **document_info
+            )
+
+    return render_template(
+        template_name,
+        form=form,
+        **document_info
+    )

@@ -129,6 +129,7 @@ def lists():
                 search_condition.append(Inventory.production_brand == form.production_brand.data)
             if form.production_model.data:
                 search_condition.append(Inventory.production_model.like('%%%s%%' % form.production_model.data))
+            search_condition.append(Inventory.stock_qty_current > 0)
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限

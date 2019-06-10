@@ -268,7 +268,7 @@
                     </li>
                 </ul>
             </li>
-        {%- if permission_role_administrator.can() or permission_role_accountant.can() -%}
+        {%- if False and(permission_role_administrator.can() or permission_role_accountant.can()) -%}
             <li{% if 'accountant/' in request.path %} class="active"{% endif %}>
                 <a id="menu-accountant" href="#"><i
                         class="fa fa-bar-chart fa-fw"></i> {{ _('accountant management') }}<span
