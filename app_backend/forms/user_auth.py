@@ -119,7 +119,7 @@ class UserAuthChangePasswordForm(FlaskForm):
                 message=_('Field must be between %(min)s and %(max)s characters long.', min=6, max=20)
             ),
         ],
-        description=_('Current Password'),
+        description='6-20个字符',
         render_kw={
             'placeholder': _('Current Password'),
             'minlength': 6,
@@ -136,7 +136,7 @@ class UserAuthChangePasswordForm(FlaskForm):
                 message=_('Field must be between %(min)s and %(max)s characters long.', min=6, max=20)
             ),
         ],
-        description=_('New Password'),
+        description='6-20个字符',
         render_kw={
             'placeholder': _('New Password'),
             'minlength': 6,
@@ -157,7 +157,7 @@ class UserAuthChangePasswordForm(FlaskForm):
                 message='两次输入的密码不一致',
             )
         ],
-        description=_('Confirm Password'),
+        description='6-20个字符',
         render_kw={
             'placeholder': _('Confirm Password'),
             'minlength': 6,

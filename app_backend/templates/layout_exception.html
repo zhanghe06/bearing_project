@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="{{ g.lang | default('en', True) }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta name="browsermode" content="application">
+    <meta name="application-name" content="{{ APP_NAME | default('') }}">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="keywords" content="{{ KEYWORDS | default('') }}">
+    <meta name="description" content="{{ DESCRIPTION | default('') }}">
+    <meta name="author" content="{{ AUTHOR | default('') }}">
+    <title>{% if TITLE %}{{ TITLE | default('') }} - {% endif %}{{ PROJECT_NAME | default('') }}</title>
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
+    <!-- Custom -->
+    <link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.css', v=g.STATIC_RES_VER) }}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div id="wrapper">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

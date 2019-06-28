@@ -170,9 +170,9 @@ def edit(customer_id):
     注意 contact_name name 对换
     """
     # 检查编辑权限
-    # customer_item_edit_permission = CustomerItemEditPermission(customer_id)
-    # if not customer_item_edit_permission.can():
-    #     abort(403)
+    customer_item_edit_permission = CustomerItemEditPermission(customer_id)
+    if not customer_item_edit_permission.can():
+        abort(403)
 
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在

@@ -13,6 +13,10 @@ helm list my
 kubectl get po -o wide
 ```
 
+安装Dashboard
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+```
 
 获取Token
 ```bash

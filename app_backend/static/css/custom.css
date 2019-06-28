@@ -52,3 +52,8 @@ table tr th,td {
     cursor: pointer;
     margin-bottom: 0;
 }
+
+.input-required {
+    color: #FF0000;
+    margin-bottom: 0;
+}

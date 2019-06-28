@@ -49,6 +49,8 @@ from flask_login import (
 
 from flask_wtf.csrf import CSRFError
 
+from app_backend.identities import identity_role_administrator, identity_role_sales, identity_role_purchaser, \
+    identity_role_manager, identity_role_stock_keeper, identity_role_accountant, identity_global
 from app_backend.models.bearing_project import Customer, Quotation, SalesOrder
 
 from app_backend.api.login_user import get_login_user_row_by_id
@@ -74,7 +76,7 @@ from app_common.maps.type_role import (
     TYPE_ROLE_MANAGER,
     TYPE_ROLE_SYSTEM,
     TYPE_ROLE_STOREKEEPER,
-)
+    TYPE_ROLE_ACCOUNTANT)
 
 from app_common.maps.status_delete import STATUS_DEL_NO
 
@@ -144,254 +146,32 @@ def on_identity_loaded(sender, identity):
     # Add the UserNeed to the identity
     identity.provides.add(UserNeed(current_user.id))
 
-    # 公共权限（用户查询、产品查询、库存查询）
-    # 用户查询
-    identity.provides.add(SectionActionNeed('user', 'search'))
-    # 产品查询
-    identity.provides.add(SectionActionNeed('production', 'search'))
-    # 库存查询
-    identity.provides.add(SectionActionNeed('inventory', 'search'))
-    # 仓库查询
-    identity.provides.add(SectionActionNeed('warehouse', 'search'))
+    # 公共权限
+    identity_global.setup(identity)
 
     # 角色 - 系统
     if current_user.role_id == TYPE_ROLE_SYSTEM:
-        # 赋予整体角色权限
-        identity.provides.add(RoleNeed('系统'))
-
-        # 版块基本操作权限（系统）
-        # 用户-----------------------------------------------------------------------
-        # 用户创建
-        identity.provides.add(SectionActionNeed('user', 'add'))
-        # 用户统计
-        identity.provides.add(SectionActionNeed('user', 'stats'))
-        # 产品-----------------------------------------------------------------------
-        # 产品创建
-        identity.provides.add(SectionActionNeed('product', 'add'))
-        # 产品统计
-        identity.provides.add(SectionActionNeed('product', 'stats'))
-
-        # 版块明细操作权限（系统）
-        # 系统角色拥有全部版块权限，不区分明细权限
+        identity_role_administrator.setup(identity)
 
     # 角色 - 销售
     if current_user.role_id == TYPE_ROLE_SALES:
-        # 赋予整体角色权限
-        identity.provides.add(RoleNeed('销售'))
-        # 版块基本操作权限（销售）
-        # （创建、查询、统计）
-        # 客户-----------------------------------------------------------------------
-        # 客户创建
-        identity.provides.add(SectionActionNeed('customer', 'add'))
-        # 客户查询
-        identity.provides.add(SectionActionNeed('customer', 'search'))
-        # 客户统计
-        identity.provides.add(SectionActionNeed('customer', 'stats'))
-        # 报价-----------------------------------------------------------------------
-        # 报价创建
-        identity.provides.add(SectionActionNeed('quotation', 'add'))
-        # 报价查询
-        identity.provides.add(SectionActionNeed('quotation', 'search'))
-        # 报价统计
-        identity.provides.add(SectionActionNeed('quotation', 'stats'))
-
-        # 版块明细操作权限（销售）
-        # （读取、编辑、删除、打印）
-        # 客户-----------------------------------------------------------------------
-        customer_rows_condition = {
-            'owner_uid': current_user.id
-        }
-        customer_rows = get_customer_rows(**customer_rows_condition)
-        for customer_row in customer_rows:
-            # 客户读取权限
-            identity.provides.add(SectionActionItemNeed('customer', 'get', six.text_type(customer_row.id)))
-            # 客户编辑权限
-            identity.provides.add(SectionActionItemNeed('customer', 'edit', six.text_type(customer_row.id)))
-            # 客户删除权限
-            identity.provides.add(SectionActionItemNeed('customer', 'del', six.text_type(customer_row.id)))
-            # 客户打印权限
-            identity.provides.add(SectionActionItemNeed('customer', 'print', six.text_type(customer_row.id)))
-        # 报价-----------------------------------------------------------------------
-        quotation_rows_condition = {
-            'uid': current_user.id
-        }
-        quotation_rows = get_quotation_rows(**quotation_rows_condition)
-        for quotation_row in quotation_rows:
-            # 报价读取权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'get', six.text_type(quotation_row.id)))
-            # 报价编辑权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'edit', six.text_type(quotation_row.id)))
-            # 报价删除权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'del', six.text_type(quotation_row.id)))
-            # 报价打印权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'print', six.text_type(quotation_row.id)))
+        identity_role_sales.setup(identity)
 
     # 角色 - 采购
     if current_user.role_id == TYPE_ROLE_PURCHASER:
-        # 赋予整体角色权限
-        identity.provides.add(RoleNeed('采购'))
-        # 版块基本操作权限（销售）
-        # （创建、查询、统计）
-        # 渠道-----------------------------------------------------------------------
-        # 渠道创建
-        identity.provides.add(SectionActionNeed('supplier', 'add'))
-        # 渠道查询
-        identity.provides.add(SectionActionNeed('supplier', 'search'))
-        # 渠道统计
-        identity.provides.add(SectionActionNeed('supplier', 'stats'))
-        # 询价-----------------------------------------------------------------------
-        # 询价创建
-        identity.provides.add(SectionActionNeed('enquiry', 'add'))
-        # 询价查询
-        identity.provides.add(SectionActionNeed('enquiry', 'search'))
-        # 询价统计
-        identity.provides.add(SectionActionNeed('enquiry', 'stats'))
-
-        # 版块明细操作权限（销售）
-        # （读取、编辑、删除、打印）
-        # 客户-----------------------------------------------------------------------
-        customer_rows_condition = {
-            'owner_uid': current_user.id
-        }
-        customer_rows = get_customer_rows(**customer_rows_condition)
-        for customer_row in customer_rows:
-            # 客户读取权限
-            identity.provides.add(SectionActionItemNeed('customer', 'get', six.text_type(customer_row.id)))
-            # 客户编辑权限
-            identity.provides.add(SectionActionItemNeed('customer', 'edit', six.text_type(customer_row.id)))
-            # 客户删除权限
-            identity.provides.add(SectionActionItemNeed('customer', 'del', six.text_type(customer_row.id)))
-            # 客户打印权限
-            identity.provides.add(SectionActionItemNeed('customer', 'print', six.text_type(customer_row.id)))
-        # 报价-----------------------------------------------------------------------
-        quotation_rows_condition = {
-            'uid': current_user.id
-        }
-        quotation_rows = get_quotation_rows(**quotation_rows_condition)
-        for quotation_row in quotation_rows:
-            # 报价读取权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'get', six.text_type(quotation_row.id)))
-            # 报价编辑权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'edit', six.text_type(quotation_row.id)))
-            # 报价删除权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'del', six.text_type(quotation_row.id)))
-            # 报价打印权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'print', six.text_type(quotation_row.id)))
+        identity_role_purchaser.setup(identity)
 
     # 角色 - 经理
     if current_user.role_id == TYPE_ROLE_MANAGER:
-        # 赋予整体角色权限
-        identity.provides.add(RoleNeed('经理'))
-        # 版块基本操作权限（经理）
-        # （创建、查询、统计、导出）
-        # 客户-----------------------------------------------------------------------
-        # 客户创建
-        identity.provides.add(SectionActionNeed('customer', 'add'))
-        # 客户查询
-        identity.provides.add(SectionActionNeed('customer', 'search'))
-        # 客户统计
-        identity.provides.add(SectionActionNeed('customer', 'stats'))
-        # 客户导出
-        identity.provides.add(SectionActionNeed('customer', 'export'))
-        # 报价-----------------------------------------------------------------------
-        # 报价创建
-        identity.provides.add(SectionActionNeed('quotation', 'add'))
-        # 报价查询
-        identity.provides.add(SectionActionNeed('quotation', 'search'))
-        # 报价统计
-        identity.provides.add(SectionActionNeed('quotation', 'stats'))
-        # 报价导出
-        identity.provides.add(SectionActionNeed('quotation', 'export'))
-
-        # 版块明细操作权限（经理）
-        # （读取、编辑、删除、打印、审核）
-        # 客户-----------------------------------------------------------------------
-        customer_rows_condition = {
-            'owner_uid': current_user.id
-        }
-        customer_rows = get_customer_rows(**customer_rows_condition)
-        for customer_row in customer_rows:
-            # 客户读取权限
-            identity.provides.add(SectionActionItemNeed('customer', 'get', six.text_type(customer_row.id)))
-            # 客户编辑权限
-            identity.provides.add(SectionActionItemNeed('customer', 'edit', six.text_type(customer_row.id)))
-            # 客户删除权限
-            identity.provides.add(SectionActionItemNeed('customer', 'del', six.text_type(customer_row.id)))
-            # 客户打印权限
-            identity.provides.add(SectionActionItemNeed('customer', 'print', six.text_type(customer_row.id)))
-        # 报价-----------------------------------------------------------------------
-        quotation_rows_condition = {
-            'uid': current_user.id
-        }
-        quotation_rows = get_quotation_rows(**quotation_rows_condition)
-        for quotation_row in quotation_rows:
-            # 报价读取权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'get', six.text_type(quotation_row.id)))
-            # 报价编辑权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'edit', six.text_type(quotation_row.id)))
-            # 报价删除权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'del', six.text_type(quotation_row.id)))
-            # 报价打印权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'print', six.text_type(quotation_row.id)))
-            # 报价审核权限
-            identity.provides.add(SectionActionItemNeed('quotation', 'audit', six.text_type(quotation_row.id)))
-
-        # 版块明细操作权限 - 所属销售（经理）
-        sales_rows_condition = {
-            'parent_id': current_user.id
-        }
-        sales_rows = get_user_rows(**sales_rows_condition)
-        for sales_item in sales_rows:
-            # 客户-----------------------------------------------------------------------
-            customer_rows_condition = {
-                'owner_uid': sales_item.id
-            }
-            customer_rows = get_customer_rows(**customer_rows_condition)
-            for customer_row in customer_rows:
-                # 客户读取权限
-                identity.provides.add(SectionActionItemNeed('customer', 'get', six.text_type(customer_row.id)))
-                # 客户编辑权限
-                identity.provides.add(SectionActionItemNeed('customer', 'edit', six.text_type(customer_row.id)))
-                # 客户删除权限
-                identity.provides.add(SectionActionItemNeed('customer', 'del', six.text_type(customer_row.id)))
-                # 客户打印权限
-                identity.provides.add(SectionActionItemNeed('customer', 'print', six.text_type(customer_row.id)))
-            # 报价-----------------------------------------------------------------------
-            quotation_rows_condition = {
-                'uid': sales_item.id
-            }
-            quotation_rows = get_quotation_rows(**quotation_rows_condition)
-            for quotation_row in quotation_rows:
-                # 报价读取权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'get', six.text_type(quotation_row.id)))
-                # 报价编辑权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'edit', six.text_type(quotation_row.id)))
-                # 报价删除权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'del', six.text_type(quotation_row.id)))
-                # 报价打印权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'print', six.text_type(quotation_row.id)))
-                # 报价审核权限
-                identity.provides.add(SectionActionItemNeed('quotation', 'audit', six.text_type(quotation_row.id)))
+        identity_role_manager.setup(identity)
 
     # 角色 - 库管
     if current_user.role_id == TYPE_ROLE_STOREKEEPER:
-        # 赋予整体角色权限
-        identity.provides.add(RoleNeed('库管'))
-        # 库存-----------------------------------------------------------------------
-        # 库存创建
-        identity.provides.add(SectionActionNeed('inventory', 'add'))
-        # 库存统计
-        identity.provides.add(SectionActionNeed('inventory', 'stats'))
-        # 仓库-----------------------------------------------------------------------
-        # 仓库创建
-        identity.provides.add(SectionActionNeed('warehouse', 'add'))
-        # 仓库统计
-        identity.provides.add(SectionActionNeed('warehouse', 'stats'))
-        # 货架-----------------------------------------------------------------------
-        # 货架创建
-        identity.provides.add(SectionActionNeed('rack', 'add'))
-        # 货架统计
-        identity.provides.add(SectionActionNeed('rack', 'stats'))
+        identity_role_stock_keeper.setup(identity)
+
+    # 角色 - 财务
+    if current_user.role_id == TYPE_ROLE_ACCOUNTANT:
+        identity_role_accountant.setup(identity)
 
 
 @user_loaded_from_cookie.connect_via(app)
@@ -618,26 +398,29 @@ def too_many_requests(error):
 
 @app.errorhandler(500)
 def internal_server_error(error):
+    message = getattr(error, 'description', None) or getattr(error, 'message', None) or _('Internal Server Error')
+
     # Redis 连接失败
     from redis import ConnectionError
-    if isinstance(error, ConnectionError):
-        if request.is_xhr:
-            return jsonify({'error': error.message})
-        flash(getattr(error, 'description', None) or getattr(error, 'message', None) or _('Internal Server Error'),
-              'warning')
-        return render_template('http_exception/500.html'), 500
-
     # MariaDB 连接失败
     from sqlalchemy.exc import OperationalError
-    if isinstance(error, OperationalError):
-        if request.is_xhr:
-            return jsonify({'error': error.message})
-        flash(getattr(error, 'description', None) or getattr(error, 'message', None) or _('Internal Server Error'),
-              'warning')
-        return render_template('http_exception/500.html'), 500
 
-    flash(getattr(error, 'description', None) or getattr(error, 'message', None) or _('Internal Server Error'), 'warning')
-    return render_template('http_exception/500.html'), 500
+    if isinstance(error, ConnectionError):
+        # 因为本项目session依赖redis，所以redis连接失败，异常处理不能用render_template，其间有操作session会报错
+        message = '缓存连接失败'
+
+    if isinstance(error, OperationalError):
+        message = '数据连接失败'
+
+    # 依赖组件连接失败，整体服务失效
+    if request.is_xhr or isinstance(error, (ConnectionError, OperationalError)):
+        return jsonify({'error': message}), 500
+
+    # flash(message, 'warning')
+    return render_template(
+        'http_exception/500.html',
+        message=message,
+    ), 500
 
 
 @app.route('/client_info.html')

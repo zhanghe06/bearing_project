@@ -1,9 +1,12 @@
-{% extends "layout.html" %}
+{% extends "layout_exception.html" %}
 
 {% block content %}
 <div class="container-fluid">
     <div class="col-md-8 col-sm-offset-2 text-center">
         <h2 class="sub-header">500 Internal Server Error</h2>
+        <p>
+            {{ message | default('') }}
+        </p>
         <p>
             <a class="btn btn-default btn-lg" href="{{ request.args.get('next', url_for('index')) }}" role="button">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Go back

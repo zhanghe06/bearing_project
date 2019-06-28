@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-06-10 19:47+0800\n"
+"POT-Creation-Date: 2019-06-11 00:07+0800\n"
 "PO-Revision-Date: 2018-05-03 13:57+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -1700,18 +1700,15 @@ msgstr "Field must be %(length)s characters long."
 msgid "Remember me"
 msgstr "Remember me"
 
-#: app_backend/forms/user_auth.py:113 app_backend/forms/user_auth.py:122
-#: app_backend/forms/user_auth.py:124
+#: app_backend/forms/user_auth.py:113 app_backend/forms/user_auth.py:124
 msgid "Current Password"
 msgstr ""
 
-#: app_backend/forms/user_auth.py:130 app_backend/forms/user_auth.py:139
-#: app_backend/forms/user_auth.py:141
+#: app_backend/forms/user_auth.py:130 app_backend/forms/user_auth.py:141
 msgid "New Password"
 msgstr ""
 
-#: app_backend/forms/user_auth.py:147 app_backend/forms/user_auth.py:160
-#: app_backend/forms/user_auth.py:162
+#: app_backend/forms/user_auth.py:147 app_backend/forms/user_auth.py:162
 msgid "Confirm Password"
 msgstr ""
 
@@ -2179,20 +2176,20 @@ msgstr "sales order add"
 msgid "sales order stats"
 msgstr "sales order stats"
 
-#: app_backend/templates/_left.html:162 app_backend/templates/_left.html:259
+#: app_backend/templates/_left.html:162
 #: app_backend/templates/delivery/add.html:8
 #: app_backend/templates/delivery/edit.html:8
 #: app_backend/templates/delivery/lists.html:8
 msgid "delivery management"
 msgstr "delivery management"
 
-#: app_backend/templates/_left.html:166 app_backend/templates/_left.html:262
+#: app_backend/templates/_left.html:166
 #: app_backend/templates/delivery/lists.html:9 app_backend/views/delivery.py:94
 #: app_backend/views/delivery.py:132
 msgid "delivery lists"
 msgstr "delivery lists"
 
-#: app_backend/templates/_left.html:169 app_backend/templates/_left.html:265
+#: app_backend/templates/_left.html:169
 #: app_backend/templates/delivery/add.html:9 app_backend/views/delivery.py:192
 msgid "delivery add"
 msgstr "delivery add"
@@ -2218,20 +2215,20 @@ msgstr "buyer order add"
 msgid "buyer order stats"
 msgstr "buyer order stats"
 
-#: app_backend/templates/_left.html:197 app_backend/templates/_left.html:248
+#: app_backend/templates/_left.html:197
 #: app_backend/templates/purchase/add.html:8
 #: app_backend/templates/purchase/edit.html:8
 #: app_backend/templates/purchase/lists.html:8
 msgid "purchase management"
 msgstr "purchase management"
 
-#: app_backend/templates/_left.html:201 app_backend/templates/_left.html:251
+#: app_backend/templates/_left.html:201
 #: app_backend/templates/purchase/lists.html:9 app_backend/views/purchase.py:86
 #: app_backend/views/purchase.py:124
 msgid "purchase lists"
 msgstr "purchase lists"
 
-#: app_backend/templates/_left.html:204 app_backend/templates/_left.html:254
+#: app_backend/templates/_left.html:204
 #: app_backend/templates/purchase/add.html:9 app_backend/views/purchase.py:184
 msgid "purchase add"
 msgstr "purchase add"
@@ -2294,19 +2291,19 @@ msgstr "inventory lists"
 msgid "inventory add"
 msgstr "inventory add"
 
-#: app_backend/templates/_left.html:274
+#: app_backend/templates/_left.html:252
 msgid "accountant management"
 msgstr "accountant management"
 
-#: app_backend/templates/_left.html:278
+#: app_backend/templates/_left.html:256
 msgid "accountant lists"
 msgstr "accountant lists"
 
-#: app_backend/templates/_left.html:281
+#: app_backend/templates/_left.html:259
 msgid "accountant add"
 msgstr "accountant add"
 
-#: app_backend/templates/_left.html:287
+#: app_backend/templates/_left.html:265
 #: app_backend/templates/system/catalogue_import.html:15
 #: app_backend/templates/system/futures_import.html:15
 #: app_backend/templates/system/production_import.html:15
@@ -2314,29 +2311,29 @@ msgstr "accountant add"
 msgid "system management"
 msgstr "system management"
 
-#: app_backend/templates/_left.html:291
+#: app_backend/templates/_left.html:269
 msgid "data import"
 msgstr "data import"
 
-#: app_backend/templates/_left.html:294
+#: app_backend/templates/_left.html:272
 #: app_backend/templates/system/catalogue_import.html:16
 #: app_backend/views/system.py:73
 msgid "catalogue import"
 msgstr "catalogue import"
 
-#: app_backend/templates/_left.html:297
+#: app_backend/templates/_left.html:275
 #: app_backend/templates/system/production_import.html:16
 #: app_backend/views/system.py:143
 msgid "production import"
 msgstr "production import"
 
-#: app_backend/templates/_left.html:300
+#: app_backend/templates/_left.html:278
 #: app_backend/templates/system/quotation_import.html:16
 #: app_backend/views/system.py:213
 msgid "quotation import"
 msgstr "quotation import"
 
-#: app_backend/templates/_left.html:303
+#: app_backend/templates/_left.html:281
 #: app_backend/templates/system/futures_import.html:16
 #: app_backend/views/system.py:283
 msgid "futures import"
@@ -2484,7 +2481,7 @@ msgstr "buyer orders add"
 #: app_backend/templates/supplier/invoice/edit.html:91
 #: app_backend/templates/user/add.html:91
 #: app_backend/templates/user/edit.html:103
-#: app_backend/templates/user_auth/change_password.html:42
+#: app_backend/templates/user_auth/change_password.html:55
 #: app_backend/templates/warehouse/add.html:62
 #: app_backend/templates/warehouse/edit.html:62
 msgid "Submitting"
@@ -2526,7 +2523,7 @@ msgstr "Submitting"
 #: app_backend/templates/supplier/invoice/edit.html:91
 #: app_backend/templates/user/add.html:91
 #: app_backend/templates/user/edit.html:103
-#: app_backend/templates/user_auth/change_password.html:42
+#: app_backend/templates/user_auth/change_password.html:55
 #: app_backend/templates/warehouse/add.html:62
 #: app_backend/templates/warehouse/edit.html:62
 msgid "Submit"
@@ -2563,7 +2560,7 @@ msgstr "Submit"
 #: app_backend/templates/supplier/invoice/edit.html:92
 #: app_backend/templates/user/add.html:92
 #: app_backend/templates/user/edit.html:104
-#: app_backend/templates/user_auth/change_password.html:43
+#: app_backend/templates/user_auth/change_password.html:56
 #: app_backend/templates/warehouse/add.html:63
 #: app_backend/templates/warehouse/edit.html:63
 msgid "Reset"
@@ -2712,7 +2709,7 @@ msgstr ""
 #: app_backend/templates/supplier/invoice/edit.html:94
 #: app_backend/templates/user/add.html:94
 #: app_backend/templates/user/edit.html:106
-#: app_backend/templates/user_auth/change_password.html:45
+#: app_backend/templates/user_auth/change_password.html:58
 #: app_backend/templates/warehouse/add.html:64
 #: app_backend/templates/warehouse/edit.html:64
 msgid "Go Back"
@@ -4539,3 +4536,4 @@ msgid ""
 "Room 701, No.1399, West Tianmu Road, Jing'an District, Shanghai, P. R. "
 "China"
 msgstr ""
+

@@ -2,6 +2,8 @@
 
 [https://github.com/helm/chartmuseum](https://github.com/helm/chartmuseum)
 
+[chartmuseum api 源码](https://github.com/helm/chartmuseum/blob/master/pkg/chartmuseum/server/multitenant/routes.go)
+
 Chart 仓库
 
 查找

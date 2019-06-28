@@ -278,7 +278,7 @@ def info(customer_id):
 
 @bp_customer.route('/add.html', methods=['GET', 'POST'])
 @login_required
-# @permission_customer_section_add.require(http_exception=403)
+@permission_customer_section_add.require(http_exception=403)
 def add():
     """
     创建客户
@@ -353,9 +353,9 @@ def edit(customer_id):
     客户编辑
     """
     # 检查编辑权限
-    # customer_item_edit_permission = CustomerItemEditPermission(customer_id)
-    # if not customer_item_edit_permission.can():
-    #     abort(403)
+    customer_item_edit_permission = CustomerItemEditPermission(customer_id)
+    if not customer_item_edit_permission.can():
+        abort(403)
 
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在

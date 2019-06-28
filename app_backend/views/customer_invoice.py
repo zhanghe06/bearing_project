@@ -44,7 +44,8 @@ from app_backend import (
 )
 
 # 定义蓝图
-from app_backend.permissions.customer import permission_customer_section_export, CustomerItemDelPermission
+from app_backend.permissions.customer import permission_customer_section_export, CustomerItemDelPermission, \
+    permission_customer_section_search, CustomerItemEditPermission
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
 
 bp_customer_invoice = Blueprint('customer_invoice', __name__, url_prefix='/customer/invoice')
@@ -57,9 +58,9 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 @bp_customer_invoice.route('/lists.html', methods=['GET', 'POST'])
-@bp_customer_invoice.route('/lists/<int:page>.html', methods=['GET', 'POST'])
 @login_required
-def lists(page=1):
+@permission_customer_section_search.require(http_exception=403)
+def lists():
     template_name = 'customer/invoice/lists.html'
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -99,7 +100,7 @@ def lists(page=1):
                 file_name='%s.csv' % _('customer invoice lists')
             )
     # 翻页数据
-    pagination = get_customer_invoice_pagination(page, PER_PAGE_BACKEND, *search_condition)
+    pagination = get_customer_invoice_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
     # 渲染模板
     return render_template(
@@ -117,9 +118,9 @@ def edit(customer_id):
     客户开票资料编辑
     """
     # 检查编辑权限
-    # customer_item_edit_permission = CustomerItemEditPermission(customer_id)
-    # if not customer_item_edit_permission.can():
-    #     abort(403)
+    customer_item_edit_permission = CustomerItemEditPermission(customer_id)
+    if not customer_item_edit_permission.can():
+        abort(403)
 
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在

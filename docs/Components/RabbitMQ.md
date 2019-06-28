@@ -36,6 +36,79 @@ graph TD
 ```
 
 
+### 项目结构
+
+<escape>
+<table>
+    <tr>
+        <th>Project</th>
+        <th>Exchange</th>
+        <th>Queue</th>
+        <th>Routing Key</th>
+        <th>Binding Key</th>
+    </tr>
+    <tr>
+        <td rowspan="5">项目（生产者）</td>
+    </tr>
+    <tr>
+        <td>EX</td>
+        <td></td>
+        <td>record.a.create</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>EX</td>
+        <td></td>
+        <td>record.b.create</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>EX</td>
+        <td></td>
+        <td>record.a.delete</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>EX</td>
+        <td></td>
+        <td>record.b.delete</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan="3">项目（消费者A）</td>
+    </tr>
+    <tr>
+        <td>EX</td>
+        <td>QA</td>
+        <td></td>
+        <td>record.a.create</td>
+    </tr>
+    <tr>
+        <td>EX</td>
+        <td>QA</td>
+        <td></td>
+        <td>record.a.delete</td>
+    </tr>
+    <tr>
+        <td rowspan="3">项目（消费者B）</td>
+    </tr>
+    <tr>
+        <td>EX</td>
+        <td>QB</td>
+        <td></td>
+        <td>record.b.create</td>
+    </tr>
+    <tr>
+        <td>EX</td>
+        <td>QB</td>
+        <td></td>
+        <td>record.b.delete</td>
+    </tr>
+
+</table>
+</escape>
+
+
 ### Producer 生产者
 
 Message -> Exchange -- Routing Key -- Queue
@@ -52,6 +125,8 @@ Exchange -- Binding Key -- Queue -> Message
 - direct    直接交换（可以绑定多个队列, 甚至达到广播效果）
 - topic     主题
 - headers   头部
+
+声明 durable 不能动态从 true 变为 false, 报错`PRECONDITION_FAILED`, 需要手动删除
 
 
 ### Routing Key & Binding Key
@@ -97,6 +172,43 @@ consumer 和 producer 都可以创建 Queue, 如果 consumer 来创建, 避免 c
 - 消费确认  避免消费者意外中止导致消息丢失
 - 数据持久  防止消息系统退出或崩溃时丢失队列和消息
 - 发布确认  防止操作系统退出或崩溃时丢失在内存中的消息
+
+
+**确认种类**
+
+- 消息发送确认
+    - 是否到达交换器
+    - 是否到达队列
+
+- 消费接收确认
+
+**AcknowledgeMode 确认模式**
+
+- NONE 不确认
+- AUTO 自动确认
+- MANUAL 手动确认
+
+**Acknowledger**
+ - Ack
+ - Nack
+ - Reject
+
+**autoDelete**
+```
+Queue: 当所有消费客户端连接断开后，是否自动删除队列
+true: 宕机期间的消息则会丢失（适用于时效性的场景，比如短信验证码发送）
+false: 接收包括宕机期间的消息
+
+Exchange: 当所有绑定队列都不在使用时，是否自动删除交换器
+```
+
+**持久化配置**
+
+Queue持久化
+```
+durable=true        # 持久化
+exclusive=false     # 排他性
+```
 
 
 ### 任务系统的几种场景（间隔、定时、延时）

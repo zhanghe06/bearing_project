@@ -12,8 +12,6 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-import six
-
 from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
 
 # -------------------------------------------------------------

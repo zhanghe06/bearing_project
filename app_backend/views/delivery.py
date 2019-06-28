@@ -87,6 +87,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 @bp_delivery.route('/lists.html', methods=['GET', 'POST'])
 @login_required
+@permission_delivery_section_search.require(http_exception=403)
 def lists():
     template_name = 'delivery/lists.html'
     # 文档信息
@@ -180,6 +181,7 @@ def lists():
 
 @bp_delivery.route('/add.html', methods=['GET', 'POST'])
 @login_required
+@permission_delivery_section_add.require(http_exception=403)
 def add():
     """
     新增销售出货
@@ -335,9 +337,9 @@ def edit(delivery_id):
     销售出货编辑
     """
     # 检查编辑权限
-    # enquiry_item_edit_permission = EnquiryItemEditPermission(enquiry_id)
-    # if not enquiry_item_edit_permission.can():
-    #     abort(403)
+    delivery_item_edit_permission = DeliveryItemEditPermission(delivery_id)
+    if not delivery_item_edit_permission.can():
+        abort(403)
 
     delivery_info = get_delivery_row_by_id(delivery_id)
     # 检查资源是否存在

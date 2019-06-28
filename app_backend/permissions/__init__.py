@@ -17,15 +17,24 @@ import six
 
 from flask_principal import Permission, RoleNeed
 
+from config import current_config
+
+
+PERMISSION_ENABLED = current_config.PERMISSION_ENABLED
+
 
 class BasePermission(Permission):
     """
     自定义权限控制
     """
     def allows(self, identity):
-        return True  # 权限全局开关 (True:禁用权限控制, False:开启权限控制)
+        if not PERMISSION_ENABLED:
+            return True  # 权限全局开关 (True:禁用权限控制)
+        else:
+            return super(BasePermission, self).allows(identity)
 
 
+SectionNeed = namedtuple('Need', ['section'])
 SectionActionNeed = namedtuple('Need', ['section', 'action'])
 SectionActionItemNeed = namedtuple('ItemNeed', ['section', 'action', 'item_id'])
 

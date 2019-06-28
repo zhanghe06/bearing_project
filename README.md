@@ -426,6 +426,10 @@ https://github.com/wtforms/wtforms/blob/79840898a3e17b0ae535d9fdcff9537ef0e190b0
 
 Version 2.2 新增了`required`属性的渲染, 注意: `hidden`类型的文本框不会校验`required`属性
 
+必填项
+```
+{% if field.flags.required %}*{% endif %}
+```
 
 ## Ajax CSRF Protection
 

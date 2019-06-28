@@ -381,9 +381,9 @@ def edit(quotation_id):
     报价编辑
     """
     # 检查编辑权限
-    # quotation_item_edit_permission = QuotationItemEditPermission(quotation_id)
-    # if not quotation_item_edit_permission.can():
-    #     abort(403)
+    quotation_item_edit_permission = QuotationItemEditPermission(quotation_id)
+    if not quotation_item_edit_permission.can():
+        abort(403)
 
     quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在

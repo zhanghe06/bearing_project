@@ -51,9 +51,6 @@
                     <li>
                         <a href="{{ url_for('user.add') }}">{{ _('user add') }}</a>
                     </li>
-                    <li>
-                        <a href="{{ url_for('user.stats') }}">{{ _('user stats') }}</a>
-                    </li>
                 </ul>
             </li>
         {%- if permission_role_administrator.can() or permission_role_sales.can() -%}
@@ -72,9 +69,6 @@
                     </li>
                     <li>
                         <a href="{{ url_for('customer_contact.lists') }}">{{ _('customer contact lists') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('customer.stats') }}">{{ _('customer stats') }}</a>
                     </li>
                 </ul>
             </li>
@@ -96,9 +90,6 @@
                     <li>
                         <a href="{{ url_for('supplier_contact.lists') }}">{{ _('supplier contact lists') }}</a>
                     </li>
-                    <li>
-                        <a href="{{ url_for('supplier.stats') }}">{{ _('supplier stats') }}</a>
-                    </li>
                 </ul>
             </li>
         {% endif %}
@@ -115,9 +106,6 @@
                     <li>
                         <a href="{{ url_for('quotation_items.lists') }}">{{ _('quotation item lists') }}</a>
                     </li>
-                    <li>
-                        <a href="{{ url_for('quotation.stats') }}">{{ _('quotation stats') }}</a>
-                    </li>
                 </ul>
             </li>
             <li{% if 'enquiry/' in request.path %} class="active"{% endif %}>
@@ -132,9 +120,6 @@
                     </li>
                     <li>
                         <a href="{{ url_for('enquiry_items.lists') }}">{{ _('enquiry item lists') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('enquiry.stats') }}">{{ _('enquiry stats') }}</a>
                     </li>
                 </ul>
             </li>
@@ -152,9 +137,6 @@
                             </li>
                             <li>
                                 <a href="{{ url_for('sales_order.add') }}">{{ _('sales order add') }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ url_for('sales_order.stats') }}">{{ _('sales order stats') }}</a>
                             </li>
                         </ul>
                     </li>
@@ -187,9 +169,6 @@
                             </li>
                             <li>
                                 <a href="{{ url_for('buyer_order.add') }}">{{ _('buyer order add') }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ url_for('buyer_order.stats') }}">{{ _('buyer order stats') }}</a>
                             </li>
                         </ul>
                     </li>
@@ -244,28 +223,6 @@
                     <li>
                         <a href="{{ url_for('inventory.add') }}">{{ _('inventory add') }}</a>
                     </li>
-                    <li>
-                        <a id="menu-purchase" href="#">{{ _('purchase management') }} <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li>
-                                <a href="{{ url_for('purchase.lists') }}">{{ _('purchase lists') }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ url_for('purchase.add') }}">{{ _('purchase add') }}</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a id="menu-delivery" href="#">{{ _('delivery management') }} <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li>
-                                <a href="{{ url_for('delivery.lists') }}">{{ _('delivery lists') }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ url_for('delivery.add') }}">{{ _('delivery add') }}</a>
-                            </li>
-                        </ul>
-                    </li>
                 </ul>
             </li>
         {%- if False and(permission_role_administrator.can() or permission_role_accountant.can()) -%}
@@ -283,6 +240,7 @@
                 </ul>
             </li>
         {% endif %}
+        {%- if permission_role_administrator.can() -%}
             <li{% if 'system/' in request.path %} class="active"{% endif %}>
                 <a id="menu-system" href="#"><i class="fa fa-cog fa-fw"></i> {{ _('system management') }}<span
                         class="fa arrow"></span></a>
@@ -306,6 +264,7 @@
                     </li>
                 </ul>
             </li>
+        {% endif %}
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

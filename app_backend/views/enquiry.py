@@ -382,9 +382,9 @@ def edit(enquiry_id):
     询价编辑
     """
     # 检查编辑权限
-    # enquiry_item_edit_permission = EnquiryItemEditPermission(enquiry_id)
-    # if not enquiry_item_edit_permission.can():
-    #     abort(403)
+    enquiry_item_edit_permission = EnquiryItemEditPermission(enquiry_id)
+    if not enquiry_item_edit_permission.can():
+        abort(403)
 
     enquiry_info = get_enquiry_row_by_id(enquiry_id)
     # 检查资源是否存在

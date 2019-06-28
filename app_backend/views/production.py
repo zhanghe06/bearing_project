@@ -251,7 +251,7 @@ def info(production_id):
 
 @bp_production.route('/add.html', methods=['GET', 'POST'])
 @login_required
-# @permission_production_section_add.require(http_exception=403)
+@permission_production_section_add.require(http_exception=403)
 def add():
     """
     创建产品

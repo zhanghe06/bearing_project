@@ -43,7 +43,8 @@ from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.forms.buyer_order import BuyerOrderSearchForm, BuyerOrderAddForm, BuyerOrderEditForm, BuyerOrderItemsEditForm
 from app_backend.models.bearing_project import BuyerOrder
-from app_backend.permissions.buyer_order import permission_buyer_order_section_export, BuyerOrderItemDelPermission
+from app_backend.permissions.buyer_order import permission_buyer_order_section_export, BuyerOrderItemDelPermission, \
+    permission_buyer_order_section_search, permission_buyer_order_section_add
 from app_backend.signals.buyer_orders import signal_buyer_orders_status_delete
 from app_common.maps.default import default_search_choice_option_int
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
@@ -62,6 +63,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 @bp_buyer_order.route('/lists.html', methods=['GET', 'POST'])
 @login_required
+@permission_buyer_order_section_search.require(http_exception=403)
 def lists():
     """
     采购订单列表
@@ -159,6 +161,7 @@ def lists():
 
 @bp_buyer_order.route('/add.html', methods=['GET', 'POST'])
 @login_required
+@permission_buyer_order_section_add.require(http_exception=403)
 def add():
     template_name = 'buyer/order/add.html'
     # 文档信息
@@ -337,6 +340,7 @@ def add():
 
 @bp_buyer_order.route('/<int:buyer_order_id>/edit.html', methods=['GET', 'POST'])
 @login_required
+@permission_buyer_order_section_search.require(http_exception=403)
 def edit(buyer_order_id):
     """
     采购订单编辑
