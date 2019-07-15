@@ -1,4 +1,4 @@
-## Elasticsearch
+# Elasticsearch
 
 https://www.elastic.co
 

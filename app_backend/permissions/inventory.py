@@ -12,16 +12,19 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-import six
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+# -------------------------------------------------------------
+# 库存板块整体权限
+InventorySectionNeed = partial(SectionNeed, 'inventory')
+permission_inventory_section = BasePermission(InventorySectionNeed())
 
 # -------------------------------------------------------------
 # 库存板块操作权限（创建、查询、导出、统计）
-InventorySectionNeed = partial(SectionActionNeed, 'inventory')
-InventorySectionNeed.__doc__ = """A need with the section preset to `"inventory"`."""
+InventorySectionActionNeed = partial(SectionActionNeed, 'inventory')
+InventorySectionActionNeed.__doc__ = """A need with the section preset to `"inventory"`."""
 
-permission_inventory_section_add = BasePermission(InventorySectionNeed('add'))
-permission_inventory_section_search = BasePermission(InventorySectionNeed('search'))
-permission_inventory_section_export = BasePermission(InventorySectionNeed('export'))
-permission_inventory_section_stats = BasePermission(InventorySectionNeed('stats'))
+permission_inventory_section_add = BasePermission(InventorySectionActionNeed('add'))
+permission_inventory_section_search = BasePermission(InventorySectionActionNeed('search'))
+permission_inventory_section_export = BasePermission(InventorySectionActionNeed('export'))
+permission_inventory_section_stats = BasePermission(InventorySectionActionNeed('stats'))

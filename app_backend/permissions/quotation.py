@@ -14,17 +14,22 @@ from functools import partial
 
 import six
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+
+# -------------------------------------------------------------
+# 报价板块整体权限
+QuotationSectionNeed = partial(SectionNeed, 'quotation')
+permission_quotation_section = BasePermission(QuotationSectionNeed())
 
 # -------------------------------------------------------------
 # 报价板块操作权限（创建、查询、导出、统计）
-QuotationSectionNeed = partial(SectionActionNeed, 'quotation')
-QuotationSectionNeed.__doc__ = """A need with the section preset to `"quotation"`."""
+QuotationSectionActionNeed = partial(SectionActionNeed, 'quotation')
+QuotationSectionActionNeed.__doc__ = """A need with the section preset to `"quotation"`."""
 
-permission_quotation_section_add = BasePermission(QuotationSectionNeed('add'))
-permission_quotation_section_search = BasePermission(QuotationSectionNeed('search'))
-permission_quotation_section_export = BasePermission(QuotationSectionNeed('export'))
-permission_quotation_section_stats = BasePermission(QuotationSectionNeed('stats'))
+permission_quotation_section_add = BasePermission(QuotationSectionActionNeed('add'))
+permission_quotation_section_search = BasePermission(QuotationSectionActionNeed('search'))
+permission_quotation_section_export = BasePermission(QuotationSectionActionNeed('export'))
+permission_quotation_section_stats = BasePermission(QuotationSectionActionNeed('stats'))
 
 # -------------------------------------------------------------
 # 报价明细操作权限（读取、更新、删除、打印、审核）

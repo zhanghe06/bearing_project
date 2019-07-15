@@ -8,29 +8,28 @@
 @time: 2019-06-27 00:54
 """
 
-
 from __future__ import unicode_literals
 
 from flask_principal import RoleNeed
 
-from app_backend.permissions import SectionActionNeed
+from app_backend.identities import setup_section, setup_section_action
+
+# 模块通用操作
+role_stock_keeper_section_action = {
+    # 基础模块
+    'production': ['add', 'search', 'stats'],
+    'inventory': ['add', 'search', 'stats'],
+    'warehouse': ['add', 'search', 'stats'],
+    'rack': ['add', 'search', 'stats'],
+}
 
 
 def setup(identity):
-    # 赋予整体角色权限
+    # 配置角色身份
     identity.provides.add(RoleNeed('库管'))
-    # 库存-----------------------------------------------------------------------
-    # 库存创建
-    identity.provides.add(SectionActionNeed('inventory', 'add'))
-    # 库存统计
-    identity.provides.add(SectionActionNeed('inventory', 'stats'))
-    # 仓库-----------------------------------------------------------------------
-    # 仓库创建
-    identity.provides.add(SectionActionNeed('warehouse', 'add'))
-    # 仓库统计
-    identity.provides.add(SectionActionNeed('warehouse', 'stats'))
-    # 货架-----------------------------------------------------------------------
-    # 货架创建
-    identity.provides.add(SectionActionNeed('rack', 'add'))
-    # 货架统计
-    identity.provides.add(SectionActionNeed('rack', 'stats'))
+
+    for section, actions in role_stock_keeper_section_action.items():
+        # 配置模块身份（用于模块显示）
+        setup_section(identity, section)
+        # 配置模块通用操作身份（用户动作权限）
+        setup_section_action(identity, section, *actions)

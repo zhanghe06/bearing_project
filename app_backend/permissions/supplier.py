@@ -14,18 +14,22 @@ from functools import partial
 
 import six
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+
+# -------------------------------------------------------------
+# 渠道板块整体权限
+SupplierSectionNeed = partial(SectionNeed, 'supplier')
+permission_supplier_section = BasePermission(SupplierSectionNeed())
 
 # -------------------------------------------------------------
 # 渠道板块操作权限（创建、查询、导出、统计）
-SupplierSectionNeed = partial(SectionActionNeed, 'supplier')
-SupplierSectionNeed.__doc__ = """A need with the section preset to `"supplier"`."""
+SupplierSectionActionNeed = partial(SectionActionNeed, 'supplier')
+SupplierSectionActionNeed.__doc__ = """A need with the section preset to `"supplier"`."""
 
-permission_supplier_section_add = BasePermission(SupplierSectionNeed('add'))
-permission_supplier_section_search = BasePermission(SupplierSectionNeed('search'))
-permission_supplier_section_export = BasePermission(SupplierSectionNeed('export'))
-permission_supplier_section_stats = BasePermission(SupplierSectionNeed('stats'))
-
+permission_supplier_section_add = BasePermission(SupplierSectionActionNeed('add'))
+permission_supplier_section_search = BasePermission(SupplierSectionActionNeed('search'))
+permission_supplier_section_export = BasePermission(SupplierSectionActionNeed('export'))
+permission_supplier_section_stats = BasePermission(SupplierSectionActionNeed('stats'))
 
 # -------------------------------------------------------------
 # 渠道明细操作权限(读取、更新、删除、打印)

@@ -4,6 +4,7 @@ docker run \
         -h rabbitmq \
         --name rabbitmq \
         -v ${PWD}/data:/var/lib/rabbitmq \
+        -v ${PWD}/log:/var/log/rabbitmq \
         -p 4369:4369 \
         -p 5671:5671 \
         -p 5672:5672 \

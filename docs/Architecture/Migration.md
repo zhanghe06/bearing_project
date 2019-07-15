@@ -29,7 +29,7 @@ graph TB
 
 数据同步
 ```graph
-graph TB
+graph LR
     A.data-->M.data
     subgraph 项目A
     A.data
@@ -44,4 +44,3 @@ graph TB
     B.data
     end
 ```
-

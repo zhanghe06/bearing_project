@@ -22,6 +22,7 @@ from wtforms import StringField, PasswordField, BooleanField, DateField, DateTim
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
     IPAddress, Optional
 
+from app_backend.validators.user import AddUserNameRepeatValidate, EditUserNameRepeatValidate
 from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
 from app_backend.api.user import get_user_rows
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
@@ -118,6 +119,7 @@ class UserAddForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(min=2, max=20),
+            AddUserNameRepeatValidate(),
         ],
         default='',
         description=_('user name'),
@@ -227,6 +229,7 @@ class UserEditForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(min=2, max=20),
+            EditUserNameRepeatValidate(),
         ],
         default='',
         description=_('user name'),

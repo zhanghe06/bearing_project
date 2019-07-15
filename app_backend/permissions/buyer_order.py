@@ -14,17 +14,22 @@ from functools import partial
 
 import six
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+
+# -------------------------------------------------------------
+# 采购订单板块整体权限
+BuyerOrderSectionNeed = partial(SectionNeed, 'buyer_order')
+permission_buyer_order_section = BasePermission(BuyerOrderSectionNeed())
 
 # -------------------------------------------------------------
 # 采购订单板块操作权限（创建、查询、导出、统计）
-BuyerOrderSectionNeed = partial(SectionActionNeed, 'buyer_order')
-BuyerOrderSectionNeed.__doc__ = """A need with the section preset to `"buyer_order"`."""
+BuyerOrderSectionActionNeed = partial(SectionActionNeed, 'buyer_order')
+BuyerOrderSectionActionNeed.__doc__ = """A need with the section preset to `"buyer_order"`."""
 
-permission_buyer_order_section_add = BasePermission(BuyerOrderSectionNeed('add'))
-permission_buyer_order_section_search = BasePermission(BuyerOrderSectionNeed('search'))
-permission_buyer_order_section_export = BasePermission(BuyerOrderSectionNeed('export'))
-permission_buyer_order_section_stats = BasePermission(BuyerOrderSectionNeed('stats'))
+permission_buyer_order_section_add = BasePermission(BuyerOrderSectionActionNeed('add'))
+permission_buyer_order_section_search = BasePermission(BuyerOrderSectionActionNeed('search'))
+permission_buyer_order_section_export = BasePermission(BuyerOrderSectionActionNeed('export'))
+permission_buyer_order_section_stats = BasePermission(BuyerOrderSectionActionNeed('stats'))
 
 # -------------------------------------------------------------
 # 采购订单明细操作权限（读取、更新、删除、打印、审核）

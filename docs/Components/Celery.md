@@ -1,13 +1,13 @@
-## Celery
+# Celery
 
 http://docs.celeryproject.org/en/latest/
 
 http://docs.jinkan.org/docs/celery/
 
 
-### 用武之地
+## 用武之地
 
-### 本地事务 vs 分布式事务 vs 消息队列
+## 本地事务 vs 分布式事务 vs 消息队列
 
 如果多张表都在同一个数据库实例上，本地事务就可以搞定
 

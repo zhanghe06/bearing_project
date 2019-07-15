@@ -22,6 +22,7 @@
 - [ ] 服务监控
 - [ ] 用户注册
 - [ ] 注册邀请
+- [ ] 链路追踪
 
 系统依赖
 - Nginx
@@ -523,7 +524,7 @@ brew install cairo pango gdk-pixbuf libffi
 
 ## 配置文件
 
-配置文件可被动态修改, 以下写法因避免
+配置文件可被动态修改, 以下写法应该避免
 ```
 print(app.config['SUCCESS_MSG'])
 SUCCESS_MSG = app.config['SUCCESS_MSG']

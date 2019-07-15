@@ -14,17 +14,22 @@ from functools import partial
 
 import six
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+
+# -------------------------------------------------------------
+# 销售出货板块整体权限
+DeliverySectionNeed = partial(SectionNeed, 'delivery')
+permission_delivery_section = BasePermission(DeliverySectionNeed())
 
 # -------------------------------------------------------------
 # 销售出货板块操作权限（创建、查询、导出、统计）
-DeliverySectionNeed = partial(SectionActionNeed, 'delivery')
-DeliverySectionNeed.__doc__ = """A need with the section preset to `"delivery"`."""
+DeliverySectionActionNeed = partial(SectionActionNeed, 'delivery')
+DeliverySectionActionNeed.__doc__ = """A need with the section preset to `"delivery"`."""
 
-permission_delivery_section_add = BasePermission(DeliverySectionNeed('add'))
-permission_delivery_section_search = BasePermission(DeliverySectionNeed('search'))
-permission_delivery_section_export = BasePermission(DeliverySectionNeed('export'))
-permission_delivery_section_stats = BasePermission(DeliverySectionNeed('stats'))
+permission_delivery_section_add = BasePermission(DeliverySectionActionNeed('add'))
+permission_delivery_section_search = BasePermission(DeliverySectionActionNeed('search'))
+permission_delivery_section_export = BasePermission(DeliverySectionActionNeed('export'))
+permission_delivery_section_stats = BasePermission(DeliverySectionActionNeed('stats'))
 
 # -------------------------------------------------------------
 # 销售出货明细操作权限（读取、更新、删除、打印、审核）
@@ -66,5 +71,3 @@ class DeliveryItemAuditPermission(BasePermission):
     def __init__(self, sales_delivery_id):
         need = DeliveryItemAuditNeed(six.text_type(sales_delivery_id))
         super(DeliveryItemAuditPermission, self).__init__(need)
-
-

@@ -12,16 +12,19 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-import six
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+# -------------------------------------------------------------
+# 货架板块整体权限
+RackSectionNeed = partial(SectionNeed, 'rack')
+permission_rack_section = BasePermission(RackSectionNeed())
 
 # -------------------------------------------------------------
 # 货架板块操作权限（创建、查询、导出、统计）
-RackSectionNeed = partial(SectionActionNeed, 'rack')
-RackSectionNeed.__doc__ = """A need with the section preset to `"rack"`."""
+RackSectionActionNeed = partial(SectionActionNeed, 'rack')
+RackSectionActionNeed.__doc__ = """A need with the section preset to `"rack"`."""
 
-permission_rack_section_add = BasePermission(RackSectionNeed('add'))
-permission_rack_section_search = BasePermission(RackSectionNeed('search'))
-permission_rack_section_export = BasePermission(RackSectionNeed('export'))
-permission_rack_section_stats = BasePermission(RackSectionNeed('stats'))
+permission_rack_section_add = BasePermission(RackSectionActionNeed('add'))
+permission_rack_section_search = BasePermission(RackSectionActionNeed('search'))
+permission_rack_section_export = BasePermission(RackSectionActionNeed('export'))
+permission_rack_section_stats = BasePermission(RackSectionActionNeed('stats'))

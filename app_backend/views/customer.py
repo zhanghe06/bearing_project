@@ -309,7 +309,7 @@ def add():
     if request.method == 'POST':
         # 表单校验失败
         if not form.validate_on_submit():
-            flash(form.errors, 'danger')
+            # flash(form.errors, 'danger')
             flash(_('Add Failure'), 'danger')
             return render_template(
                 template_name,

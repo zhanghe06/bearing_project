@@ -40,8 +40,8 @@ from app_backend.api.user import (
     user_former_stats,
     get_user_choices)
 from app_backend.api.user_auth import (
-    add_user_auth
-)
+    add_user_auth,
+    edit_user_auth, get_user_auth_row)
 from app_backend.forms.user import (
     UserSearchForm,
     UserAddForm,
@@ -399,7 +399,7 @@ def edit(user_id):
         # 表单校验失败
         if not form.validate_on_submit():
             flash(_('Edit Failure'), 'danger')
-            flash(form.errors, 'danger')
+            # flash(form.errors, 'danger')
             return render_template(
                 template_name,
                 user_id=user_id,
@@ -407,6 +407,8 @@ def edit(user_id):
                 **document_info
             )
         # 表单校验成功
+
+        # 编辑用户基本信息
         current_time = datetime.utcnow()
         user_data = {
             'name': form.name.data,
@@ -420,12 +422,8 @@ def edit(user_id):
             'update_time': current_time,
         }
         result = edit_user(user_id, user_data)
-        # 编辑操作成功
-        if result:
-            flash(_('Edit Success'), 'success')
-            return redirect(request.args.get('next') or url_for('user.lists'))
-        # 编辑操作失败
-        else:
+        if not result:
+            # 编辑操作失败
             flash(_('Edit Failure'), 'danger')
             return render_template(
                 template_name,
@@ -433,6 +431,38 @@ def edit(user_id):
                 form=form,
                 **document_info
             )
+
+        user_auth_row = get_user_auth_row(user_id=user_id)
+        if not user_auth_row:
+            # 编辑操作失败
+            flash(_('Edit Failure'), 'danger')
+            return render_template(
+                template_name,
+                user_id=user_id,
+                form=form,
+                **document_info
+            )
+        # 编辑用户认证信息
+        user_auth_data = {
+            'user_id': user_id,
+            'type_auth': TYPE_AUTH_ACCOUNT,
+            'auth_key': form.name.data,
+            'update_time': current_time,
+        }
+        result = edit_user_auth(user_auth_row.id, user_auth_data)
+
+        if not result:
+            # 编辑操作失败
+            flash(_('Edit Failure'), 'danger')
+            return render_template(
+                template_name,
+                user_id=user_id,
+                form=form,
+                **document_info
+            )
+        # 编辑操作成功
+        flash(_('Edit Success'), 'success')
+        return redirect(request.args.get('next') or url_for('user.lists'))
 
 
 @bp_user.route('/ajax/del', methods=['GET', 'POST'])

@@ -21,44 +21,8 @@ from wtforms.widgets import html_params
 
 from app_backend.api.production import get_production_row
 from app_backend.models.bearing_project import Production
+from app_backend.validators.production import AddProductionModelRepeatValidate, EditProductionModelRepeatValidate
 from app_common.maps.default import default_search_choice_option_str
-
-
-class AddProductionModelRepeatValidate(object):
-    """
-    创建产品型号重复校验
-    """
-
-    def __init__(self, message=None):
-        self.message = message
-
-    def __call__(self, form, field):
-        condition = [
-            Production.production_brand == form.production_brand.data.upper(),
-            Production.production_model == field.data.upper(),
-        ]
-        row = get_production_row(*condition)
-        if row:
-            raise ValidationError(self.message or _('Data duplication'))
-
-
-class EditProductionModelRepeatValidate(object):
-    """
-    编辑产品型号重复校验
-    (编辑重复校验排除当前产品型号)
-    """
-
-    def __init__(self, message=None):
-        self.message = message
-
-    def __call__(self, form, field):
-        condition = [
-            Production.production_brand == form.production_brand.data.upper(),
-            Production.production_model == field.data.upper(),
-        ]
-        row = get_production_row(*condition)
-        if row and row.id != form.id.data:
-            raise ValidationError(self.message or _('Data duplication'))
 
 
 class ProductionSearchForm(FlaskForm):

@@ -50,7 +50,7 @@ from flask_login import (
 from flask_wtf.csrf import CSRFError
 
 from app_backend.identities import identity_role_administrator, identity_role_sales, identity_role_purchaser, \
-    identity_role_manager, identity_role_stock_keeper, identity_role_accountant, identity_global
+    identity_role_manager, identity_role_stock_keeper, identity_role_accountant
 from app_backend.models.bearing_project import Customer, Quotation, SalesOrder
 
 from app_backend.api.login_user import get_login_user_row_by_id
@@ -145,9 +145,6 @@ def on_identity_loaded(sender, identity):
 
     # Add the UserNeed to the identity
     identity.provides.add(UserNeed(current_user.id))
-
-    # 公共权限
-    identity_global.setup(identity)
 
     # 角色 - 系统
     if current_user.role_id == TYPE_ROLE_SYSTEM:

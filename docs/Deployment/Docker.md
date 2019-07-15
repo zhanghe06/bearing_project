@@ -1,4 +1,4 @@
-## Docker
+# Docker
 
 Get Docker CE for CentOS
 ```
@@ -37,7 +37,7 @@ Get Docker CE for Ubuntu
 Docker 中国官方镜像加速 registry mirror [https://registry.docker-cn.com](https://registry.docker-cn.com)
 
 
-### 错误调试
+## 错误调试
 
 拉取镜像报错
 ```

@@ -12,16 +12,19 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-import six
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+# -------------------------------------------------------------
+# 仓库板块整体权限
+WarehouseSectionNeed = partial(SectionNeed, 'warehouse')
+permission_warehouse_section = BasePermission(WarehouseSectionNeed())
 
 # -------------------------------------------------------------
 # 仓库板块操作权限（创建、查询、导出、统计）
-WarehouseSectionNeed = partial(SectionActionNeed, 'warehouse')
-WarehouseSectionNeed.__doc__ = """A need with the section preset to `"warehouse"`."""
+WarehouseSectionActionNeed = partial(SectionActionNeed, 'warehouse')
+WarehouseSectionActionNeed.__doc__ = """A need with the section preset to `"warehouse"`."""
 
-permission_warehouse_section_add = BasePermission(WarehouseSectionNeed('add'))
-permission_warehouse_section_search = BasePermission(WarehouseSectionNeed('search'))
-permission_warehouse_section_export = BasePermission(WarehouseSectionNeed('export'))
-permission_warehouse_section_stats = BasePermission(WarehouseSectionNeed('stats'))
+permission_warehouse_section_add = BasePermission(WarehouseSectionActionNeed('add'))
+permission_warehouse_section_search = BasePermission(WarehouseSectionActionNeed('search'))
+permission_warehouse_section_export = BasePermission(WarehouseSectionActionNeed('export'))
+permission_warehouse_section_stats = BasePermission(WarehouseSectionActionNeed('stats'))

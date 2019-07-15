@@ -74,3 +74,8 @@ curl -k https://192.168.4.1:8000/ip
 curl -k https://www.app.com/ip
 curl -k -H "X-Forwarded-For: 1.2.3.4" https://www.app.com/ip
 ```
+
+
+## 参数解析
+
+`proxy_next_upstream` 自动重试，默认`error timeout`

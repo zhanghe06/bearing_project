@@ -1,4 +1,4 @@
-## Git
+# Git
 
 git log prefix
 ```

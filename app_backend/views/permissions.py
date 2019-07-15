@@ -21,6 +21,110 @@ from app_backend.permissions import (
     permission_role_purchaser,
 )
 
+from app_backend.permissions.production import (
+    permission_production_section,
+    permission_production_section_add,
+    permission_production_section_search,
+    permission_production_section_stats,
+    permission_production_section_export,
+)
+
+from app_backend.permissions.user import (
+    permission_user_section,
+    permission_user_section_add,
+    permission_user_section_search,
+    permission_user_section_stats,
+    permission_user_section_export,
+)
+
+from app_backend.permissions.warehouse import (
+    permission_warehouse_section,
+    permission_warehouse_section_add,
+    permission_warehouse_section_search,
+    permission_warehouse_section_stats,
+    permission_warehouse_section_export,
+)
+
+from app_backend.permissions.rack import (
+    permission_rack_section,
+    permission_rack_section_add,
+    permission_rack_section_search,
+    permission_rack_section_stats,
+    permission_rack_section_export,
+)
+
+from app_backend.permissions.inventory import (
+    permission_inventory_section,
+    permission_inventory_section_add,
+    permission_inventory_section_search,
+    permission_inventory_section_stats,
+    permission_inventory_section_export,
+)
+
+from app_backend.permissions.supplier import (
+    permission_supplier_section,
+    permission_supplier_section_add,
+    permission_supplier_section_search,
+    permission_supplier_section_stats,
+    permission_supplier_section_export,
+)
+
+from app_backend.permissions.customer import (
+    permission_customer_section,
+    permission_customer_section_add,
+    permission_customer_section_search,
+    permission_customer_section_stats,
+    permission_customer_section_export,
+)
+
+from app_backend.permissions.enquiry import (
+    permission_enquiry_section,
+    permission_enquiry_section_add,
+    permission_enquiry_section_search,
+    permission_enquiry_section_stats,
+    permission_enquiry_section_export,
+)
+
+from app_backend.permissions.quotation import (
+    permission_quotation_section,
+    permission_quotation_section_add,
+    permission_quotation_section_search,
+    permission_quotation_section_stats,
+    permission_quotation_section_export,
+)
+
+from app_backend.permissions.buyer_order import (
+    permission_buyer_order_section,
+    permission_buyer_order_section_add,
+    permission_buyer_order_section_search,
+    permission_buyer_order_section_stats,
+    permission_buyer_order_section_export,
+)
+
+from app_backend.permissions.sales_order import (
+    permission_sales_order_section,
+    permission_sales_order_section_add,
+    permission_sales_order_section_search,
+    permission_sales_order_section_stats,
+    permission_sales_order_section_export,
+)
+
+from app_backend.permissions.buyer_purchase import (
+    permission_purchase_section,
+    permission_purchase_section_add,
+    permission_purchase_section_search,
+    permission_purchase_section_stats,
+    permission_purchase_section_export,
+)
+
+from app_backend.permissions.sales_delivery import (
+    permission_delivery_section,
+    permission_delivery_section_add,
+    permission_delivery_section_search,
+    permission_delivery_section_stats,
+    permission_delivery_section_export,
+)
+
 bp_permissions = Blueprint('permissions', __name__, )
 
 
@@ -35,4 +139,82 @@ def context():
         permission_role_stock_keeper=IdentityContext(permission_role_stock_keeper),
         permission_role_accountant=IdentityContext(permission_role_accountant),
         permission_role_purchaser=IdentityContext(permission_role_purchaser),
+
+        permission_production_section=IdentityContext(permission_production_section),
+        permission_production_section_add=IdentityContext(permission_production_section_add),
+        permission_production_section_search=IdentityContext(permission_production_section_search),
+        permission_production_section_stats=IdentityContext(permission_production_section_stats),
+        permission_production_section_export=IdentityContext(permission_production_section_export),
+
+        permission_user_section=IdentityContext(permission_user_section),
+        permission_user_section_add=IdentityContext(permission_user_section_add),
+        permission_user_section_search=IdentityContext(permission_user_section_search),
+        permission_user_section_stats=IdentityContext(permission_user_section_stats),
+        permission_user_section_export=IdentityContext(permission_user_section_export),
+
+        permission_warehouse_section=IdentityContext(permission_warehouse_section),
+        permission_warehouse_section_add=IdentityContext(permission_warehouse_section_add),
+        permission_warehouse_section_search=IdentityContext(permission_warehouse_section_search),
+        permission_warehouse_section_stats=IdentityContext(permission_warehouse_section_stats),
+        permission_warehouse_section_export=IdentityContext(permission_warehouse_section_export),
+
+        permission_rack_section=IdentityContext(permission_rack_section),
+        permission_rack_section_add=IdentityContext(permission_rack_section_add),
+        permission_rack_section_search=IdentityContext(permission_rack_section_search),
+        permission_rack_section_stats=IdentityContext(permission_rack_section_stats),
+        permission_rack_section_export=IdentityContext(permission_rack_section_export),
+
+        permission_inventory_section=IdentityContext(permission_inventory_section),
+        permission_inventory_section_add=IdentityContext(permission_inventory_section_add),
+        permission_inventory_section_search=IdentityContext(permission_inventory_section_search),
+        permission_inventory_section_stats=IdentityContext(permission_inventory_section_stats),
+        permission_inventory_section_export=IdentityContext(permission_inventory_section_export),
+
+        permission_supplier_section=IdentityContext(permission_supplier_section),
+        permission_supplier_section_add=IdentityContext(permission_supplier_section_add),
+        permission_supplier_section_search=IdentityContext(permission_supplier_section_search),
+        permission_supplier_section_stats=IdentityContext(permission_supplier_section_stats),
+        permission_supplier_section_export=IdentityContext(permission_supplier_section_export),
+
+        permission_customer_section=IdentityContext(permission_customer_section),
+        permission_customer_section_add=IdentityContext(permission_customer_section_add),
+        permission_customer_section_search=IdentityContext(permission_customer_section_search),
+        permission_customer_section_stats=IdentityContext(permission_customer_section_stats),
+        permission_customer_section_export=IdentityContext(permission_customer_section_export),
+
+        permission_enquiry_section=IdentityContext(permission_enquiry_section),
+        permission_enquiry_section_add=IdentityContext(permission_enquiry_section_add),
+        permission_enquiry_section_search=IdentityContext(permission_enquiry_section_search),
+        permission_enquiry_section_stats=IdentityContext(permission_enquiry_section_stats),
+        permission_enquiry_section_export=IdentityContext(permission_enquiry_section_export),
+
+        permission_quotation_section=IdentityContext(permission_quotation_section),
+        permission_quotation_section_add=IdentityContext(permission_quotation_section_add),
+        permission_quotation_section_search=IdentityContext(permission_quotation_section_search),
+        permission_quotation_section_stats=IdentityContext(permission_quotation_section_stats),
+        permission_quotation_section_export=IdentityContext(permission_quotation_section_export),
+
+        permission_buyer_order_section=IdentityContext(permission_buyer_order_section),
+        permission_buyer_order_section_add=IdentityContext(permission_buyer_order_section_add),
+        permission_buyer_order_section_search=IdentityContext(permission_buyer_order_section_search),
+        permission_buyer_order_section_stats=IdentityContext(permission_buyer_order_section_stats),
+        permission_buyer_order_section_export=IdentityContext(permission_buyer_order_section_export),
+
+        permission_sales_order_section=IdentityContext(permission_sales_order_section),
+        permission_sales_order_section_add=IdentityContext(permission_sales_order_section_add),
+        permission_sales_order_section_search=IdentityContext(permission_sales_order_section_search),
+        permission_sales_order_section_stats=IdentityContext(permission_sales_order_section_stats),
+        permission_sales_order_section_export=IdentityContext(permission_sales_order_section_export),
+
+        permission_purchase_section=IdentityContext(permission_purchase_section),
+        permission_purchase_section_add=IdentityContext(permission_purchase_section_add),
+        permission_purchase_section_search=IdentityContext(permission_purchase_section_search),
+        permission_purchase_section_stats=IdentityContext(permission_purchase_section_stats),
+        permission_purchase_section_export=IdentityContext(permission_purchase_section_export),
+
+        permission_delivery_section=IdentityContext(permission_delivery_section),
+        permission_delivery_section_add=IdentityContext(permission_delivery_section_add),
+        permission_delivery_section_search=IdentityContext(permission_delivery_section_search),
+        permission_delivery_section_stats=IdentityContext(permission_delivery_section_stats),
+        permission_delivery_section_export=IdentityContext(permission_delivery_section_export),
     )

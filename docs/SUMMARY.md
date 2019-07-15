@@ -1,7 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
-* [Components](Components)
+* Components
     * [Celery](Components/Celery.md)
     * [Elasticsearch](Components/Elasticsearch.md)
     * [Flower](Components/Flower.md)
@@ -22,27 +22,31 @@
         * [Prometheus](Kubernetes/Helm/Prometheus.md)
         * [RabbitMQ](Kubernetes/Helm/RabbitMQ.md)
         * [Redis](Kubernetes/Helm/Redis.md)
-    * [Kong](Kubernetes/Kong)
+    * Kong
         * [DockerKong](Kubernetes/Kong/DockerKong.md)
-    * [Operator](Kubernetes/Operator)
+        * [KubernetesIngressControllerForKong](Kubernetes/Kong/KubernetesIngressControllerForKong.md)
+    * [Operator](Kubernetes/Operator/README.md)
         * [OperatorPrometheus](Kubernetes/Operator/OperatorPrometheus.md)
         * [OperatorRedis](Kubernetes/Operator/OperatorRedis.md)
+        * [OperatorSDK](Kubernetes/Operator/OperatorSDK.md)
     * [Pipeline](Kubernetes/Pipeline/README.md)
     * [ServiceCatelog](Kubernetes/ServiceCatelog/README.md)
-    * [Tiller](Kubernetes/Tiller)
+    * [Tiller](Kubernetes/Tiller/README.md)
         * [Kubeapps](Kubernetes/Tiller/Kubeapps.md)
-* [OperationSystem](Kubernetes/OperationSystem)
-    * [CentOS](Kubernetes/OperationSystem/CentOS.md)
-    * [Mac](Kubernetes/OperationSystem/Mac.md)
-    * [Ubuntu](Kubernetes/OperationSystem/Ubuntu.md)
-* [Plugins](Kubernetes/Plugins)
-    * [FlaskSQLAlchemy](Kubernetes/Plugins/FlaskSQLAlchemy.md)
-* [Security](Kubernetes/Security)
-    * [CCAttack](Kubernetes/Security/CCAttack.md)
-    * [DDoSAttack](Kubernetes/Security/DDoSAttack.md)
-    * [SlowAttack](Kubernetes/Security/SlowAttack.md)
-    * [SqlInjection](Kubernetes/Security/SqlInjection.md)
-* [WebServer](Kubernetes/WebServer)
-    * [Httpd](Kubernetes/WebServer/Httpd.md)
-    * [Nginx](Kubernetes/WebServer/Nginx.md)
-* [Migration](Migration.md)
+* OperationSystem
+    * [CentOS](OperationSystem/CentOS.md)
+    * [Mac](OperationSystem/Mac.md)
+    * [Ubuntu](OperationSystem/Ubuntu.md)
+* Plugins
+    * [FlaskSQLAlchemy](Plugins/FlaskSQLAlchemy.md)
+* Security
+    * [CCAttack](Security/CCAttack.md)
+    * [DDoSAttack](Security/DDoSAttack.md)
+    * [SlowAttack](Security/SlowAttack.md)
+    * [SqlInjection](Security/SqlInjection.md)
+* WebServer
+    * [Httpd](WebServer/Httpd.md)
+    * [Nginx](WebServer/Nginx.md)
+* Architecture
+    * [Migration](Architecture/Migration.md)
+    * [MonitoringSystem](Architecture/MonitoringSystem.md)

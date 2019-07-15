@@ -12,24 +12,33 @@ from __future__ import unicode_literals
 
 from flask_principal import RoleNeed
 
-from app_backend.permissions import SectionActionNeed
+from app_backend.identities import setup_section, setup_section_action
+
+# 模块通用操作
+role_accountant_section_action = {
+    # 基础模块
+    'production': ['search', 'stats'],
+    'inventory': ['search', 'stats'],
+    'warehouse': ['search', 'stats'],
+    'rack': ['search', 'stats'],
+    'user': ['search', 'stats'],
+    # 资源模块 - 销售
+    'customer': ['search', 'stats'],
+    'sales_order': ['search', 'stats'],
+    'delivery': ['search', 'stats'],
+    # 资源模块 - 采购
+    'supplier': ['search', 'stats'],
+    'buyer_order': ['search', 'stats'],
+    'purchase': ['search', 'stats'],
+}
 
 
 def setup(identity):
     # 赋予整体角色权限
-    identity.provides.add(RoleNeed('系统'))
+    identity.provides.add(RoleNeed('财务'))
 
-    # 版块基本操作权限（系统）
-    # 用户-----------------------------------------------------------------------
-    # 用户创建
-    identity.provides.add(SectionActionNeed('user', 'add'))
-    # 用户统计
-    identity.provides.add(SectionActionNeed('user', 'stats'))
-    # 产品-----------------------------------------------------------------------
-    # 产品创建
-    identity.provides.add(SectionActionNeed('production', 'add'))
-    # 产品统计
-    identity.provides.add(SectionActionNeed('production', 'stats'))
-
-    # 版块明细操作权限（系统）
-    # 系统角色拥有全部版块权限，不区分明细权限
+    for section, actions in role_accountant_section_action.items():
+        # 配置模块身份（用于模块显示）
+        setup_section(identity, section)
+        # 配置模块通用操作身份（用户动作权限）
+        setup_section_action(identity, section, *actions)

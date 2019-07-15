@@ -14,18 +14,22 @@ from functools import partial
 
 import six
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+
+# -------------------------------------------------------------
+# 用户板块整体权限
+UserSectionNeed = partial(SectionNeed, 'user')
+permission_user_section = BasePermission(UserSectionNeed())
 
 # -------------------------------------------------------------
 # 用户板块操作权限（创建、查询、导出、统计）
-UserSectionNeed = partial(SectionActionNeed, 'user')
-UserSectionNeed.__doc__ = """A need with the section preset to `"user"`."""
+UserSectionActionNeed = partial(SectionActionNeed, 'user')
+UserSectionActionNeed.__doc__ = """A need with the section preset to `"user"`."""
 
-permission_user_section_add = BasePermission(UserSectionNeed('add'))
-permission_user_section_search = BasePermission(UserSectionNeed('search'))
-permission_user_section_export = BasePermission(UserSectionNeed('export'))
-permission_user_section_stats = BasePermission(UserSectionNeed('stats'))
-
+permission_user_section_add = BasePermission(UserSectionActionNeed('add'))
+permission_user_section_search = BasePermission(UserSectionActionNeed('search'))
+permission_user_section_export = BasePermission(UserSectionActionNeed('export'))
+permission_user_section_stats = BasePermission(UserSectionActionNeed('stats'))
 
 # -------------------------------------------------------------
 # 用户明细操作权限(读取、更新、删除、打印)

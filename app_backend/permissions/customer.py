@@ -14,18 +14,22 @@ from functools import partial
 
 import six
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+
+# -------------------------------------------------------------
+# 客户板块整体权限
+CustomerSectionNeed = partial(SectionNeed, 'customer')
+permission_customer_section = BasePermission(CustomerSectionNeed())
 
 # -------------------------------------------------------------
 # 客户板块操作权限（创建、查询、导出、统计）
-CustomerSectionNeed = partial(SectionActionNeed, 'customer')
-CustomerSectionNeed.__doc__ = """A need with the section preset to `"customer"`."""
+CustomerSectionActionNeed = partial(SectionActionNeed, 'customer')
+CustomerSectionActionNeed.__doc__ = """A need with the section preset to `"customer"`."""
 
-permission_customer_section_add = BasePermission(CustomerSectionNeed('add'))
-permission_customer_section_search = BasePermission(CustomerSectionNeed('search'))
-permission_customer_section_export = BasePermission(CustomerSectionNeed('export'))
-permission_customer_section_stats = BasePermission(CustomerSectionNeed('stats'))
-
+permission_customer_section_add = BasePermission(CustomerSectionActionNeed('add'))
+permission_customer_section_search = BasePermission(CustomerSectionActionNeed('search'))
+permission_customer_section_export = BasePermission(CustomerSectionActionNeed('export'))
+permission_customer_section_stats = BasePermission(CustomerSectionActionNeed('stats'))
 
 # -------------------------------------------------------------
 # 客户明细操作权限(读取、更新、删除、打印)

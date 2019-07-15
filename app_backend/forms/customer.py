@@ -19,6 +19,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
 from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
     IPAddress, Optional
+
+from app_backend.validators.customer import AddCustomerCompanyNameRepeatValidate, EditCustomerCompanyNameRepeatValidate
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 
@@ -113,6 +115,7 @@ class CustomerAddForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(min=2, max=100),
+            AddCustomerCompanyNameRepeatValidate(),
         ],
         description=_('company name'),
         render_kw={
@@ -235,6 +238,7 @@ class CustomerEditForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(min=2, max=100),
+            EditCustomerCompanyNameRepeatValidate(),
         ],
         description=_('company name'),
         render_kw={

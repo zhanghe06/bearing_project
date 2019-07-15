@@ -12,14 +12,19 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-from app_backend.permissions import SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission
+
+# -------------------------------------------------------------
+# 产品板块整体权限
+ProductionSectionNeed = partial(SectionNeed, 'production')
+permission_production_section = BasePermission(ProductionSectionNeed())
 
 # -------------------------------------------------------------
 # 产品板块操作权限（创建、查询、导出、统计）
-ProductionSectionNeed = partial(SectionActionNeed, 'production')
-ProductionSectionNeed.__doc__ = """A need with the section preset to `"production"`."""
+ProductionSectionActionNeed = partial(SectionActionNeed, 'production')
+ProductionSectionActionNeed.__doc__ = """A need with the section preset to `"production"`."""
 
-permission_production_section_add = BasePermission(ProductionSectionNeed('add'))
-permission_production_section_search = BasePermission(ProductionSectionNeed('search'))
-permission_production_section_export = BasePermission(ProductionSectionNeed('export'))
-permission_production_section_stats = BasePermission(ProductionSectionNeed('stats'))
+permission_production_section_add = BasePermission(ProductionSectionActionNeed('add'))
+permission_production_section_search = BasePermission(ProductionSectionActionNeed('search'))
+permission_production_section_export = BasePermission(ProductionSectionActionNeed('export'))
+permission_production_section_stats = BasePermission(ProductionSectionActionNeed('stats'))
