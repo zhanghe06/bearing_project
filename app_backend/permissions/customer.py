@@ -12,9 +12,7 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-import six
-
-from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission
 
 # -------------------------------------------------------------
 # 客户板块整体权限
@@ -22,45 +20,17 @@ CustomerSectionNeed = partial(SectionNeed, 'customer')
 permission_customer_section = BasePermission(CustomerSectionNeed())
 
 # -------------------------------------------------------------
-# 客户板块操作权限（创建、查询、导出、统计）
+# 客户板块操作权限（创建、查询、统计、导出、详情、编辑、删除、审核、打印）
 CustomerSectionActionNeed = partial(SectionActionNeed, 'customer')
 CustomerSectionActionNeed.__doc__ = """A need with the section preset to `"customer"`."""
 
 permission_customer_section_add = BasePermission(CustomerSectionActionNeed('add'))
 permission_customer_section_search = BasePermission(CustomerSectionActionNeed('search'))
-permission_customer_section_export = BasePermission(CustomerSectionActionNeed('export'))
 permission_customer_section_stats = BasePermission(CustomerSectionActionNeed('stats'))
+permission_customer_section_export = BasePermission(CustomerSectionActionNeed('export'))
 
-# -------------------------------------------------------------
-# 客户明细操作权限(读取、更新、删除、打印)
-CustomerItemNeed = partial(SectionActionItemNeed, 'customer')
-CustomerItemNeed.__doc__ = """A need with the section preset to `"customer"`."""
-
-CustomerItemGetNeed = partial(CustomerItemNeed, 'get')
-CustomerItemEditNeed = partial(CustomerItemNeed, 'edit')
-CustomerItemDelNeed = partial(CustomerItemNeed, 'del')
-CustomerItemPrintNeed = partial(CustomerItemNeed, 'print')
-
-
-class CustomerItemGetPermission(BasePermission):
-    def __init__(self, customer_id):
-        need = CustomerItemGetNeed(six.text_type(customer_id))
-        super(CustomerItemGetPermission, self).__init__(need)
-
-
-class CustomerItemEditPermission(BasePermission):
-    def __init__(self, customer_id):
-        need = CustomerItemEditNeed(six.text_type(customer_id))
-        super(CustomerItemEditPermission, self).__init__(need)
-
-
-class CustomerItemDelPermission(BasePermission):
-    def __init__(self, customer_id):
-        need = CustomerItemDelNeed(six.text_type(customer_id))
-        super(CustomerItemDelPermission, self).__init__(need)
-
-
-class CustomerItemPrintPermission(BasePermission):
-    def __init__(self, customer_id):
-        need = CustomerItemPrintNeed(six.text_type(customer_id))
-        super(CustomerItemPrintPermission, self).__init__(need)
+permission_customer_section_get = BasePermission(CustomerSectionActionNeed('get'))
+permission_customer_section_edit = BasePermission(CustomerSectionActionNeed('edit'))
+permission_customer_section_del = BasePermission(CustomerSectionActionNeed('del'))
+permission_customer_section_audit = BasePermission(CustomerSectionActionNeed('audit'))
+permission_customer_section_print = BasePermission(CustomerSectionActionNeed('print'))

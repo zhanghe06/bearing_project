@@ -65,11 +65,13 @@ from app_backend.models.bearing_project import Customer, CustomerContact
 from app_backend.permissions.customer import (
     permission_customer_section_add,
     permission_customer_section_search,
-    permission_customer_section_export,
     permission_customer_section_stats,
-    CustomerItemGetPermission,
-    CustomerItemEditPermission,
-    CustomerItemDelPermission,
+    permission_customer_section_export,
+    permission_customer_section_get,
+    permission_customer_section_edit,
+    permission_customer_section_del,
+    permission_customer_section_audit,
+    permission_customer_section_print,
 )
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
@@ -164,16 +166,12 @@ def lists():
 
 @bp_customer_contact.route('/<int:customer_id>.html', methods=['GET', 'POST'])
 @login_required
+@permission_customer_section_edit.require(http_exception=403)
 def edit(customer_id):
     """
     联系方式
     注意 contact_name name 对换
     """
-    # 检查编辑权限
-    customer_item_edit_permission = CustomerItemEditPermission(customer_id)
-    if not customer_item_edit_permission.can():
-        abort(403)
-
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在
     if not customer_info:

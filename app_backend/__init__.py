@@ -63,7 +63,7 @@ db.init_app(app)
 moment = Moment(app)
 
 # 权限管理插件
-principals = Principal(app)
+principals = Principal(app, skip_static=True)
 
 # 国际化 本地化
 babel = Babel(app)

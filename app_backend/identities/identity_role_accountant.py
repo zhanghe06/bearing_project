@@ -17,19 +17,19 @@ from app_backend.identities import setup_section, setup_section_action
 # 模块通用操作
 role_accountant_section_action = {
     # 基础模块
-    'production': ['search', 'stats'],
-    'inventory': ['search', 'stats'],
-    'warehouse': ['search', 'stats'],
-    'rack': ['search', 'stats'],
-    'user': ['search', 'stats'],
+    'production': ['search', 'stats', 'get'],
+    'inventory': ['search', 'stats', 'get'],
+    'warehouse': ['search', 'stats', 'get'],
+    'rack': ['search', 'stats', 'get'],
+    'user': ['search', 'stats', 'get'],
     # 资源模块 - 销售
-    'customer': ['search', 'stats'],
-    'sales_order': ['search', 'stats'],
-    'delivery': ['search', 'stats'],
+    'customer': ['search', 'stats', 'get'],
+    'sales_order': ['search', 'stats', 'get'],
+    'delivery': ['search', 'stats', 'get'],
     # 资源模块 - 采购
-    'supplier': ['search', 'stats'],
-    'buyer_order': ['search', 'stats'],
-    'purchase': ['search', 'stats'],
+    'supplier': ['search', 'stats', 'get'],
+    'buyer_order': ['search', 'stats', 'get'],
+    'purchase': ['search', 'stats', 'get'],
 }
 
 

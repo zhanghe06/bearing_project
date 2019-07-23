@@ -61,14 +61,17 @@ from app_backend.forms.enquiry import (
     EnquiryEditForm,
 )
 from app_backend.models.bearing_project import Enquiry
+
 from app_backend.permissions.enquiry import (
     permission_enquiry_section_add,
     permission_enquiry_section_search,
-    permission_enquiry_section_export,
     permission_enquiry_section_stats,
-    EnquiryItemGetPermission,
-    EnquiryItemEditPermission,
-    EnquiryItemDelPermission,
+    permission_enquiry_section_export,
+    permission_enquiry_section_get,
+    permission_enquiry_section_edit,
+    permission_enquiry_section_del,
+    permission_enquiry_section_audit,
+    permission_enquiry_section_print,
 )
 from app_backend.signals.enquiry import signal_enquiry_status_delete
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
@@ -146,12 +149,15 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
+            # 检查删除权限
+            if not permission_enquiry_section_del.can():
+                abort(403)
             enquiry_ids = request.form.getlist('enquiry_id')
             # 检查删除权限
             permitted = True
             for enquiry_id in enquiry_ids:
-                enquiry_item_del_permission = EnquiryItemDelPermission(enquiry_id)
-                if not enquiry_item_del_permission.can():
+                # TODO 资源删除权限验证
+                if False:
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
@@ -377,15 +383,11 @@ def add():
 
 @bp_enquiry.route('/<int:enquiry_id>/edit.html', methods=['GET', 'POST'])
 @login_required
+@permission_enquiry_section_edit.require(http_exception=403)
 def edit(enquiry_id):
     """
     询价编辑
     """
-    # 检查编辑权限
-    enquiry_item_edit_permission = EnquiryItemEditPermission(enquiry_id)
-    if not enquiry_item_edit_permission.can():
-        abort(403)
-
     enquiry_info = get_enquiry_row_by_id(enquiry_id)
     # 检查资源是否存在
     if not enquiry_info:
@@ -565,16 +567,13 @@ def edit(enquiry_id):
 
 @bp_enquiry.route('/<int:enquiry_id>/info.html')
 @login_required
+@permission_enquiry_section_get.require(http_exception=403)
 def info(enquiry_id):
     """
     询价详情
     :param enquiry_id:
     :return:
     """
-    # 检查读取权限
-    enquiry_item_get_permission = EnquiryItemGetPermission(enquiry_id)
-    if not enquiry_item_get_permission.can():
-        abort(403)
     # 详情数据
     enquiry_info = get_enquiry_row_by_id(enquiry_id)
     # 检查资源是否存在
@@ -620,6 +619,7 @@ def info(enquiry_id):
 
 @bp_enquiry.route('/<int:enquiry_id>/preview.html')
 @login_required
+@permission_enquiry_section_print.require(http_exception=403)
 def preview(enquiry_id):
     """
     打印预览
@@ -670,6 +670,7 @@ def preview(enquiry_id):
 
 @bp_enquiry.route('/<int:enquiry_id>.pdf')
 @login_required
+@permission_enquiry_section_print.require(http_exception=403)
 def pdf(enquiry_id):
     """
     文件下载
@@ -734,6 +735,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_enquiry_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -744,13 +751,6 @@ def ajax_delete():
     enquiry_id = request.args.get('enquiry_id', 0, type=int)
     if not enquiry_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    enquiry_item_del_permission = EnquiryItemDelPermission(enquiry_id)
-    if not enquiry_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
@@ -799,6 +799,12 @@ def ajax_audit():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查审核权限
+    if not permission_enquiry_section_audit.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -810,13 +816,6 @@ def ajax_audit():
     audit_status = request.args.get('audit_status', 0, type=int)
     if not enquiry_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    enquiry_item_del_permission = EnquiryItemDelPermission(enquiry_id)
-    if not enquiry_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

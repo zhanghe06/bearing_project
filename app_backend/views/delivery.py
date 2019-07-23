@@ -61,17 +61,18 @@ from app_common.maps.status_audit import (
 )
 
 from app_backend.models.bearing_project import Delivery
+
 from app_backend.permissions.sales_delivery import (
     permission_delivery_section_add,
     permission_delivery_section_search,
-    permission_delivery_section_export,
     permission_delivery_section_stats,
-    DeliveryItemGetPermission,
-    DeliveryItemEditPermission,
-    DeliveryItemDelPermission,
-    DeliveryItemAuditPermission,
+    permission_delivery_section_export,
+    permission_delivery_section_get,
+    permission_delivery_section_edit,
+    permission_delivery_section_del,
+    permission_delivery_section_audit,
+    permission_delivery_section_print,
 )
-
 
 # 定义蓝图
 from app_common.tools.date_time import time_utc_to_local
@@ -134,30 +135,33 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
-            order_ids = request.form.getlist('order_id')
+            # 检查删除权限
+            if not permission_delivery_section_del.can():
+                abort(403)
+            delivery_ids = request.form.getlist('delivery_id')
             # 检查删除权限
             permitted = True
-            for order_id in order_ids:
-                delivery_item_del_permission = DeliveryItemDelPermission(order_id)
-                if not delivery_item_del_permission.can():
+            for delivery_id in delivery_ids:
+                # TODO 资源删除权限验证
+                if False:
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
                     break
             if permitted:
                 result_total = True
-                for order_id in order_ids:
+                for delivery_id in delivery_ids:
                     current_time = datetime.utcnow()
-                    quotation_data = {
+                    delivery_data = {
                         'status_delete': STATUS_DEL_OK,
                         'delete_time': current_time,
                         'update_time': current_time,
                     }
-                    result = edit_delivery(order_id, quotation_data)
+                    result = edit_delivery(delivery_id, delivery_data)
                     if result:
                         # 发送删除信号
                         signal_data = {
-                            'order_id': order_id,
+                            'delivery_id': delivery_id,
                             'status_delete': STATUS_DEL_OK,
                             'current_time': current_time,
                         }
@@ -379,7 +383,7 @@ def edit(delivery_id):
         form.type_tax.data = delivery_info.type_tax
         form.warehouse_id.data = delivery_info.warehouse_id
         form.amount_delivery.data = delivery_info.amount_delivery
-        # form.buyer_order_items = buyer_order_items
+        # form.buyer_delivery_items = buyer_delivery_items
         while len(form.delivery_items) > 0:
             form.delivery_items.pop_entry()
         for delivery_item in delivery_items:

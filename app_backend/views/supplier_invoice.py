@@ -37,16 +37,24 @@ from app_backend.forms.supplier_invoice import (
     # SupplierInvoiceEditForm,
     # SupplierInvoiceItemEditForm,
     SupplierInvoiceEditForm)
-
+from app_backend.permissions.supplier import (
+    permission_supplier_section_add,
+    permission_supplier_section_search,
+    permission_supplier_section_stats,
+    permission_supplier_section_export,
+    permission_supplier_section_get,
+    permission_supplier_section_edit,
+    permission_supplier_section_del,
+    permission_supplier_section_audit,
+    permission_supplier_section_print,
+)
+from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
 from app_backend import (
     app,
     excel,
 )
 
 # 定义蓝图
-from app_backend.permissions.supplier import permission_supplier_section_export, SupplierItemDelPermission
-from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
-
 bp_supplier_invoice = Blueprint('supplier_invoice', __name__, url_prefix='/supplier/invoice')
 
 # 加载配置
@@ -112,15 +120,11 @@ def lists(page=1):
 
 @bp_supplier_invoice.route('/<int:supplier_id>.html', methods=['GET', 'POST'])
 @login_required
+@permission_supplier_section_edit.require(http_exception=403)
 def edit(supplier_id):
     """
     客户开票资料编辑
     """
-    # 检查编辑权限
-    # supplier_item_edit_permission = SupplierItemEditPermission(supplier_id)
-    # if not supplier_item_edit_permission.can():
-    #     abort(403)
-
     supplier_info = get_supplier_row_by_id(supplier_id)
     # 检查资源是否存在
     if not supplier_info:

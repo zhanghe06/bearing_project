@@ -55,15 +55,18 @@ from app_common.maps.status_delete import (
     STATUS_DEL_NO)
 
 from app_backend.models.bearing_project import Purchase
+
 from app_backend.permissions.buyer_purchase import (
     permission_purchase_section_add,
     permission_purchase_section_search,
-    permission_purchase_section_export,
     permission_purchase_section_stats,
-    PurchaseItemGetPermission,
-    PurchaseItemEditPermission,
-    PurchaseItemDelPermission,
-    PurchaseItemAuditPermission)
+    permission_purchase_section_export,
+    permission_purchase_section_get,
+    permission_purchase_section_edit,
+    permission_purchase_section_del,
+    permission_purchase_section_audit,
+    permission_purchase_section_print,
+)
 
 # 定义蓝图
 from app_common.tools.date_time import time_utc_to_local
@@ -125,30 +128,33 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
-            order_ids = request.form.getlist('order_id')
+            # 检查删除权限
+            if not permission_purchase_section_del.can():
+                abort(403)
+            purchase_ids = request.form.getlist('purchase_id')
             # 检查删除权限
             permitted = True
-            for order_id in order_ids:
-                purchase_item_del_permission = PurchaseItemDelPermission(order_id)
-                if not purchase_item_del_permission.can():
+            for purchase_id in purchase_ids:
+                # TODO 资源删除权限验证
+                if False:
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
                     break
             if permitted:
                 result_total = True
-                for order_id in order_ids:
+                for purchase_id in purchase_ids:
                     current_time = datetime.utcnow()
-                    quotation_data = {
+                    purchase_data = {
                         'status_delete': STATUS_DEL_OK,
                         'delete_time': current_time,
                         'update_time': current_time,
                     }
-                    result = edit_purchase(order_id, quotation_data)
+                    result = edit_purchase(purchase_id, purchase_data)
                     if result:
                         # 发送删除信号
                         signal_data = {
-                            'order_id': order_id,
+                            'purchase_id': purchase_id,
                             'status_delete': STATUS_DEL_OK,
                             'current_time': current_time,
                         }

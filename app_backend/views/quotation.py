@@ -61,11 +61,13 @@ from app_backend.models.bearing_project import Quotation
 from app_backend.permissions.quotation import (
     permission_quotation_section_add,
     permission_quotation_section_search,
-    permission_quotation_section_export,
     permission_quotation_section_stats,
-    QuotationItemGetPermission,
-    QuotationItemEditPermission,
-    QuotationItemDelPermission,
+    permission_quotation_section_export,
+    permission_quotation_section_get,
+    permission_quotation_section_edit,
+    permission_quotation_section_del,
+    permission_quotation_section_audit,
+    permission_quotation_section_print,
 )
 from app_backend.signals.quotation import signal_quotation_status_delete
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
@@ -143,12 +145,15 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
+            # 检查删除权限
+            if not permission_quotation_section_del.can():
+                abort(403)
             quotation_ids = request.form.getlist('quotation_id')
             # 检查删除权限
             permitted = True
             for quotation_id in quotation_ids:
-                quotation_item_del_permission = QuotationItemDelPermission(quotation_id)
-                if not quotation_item_del_permission.can():
+                # TODO 资源删除权限验证
+                if False:
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False

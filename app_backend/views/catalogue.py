@@ -84,7 +84,7 @@ def get_production_brand_choices():
 # @permission_production_section_search.require(http_exception=403)
 def lists(page=1):
     """
-    产品列表
+    型录列表
     :param page:
     :return:
     """

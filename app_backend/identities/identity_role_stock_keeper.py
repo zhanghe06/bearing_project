@@ -14,13 +14,19 @@ from flask_principal import RoleNeed
 
 from app_backend.identities import setup_section, setup_section_action
 
-# 模块通用操作
+# 模块操作
 role_stock_keeper_section_action = {
     # 基础模块
-    'production': ['add', 'search', 'stats'],
-    'inventory': ['add', 'search', 'stats'],
-    'warehouse': ['add', 'search', 'stats'],
-    'rack': ['add', 'search', 'stats'],
+    'production': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'inventory': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'warehouse': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'rack': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    # 资源模块 - 销售
+    'customer': ['add', 'search', 'stats', 'export', 'get', 'print'],
+    'delivery': ['add', 'search', 'stats', 'export', 'get', 'print'],
+    # 资源模块 - 采购
+    'supplier': ['add', 'search', 'stats', 'export', 'get', 'print'],
+    'purchase': ['add', 'search', 'stats', 'export', 'get', 'print'],
 }
 
 

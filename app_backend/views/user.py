@@ -30,6 +30,11 @@ from flask_login import login_required
 from app_backend import app
 from app_backend import excel
 from app_backend.api.quotation import count_quotation
+from app_backend.api.sales_order import count_sales_order
+from app_backend.api.delivery import count_delivery
+from app_backend.api.enquiry import count_enquiry
+from app_backend.api.buyer_order import count_buyer_order
+from app_backend.api.purchase import count_purchase
 from app_backend.api.user import (
     get_user_rows,
     get_user_pagination,
@@ -49,14 +54,17 @@ from app_backend.forms.user import (
 )
 from app_backend.models.bearing_project import User
 from app_backend.permissions import permission_role_administrator
+
 from app_backend.permissions.user import (
     permission_user_section_add,
     permission_user_section_search,
-    permission_user_section_export,
     permission_user_section_stats,
-    UserItemGetPermission,
-    UserItemEditPermission,
-    UserItemDelPermission,
+    permission_user_section_export,
+    permission_user_section_get,
+    permission_user_section_edit,
+    permission_user_section_del,
+    permission_user_section_audit,
+    permission_user_section_print,
 )
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
@@ -140,36 +148,65 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
+            # 检查删除权限
+            if not permission_user_section_del.can():
+                abort(403)
             user_ids = request.form.getlist('user_id')
             # 检查删除权限
-            if not permission_role_administrator.can():
-                ext_msg = _('Permission Denied')
-                flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
-            else:
-                permitted = True
+            permitted = True
+            for user_id in user_ids:
+                # 检查是否正在使用
+                # 1、报价
+                if count_quotation(**{'uid': user_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+                # 2、销售订单
+                if count_sales_order(**{'uid': user_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+                # 3、销售出货
+                if count_delivery(**{'uid': user_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+                # 4、询价
+                if count_enquiry(**{'uid': user_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+                # 5、采购订单
+                if count_buyer_order(**{'uid': user_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+                # 6、采购进货
+                if count_purchase(**{'uid': user_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+            if permitted:
+                result_total = True
                 for user_id in user_ids:
-                    # 检查是否正在使用
-                    # 报价、订单
-                    if count_quotation(**{'uid': user_id, 'status_delete': STATUS_DEL_NO}):
-                        ext_msg = _('Currently In Use')
-                        flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
-                        permitted = False
-                        break
-                if permitted:
-                    result_total = True
-                    for user_id in user_ids:
-                        current_time = datetime.utcnow()
-                        user_data = {
-                            'status_delete': STATUS_DEL_OK,
-                            'delete_time': current_time,
-                            'update_time': current_time,
-                        }
-                        result = edit_user(user_id, user_data)
-                        result_total = result_total and result
-                    if result_total:
-                        flash(_('Del Success'), 'success')
-                    else:
-                        flash(_('Del Failure'), 'danger')
+                    current_time = datetime.utcnow()
+                    user_data = {
+                        'status_delete': STATUS_DEL_OK,
+                        'delete_time': current_time,
+                        'update_time': current_time,
+                    }
+                    result = edit_user(user_id, user_data)
+                    result_total = result_total and result
+                if result_total:
+                    flash(_('Del Success'), 'success')
+                else:
+                    flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_user_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
@@ -229,16 +266,13 @@ def lists():
 
 @bp_user.route('/<int:user_id>/info.html')
 @login_required
+@permission_user_section_get.require(http_exception=403)
 def info(user_id):
     """
     用户详情
     :param user_id:
     :return:
     """
-    # 检查读取权限
-    # user_item_get_permission = UserItemGetPermission(user_id)
-    # if not user_item_get_permission.can():
-    #     abort(403)
     # 详情数据
     user_info = get_user_row_by_id(user_id)
     # 检查资源是否存在
@@ -256,7 +290,7 @@ def info(user_id):
 
 @bp_user.route('/add.html', methods=['GET', 'POST'])
 @login_required
-# @permission_user_section_add.require(http_exception=403)
+@permission_user_section_add.require(http_exception=403)
 def add():
     """
     创建用户
@@ -343,15 +377,11 @@ def add():
 
 @bp_user.route('/<int:user_id>/edit.html', methods=['GET', 'POST'])
 @login_required
+@permission_user_section_edit.require(http_exception=403)
 def edit(user_id):
     """
     用户编辑
     """
-    # 检查编辑权限
-    # user_item_edit_permission = UserItemEditPermission(user_id)
-    # if not user_item_edit_permission.can():
-    #     abort(403)
-
     user_info = get_user_row_by_id(user_id)
     # 检查资源是否存在
     if not user_info:
@@ -475,6 +505,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_user_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -485,12 +521,6 @@ def ajax_delete():
     user_id = request.args.get('user_id', 0, type=int)
     if not user_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    if not permission_role_administrator.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

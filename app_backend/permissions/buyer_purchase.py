@@ -12,9 +12,7 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-import six
-
-from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission
 
 # -------------------------------------------------------------
 # 采购进货板块整体权限
@@ -22,52 +20,17 @@ PurchaseSectionNeed = partial(SectionNeed, 'purchase')
 permission_purchase_section = BasePermission(PurchaseSectionNeed())
 
 # -------------------------------------------------------------
-# 采购进货板块操作权限（创建、查询、导出、统计）
+# 采购进货板块操作权限（创建、查询、统计、导出、详情、编辑、删除、审核、打印）
 PurchaseSectionActionNeed = partial(SectionActionNeed, 'purchase')
 PurchaseSectionActionNeed.__doc__ = """A need with the section preset to `"purchase"`."""
 
 permission_purchase_section_add = BasePermission(PurchaseSectionActionNeed('add'))
 permission_purchase_section_search = BasePermission(PurchaseSectionActionNeed('search'))
-permission_purchase_section_export = BasePermission(PurchaseSectionActionNeed('export'))
 permission_purchase_section_stats = BasePermission(PurchaseSectionActionNeed('stats'))
+permission_purchase_section_export = BasePermission(PurchaseSectionActionNeed('export'))
 
-# -------------------------------------------------------------
-# 采购进货明细操作权限（读取、更新、删除、打印、审核）
-PurchaseItemNeed = partial(SectionActionItemNeed, 'purchase')
-PurchaseItemNeed.__doc__ = """A need with the section preset to `"purchase"`."""
-
-PurchaseItemGetNeed = partial(PurchaseItemNeed, 'get')
-PurchaseItemEditNeed = partial(PurchaseItemNeed, 'edit')
-PurchaseItemDelNeed = partial(PurchaseItemNeed, 'del')
-PurchaseItemPrintNeed = partial(PurchaseItemNeed, 'print')
-PurchaseItemAuditNeed = partial(PurchaseItemNeed, 'audit')
-
-
-class PurchaseItemGetPermission(BasePermission):
-    def __init__(self, buyer_purchase_id):
-        need = PurchaseItemGetNeed(six.text_type(buyer_purchase_id))
-        super(PurchaseItemGetPermission, self).__init__(need)
-
-
-class PurchaseItemEditPermission(BasePermission):
-    def __init__(self, buyer_purchase_id):
-        need = PurchaseItemEditNeed(six.text_type(buyer_purchase_id))
-        super(PurchaseItemEditPermission, self).__init__(need)
-
-
-class PurchaseItemDelPermission(BasePermission):
-    def __init__(self, buyer_purchase_id):
-        need = PurchaseItemDelNeed(six.text_type(buyer_purchase_id))
-        super(PurchaseItemDelPermission, self).__init__(need)
-
-
-class PurchaseItemPrintPermission(BasePermission):
-    def __init__(self, buyer_purchase_id):
-        need = PurchaseItemPrintNeed(six.text_type(buyer_purchase_id))
-        super(PurchaseItemPrintPermission, self).__init__(need)
-
-
-class PurchaseItemAuditPermission(BasePermission):
-    def __init__(self, buyer_purchase_id):
-        need = PurchaseItemAuditNeed(six.text_type(buyer_purchase_id))
-        super(PurchaseItemAuditPermission, self).__init__(need)
+permission_purchase_section_get = BasePermission(PurchaseSectionActionNeed('get'))
+permission_purchase_section_edit = BasePermission(PurchaseSectionActionNeed('edit'))
+permission_purchase_section_del = BasePermission(PurchaseSectionActionNeed('del'))
+permission_purchase_section_audit = BasePermission(PurchaseSectionActionNeed('audit'))
+permission_purchase_section_print = BasePermission(PurchaseSectionActionNeed('print'))

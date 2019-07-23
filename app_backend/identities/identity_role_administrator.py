@@ -14,24 +14,24 @@ from flask_principal import RoleNeed
 
 from app_backend.identities import setup_section, setup_section_action
 
-# 模块通用操作
+# 模块操作
 role_administrator_section_action = {
     # 基础模块
-    'production': ['add', 'search', 'stats', 'export'],
-    'inventory': ['add', 'search', 'stats', 'export'],
-    'warehouse': ['add', 'search', 'stats', 'export'],
-    'rack': ['add', 'search', 'stats', 'export'],
-    'user': ['add', 'search', 'stats', 'export'],
+    'production': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'inventory': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'warehouse': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'rack': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'user': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     # 资源模块 - 销售
-    'customer': ['add', 'search', 'stats', 'export'],
-    'quotation': ['add', 'search', 'stats', 'export'],
-    'sales_order': ['add', 'search', 'stats', 'export'],
-    'delivery': ['add', 'search', 'stats', 'export'],
+    'customer': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'quotation': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'sales_order': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'delivery': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     # 资源模块 - 采购
-    'supplier': ['add', 'search', 'stats', 'export'],
-    'enquiry': ['add', 'search', 'stats', 'export'],
-    'buyer_order': ['add', 'search', 'stats', 'export'],
-    'purchase': ['add', 'search', 'stats', 'export'],
+    'supplier': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'enquiry': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'buyer_order': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'purchase': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
 }
 
 

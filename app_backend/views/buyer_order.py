@@ -43,8 +43,18 @@ from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.forms.buyer_order import BuyerOrderSearchForm, BuyerOrderAddForm, BuyerOrderEditForm, BuyerOrderItemsEditForm
 from app_backend.models.bearing_project import BuyerOrder
-from app_backend.permissions.buyer_order import permission_buyer_order_section_export, BuyerOrderItemDelPermission, \
-    permission_buyer_order_section_search, permission_buyer_order_section_add
+from app_backend.permissions.buyer_order import (
+    permission_buyer_order_section_add,
+    permission_buyer_order_section_search,
+    permission_buyer_order_section_stats,
+    permission_buyer_order_section_export,
+    permission_buyer_order_section_get,
+    permission_buyer_order_section_edit,
+    permission_buyer_order_section_del,
+    permission_buyer_order_section_audit,
+    permission_buyer_order_section_print,
+)
+
 from app_backend.signals.buyer_orders import signal_buyer_orders_status_delete
 from app_common.maps.default import default_search_choice_option_int
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
@@ -114,12 +124,15 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
-            order_ids = request.form.getlist('order_id')
             # 检查删除权限
+            if not permission_buyer_order_section_del.can():
+                abort(403)
+
+            order_ids = request.form.getlist('buyer_order_id')
             permitted = True
             for order_id in order_ids:
-                buyer_orders_item_del_permission = BuyerOrderItemDelPermission(order_id)
-                if not buyer_orders_item_del_permission.can():
+                # TODO 资源删除权限验证
+                if False:
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
@@ -340,16 +353,11 @@ def add():
 
 @bp_buyer_order.route('/<int:buyer_order_id>/edit.html', methods=['GET', 'POST'])
 @login_required
-@permission_buyer_order_section_search.require(http_exception=403)
+@permission_buyer_order_section_edit.require(http_exception=403)
 def edit(buyer_order_id):
     """
     采购订单编辑
     """
-    # 检查编辑权限
-    # enquiry_item_edit_permission = EnquiryItemEditPermission(enquiry_id)
-    # if not enquiry_item_edit_permission.can():
-    #     abort(403)
-
     buyer_order_info = get_buyer_order_row_by_id(buyer_order_id)
     # 检查资源是否存在
     if not buyer_order_info:
@@ -537,6 +545,7 @@ def edit(buyer_order_id):
 
 @bp_buyer_order.route('/<int:buyer_order_id>/info.html')
 @login_required
+@permission_buyer_order_section_get.require(http_exception=403)
 def info(buyer_order_id):
     """
     订单详情
@@ -587,6 +596,7 @@ def info(buyer_order_id):
 
 @bp_buyer_order.route('/<int:buyer_order_id>/preview.html')
 @login_required
+@permission_buyer_order_section_print.require(http_exception=403)
 def preview(buyer_order_id):
     """
     打印预览
@@ -637,6 +647,7 @@ def preview(buyer_order_id):
 
 @bp_buyer_order.route('/<int:buyer_order_id>.pdf')
 @login_required
+@permission_buyer_order_section_print.require(http_exception=403)
 def pdf(buyer_order_id):
     """
     文件下载
@@ -701,6 +712,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_buyer_order_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -711,13 +728,6 @@ def ajax_delete():
     buyer_order_id = request.args.get('buyer_order_id', 0, type=int)
     if not buyer_order_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    buyer_orders_item_del_permission = BuyerOrderItemDelPermission(buyer_order_id)
-    if not buyer_orders_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
@@ -766,6 +776,12 @@ def ajax_audit():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查审核权限
+    if not permission_buyer_order_section_audit.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -777,13 +793,6 @@ def ajax_audit():
     audit_status = request.args.get('audit_status', 0, type=int)
     if not buyer_order_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    buyer_order_del_permission = BuyerOrderItemDelPermission(buyer_order_id)
-    if not buyer_order_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
@@ -821,5 +830,6 @@ def ajax_audit():
 
 @bp_buyer_order.route('/stats.html', methods=['GET', 'POST'])
 @login_required
+@permission_buyer_order_section_stats.require(http_exception=403)
 def stats():
     return jsonify({})

@@ -56,8 +56,13 @@ from app_backend.permissions import permission_role_administrator
 from app_backend.permissions.production import (
     permission_production_section_add,
     permission_production_section_search,
-    permission_production_section_export,
     permission_production_section_stats,
+    permission_production_section_export,
+    permission_production_section_get,
+    permission_production_section_edit,
+    permission_production_section_del,
+    permission_production_section_audit,
+    permission_production_section_print,
 )
 from app_common.maps.default import default_search_choices_str, default_search_choice_option_str
 from app_common.maps.status_delete import (
@@ -170,7 +175,7 @@ def lists():
 
 @bp_production_sensitive.route('/add.html', methods=['GET', 'POST'])
 @login_required
-# @permission_production_sensitive_section_add.require(http_exception=403)
+@permission_production_section_add.require(http_exception=403)
 def add():
     """
     创建敏感产品
@@ -234,7 +239,7 @@ def add():
 
 @bp_production_sensitive.route('/<int:production_sensitive_id>/edit.html', methods=['GET', 'POST'])
 @login_required
-# @permission_role_administrator.require(http_exception=403)
+@permission_production_section_edit.require(http_exception=403)
 def edit(production_sensitive_id):
     """
     敏感产品编辑
@@ -326,6 +331,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_production_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -336,12 +347,6 @@ def ajax_delete():
     production_sensitive_id = request.args.get('production_sensitive_id', 0, type=int)
     if not production_sensitive_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    if not permission_role_administrator.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

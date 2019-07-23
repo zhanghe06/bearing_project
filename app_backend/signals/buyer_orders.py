@@ -46,19 +46,19 @@ def buyer_orders_status_delete(sender, **extra):
     :return:
     """
     # print(sender, extra)
-    buyer_orders_id = extra.get('buyer_orders_id')
+    buyer_order_id = extra.get('buyer_order_id')
     status_delete = extra.get('status_delete')
     current_time = extra.get('current_time')
-    if not buyer_orders_id:
+    if not buyer_order_id:
         return
-    buyer_orders_items = get_buyer_order_items_rows(buyer_orders_id=buyer_orders_id)
+    buyer_order_items = get_buyer_order_items_rows(buyer_order_id=buyer_order_id)
     result = True
-    for buyer_orders_item in buyer_orders_items:
-        buyer_orders_item_id = buyer_orders_item.id
-        buyer_orders_item_data = {
+    for buyer_order_item in buyer_order_items:
+        buyer_order_item_id = buyer_order_item.id
+        buyer_order_item_data = {
             'status_delete': status_delete,
             'delete_time': current_time,
             'update_time': current_time,
         }
-        result = result and edit_buyer_order_items(buyer_orders_item_id, buyer_orders_item_data)
+        result = result and edit_buyer_order_items(buyer_order_item_id, buyer_order_item_data)
     return result

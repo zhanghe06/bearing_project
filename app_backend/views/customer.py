@@ -45,6 +45,7 @@ from app_backend.api.user import (
     get_user_rows,
     get_user_choices)
 from app_backend.api.quotation import count_quotation
+from app_backend.api.sales_order import count_sales_order
 from app_backend.forms.customer import (
     CustomerSearchForm,
     CustomerAddForm,
@@ -54,11 +55,13 @@ from app_backend.models.bearing_project import Customer
 from app_backend.permissions.customer import (
     permission_customer_section_add,
     permission_customer_section_search,
-    permission_customer_section_export,
     permission_customer_section_stats,
-    CustomerItemGetPermission,
-    CustomerItemEditPermission,
-    CustomerItemDelPermission,
+    permission_customer_section_export,
+    permission_customer_section_get,
+    permission_customer_section_edit,
+    permission_customer_section_del,
+    permission_customer_section_audit,
+    permission_customer_section_print,
 )
 from app_backend.signals.customer import signal_customer_status_delete
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
@@ -145,25 +148,35 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
+            # 检查删除权限
+            if not permission_customer_section_del.can():
+                abort(403)
+
             customer_ids = request.form.getlist('customer_id')
             # 检查删除权限
             permitted = True
             for customer_id in customer_ids:
-                # 明细权限
-                customer_item_del_permission = CustomerItemDelPermission(customer_id)
-                if not customer_item_del_permission.can():
+                # TODO 资源删除权限验证
+                if False:
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
                     break
                 # 检查是否正在使用
-                # 报价、订单、敏感型号
-                if count_quotation(**{'cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+                # 1、报价
+                if count_quotation(**{'customer_cid': customer_id, 'status_delete': STATUS_DEL_NO}):
                     ext_msg = _('Currently In Use')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
                     break
-                if count_production_sensitive(**{'cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+                # 2、订单
+                if count_sales_order(**{'customer_cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+                # 3、敏感型号
+                if count_production_sensitive(**{'customer_cid': customer_id, 'status_delete': STATUS_DEL_NO}):
                     ext_msg = _('Currently In Use')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
@@ -251,16 +264,13 @@ def search():
 
 @bp_customer.route('/<int:customer_id>/info.html')
 @login_required
+@permission_customer_section_get.require(http_exception=403)
 def info(customer_id):
     """
     客户详情
     :param customer_id:
     :return:
     """
-    # 检查读取权限
-    customer_item_get_permission = CustomerItemGetPermission(customer_id)
-    if not customer_item_get_permission.can():
-        abort(403)
     # 详情数据
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在
@@ -348,15 +358,11 @@ def add():
 
 @bp_customer.route('/<int:customer_id>/edit.html', methods=['GET', 'POST'])
 @login_required
+@permission_customer_section_edit.require(http_exception=403)
 def edit(customer_id):
     """
     客户编辑
     """
-    # 检查编辑权限
-    customer_item_edit_permission = CustomerItemEditPermission(customer_id)
-    if not customer_item_edit_permission.can():
-        abort(403)
-
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在
     if not customer_info:
@@ -450,6 +456,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_customer_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -460,13 +472,6 @@ def ajax_delete():
     customer_id = request.args.get('customer_id', 0, type=int)
     if not customer_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    customer_item_del_permission = CustomerItemDelPermission(customer_id)
-    if not customer_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

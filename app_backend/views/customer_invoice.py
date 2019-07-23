@@ -43,11 +43,21 @@ from app_backend import (
     excel,
 )
 
-# 定义蓝图
-from app_backend.permissions.customer import permission_customer_section_export, CustomerItemDelPermission, \
-    permission_customer_section_search, CustomerItemEditPermission
+
+from app_backend.permissions.customer import (
+    permission_customer_section_add,
+    permission_customer_section_search,
+    permission_customer_section_stats,
+    permission_customer_section_export,
+    permission_customer_section_get,
+    permission_customer_section_edit,
+    permission_customer_section_del,
+    permission_customer_section_audit,
+    permission_customer_section_print,
+)
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
 
+# 定义蓝图
 bp_customer_invoice = Blueprint('customer_invoice', __name__, url_prefix='/customer/invoice')
 
 # 加载配置
@@ -113,15 +123,11 @@ def lists():
 
 @bp_customer_invoice.route('/<int:customer_id>.html', methods=['GET', 'POST'])
 @login_required
+@permission_customer_section_edit.require(http_exception=403)
 def edit(customer_id):
     """
     客户开票资料编辑
     """
-    # 检查编辑权限
-    customer_item_edit_permission = CustomerItemEditPermission(customer_id)
-    if not customer_item_edit_permission.can():
-        abort(403)
-
     customer_info = get_customer_row_by_id(customer_id)
     # 检查资源是否存在
     if not customer_info:

@@ -62,8 +62,13 @@ from app_backend.permissions import permission_role_administrator, permission_ro
 from app_backend.permissions.inventory import (
     permission_inventory_section_add,
     permission_inventory_section_search,
-    permission_inventory_section_export,
     permission_inventory_section_stats,
+    permission_inventory_section_export,
+    permission_inventory_section_get,
+    permission_inventory_section_edit,
+    permission_inventory_section_del,
+    permission_inventory_section_audit,
+    permission_inventory_section_print,
 )
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int, default_search_choices_str, \
     default_search_choice_option_str
@@ -92,7 +97,7 @@ def get_inventory_brand_choices():
 
 @bp_inventory.route('/lists.html', methods=['GET', 'POST'])
 @login_required
-# @permission_inventory_section_search.require(http_exception=403)
+@permission_inventory_section_search.require(http_exception=403)
 def lists():
     """
     库存列表
@@ -146,26 +151,25 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
-            inventory_ids = request.form.getlist('inventory_id')
             # 检查删除权限
-            if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
-                ext_msg = _('Permission Denied')
-                flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+            if not permission_inventory_section_del.can():
+                abort(403)
+
+            inventory_ids = request.form.getlist('inventory_id')
+            result_total = True
+            for inventory_id in inventory_ids:
+                current_time = datetime.utcnow()
+                inventory_data = {
+                    'status_delete': STATUS_DEL_OK,
+                    'delete_time': current_time,
+                    'update_time': current_time,
+                }
+                result = edit_inventory(inventory_id, inventory_data)
+                result_total = result_total and result
+            if result_total:
+                flash(_('Del Success'), 'success')
             else:
-                result_total = True
-                for inventory_id in inventory_ids:
-                    current_time = datetime.utcnow()
-                    inventory_data = {
-                        'status_delete': STATUS_DEL_OK,
-                        'delete_time': current_time,
-                        'update_time': current_time,
-                    }
-                    result = edit_inventory(inventory_id, inventory_data)
-                    result_total = result_total and result
-                if result_total:
-                    flash(_('Del Success'), 'success')
-                else:
-                    flash(_('Del Failure'), 'danger')
+                flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_inventory_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
@@ -180,6 +184,7 @@ def lists():
 
 @bp_inventory.route('/<int:inventory_id>/info.html')
 @login_required
+@permission_inventory_section_get.require(http_exception=403)
 def info(inventory_id):
     """
     库存详情
@@ -293,7 +298,7 @@ def add():
 
 @bp_inventory.route('/<int:inventory_id>/edit.html', methods=['GET', 'POST'])
 @login_required
-@permission_role_stock_keeper.require(http_exception=403)
+@permission_inventory_section_edit.require(http_exception=403)
 def edit(inventory_id):
     """
     库存编辑
@@ -402,6 +407,7 @@ def edit(inventory_id):
 
 @bp_inventory.route('/<int:inventory_id>/transfer.html', methods=['GET', 'POST'])
 @login_required
+@permission_inventory_section_edit.require(http_exception=403)
 def transfer(inventory_id):
     """
     库存转移
@@ -495,6 +501,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_inventory_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -505,12 +517,6 @@ def ajax_delete():
     inventory_id = request.args.get('inventory_id', 0, type=int)
     if not inventory_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

@@ -33,6 +33,7 @@ from app_backend import (
 )
 
 # 定义蓝图
+from app_backend.api.buyer_order import count_buyer_order
 from app_backend.api.production_sensitive import count_production_sensitive
 from app_backend.api.quotation import count_quotation
 from app_backend.api.supplier import get_supplier_rows, edit_supplier, get_supplier_pagination, get_supplier_row_by_id, \
@@ -40,8 +41,17 @@ from app_backend.api.supplier import get_supplier_rows, edit_supplier, get_suppl
 from app_backend.api.user import get_user_rows, get_user_choices
 from app_backend.forms.supplier import SupplierSearchForm, SupplierEditForm, SupplierAddForm
 from app_backend.models.bearing_project import Supplier
-from app_backend.permissions.supplier import permission_supplier_section_export, SupplierItemDelPermission, \
-    permission_supplier_section_search, SupplierItemGetPermission, permission_supplier_section_stats
+from app_backend.permissions.supplier import (
+    permission_supplier_section_add,
+    permission_supplier_section_search,
+    permission_supplier_section_stats,
+    permission_supplier_section_export,
+    permission_supplier_section_get,
+    permission_supplier_section_edit,
+    permission_supplier_section_del,
+    permission_supplier_section_audit,
+    permission_supplier_section_print,
+)
 from app_backend.signals.supplier import signal_supplier_status_delete
 from app_common.maps.default import default_search_choice_option_int, default_search_choices_int
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
@@ -122,24 +132,33 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
+            # 检查删除权限
+            if not permission_supplier_section_del.can():
+                abort(403)
             supplier_ids = request.form.getlist('supplier_id')
             # 检查删除权限
             permitted = True
             for supplier_id in supplier_ids:
-                # 明细权限
-                supplier_item_del_permission = SupplierItemDelPermission(supplier_id)
-                if not supplier_item_del_permission.can():
+                # TODO 资源删除权限验证
+                if False:
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
                     break
                 # 检查是否正在使用
-                # 报价、订单、敏感型号
+                # 1、报价
                 if count_quotation(**{'cid': supplier_id, 'status_delete': STATUS_DEL_NO}):
                     ext_msg = _('Currently In Use')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
                     break
+                # 2、订单
+                if count_buyer_order(**{'supplier_cid': supplier_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+                # 3、敏感型号
                 if count_production_sensitive(**{'cid': supplier_id, 'status_delete': STATUS_DEL_NO}):
                     ext_msg = _('Currently In Use')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
@@ -228,16 +247,13 @@ def search():
 
 @bp_supplier.route('/<int:supplier_id>/info.html')
 @login_required
+@permission_supplier_section_get.require(http_exception=403)
 def info(supplier_id):
     """
     渠道详情
     :param supplier_id:
     :return:
     """
-    # 检查读取权限
-    supplier_item_get_permission = SupplierItemGetPermission(supplier_id)
-    if not supplier_item_get_permission.can():
-        abort(403)
     # 详情数据
     supplier_info = get_supplier_row_by_id(supplier_id)
     # 检查资源是否存在
@@ -255,7 +271,7 @@ def info(supplier_id):
 
 @bp_supplier.route('/add.html', methods=['GET', 'POST'])
 @login_required
-# @permission_supplier_section_add.require(http_exception=403)
+@permission_supplier_section_add.require(http_exception=403)
 def add():
     """
     创建渠道
@@ -286,7 +302,7 @@ def add():
     if request.method == 'POST':
         # 表单校验失败
         if not form.validate_on_submit():
-            flash(form.errors, 'danger')
+            # flash(form.errors, 'danger')
             flash(_('Add Failure'), 'danger')
             return render_template(
                 template_name,
@@ -325,15 +341,11 @@ def add():
 
 @bp_supplier.route('/<int:supplier_id>/edit.html', methods=['GET', 'POST'])
 @login_required
+@permission_supplier_section_edit.require(http_exception=403)
 def edit(supplier_id):
     """
     渠道编辑
     """
-    # 检查编辑权限
-    # supplier_item_edit_permission = SupplierItemEditPermission(supplier_id)
-    # if not supplier_item_edit_permission.can():
-    #     abort(403)
-
     supplier_info = get_supplier_row_by_id(supplier_id)
     # 检查资源是否存在
     if not supplier_info:
@@ -427,6 +439,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_supplier_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -437,13 +455,6 @@ def ajax_delete():
     supplier_id = request.args.get('supplier_id', 0, type=int)
     if not supplier_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    supplier_item_del_permission = SupplierItemDelPermission(supplier_id)
-    if not supplier_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

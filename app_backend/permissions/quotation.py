@@ -12,9 +12,7 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-import six
-
-from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission
 
 # -------------------------------------------------------------
 # 报价板块整体权限
@@ -22,52 +20,17 @@ QuotationSectionNeed = partial(SectionNeed, 'quotation')
 permission_quotation_section = BasePermission(QuotationSectionNeed())
 
 # -------------------------------------------------------------
-# 报价板块操作权限（创建、查询、导出、统计）
+# 报价板块操作权限（创建、查询、统计、导出、详情、编辑、删除、审核、打印）
 QuotationSectionActionNeed = partial(SectionActionNeed, 'quotation')
 QuotationSectionActionNeed.__doc__ = """A need with the section preset to `"quotation"`."""
 
 permission_quotation_section_add = BasePermission(QuotationSectionActionNeed('add'))
 permission_quotation_section_search = BasePermission(QuotationSectionActionNeed('search'))
-permission_quotation_section_export = BasePermission(QuotationSectionActionNeed('export'))
 permission_quotation_section_stats = BasePermission(QuotationSectionActionNeed('stats'))
+permission_quotation_section_export = BasePermission(QuotationSectionActionNeed('export'))
 
-# -------------------------------------------------------------
-# 报价明细操作权限（读取、更新、删除、打印、审核）
-QuotationItemNeed = partial(SectionActionItemNeed, 'quotation')
-QuotationItemNeed.__doc__ = """A need with the section preset to `"quotation"`."""
-
-QuotationItemGetNeed = partial(QuotationItemNeed, 'get')
-QuotationItemEditNeed = partial(QuotationItemNeed, 'edit')
-QuotationItemDelNeed = partial(QuotationItemNeed, 'del')
-QuotationItemPrintNeed = partial(QuotationItemNeed, 'print')
-QuotationItemAuditNeed = partial(QuotationItemNeed, 'audit')
-
-
-class QuotationItemGetPermission(BasePermission):
-    def __init__(self, quotation_id):
-        need = QuotationItemGetNeed(six.text_type(quotation_id))
-        super(QuotationItemGetPermission, self).__init__(need)
-
-
-class QuotationItemEditPermission(BasePermission):
-    def __init__(self, quotation_id):
-        need = QuotationItemEditNeed(six.text_type(quotation_id))
-        super(QuotationItemEditPermission, self).__init__(need)
-
-
-class QuotationItemDelPermission(BasePermission):
-    def __init__(self, quotation_id):
-        need = QuotationItemDelNeed(six.text_type(quotation_id))
-        super(QuotationItemDelPermission, self).__init__(need)
-
-
-class QuotationItemPrintPermission(BasePermission):
-    def __init__(self, quotation_id):
-        need = QuotationItemPrintNeed(six.text_type(quotation_id))
-        super(QuotationItemPrintPermission, self).__init__(need)
-
-
-class QuotationItemAuditPermission(BasePermission):
-    def __init__(self, quotation_id):
-        need = QuotationItemAuditNeed(six.text_type(quotation_id))
-        super(QuotationItemAuditPermission, self).__init__(need)
+permission_quotation_section_get = BasePermission(QuotationSectionActionNeed('get'))
+permission_quotation_section_edit = BasePermission(QuotationSectionActionNeed('edit'))
+permission_quotation_section_del = BasePermission(QuotationSectionActionNeed('del'))
+permission_quotation_section_audit = BasePermission(QuotationSectionActionNeed('audit'))
+permission_quotation_section_print = BasePermission(QuotationSectionActionNeed('print'))

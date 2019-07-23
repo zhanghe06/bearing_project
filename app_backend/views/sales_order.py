@@ -44,7 +44,17 @@ from app_backend.api.sales_order import get_sales_order_user_list_choices
 from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.forms.sales_order import SalesOrderSearchForm, SalesOrderAddForm, SalesOrderEditForm, SalesOrderItemEditForm
 from app_backend.models.bearing_project import SalesOrder
-from app_backend.permissions.sales_order import permission_sales_order_section_export, SalesOrderItemDelPermission
+from app_backend.permissions.sales_order import (
+    permission_sales_order_section_add,
+    permission_sales_order_section_search,
+    permission_sales_order_section_stats,
+    permission_sales_order_section_export,
+    permission_sales_order_section_get,
+    permission_sales_order_section_edit,
+    permission_sales_order_section_del,
+    permission_sales_order_section_audit,
+    permission_sales_order_section_print,
+)
 from app_backend.signals.sales_orders import signal_sales_orders_status_delete
 from app_common.maps.default import default_search_choice_option_int
 from app_common.maps.status_audit import STATUS_AUDIT_OK
@@ -64,6 +74,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 @bp_sales_order.route('/lists.html', methods=['GET', 'POST'])
 @login_required
+@permission_sales_order_section_search.require(http_exception=403)
 def lists():
     """
     采购订单列表
@@ -114,12 +125,15 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
-            order_ids = request.form.getlist('order_id')
+            # 检查删除权限
+            if not permission_sales_order_section_del.can():
+                abort(403)
+            order_ids = request.form.getlist('sales_order_id')
             # 检查删除权限
             permitted = True
             for order_id in order_ids:
-                sales_orders_item_del_permission = SalesOrderItemDelPermission(order_id)
-                if not sales_orders_item_del_permission.can():
+                # TODO 资源删除权限验证
+                if False:
                     ext_msg = _('Permission Denied')
                     flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
                     permitted = False
@@ -128,12 +142,12 @@ def lists():
                 result_total = True
                 for order_id in order_ids:
                     current_time = datetime.utcnow()
-                    quotation_data = {
+                    order_data = {
                         'status_delete': STATUS_DEL_OK,
                         'delete_time': current_time,
                         'update_time': current_time,
                     }
-                    result = edit_sales_order(order_id, quotation_data)
+                    result = edit_sales_order(order_id, order_data)
                     if result:
                         # 发送删除信号
                         signal_data = {
@@ -161,6 +175,7 @@ def lists():
 
 @bp_sales_order.route('/add.html', methods=['GET', 'POST'])
 @login_required
+@permission_sales_order_section_add.require(http_exception=403)
 def add():
     template_name = 'sales/order/add.html'
     # 文档信息
@@ -339,6 +354,7 @@ def add():
 
 @bp_sales_order.route('/<int:sales_order_id>/edit.html', methods=['GET', 'POST'])
 @login_required
+@permission_sales_order_section_edit.require(http_exception=403)
 def edit(sales_order_id):
     """
     采购订单编辑
@@ -533,6 +549,7 @@ def edit(sales_order_id):
 
 @bp_sales_order.route('/<int:sales_order_id>/info.html')
 @login_required
+@permission_sales_order_section_get.require(http_exception=403)
 def info(sales_order_id):
     """
     订单详情
@@ -583,6 +600,7 @@ def info(sales_order_id):
 
 @bp_sales_order.route('/<int:sales_order_id>/preview.html')
 @login_required
+@permission_sales_order_section_print.require(http_exception=403)
 def preview(sales_order_id):
     """
     打印预览
@@ -633,6 +651,7 @@ def preview(sales_order_id):
 
 @bp_sales_order.route('/<int:sales_order_id>.pdf')
 @login_required
+@permission_sales_order_section_print.require(http_exception=403)
 def pdf(sales_order_id):
     """
     文件下载
@@ -697,6 +716,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_sales_order_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -707,13 +732,6 @@ def ajax_delete():
     sales_order_id = request.args.get('sales_order_id', 0, type=int)
     if not sales_order_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    sales_orders_item_del_permission = SalesOrderItemDelPermission(sales_order_id)
-    if not sales_orders_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
@@ -762,6 +780,12 @@ def ajax_audit():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查审核权限
+    if not permission_sales_order_section_audit.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -773,13 +797,6 @@ def ajax_audit():
     audit_status = request.args.get('audit_status', 0, type=int)
     if not sales_order_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    sales_order_del_permission = SalesOrderItemDelPermission(sales_order_id)
-    if not sales_order_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

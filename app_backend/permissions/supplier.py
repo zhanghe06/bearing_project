@@ -12,9 +12,7 @@ from __future__ import unicode_literals
 
 from functools import partial
 
-import six
-
-from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission, SectionActionItemNeed
+from app_backend.permissions import SectionNeed, SectionActionNeed, BasePermission
 
 # -------------------------------------------------------------
 # 渠道板块整体权限
@@ -22,45 +20,17 @@ SupplierSectionNeed = partial(SectionNeed, 'supplier')
 permission_supplier_section = BasePermission(SupplierSectionNeed())
 
 # -------------------------------------------------------------
-# 渠道板块操作权限（创建、查询、导出、统计）
+# 渠道板块操作权限（创建、查询、统计、导出、详情、编辑、删除、审核、打印）
 SupplierSectionActionNeed = partial(SectionActionNeed, 'supplier')
 SupplierSectionActionNeed.__doc__ = """A need with the section preset to `"supplier"`."""
 
 permission_supplier_section_add = BasePermission(SupplierSectionActionNeed('add'))
 permission_supplier_section_search = BasePermission(SupplierSectionActionNeed('search'))
-permission_supplier_section_export = BasePermission(SupplierSectionActionNeed('export'))
 permission_supplier_section_stats = BasePermission(SupplierSectionActionNeed('stats'))
+permission_supplier_section_export = BasePermission(SupplierSectionActionNeed('export'))
 
-# -------------------------------------------------------------
-# 渠道明细操作权限(读取、更新、删除、打印)
-SupplierItemNeed = partial(SectionActionItemNeed, 'supplier')
-SupplierItemNeed.__doc__ = """A need with the section preset to `"supplier"`."""
-
-SupplierItemGetNeed = partial(SupplierItemNeed, 'get')
-SupplierItemEditNeed = partial(SupplierItemNeed, 'edit')
-SupplierItemDelNeed = partial(SupplierItemNeed, 'del')
-SupplierItemPrintNeed = partial(SupplierItemNeed, 'print')
-
-
-class SupplierItemGetPermission(BasePermission):
-    def __init__(self, supplier_id):
-        need = SupplierItemGetNeed(six.text_type(supplier_id))
-        super(SupplierItemGetPermission, self).__init__(need)
-
-
-class SupplierItemEditPermission(BasePermission):
-    def __init__(self, supplier_id):
-        need = SupplierItemEditNeed(six.text_type(supplier_id))
-        super(SupplierItemEditPermission, self).__init__(need)
-
-
-class SupplierItemDelPermission(BasePermission):
-    def __init__(self, supplier_id):
-        need = SupplierItemDelNeed(six.text_type(supplier_id))
-        super(SupplierItemDelPermission, self).__init__(need)
-
-
-class SupplierItemPrintPermission(BasePermission):
-    def __init__(self, supplier_id):
-        need = SupplierItemPrintNeed(six.text_type(supplier_id))
-        super(SupplierItemPrintPermission, self).__init__(need)
+permission_supplier_section_get = BasePermission(SupplierSectionActionNeed('get'))
+permission_supplier_section_edit = BasePermission(SupplierSectionActionNeed('edit'))
+permission_supplier_section_del = BasePermission(SupplierSectionActionNeed('del'))
+permission_supplier_section_audit = BasePermission(SupplierSectionActionNeed('audit'))
+permission_supplier_section_print = BasePermission(SupplierSectionActionNeed('print'))

@@ -65,11 +65,13 @@ from app_backend.models.bearing_project import Supplier, SupplierContact
 from app_backend.permissions.supplier import (
     permission_supplier_section_add,
     permission_supplier_section_search,
-    permission_supplier_section_export,
     permission_supplier_section_stats,
-    SupplierItemGetPermission,
-    SupplierItemEditPermission,
-    SupplierItemDelPermission,
+    permission_supplier_section_export,
+    permission_supplier_section_get,
+    permission_supplier_section_edit,
+    permission_supplier_section_del,
+    permission_supplier_section_audit,
+    permission_supplier_section_print,
 )
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
@@ -164,16 +166,12 @@ def lists():
 
 @bp_supplier_contact.route('/<int:supplier_id>.html', methods=['GET', 'POST'])
 @login_required
+@permission_supplier_section_edit.require(http_exception=403)
 def edit(supplier_id):
     """
     联系方式
     注意 contact_name name 对换
     """
-    # 检查编辑权限
-    # supplier_item_edit_permission = SupplierItemEditPermission(supplier_id)
-    # if not supplier_item_edit_permission.can():
-    #     abort(403)
-
     supplier_info = get_supplier_row_by_id(supplier_id)
     # 检查资源是否存在
     if not supplier_info:

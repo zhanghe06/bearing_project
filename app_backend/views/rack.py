@@ -57,8 +57,13 @@ from app_backend.permissions import permission_role_administrator, permission_ro
 from app_backend.permissions.rack import (
     permission_rack_section_add,
     permission_rack_section_search,
-    permission_rack_section_export,
     permission_rack_section_stats,
+    permission_rack_section_export,
+    permission_rack_section_get,
+    permission_rack_section_edit,
+    permission_rack_section_del,
+    permission_rack_section_audit,
+    permission_rack_section_print,
 )
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
@@ -79,7 +84,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 @bp_rack.route('/lists.html', methods=['GET', 'POST'])
 @login_required
-# @permission_rack_section_search.require(http_exception=403)
+@permission_rack_section_search.require(http_exception=403)
 def lists():
     """
     货架列表
@@ -126,36 +131,34 @@ def lists():
             )
         # 批量删除
         if form.op.data == 2:
-            rack_ids = request.form.getlist('rack_id')
             # 检查删除权限
-            if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
-                ext_msg = _('Permission Denied')
-                flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
-            else:
-                permitted = True
+            if not permission_rack_section_del.can():
+                abort(403)
+            rack_ids = request.form.getlist('rack_id')
+            permitted = True
+            for rack_id in rack_ids:
+                # 检查是否正在使用
+                # 库存
+                if count_inventory(**{'rack_id': rack_id, 'status_delete': STATUS_DEL_NO}):
+                    ext_msg = _('Currently In Use')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+            if permitted:
+                result_total = True
                 for rack_id in rack_ids:
-                    # 检查是否正在使用
-                    # 库存
-                    if count_inventory(**{'rack_id': rack_id, 'status_delete': STATUS_DEL_NO}):
-                        ext_msg = _('Currently In Use')
-                        flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
-                        permitted = False
-                        break
-                if permitted:
-                    result_total = True
-                    for rack_id in rack_ids:
-                        current_time = datetime.utcnow()
-                        rack_data = {
-                            'status_delete': STATUS_DEL_OK,
-                            'delete_time': current_time,
-                            'update_time': current_time,
-                        }
-                        result = edit_rack(rack_id, rack_data)
-                        result_total = result_total and result
-                    if result_total:
-                        flash(_('Del Success'), 'success')
-                    else:
-                        flash(_('Del Failure'), 'danger')
+                    current_time = datetime.utcnow()
+                    rack_data = {
+                        'status_delete': STATUS_DEL_OK,
+                        'delete_time': current_time,
+                        'update_time': current_time,
+                    }
+                    result = edit_rack(rack_id, rack_data)
+                    result_total = result_total and result
+                if result_total:
+                    flash(_('Del Success'), 'success')
+                else:
+                    flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_rack_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
@@ -170,6 +173,7 @@ def lists():
 
 @bp_rack.route('/<int:rack_id>/info.html')
 @login_required
+@permission_rack_section_get.require(http_exception=403)
 def info(rack_id):
     """
     货架详情
@@ -253,7 +257,7 @@ def add():
 
 @bp_rack.route('/<int:rack_id>/edit.html', methods=['GET', 'POST'])
 @login_required
-@permission_role_stock_keeper.require(http_exception=403)
+@permission_rack_section_edit.require(http_exception=403)
 def edit(rack_id):
     """
     货架编辑
@@ -335,6 +339,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_rack_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -345,12 +355,6 @@ def ajax_delete():
     rack_id = request.args.get('rack_id', 0, type=int)
     if not rack_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

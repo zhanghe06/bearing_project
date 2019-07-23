@@ -50,12 +50,19 @@ from app_backend.forms.warehouse import (
 )
 from app_backend.models.bearing_project import Warehouse
 from app_backend.permissions import permission_role_administrator, permission_role_stock_keeper
+
 from app_backend.permissions.warehouse import (
     permission_warehouse_section_add,
     permission_warehouse_section_search,
-    permission_warehouse_section_export,
     permission_warehouse_section_stats,
+    permission_warehouse_section_export,
+    permission_warehouse_section_get,
+    permission_warehouse_section_edit,
+    permission_warehouse_section_del,
+    permission_warehouse_section_audit,
+    permission_warehouse_section_print,
 )
+
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -172,6 +179,7 @@ def lists():
 
 @bp_warehouse.route('/<int:warehouse_id>/info.html')
 @login_required
+@permission_warehouse_section_get.require(http_exception=403)
 def info(warehouse_id):
     """
     产品详情
@@ -257,7 +265,7 @@ def add():
 
 @bp_warehouse.route('/<int:warehouse_id>/edit.html', methods=['GET', 'POST'])
 @login_required
-@permission_role_stock_keeper.require(http_exception=403)
+@permission_warehouse_section_edit.require(http_exception=403)
 def edit(warehouse_id):
     """
     产品编辑
@@ -338,11 +346,17 @@ def edit(warehouse_id):
 @login_required
 def ajax_delete():
     """
-    产品删除
+    仓库删除
     :return:
     """
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
+
+    # 检查删除权限
+    if not permission_warehouse_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
 
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
@@ -354,12 +368,6 @@ def ajax_delete():
     warehouse_id = request.args.get('warehouse_id', 0, type=int)
     if not warehouse_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

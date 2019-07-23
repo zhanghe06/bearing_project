@@ -55,8 +55,13 @@ from app_backend.permissions import permission_role_administrator
 from app_backend.permissions.production import (
     permission_production_section_add,
     permission_production_section_search,
-    permission_production_section_export,
     permission_production_section_stats,
+    permission_production_section_export,
+    permission_production_section_get,
+    permission_production_section_edit,
+    permission_production_section_del,
+    permission_production_section_audit,
+    permission_production_section_print,
 )
 from app_common.maps.default import default_search_choices_str, default_search_choice_option_str
 from app_common.maps.status_delete import (
