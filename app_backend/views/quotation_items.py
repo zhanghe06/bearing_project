@@ -61,11 +61,13 @@ from app_backend.models.bearing_project import Quotation, QuotationItems
 from app_backend.permissions.quotation import (
     permission_quotation_section_add,
     permission_quotation_section_search,
-    permission_quotation_section_export,
     permission_quotation_section_stats,
-    QuotationItemGetPermission,
-    QuotationItemEditPermission,
-    QuotationItemDelPermission,
+    permission_quotation_section_export,
+    permission_quotation_section_get,
+    permission_quotation_section_edit,
+    permission_quotation_section_del,
+    permission_quotation_section_audit,
+    permission_quotation_section_print,
 )
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (

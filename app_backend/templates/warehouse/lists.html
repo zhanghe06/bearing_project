@@ -39,10 +39,14 @@
 
                             <button type="submit" class="btn btn-primary btn-sm" name="op"
                                     value="0">{{ _('Search') }}</button>
+                        {% if permission_warehouse_section_export.can() %}
                             <button type="submit" class="btn btn-primary btn-sm" name="op"
                                     value="1">{{ _('Export') }}</button>
+                        {% endif %}
+                        {% if permission_warehouse_section_del.can() %}
                             <button type="submit" class="btn-sm btn-danger delete_all" name="op"
                                     value="2">{{ _('Delete') }}</button>
+                        {% endif %}
                         </div>
                     </div>
                 </div>

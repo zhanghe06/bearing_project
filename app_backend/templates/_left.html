@@ -25,9 +25,11 @@
                     <li>
                         <a href="{{ url_for('production.lists') }}">{{ _('production lists') }}</a>
                     </li>
+                    {%- if permission_production_section_add.can() -%}
                     <li>
                         <a href="{{ url_for('production.add') }}">{{ _('production add') }}</a>
                     </li>
+                    {% endif %}
                     <li>
                         <a id="menu-production-sensitive" href="#">{{ _('production sensitive management') }} <span
                                 class="fa arrow"></span></a>
@@ -35,9 +37,11 @@
                             <li>
                                 <a href="{{ url_for('production_sensitive.lists') }}">{{ _('production sensitive lists') }}</a>
                             </li>
+                            {%- if permission_production_section_add.can() -%}
                             <li>
                                 <a href="{{ url_for('production_sensitive.add') }}">{{ _('production sensitive add') }}</a>
                             </li>
+                            {% endif %}
                         </ul>
                     </li>
                 </ul>
@@ -51,9 +55,11 @@
                     <li>
                         <a href="{{ url_for('user.lists') }}">{{ _('user lists') }}</a>
                     </li>
+                    {%- if permission_user_section_add.can() -%}
                     <li>
                         <a href="{{ url_for('user.add') }}">{{ _('user add') }}</a>
                     </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endif %}
@@ -65,9 +71,11 @@
                     <li>
                         <a href="{{ url_for('customer.lists') }}">{{ _('customer lists') }}</a>
                     </li>
+                    {%- if permission_customer_section_add.can() -%}
                     <li>
                         <a href="{{ url_for('customer.add') }}">{{ _('customer add') }}</a>
                     </li>
+                    {% endif %}
                     <li>
                         <a href="{{ url_for('customer_invoice.lists') }}">{{ _('customer invoice lists') }}</a>
                     </li>
@@ -85,9 +93,11 @@
                     <li>
                         <a href="{{ url_for('supplier.lists') }}">{{ _('supplier lists') }}</a>
                     </li>
+                    {%- if permission_supplier_section_add.can() -%}
                     <li>
                         <a href="{{ url_for('supplier.add') }}">{{ _('supplier add') }}</a>
                     </li>
+                    {% endif %}
                     <li>
                         <a href="{{ url_for('supplier_invoice.lists') }}">{{ _('supplier invoice lists') }}</a>
                     </li>
@@ -105,9 +115,11 @@
                     <li>
                         <a href="{{ url_for('quotation.lists') }}">{{ _('quotation lists') }}</a>
                     </li>
+                    {%- if permission_quotation_section_add.can() -%}
                     <li>
                         <a href="{{ url_for('quotation.add') }}">{{ _('quotation add') }}</a>
                     </li>
+                    {% endif %}
                     <li>
                         <a href="{{ url_for('quotation_items.lists') }}">{{ _('quotation item lists') }}</a>
                     </li>
@@ -122,9 +134,11 @@
                     <li>
                         <a href="{{ url_for('enquiry.lists') }}">{{ _('enquiry lists') }}</a>
                     </li>
+                    {%- if permission_enquiry_section_add.can() -%}
                     <li>
                         <a href="{{ url_for('enquiry.add') }}">{{ _('enquiry add') }}</a>
                     </li>
+                    {% endif %}
                     <li>
                         <a href="{{ url_for('enquiry_items.lists') }}">{{ _('enquiry item lists') }}</a>
                     </li>
@@ -143,9 +157,11 @@
                             <li>
                                 <a href="{{ url_for('sales_order.lists') }}">{{ _('sales order lists') }}</a>
                             </li>
+                            {%- if permission_sales_order_section_add.can() -%}
                             <li>
                                 <a href="{{ url_for('sales_order.add') }}">{{ _('sales order add') }}</a>
                             </li>
+                            {% endif %}
                         </ul>
                     </li>
                     <li>
@@ -155,9 +171,11 @@
                             <li>
                                 <a href="{{ url_for('delivery.lists') }}">{{ _('delivery lists') }}</a>
                             </li>
+                            {%- if permission_delivery_section_add.can() -%}
                             <li>
                                 <a href="{{ url_for('delivery.add') }}">{{ _('delivery add') }}</a>
                             </li>
+                            {% endif %}
                         </ul>
                     </li>
                 </ul>
@@ -175,9 +193,11 @@
                             <li>
                                 <a href="{{ url_for('buyer_order.lists') }}">{{ _('buyer order lists') }}</a>
                             </li>
+                            {%- if permission_buyer_order_section_add.can() -%}
                             <li>
                                 <a href="{{ url_for('buyer_order.add') }}">{{ _('buyer order add') }}</a>
                             </li>
+                            {% endif %}
                         </ul>
                     </li>
                     <li>
@@ -187,9 +207,11 @@
                             <li>
                                 <a href="{{ url_for('purchase.lists') }}">{{ _('purchase lists') }}</a>
                             </li>
+                            {%- if permission_purchase_section_add.can() -%}
                             <li>
                                 <a href="{{ url_for('purchase.add') }}">{{ _('purchase add') }}</a>
                             </li>
+                            {% endif %}
                         </ul>
                     </li>
                 </ul>
@@ -204,18 +226,22 @@
                     <li>
                         <a href="{{ url_for('warehouse.lists') }}">{{ _('warehouse lists') }}</a>
                     </li>
+                    {%- if permission_warehouse_section_add.can() -%}
                     <li>
                         <a href="{{ url_for('warehouse.add') }}">{{ _('warehouse add') }}</a>
                     </li>
+                    {% endif %}
                     <li>
                         <a id="menu-rack" href="#">{{ _('rack management') }} <span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
                             <li>
                                 <a href="{{ url_for('rack.lists') }}">{{ _('rack lists') }}</a>
                             </li>
+                            {%- if permission_rack_section_add.can() -%}
                             <li>
                                 <a href="{{ url_for('rack.add') }}">{{ _('rack add') }}</a>
                             </li>
+                            {% endif %}
                         </ul>
                     </li>
                 </ul>
@@ -229,9 +255,11 @@
                     <li>
                         <a href="{{ url_for('inventory.lists') }}">{{ _('inventory lists') }}</a>
                     </li>
+                    {%- if permission_inventory_section_add.can() -%}
                     <li>
                         <a href="{{ url_for('inventory.add') }}">{{ _('inventory add') }}</a>
                     </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endif %}

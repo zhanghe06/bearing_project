@@ -381,15 +381,11 @@ def add():
 
 @bp_quotation.route('/<int:quotation_id>/edit.html', methods=['GET', 'POST'])
 @login_required
+@permission_quotation_section_edit.require(http_exception=403)
 def edit(quotation_id):
     """
     报价编辑
     """
-    # 检查编辑权限
-    quotation_item_edit_permission = QuotationItemEditPermission(quotation_id)
-    if not quotation_item_edit_permission.can():
-        abort(403)
-
     quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
     if not quotation_info:
@@ -573,16 +569,13 @@ def edit(quotation_id):
 
 @bp_quotation.route('/<int:quotation_id>/info.html')
 @login_required
+@permission_quotation_section_get.require(http_exception=403)
 def info(quotation_id):
     """
     报价详情
     :param quotation_id:
     :return:
     """
-    # 检查读取权限
-    quotation_item_get_permission = QuotationItemGetPermission(quotation_id)
-    if not quotation_item_get_permission.can():
-        abort(403)
     quotation_info = get_quotation_row_by_id(quotation_id)
     # 检查资源是否存在
     if not quotation_info:
@@ -627,6 +620,7 @@ def info(quotation_id):
 
 @bp_quotation.route('/<int:quotation_id>/preview.html')
 @login_required
+@permission_quotation_section_print.require(http_exception=403)
 def preview(quotation_id):
     """
     打印预览
@@ -677,6 +671,7 @@ def preview(quotation_id):
 
 @bp_quotation.route('/<int:quotation_id>.pdf')
 @login_required
+@permission_quotation_section_print.require(http_exception=403)
 def pdf(quotation_id):
     """
     文件下载
@@ -741,6 +736,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_quotation_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -751,13 +752,6 @@ def ajax_delete():
     quotation_id = request.args.get('quotation_id', 0, type=int)
     if not quotation_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    quotation_item_del_permission = QuotationItemDelPermission(quotation_id)
-    if not quotation_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
@@ -806,6 +800,12 @@ def ajax_audit():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查审核权限
+    if not permission_quotation_section_audit.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -817,13 +817,6 @@ def ajax_audit():
     audit_status = request.args.get('audit_status', 0, type=int)
     if not quotation_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    quotation_item_del_permission = QuotationItemDelPermission(quotation_id)
-    if not quotation_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

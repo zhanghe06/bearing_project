@@ -46,10 +46,14 @@
 
                         <button type="submit" class="btn btn-primary btn-sm" name="op"
                                 value="0">{{ _('Search') }}</button>
+                    {% if permission_supplier_section_export.can() %}
                         <button type="submit" class="btn btn-primary btn-sm" name="op"
                                 value="1">{{ _('Export') }}</button>
+                    {% endif %}
+                    {% if permission_supplier_section_del.can() %}
                         <button type="submit" class="btn-sm btn-danger delete_all" name="op"
                                     value="2">{{ _('Delete') }}</button>
+                    {% endif %}
                     </form>
                 </div>
             </div>
@@ -81,20 +85,20 @@
                 <tbody>
                 {% for info in pagination.items %}
                     <tr class="text-muted item">
-                        <td style="width: 5em;">
+                        <td>
                             <label>
                                 <input class="select_item" name="supplier_invoice_id" title="{{ _('Select') }}"
                                        rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                             </label>
                         </td>
 
-                        <td style="width: 10em;">{{ info.company_name }}</td>
-                        <td style="width: 4em;">{{ info.company_tax_id}}</td>
-                        <td style="width: 4em;">{{ info.company_address}}</td>
-                        <td style="width: 4em;">{{ info.company_tel}}</td>
-                        <td style="width: 11em;">{{ info.company_bank_name}}</td>
-                        <td style="width: 18em;">{{ info.company_bank_account}}</td>
-                        <td style="width: 7em;">
+                        <td>{{ info.company_name }}</td>
+                        <td>{{ info.company_tax_id}}</td>
+                        <td>{{ info.company_address}}</td>
+                        <td>{{ info.company_tel}}</td>
+                        <td>{{ info.company_bank_name}}</td>
+                        <td>{{ info.company_bank_account}}</td>
+                        <td style="min-width: 8em;">
                             <!-- Split button -->
                             <div class="btn-group btn-group-sm">
                                 <a class="btn btn-default" href="{{ url_for('supplier_invoice.edit', supplier_id=info.cid, next=request.path) }}">

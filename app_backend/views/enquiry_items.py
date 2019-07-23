@@ -61,11 +61,13 @@ from app_backend.models.bearing_project import Enquiry, EnquiryItems
 from app_backend.permissions.enquiry import (
     permission_enquiry_section_add,
     permission_enquiry_section_search,
-    permission_enquiry_section_export,
     permission_enquiry_section_stats,
-    EnquiryItemGetPermission,
-    EnquiryItemEditPermission,
-    EnquiryItemDelPermission,
+    permission_enquiry_section_export,
+    permission_enquiry_section_get,
+    permission_enquiry_section_edit,
+    permission_enquiry_section_del,
+    permission_enquiry_section_audit,
+    permission_enquiry_section_print,
 )
 from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_common.maps.status_delete import (

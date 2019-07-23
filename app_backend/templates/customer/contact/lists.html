@@ -56,10 +56,14 @@
 
                             <button type="submit" class="btn btn-primary btn-sm" name="op"
                                     value="0">{{ _('Search') }}</button>
+                        {% if permission_customer_section_export.can() %}
                             <button type="submit" class="btn btn-primary btn-sm" name="op"
                                     value="1">{{ _('Export') }}</button>
+                        {% endif %}
+                        {% if permission_customer_section_del.can() %}
                             <button type="submit" class="btn-sm btn-danger delete_all" name="op"
                                     value="2">{{ _('Delete') }}</button>
+                        {% endif %}
                         </div>
                     </div>
                 </div>
@@ -92,23 +96,23 @@
                     <tbody>
                     {% for info in pagination.items %}
                         <tr class="text-muted item">
-                            <td style="width: 5em;">
+                            <td>
                                 <label>
                                     <input class="select_item" name="customer_contact_id" title="{{ _('Select') }}"
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
 
-                            <td style="width: 18em;"><a
+                            <td><a
                                     href="{{ url_for('customer.edit', customer_id=info.cid) }}">{{ info.cid | customer_company_name }}</a><br/>{{ info.address }}
                             </td>
-                            <td style="width: 4em;">{{ info.name }}</td>
-                            <td style="width: 4em;">{{ info.salutation }}</td>
-                            <td style="width: 4em;">{{ info.mobile }}</td>
-                            <td style="width: 11em;">{{ info.tel }}<br/>{{ info.fax }}</td>
-                            <td style="width: 11em;">{{ info.email }}</td>
-                            <td style="width: 4em;">{{ info.status_default | status_default }}</td>
-                            <td style="width: 7em;">
+                            <td>{{ info.name }}</td>
+                            <td>{{ info.salutation }}</td>
+                            <td>{{ info.mobile }}</td>
+                            <td>{{ info.tel }}<br/>{{ info.fax }}</td>
+                            <td>{{ info.email }}</td>
+                            <td>{{ info.status_default | status_default }}</td>
+                            <td style="min-width: 8em;">
                                 <!-- Split button -->
                                 <div class="btn-group btn-group-sm">
                                     <a class="btn btn-default"
