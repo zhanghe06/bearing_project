@@ -140,3 +140,14 @@ def insert_rows(data_list):
     :return:
     """
     return db_instance.insert_rows(Futures, data_list)
+
+
+def get_distinct_futures_brand(*args, **kwargs):
+    """
+    获取品牌
+    :param args:
+    :param kwargs:
+    :return: List
+    """
+    field = 'production_brand'
+    return map(lambda x: getattr(x, field), db_instance.get_distinct_field(Futures, field, *args, **kwargs))

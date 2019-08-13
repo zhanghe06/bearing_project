@@ -4,6 +4,10 @@
 
 [https://github.com/kubedb/installer/tree/0.12.0/chart/kubedb](https://github.com/kubedb/installer/tree/0.12.0/chart/kubedb)
 
+[https://github.com/kubedb/docs/blob/master/docs/setup/install.md](https://github.com/kubedb/docs/blob/master/docs/setup/install.md)
+
+[https://github.com/kubedb/installer/tree/0.12.0/deploy](https://github.com/kubedb/installer/tree/0.12.0/deploy)
+
 Install KubeDB via Helm 
 ```
 $ helm repo add appscode https://charts.appscode.com/stable/

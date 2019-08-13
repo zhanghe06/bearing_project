@@ -21,6 +21,7 @@ role_sales_section_action = {
     'inventory': ['add', 'search', 'stats', 'get'],
     'warehouse': ['add', 'search', 'stats', 'get'],
     'rack': ['add', 'search', 'stats', 'get'],
+    'futures': ['search', 'get'],
     # 资源模块
     'customer': ['add', 'search', 'stats', 'get', 'edit', 'del', 'audit', 'print'],
     'quotation': ['add', 'search', 'stats', 'get', 'edit', 'del', 'audit', 'print'],

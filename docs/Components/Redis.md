@@ -19,7 +19,9 @@
     - 本地缓存（占用业务资源）
     - 分片打散（推荐，需要业务支持）
 - Big Key 集群内存倾斜
-    - 对 big key 存储的数据 （big value）进行拆分，变成value1，value2… valueN
+    - 对 big key 存储的数据 （big value）进行拆分
+        - big value 是个大 json: 使用 mget、mset 将内容打散（取 mget key1, key2 ... keyN；存 mset key1, key2 ... keyN）
+        - big value 是个大 list: 变成value1，value2… valueN
 - 缓存雪崩
     - 坡度过期
 - keys 模糊匹配

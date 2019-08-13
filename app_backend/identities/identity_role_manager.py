@@ -22,6 +22,7 @@ role_manager_section_action = {
     'warehouse': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     'rack': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     'user': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'futures': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     # 资源模块 - 销售
     'customer': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     'quotation': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],

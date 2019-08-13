@@ -66,6 +66,13 @@ docker/nginx/conf/conf.d/project.conf >> docker/nginx/conf/conf.d/project.conf.b
 
 将 docker/Nginx/conf/ssl/server.crt 导入, 并设置始终信任
 
+IE浏览器证书配置
+```
+Internet 选项 >> 内容 >> 证书 >> 受信任的根证书颁发机构 >> 导入 >> 下一步 >> 浏览 >> 选择 >> 弹出提示，选是 
+```
+
+Windows 修改 hosts `C:\Windows\System32\drivers\etc\hosts`
+
 
 验证IP
 ```

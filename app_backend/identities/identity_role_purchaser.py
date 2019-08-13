@@ -21,6 +21,7 @@ role_purchaser_section_action = {
     'inventory': ['add', 'search', 'stats', 'get'],
     'warehouse': ['add', 'search', 'stats', 'get'],
     'rack': ['add', 'search', 'stats', 'get'],
+    'futures': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     # 资源模块
     'supplier': ['add', 'search', 'stats', 'get', 'edit', 'del', 'audit', 'print'],
     'enquiry': ['add', 'search', 'stats', 'get', 'edit', 'del', 'audit', 'print'],

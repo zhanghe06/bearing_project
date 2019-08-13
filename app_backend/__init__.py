@@ -133,6 +133,7 @@ from app_backend.views.delivery import bp_delivery
 from app_backend.views.warehouse import bp_warehouse
 from app_backend.views.rack import bp_rack
 from app_backend.views.inventory import bp_inventory
+from app_backend.views.futures import bp_futures
 from app_backend.views.purchase import bp_purchase
 from app_backend.views.delivery import bp_delivery
 from app_backend.views.system import bp_system
@@ -163,6 +164,7 @@ app.register_blueprint(bp_delivery)
 app.register_blueprint(bp_warehouse)
 app.register_blueprint(bp_rack)
 app.register_blueprint(bp_inventory)
+app.register_blueprint(bp_futures)
 app.register_blueprint(bp_purchase)
 app.register_blueprint(bp_delivery)
 app.register_blueprint(bp_system)

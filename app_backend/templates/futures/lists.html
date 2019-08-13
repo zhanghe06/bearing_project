@@ -5,10 +5,10 @@
         <ol class="breadcrumb">
             <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
             <li><a href="javascript:void(0);"
-                   onclick="$('#menu-production').trigger('click')">{{ _('production management') }}</a></li>
-            <li class="active">{{ _('production lists') }}</li>
+                   onclick="$('#menu-inventory').trigger('click')">{{ _('inventory management') }}</a></li>
+            <li class="active">{{ _('futures lists') }}</li>
         </ol>
-        <form method="post">
+        <form id="search_form" method="post">
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingSearch">
                     <h4 class="panel-title panel-title-sm">
@@ -34,14 +34,22 @@
                                 {{ form.production_model.label() }}
                                 {{ form.production_model(class="form-control") }}
                             </div>
+                            <div class="form-group form-group-sm{% if form.req_date.errors %} has-error{% endif %}">
+                                {{ form.req_date.label() }}
+                                {{ form.req_date(class="form-control") }}
+                            </div>
+                            <div class="form-group form-group-sm{% if form.acc_date.errors %} has-error{% endif %}">
+                                {{ form.acc_date.label() }}
+                                {{ form.acc_date(class="form-control") }}
+                            </div>
 
                             <button type="submit" class="btn-sm btn-primary" name="op"
                                     value="0">{{ _('Search') }}</button>
-                        {% if permission_production_section_export.can() %}
+                        {% if permission_futures_section_export.can() %}
                             <button type="submit" class="btn-sm btn-primary" name="op"
                                     value="1">{{ _('Export') }}</button>
                         {% endif %}
-                        {% if permission_production_section_del.can() %}
+                        {% if permission_futures_section_del.can() %}
                             <button type="submit" class="btn-sm btn-danger delete_all" name="op"
                                     value="2">{{ _('Delete') }}</button>
                         {% endif %}
@@ -57,21 +65,20 @@
                     <tr>
                         <th>
                             <label class="select_all_label">
-                                <input class="select_all" name="production_ids" title="{{- _('Select All') -}}"
+                                <input class="select_all" name="futures_ids" title="{{- _('Select All') -}}"
                                        rel="tooltip" type="checkbox" value=""/>
                                 {{- _('Select All') -}}
                             </label>
                         </th>
-                        <th class="text-right">{{ _('production brand') }}</th>
+                        <th>{{ _('production brand') }}</th>
                         <th>{{ _('production model') }}</th>
-                        <th>{{ _('production sku') }}</th>
-                        <th>{{ _('ind') }}</th>
-                        <th>{{ _('oud') }}</th>
-                        <th>{{ _('wid') }}</th>
-                        <th>{{ _('production note') }}</th>
-{#                        <th>{{ _('create time') }}</th>#}
-{#                        <th>{{ _('update time') }}</th>#}
-                        <th>{{ _('operation') }}</th>
+                        <th class="text-right">{{ _('quantity') }}</th>
+                        <th class="text-right">{{ _('unit price') }}</th>
+                        <th class="text-right">{{ _('sub total') }}</th>
+                        <th>{{ _('req date') }}</th>
+                        <th>{{ _('acc date') }}</th>
+                        <th>{{ _('futures note') }}</th>
+                        <th>{{ _('update time') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -79,48 +86,26 @@
                         <tr class="text-muted item">
                             <td>
                                 <label>
-                                    <input class="select_item" name="production_id" title="{{ _('Select') }}"
+                                    <input class="select_item" name="futures_id" title="{{ _('Select') }}"
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td class="{% if info.id | status_sensitive %}danger {% endif %}text-right">{{ info.production_brand }}</td>
-                            <td class="{% if info.id | status_sensitive %}danger{% endif %}"><a href="{{ url_for('production.info', production_id=info.id) }}" rel="tooltip"
-                                   title="{{ _('Click details') }}">{{ info.production_model }}</a></td>
-                            <td>{{ info.production_sku }}</td>
-                            <td>{{ info.ind }}</td>
-                            <td>{{ info.oud }}</td>
-                            <td>{{ info.wid }}</td>
+                            <td>{{ info.production_brand }}</td>
+                            <td>{{ info.production_model }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.quantity) }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.sub_total) }}</td>
+                            <td>{{ info.req_date }}</td>
+                            <td>{{ info.acc_date }}</td>
                             <td>{{ info.note | default('-', True) }}</td>
-{#                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}
-{#                            <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}
-                            <td style="min-width: 8em;">
-                                <!-- Split button -->
-                                <div class="btn-group btn-group-sm">
-                                    <a class="btn btn-default"
-                                       href="{{ url_for('production.edit', production_id=info.id, next=request.path) }}">
-                                        <span class="glyphicon glyphicon-pencil"></span> {{ _('Edit') }}
-                                    </a>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li>
-                                            <a href="javascript:void(0);" onclick="production_delete({{ info.id }})">
-                                                <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
+                            <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
                 {# 翻页 #}
                 {% from "macros.html" import render_pagination_post %}
-                {{ render_pagination_post(pagination, 'production.lists') }}
+                {{ render_pagination_post(pagination, 'futures.lists') }}
             </div>
         </form>
     </div>
@@ -129,12 +114,12 @@
 
 {% block extra_js %}
     <script>
-        // 产品删除
-        function production_delete (production_id) {
+        // 期货删除
+        function futures_delete (futures_id) {
             if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
-                $.getJSON('{{ url_for('production.ajax_delete') }}',
+                $.getJSON('{{ url_for('futures.ajax_delete') }}',
                     {
-                        production_id: production_id
+                        futures_id: futures_id
                     }, function (data) {
                         if (data.result === true) {
                             alert(data.msg)
@@ -146,5 +131,15 @@
                 return false
             }
         }
+
+        $(function () {
+            //搜索表单
+
+            //级联选择
+            $('#warehouse_id').change(function () {
+                $('#rack_id').get(0).selectedIndex = 0
+                $('#search_form').submit()
+            })
+        })
     </script>
 {% endblock %}

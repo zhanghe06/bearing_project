@@ -73,6 +73,19 @@ from app_backend.permissions.rack import (
     permission_rack_section_print,
 )
 
+from app_backend.permissions.futures import (
+    permission_futures_section,
+    permission_futures_section_add,
+    permission_futures_section_search,
+    permission_futures_section_stats,
+    permission_futures_section_export,
+    permission_futures_section_get,
+    permission_futures_section_edit,
+    permission_futures_section_del,
+    permission_futures_section_audit,
+    permission_futures_section_print,
+)
+
 from app_backend.permissions.inventory import (
     permission_inventory_section,
     permission_inventory_section_add,
@@ -253,6 +266,18 @@ def context():
         permission_rack_section_del=IdentityContext(permission_rack_section_del),
         permission_rack_section_audit=IdentityContext(permission_rack_section_audit),
         permission_rack_section_print=IdentityContext(permission_rack_section_print),
+
+        # 期货
+        permission_futures_section=IdentityContext(permission_futures_section),
+        permission_futures_section_add=IdentityContext(permission_futures_section_add),
+        permission_futures_section_search=IdentityContext(permission_futures_section_search),
+        permission_futures_section_stats=IdentityContext(permission_futures_section_stats),
+        permission_futures_section_export=IdentityContext(permission_futures_section_export),
+        permission_futures_section_get=IdentityContext(permission_futures_section_get),
+        permission_futures_section_edit=IdentityContext(permission_futures_section_edit),
+        permission_futures_section_del=IdentityContext(permission_futures_section_del),
+        permission_futures_section_audit=IdentityContext(permission_futures_section_audit),
+        permission_futures_section_print=IdentityContext(permission_futures_section_print),
 
         # 库存
         permission_inventory_section=IdentityContext(permission_inventory_section),

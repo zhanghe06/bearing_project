@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-06-11 00:07+0800\n"
+"POT-Creation-Date: 2019-08-14 00:17+0800\n"
 "PO-Revision-Date: 2018-05-03 13:57+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Please log in to access this page."
 msgstr "访问页面，请先登录。"
 
-#: app_backend/forms/__init__.py:57 app_backend/forms/production.py:333
+#: app_backend/forms/__init__.py:57 app_backend/forms/production.py:297
 msgid "Not a valid choice"
 msgstr "非法选项"
 
@@ -91,8 +91,8 @@ msgstr "公司名称"
 
 #: app_backend/forms/buyer_order.py:108 app_backend/forms/buyer_order.py:111
 #: app_backend/forms/buyer_order.py:113 app_backend/forms/buyer_order.py:116
-#: app_backend/forms/customer.py:72 app_backend/forms/customer.py:75
-#: app_backend/forms/customer.py:77 app_backend/forms/customer.py:80
+#: app_backend/forms/customer.py:74 app_backend/forms/customer.py:77
+#: app_backend/forms/customer.py:79 app_backend/forms/customer.py:82
 #: app_backend/forms/delivery.py:108 app_backend/forms/delivery.py:111
 #: app_backend/forms/delivery.py:113 app_backend/forms/delivery.py:116
 #: app_backend/forms/enquiry.py:108 app_backend/forms/enquiry.py:111
@@ -111,17 +111,17 @@ msgstr "公司名称"
 #: app_backend/forms/quotation_items.py:105
 #: app_backend/forms/sales_order.py:108 app_backend/forms/sales_order.py:111
 #: app_backend/forms/sales_order.py:113 app_backend/forms/sales_order.py:116
-#: app_backend/forms/supplier.py:73 app_backend/forms/supplier.py:76
-#: app_backend/forms/supplier.py:78 app_backend/forms/supplier.py:81
-#: app_backend/forms/user.py:77 app_backend/forms/user.py:80
-#: app_backend/forms/user.py:82 app_backend/forms/user.py:85
+#: app_backend/forms/supplier.py:75 app_backend/forms/supplier.py:78
+#: app_backend/forms/supplier.py:80 app_backend/forms/supplier.py:83
+#: app_backend/forms/user.py:78 app_backend/forms/user.py:81
+#: app_backend/forms/user.py:83 app_backend/forms/user.py:86
 msgid "start time"
 msgstr "起始时间"
 
 #: app_backend/forms/buyer_order.py:120 app_backend/forms/buyer_order.py:123
 #: app_backend/forms/buyer_order.py:125 app_backend/forms/buyer_order.py:128
-#: app_backend/forms/customer.py:84 app_backend/forms/customer.py:87
-#: app_backend/forms/customer.py:89 app_backend/forms/customer.py:92
+#: app_backend/forms/customer.py:86 app_backend/forms/customer.py:89
+#: app_backend/forms/customer.py:91 app_backend/forms/customer.py:94
 #: app_backend/forms/delivery.py:120 app_backend/forms/delivery.py:123
 #: app_backend/forms/delivery.py:125 app_backend/forms/delivery.py:128
 #: app_backend/forms/enquiry.py:120 app_backend/forms/enquiry.py:123
@@ -141,53 +141,53 @@ msgstr "起始时间"
 #: app_backend/forms/quotation_items.py:117
 #: app_backend/forms/sales_order.py:120 app_backend/forms/sales_order.py:123
 #: app_backend/forms/sales_order.py:125 app_backend/forms/sales_order.py:128
-#: app_backend/forms/supplier.py:85 app_backend/forms/supplier.py:88
-#: app_backend/forms/supplier.py:90 app_backend/forms/supplier.py:93
-#: app_backend/forms/user.py:89 app_backend/forms/user.py:92
-#: app_backend/forms/user.py:94 app_backend/forms/user.py:97
+#: app_backend/forms/supplier.py:87 app_backend/forms/supplier.py:90
+#: app_backend/forms/supplier.py:92 app_backend/forms/supplier.py:95
+#: app_backend/forms/user.py:90 app_backend/forms/user.py:93
+#: app_backend/forms/user.py:95 app_backend/forms/user.py:98
 msgid "end time"
 msgstr "结束时间"
 
 #: app_backend/forms/buyer_order.py:132 app_backend/forms/delivery.py:132
 #: app_backend/forms/enquiry.py:132 app_backend/forms/enquiry_items.py:121
-#: app_backend/forms/price.py:102 app_backend/forms/production.py:90
+#: app_backend/forms/price.py:102 app_backend/forms/production.py:54
 #: app_backend/forms/production_sensitive.py:79
 #: app_backend/forms/purchase.py:132 app_backend/forms/quotation.py:131
 #: app_backend/forms/quotation_items.py:121
 #: app_backend/forms/sales_order.py:132
-#: app_backend/templates/buyer/order/lists.html:88
-#: app_backend/templates/customer/contact/lists.html:89
-#: app_backend/templates/customer/invoice/lists.html:78
-#: app_backend/templates/customer/lists.html:79
-#: app_backend/templates/delivery/lists.html:88
-#: app_backend/templates/enquiry/lists.html:88
-#: app_backend/templates/inventory/lists.html:80
-#: app_backend/templates/production/lists.html:70
-#: app_backend/templates/production/sensitive/lists.html:83
-#: app_backend/templates/purchase/lists.html:88
-#: app_backend/templates/quotation/lists.html:88
-#: app_backend/templates/rack/lists.html:68
-#: app_backend/templates/sales/order/lists.html:88
-#: app_backend/templates/supplier/contact/lists.html:88
-#: app_backend/templates/supplier/invoice/lists.html:78
-#: app_backend/templates/supplier/lists.html:79
-#: app_backend/templates/user/lists.html:80
-#: app_backend/templates/warehouse/lists.html:71
+#: app_backend/templates/buyer/order/lists.html:92
+#: app_backend/templates/customer/contact/lists.html:93
+#: app_backend/templates/customer/invoice/lists.html:83
+#: app_backend/templates/customer/lists.html:83
+#: app_backend/templates/delivery/lists.html:92
+#: app_backend/templates/enquiry/lists.html:92
+#: app_backend/templates/inventory/lists.html:84
+#: app_backend/templates/production/lists.html:74
+#: app_backend/templates/production/sensitive/lists.html:87
+#: app_backend/templates/purchase/lists.html:92
+#: app_backend/templates/quotation/lists.html:92
+#: app_backend/templates/rack/lists.html:72
+#: app_backend/templates/sales/order/lists.html:92
+#: app_backend/templates/supplier/contact/lists.html:92
+#: app_backend/templates/supplier/invoice/lists.html:82
+#: app_backend/templates/supplier/lists.html:83
+#: app_backend/templates/user/lists.html:84
+#: app_backend/templates/warehouse/lists.html:75
 msgid "operation"
 msgstr "操作"
 
-#: app_backend/forms/buyer_order.py:137 app_backend/forms/customer.py:101
+#: app_backend/forms/buyer_order.py:137 app_backend/forms/customer.py:103
 #: app_backend/forms/customer_contact.py:134
 #: app_backend/forms/customer_invoice.py:71 app_backend/forms/delivery.py:137
 #: app_backend/forms/enquiry.py:137 app_backend/forms/enquiry_items.py:126
-#: app_backend/forms/inventory.py:86 app_backend/forms/price.py:107
-#: app_backend/forms/production.py:95
+#: app_backend/forms/futures.py:71 app_backend/forms/inventory.py:86
+#: app_backend/forms/price.py:107 app_backend/forms/production.py:59
 #: app_backend/forms/production_sensitive.py:84
 #: app_backend/forms/purchase.py:137 app_backend/forms/quotation.py:136
 #: app_backend/forms/quotation_items.py:126 app_backend/forms/rack.py:64
-#: app_backend/forms/sales_order.py:137 app_backend/forms/supplier.py:102
+#: app_backend/forms/sales_order.py:137 app_backend/forms/supplier.py:104
 #: app_backend/forms/supplier_contact.py:134
-#: app_backend/forms/supplier_invoice.py:71 app_backend/forms/user.py:106
+#: app_backend/forms/supplier_invoice.py:71 app_backend/forms/user.py:107
 #: app_backend/forms/warehouse.py:96
 msgid "page"
 msgstr "页码"
@@ -237,7 +237,7 @@ msgstr "自定义型号"
 #: app_backend/forms/delivery.py:188 app_backend/forms/delivery.py:296
 #: app_backend/forms/enquiry.py:186 app_backend/forms/enquiry.py:192
 #: app_backend/forms/enquiry.py:194 app_backend/forms/enquiry.py:300
-#: app_backend/forms/inventory.py:94 app_backend/forms/production.py:213
+#: app_backend/forms/inventory.py:94 app_backend/forms/production.py:177
 #: app_backend/forms/production_sensitive.py:121
 #: app_backend/forms/purchase.py:181 app_backend/forms/purchase.py:186
 #: app_backend/forms/purchase.py:188 app_backend/forms/purchase.py:296
@@ -254,12 +254,14 @@ msgstr "产品编号"
 #: app_backend/forms/delivery.py:199 app_backend/forms/delivery.py:201
 #: app_backend/forms/enquiry.py:200 app_backend/forms/enquiry.py:203
 #: app_backend/forms/enquiry.py:205 app_backend/forms/enquiry.py:207
-#: app_backend/forms/inventory.py:60 app_backend/forms/inventory.py:63
-#: app_backend/forms/inventory.py:66 app_backend/forms/inventory.py:103
-#: app_backend/forms/inventory.py:110 app_backend/forms/inventory.py:112
-#: app_backend/forms/production.py:69 app_backend/forms/production.py:72
-#: app_backend/forms/production.py:75 app_backend/forms/production.py:106
-#: app_backend/forms/production.py:113 app_backend/forms/production.py:115
+#: app_backend/forms/futures.py:23 app_backend/forms/futures.py:26
+#: app_backend/forms/futures.py:29 app_backend/forms/inventory.py:60
+#: app_backend/forms/inventory.py:63 app_backend/forms/inventory.py:66
+#: app_backend/forms/inventory.py:103 app_backend/forms/inventory.py:110
+#: app_backend/forms/inventory.py:112 app_backend/forms/production.py:33
+#: app_backend/forms/production.py:36 app_backend/forms/production.py:39
+#: app_backend/forms/production.py:70 app_backend/forms/production.py:77
+#: app_backend/forms/production.py:79
 #: app_backend/forms/production_sensitive.py:58
 #: app_backend/forms/production_sensitive.py:61
 #: app_backend/forms/production_sensitive.py:64
@@ -285,17 +287,18 @@ msgstr "产品编号"
 #: app_backend/templates/enquiry/add.html:84
 #: app_backend/templates/enquiry/edit.html:86
 #: app_backend/templates/enquiry/info.html:139
-#: app_backend/templates/enquiry/items/lists.html:82
+#: app_backend/templates/enquiry/items/lists.html:84
 #: app_backend/templates/enquiry/pdf.html:126
 #: app_backend/templates/enquiry/preview.html:126
-#: app_backend/templates/inventory/lists.html:71
+#: app_backend/templates/futures/lists.html:73
+#: app_backend/templates/inventory/lists.html:75
 #: app_backend/templates/price/lists.html:91
 #: app_backend/templates/price/lists.html:158
 #: app_backend/templates/price/lists.html:224
 #: app_backend/templates/price/lists.html:289
-#: app_backend/templates/production/lists.html:61
+#: app_backend/templates/production/lists.html:65
 #: app_backend/templates/production/search_modal.html:43
-#: app_backend/templates/production/sensitive/lists.html:76
+#: app_backend/templates/production/sensitive/lists.html:80
 #: app_backend/templates/purchase/add.html:90
 #: app_backend/templates/purchase/edit.html:92
 #: app_backend/templates/purchase/info.html:139
@@ -304,7 +307,7 @@ msgstr "产品编号"
 #: app_backend/templates/quotation/add.html:84
 #: app_backend/templates/quotation/edit.html:91
 #: app_backend/templates/quotation/info.html:139
-#: app_backend/templates/quotation/items/lists.html:82
+#: app_backend/templates/quotation/items/lists.html:84
 #: app_backend/templates/quotation/pdf.html:126
 #: app_backend/templates/quotation/preview.html:126
 #: app_backend/templates/sales/order/add.html:89
@@ -323,6 +326,8 @@ msgstr "品牌"
 #: app_backend/forms/enquiry.py:217 app_backend/forms/enquiry.py:219
 #: app_backend/forms/enquiry_items.py:85 app_backend/forms/enquiry_items.py:88
 #: app_backend/forms/enquiry_items.py:90 app_backend/forms/enquiry_items.py:92
+#: app_backend/forms/futures.py:33 app_backend/forms/futures.py:35
+#: app_backend/forms/futures.py:37 app_backend/forms/futures.py:39
 #: app_backend/forms/inventory.py:70 app_backend/forms/inventory.py:72
 #: app_backend/forms/inventory.py:74 app_backend/forms/inventory.py:76
 #: app_backend/forms/inventory.py:118 app_backend/forms/inventory.py:125
@@ -330,13 +335,13 @@ msgstr "品牌"
 #: app_backend/forms/inventory.py:219 app_backend/forms/inventory.py:221
 #: app_backend/forms/price.py:66 app_backend/forms/price.py:69
 #: app_backend/forms/price.py:71 app_backend/forms/price.py:73
-#: app_backend/forms/production.py:79 app_backend/forms/production.py:81
-#: app_backend/forms/production.py:83 app_backend/forms/production.py:85
-#: app_backend/forms/production.py:120 app_backend/forms/production.py:128
-#: app_backend/forms/production.py:130 app_backend/forms/production.py:222
-#: app_backend/forms/production.py:230 app_backend/forms/production.py:232
-#: app_backend/forms/production.py:338 app_backend/forms/production.py:344
-#: app_backend/forms/production.py:346
+#: app_backend/forms/production.py:43 app_backend/forms/production.py:45
+#: app_backend/forms/production.py:47 app_backend/forms/production.py:49
+#: app_backend/forms/production.py:84 app_backend/forms/production.py:92
+#: app_backend/forms/production.py:94 app_backend/forms/production.py:186
+#: app_backend/forms/production.py:194 app_backend/forms/production.py:196
+#: app_backend/forms/production.py:302 app_backend/forms/production.py:308
+#: app_backend/forms/production.py:310
 #: app_backend/forms/production_sensitive.py:68
 #: app_backend/forms/production_sensitive.py:70
 #: app_backend/forms/production_sensitive.py:72
@@ -367,17 +372,18 @@ msgstr "品牌"
 #: app_backend/templates/enquiry/add.html:85
 #: app_backend/templates/enquiry/edit.html:87
 #: app_backend/templates/enquiry/info.html:140
-#: app_backend/templates/enquiry/items/lists.html:83
+#: app_backend/templates/enquiry/items/lists.html:85
 #: app_backend/templates/enquiry/pdf.html:127
 #: app_backend/templates/enquiry/preview.html:127
-#: app_backend/templates/inventory/lists.html:72
+#: app_backend/templates/futures/lists.html:74
+#: app_backend/templates/inventory/lists.html:76
 #: app_backend/templates/price/lists.html:92
 #: app_backend/templates/price/lists.html:159
 #: app_backend/templates/price/lists.html:225
 #: app_backend/templates/price/lists.html:290
-#: app_backend/templates/production/lists.html:62
+#: app_backend/templates/production/lists.html:66
 #: app_backend/templates/production/search_modal.html:44
-#: app_backend/templates/production/sensitive/lists.html:77
+#: app_backend/templates/production/sensitive/lists.html:81
 #: app_backend/templates/purchase/add.html:91
 #: app_backend/templates/purchase/edit.html:93
 #: app_backend/templates/purchase/info.html:140
@@ -386,7 +392,7 @@ msgstr "品牌"
 #: app_backend/templates/quotation/add.html:85
 #: app_backend/templates/quotation/edit.html:92
 #: app_backend/templates/quotation/info.html:140
-#: app_backend/templates/quotation/items/lists.html:83
+#: app_backend/templates/quotation/items/lists.html:85
 #: app_backend/templates/quotation/pdf.html:127
 #: app_backend/templates/quotation/preview.html:127
 #: app_backend/templates/sales/order/add.html:90
@@ -404,8 +410,8 @@ msgstr "产品型号"
 #: app_backend/forms/enquiry.py:224 app_backend/forms/enquiry.py:227
 #: app_backend/forms/enquiry.py:229 app_backend/forms/enquiry.py:231
 #: app_backend/forms/inventory.py:132 app_backend/forms/inventory.py:139
-#: app_backend/forms/inventory.py:141 app_backend/forms/production.py:135
-#: app_backend/forms/production.py:143 app_backend/forms/production.py:145
+#: app_backend/forms/inventory.py:141 app_backend/forms/production.py:99
+#: app_backend/forms/production.py:107 app_backend/forms/production.py:109
 #: app_backend/forms/production_sensitive.py:159
 #: app_backend/forms/production_sensitive.py:166
 #: app_backend/forms/production_sensitive.py:168
@@ -428,17 +434,17 @@ msgstr "产品型号"
 #: app_backend/templates/enquiry/add.html:87
 #: app_backend/templates/enquiry/edit.html:89
 #: app_backend/templates/enquiry/info.html:142
-#: app_backend/templates/enquiry/items/lists.html:85
+#: app_backend/templates/enquiry/items/lists.html:87
 #: app_backend/templates/enquiry/pdf.html:129
 #: app_backend/templates/enquiry/preview.html:128
-#: app_backend/templates/inventory/lists.html:76
+#: app_backend/templates/inventory/lists.html:80
 #: app_backend/templates/price/lists.html:94
 #: app_backend/templates/price/lists.html:161
 #: app_backend/templates/price/lists.html:227
 #: app_backend/templates/price/lists.html:292
-#: app_backend/templates/production/lists.html:63
+#: app_backend/templates/production/lists.html:67
 #: app_backend/templates/production/search_modal.html:45
-#: app_backend/templates/production/sensitive/lists.html:78
+#: app_backend/templates/production/sensitive/lists.html:82
 #: app_backend/templates/purchase/add.html:93
 #: app_backend/templates/purchase/edit.html:95
 #: app_backend/templates/purchase/info.html:142
@@ -447,7 +453,7 @@ msgstr "产品型号"
 #: app_backend/templates/quotation/add.html:87
 #: app_backend/templates/quotation/edit.html:94
 #: app_backend/templates/quotation/info.html:142
-#: app_backend/templates/quotation/items/lists.html:85
+#: app_backend/templates/quotation/items/lists.html:87
 #: app_backend/templates/quotation/pdf.html:129
 #: app_backend/templates/quotation/preview.html:129
 #: app_backend/templates/sales/order/add.html:92
@@ -483,9 +489,10 @@ msgstr "单位"
 #: app_backend/templates/enquiry/add.html:86
 #: app_backend/templates/enquiry/edit.html:88
 #: app_backend/templates/enquiry/info.html:141
-#: app_backend/templates/enquiry/items/lists.html:84
+#: app_backend/templates/enquiry/items/lists.html:86
 #: app_backend/templates/enquiry/pdf.html:128
 #: app_backend/templates/enquiry/preview.html:129
+#: app_backend/templates/futures/lists.html:75
 #: app_backend/templates/price/lists.html:93
 #: app_backend/templates/price/lists.html:160
 #: app_backend/templates/price/lists.html:226
@@ -498,7 +505,7 @@ msgstr "单位"
 #: app_backend/templates/quotation/add.html:86
 #: app_backend/templates/quotation/edit.html:93
 #: app_backend/templates/quotation/info.html:141
-#: app_backend/templates/quotation/items/lists.html:84
+#: app_backend/templates/quotation/items/lists.html:86
 #: app_backend/templates/quotation/pdf.html:128
 #: app_backend/templates/quotation/preview.html:128
 #: app_backend/templates/sales/order/add.html:91
@@ -524,14 +531,15 @@ msgstr "数量"
 #: app_backend/templates/buyer/order/info.html:143
 #: app_backend/templates/delivery/info.html:145
 #: app_backend/templates/enquiry/info.html:143
-#: app_backend/templates/enquiry/items/lists.html:86
+#: app_backend/templates/enquiry/items/lists.html:88
+#: app_backend/templates/futures/lists.html:76
 #: app_backend/templates/price/lists.html:95
 #: app_backend/templates/price/lists.html:162
 #: app_backend/templates/price/lists.html:228
 #: app_backend/templates/price/lists.html:293
 #: app_backend/templates/purchase/info.html:145
 #: app_backend/templates/quotation/info.html:143
-#: app_backend/templates/quotation/items/lists.html:86
+#: app_backend/templates/quotation/items/lists.html:88
 #: app_backend/templates/sales/order/info.html:143
 msgid "unit price"
 msgstr "单价"
@@ -569,7 +577,7 @@ msgstr "单价"
 #: app_backend/templates/enquiry/add.html:90
 #: app_backend/templates/enquiry/edit.html:92
 #: app_backend/templates/enquiry/info.html:182
-#: app_backend/templates/enquiry/items/lists.html:88
+#: app_backend/templates/enquiry/items/lists.html:90
 #: app_backend/templates/enquiry/pdf.html:169
 #: app_backend/templates/enquiry/preview.html:169
 #: app_backend/templates/price/lists.html:97
@@ -584,7 +592,7 @@ msgstr "单价"
 #: app_backend/templates/quotation/add.html:90
 #: app_backend/templates/quotation/edit.html:97
 #: app_backend/templates/quotation/info.html:181
-#: app_backend/templates/quotation/items/lists.html:88
+#: app_backend/templates/quotation/items/lists.html:90
 #: app_backend/templates/quotation/pdf.html:168
 #: app_backend/templates/quotation/preview.html:168
 #: app_backend/templates/sales/order/add.html:95
@@ -616,7 +624,7 @@ msgstr "备注"
 #: app_backend/templates/enquiry/add.html:89
 #: app_backend/templates/enquiry/edit.html:91
 #: app_backend/templates/enquiry/info.html:145
-#: app_backend/templates/enquiry/items/lists.html:87
+#: app_backend/templates/enquiry/items/lists.html:89
 #: app_backend/templates/enquiry/pdf.html:132
 #: app_backend/templates/enquiry/preview.html:132
 #: app_backend/templates/price/lists.html:96
@@ -626,7 +634,7 @@ msgstr "备注"
 #: app_backend/templates/quotation/add.html:89
 #: app_backend/templates/quotation/edit.html:96
 #: app_backend/templates/quotation/info.html:145
-#: app_backend/templates/quotation/items/lists.html:87
+#: app_backend/templates/quotation/items/lists.html:89
 #: app_backend/templates/quotation/pdf.html:132
 #: app_backend/templates/quotation/preview.html:132
 #: app_backend/templates/sales/order/add.html:94
@@ -640,7 +648,7 @@ msgstr "货期"
 #: app_backend/forms/buyer_order.py:296 app_backend/forms/buyer_order.py:303
 #: app_backend/forms/buyer_order.py:306 app_backend/forms/buyer_order.py:418
 #: app_backend/forms/buyer_order.py:421 app_backend/forms/buyer_order.py:424
-#: app_backend/templates/buyer/order/lists.html:81
+#: app_backend/templates/buyer/order/lists.html:85
 msgid "buyer order user"
 msgstr "采购人员"
 
@@ -727,7 +735,7 @@ msgstr "订单总额"
 
 #: app_backend/forms/buyer_order.py:495 app_backend/forms/buyer_order.py:497
 #: app_backend/forms/buyer_order.py:499 app_backend/forms/buyer_order.py:501
-#: app_backend/templates/buyer/order/lists.html:84
+#: app_backend/templates/buyer/order/lists.html:88
 msgid "buyer order note"
 msgstr "订单备注"
 
@@ -741,12 +749,12 @@ msgstr "品牌"
 msgid "product model"
 msgstr "产品型号"
 
-#: app_backend/forms/catalogue.py:55 app_backend/forms/customer.py:96
+#: app_backend/forms/catalogue.py:55 app_backend/forms/customer.py:98
 #: app_backend/forms/customer_contact.py:129
-#: app_backend/forms/customer_invoice.py:66 app_backend/forms/inventory.py:81
-#: app_backend/forms/rack.py:59 app_backend/forms/supplier.py:97
-#: app_backend/forms/supplier_contact.py:129
-#: app_backend/forms/supplier_invoice.py:66 app_backend/forms/user.py:101
+#: app_backend/forms/customer_invoice.py:66 app_backend/forms/futures.py:66
+#: app_backend/forms/inventory.py:81 app_backend/forms/rack.py:59
+#: app_backend/forms/supplier.py:99 app_backend/forms/supplier_contact.py:129
+#: app_backend/forms/supplier_invoice.py:66 app_backend/forms/user.py:102
 #: app_backend/forms/warehouse.py:91
 #: app_backend/templates/buyer/order/add.html:97
 #: app_backend/templates/buyer/order/edit.html:89
@@ -765,12 +773,12 @@ msgstr "产品型号"
 msgid "Option"
 msgstr "操作"
 
-#: app_backend/forms/customer.py:36 app_backend/forms/customer.py:38
-#: app_backend/forms/customer.py:40 app_backend/forms/customer.py:42
-#: app_backend/forms/customer.py:112 app_backend/forms/customer.py:117
-#: app_backend/forms/customer.py:120 app_backend/forms/customer.py:121
-#: app_backend/forms/customer.py:234 app_backend/forms/customer.py:239
-#: app_backend/forms/customer.py:242 app_backend/forms/customer.py:243
+#: app_backend/forms/customer.py:38 app_backend/forms/customer.py:40
+#: app_backend/forms/customer.py:42 app_backend/forms/customer.py:44
+#: app_backend/forms/customer.py:114 app_backend/forms/customer.py:120
+#: app_backend/forms/customer.py:123 app_backend/forms/customer.py:124
+#: app_backend/forms/customer.py:237 app_backend/forms/customer.py:243
+#: app_backend/forms/customer.py:246 app_backend/forms/customer.py:247
 #: app_backend/forms/customer_contact.py:165
 #: app_backend/forms/customer_contact.py:167
 #: app_backend/forms/customer_contact.py:169
@@ -785,12 +793,12 @@ msgstr "操作"
 #: app_backend/forms/customer_invoice.py:100 app_backend/forms/price.py:56
 #: app_backend/forms/price.py:58 app_backend/forms/price.py:60
 #: app_backend/forms/price.py:62 app_backend/forms/quotation_items.py:75
-#: app_backend/forms/supplier.py:37 app_backend/forms/supplier.py:39
-#: app_backend/forms/supplier.py:41 app_backend/forms/supplier.py:43
-#: app_backend/forms/supplier.py:113 app_backend/forms/supplier.py:118
-#: app_backend/forms/supplier.py:121 app_backend/forms/supplier.py:122
-#: app_backend/forms/supplier.py:235 app_backend/forms/supplier.py:240
-#: app_backend/forms/supplier.py:243 app_backend/forms/supplier.py:244
+#: app_backend/forms/supplier.py:39 app_backend/forms/supplier.py:41
+#: app_backend/forms/supplier.py:43 app_backend/forms/supplier.py:45
+#: app_backend/forms/supplier.py:115 app_backend/forms/supplier.py:121
+#: app_backend/forms/supplier.py:124 app_backend/forms/supplier.py:125
+#: app_backend/forms/supplier.py:238 app_backend/forms/supplier.py:244
+#: app_backend/forms/supplier.py:247 app_backend/forms/supplier.py:248
 #: app_backend/forms/supplier_contact.py:165
 #: app_backend/forms/supplier_contact.py:167
 #: app_backend/forms/supplier_contact.py:169
@@ -803,124 +811,124 @@ msgstr "操作"
 #: app_backend/forms/supplier_invoice.py:96
 #: app_backend/forms/supplier_invoice.py:99
 #: app_backend/forms/supplier_invoice.py:100
-#: app_backend/templates/customer/invoice/lists.html:72
-#: app_backend/templates/customer/lists.html:73
+#: app_backend/templates/customer/invoice/lists.html:77
+#: app_backend/templates/customer/lists.html:77
 #: app_backend/templates/customer/search_modal.html:46
-#: app_backend/templates/production/sensitive/lists.html:79
-#: app_backend/templates/supplier/invoice/lists.html:72
-#: app_backend/templates/supplier/lists.html:73
+#: app_backend/templates/production/sensitive/lists.html:83
+#: app_backend/templates/supplier/invoice/lists.html:76
+#: app_backend/templates/supplier/lists.html:77
 #: app_backend/templates/supplier/search_modal.html:46
 msgid "company name"
 msgstr "公司名称"
 
-#: app_backend/forms/customer.py:47 app_backend/forms/customer.py:54
-#: app_backend/forms/customer.py:57 app_backend/forms/customer.py:191
-#: app_backend/forms/customer.py:197 app_backend/forms/customer.py:200
-#: app_backend/forms/customer.py:313 app_backend/forms/customer.py:319
-#: app_backend/forms/customer.py:322 app_backend/forms/supplier.py:48
-#: app_backend/forms/supplier.py:55 app_backend/forms/supplier.py:58
-#: app_backend/forms/supplier.py:192 app_backend/forms/supplier.py:198
-#: app_backend/forms/supplier.py:201 app_backend/forms/supplier.py:314
-#: app_backend/forms/supplier.py:320 app_backend/forms/supplier.py:323
+#: app_backend/forms/customer.py:49 app_backend/forms/customer.py:56
+#: app_backend/forms/customer.py:59 app_backend/forms/customer.py:194
+#: app_backend/forms/customer.py:200 app_backend/forms/customer.py:203
+#: app_backend/forms/customer.py:317 app_backend/forms/customer.py:323
+#: app_backend/forms/customer.py:326 app_backend/forms/supplier.py:50
+#: app_backend/forms/supplier.py:57 app_backend/forms/supplier.py:60
+#: app_backend/forms/supplier.py:195 app_backend/forms/supplier.py:201
+#: app_backend/forms/supplier.py:204 app_backend/forms/supplier.py:318
+#: app_backend/forms/supplier.py:324 app_backend/forms/supplier.py:327
 #: app_backend/templates/customer/search_modal.html:47
 #: app_backend/templates/supplier/search_modal.html:47
 msgid "company type"
 msgstr "公司类型"
 
-#: app_backend/forms/customer.py:61 app_backend/forms/customer.py:65
-#: app_backend/forms/customer.py:68 app_backend/forms/customer.py:205
-#: app_backend/forms/customer.py:211 app_backend/forms/customer.py:214
-#: app_backend/forms/customer.py:327 app_backend/forms/customer.py:333
-#: app_backend/forms/customer.py:336 app_backend/forms/supplier.py:62
-#: app_backend/forms/supplier.py:66 app_backend/forms/supplier.py:69
-#: app_backend/forms/supplier.py:206 app_backend/forms/supplier.py:212
-#: app_backend/forms/supplier.py:215 app_backend/forms/supplier.py:328
-#: app_backend/forms/supplier.py:334 app_backend/forms/supplier.py:337
+#: app_backend/forms/customer.py:63 app_backend/forms/customer.py:67
+#: app_backend/forms/customer.py:70 app_backend/forms/customer.py:208
+#: app_backend/forms/customer.py:214 app_backend/forms/customer.py:217
+#: app_backend/forms/customer.py:331 app_backend/forms/customer.py:337
+#: app_backend/forms/customer.py:340 app_backend/forms/supplier.py:64
+#: app_backend/forms/supplier.py:68 app_backend/forms/supplier.py:71
+#: app_backend/forms/supplier.py:209 app_backend/forms/supplier.py:215
+#: app_backend/forms/supplier.py:218 app_backend/forms/supplier.py:332
+#: app_backend/forms/supplier.py:338 app_backend/forms/supplier.py:341
 msgid "owner uid"
 msgstr "所属销售"
 
-#: app_backend/forms/customer.py:126 app_backend/forms/customer.py:130
-#: app_backend/forms/customer.py:133 app_backend/forms/customer.py:134
-#: app_backend/forms/customer.py:248 app_backend/forms/customer.py:252
-#: app_backend/forms/customer.py:255 app_backend/forms/customer.py:256
+#: app_backend/forms/customer.py:129 app_backend/forms/customer.py:133
+#: app_backend/forms/customer.py:136 app_backend/forms/customer.py:137
+#: app_backend/forms/customer.py:252 app_backend/forms/customer.py:256
+#: app_backend/forms/customer.py:259 app_backend/forms/customer.py:260
 #: app_backend/forms/customer_invoice.py:118
 #: app_backend/forms/customer_invoice.py:122
 #: app_backend/forms/customer_invoice.py:125
-#: app_backend/forms/customer_invoice.py:126 app_backend/forms/supplier.py:127
-#: app_backend/forms/supplier.py:131 app_backend/forms/supplier.py:134
-#: app_backend/forms/supplier.py:135 app_backend/forms/supplier.py:249
-#: app_backend/forms/supplier.py:253 app_backend/forms/supplier.py:256
-#: app_backend/forms/supplier.py:257 app_backend/forms/supplier_invoice.py:118
+#: app_backend/forms/customer_invoice.py:126 app_backend/forms/supplier.py:130
+#: app_backend/forms/supplier.py:134 app_backend/forms/supplier.py:137
+#: app_backend/forms/supplier.py:138 app_backend/forms/supplier.py:253
+#: app_backend/forms/supplier.py:257 app_backend/forms/supplier.py:260
+#: app_backend/forms/supplier.py:261 app_backend/forms/supplier_invoice.py:118
 #: app_backend/forms/supplier_invoice.py:122
 #: app_backend/forms/supplier_invoice.py:125
 #: app_backend/forms/supplier_invoice.py:126
-#: app_backend/templates/customer/invoice/lists.html:74
-#: app_backend/templates/customer/lists.html:73
-#: app_backend/templates/supplier/invoice/lists.html:74
-#: app_backend/templates/supplier/lists.html:73
+#: app_backend/templates/customer/invoice/lists.html:79
+#: app_backend/templates/customer/lists.html:77
+#: app_backend/templates/supplier/invoice/lists.html:78
+#: app_backend/templates/supplier/lists.html:77
 msgid "company address"
 msgstr "公司地址"
 
-#: app_backend/forms/customer.py:139 app_backend/forms/customer.py:143
-#: app_backend/forms/customer.py:146 app_backend/forms/customer.py:147
-#: app_backend/forms/customer.py:261 app_backend/forms/customer.py:265
-#: app_backend/forms/customer.py:268 app_backend/forms/customer.py:269
-#: app_backend/forms/supplier.py:140 app_backend/forms/supplier.py:144
-#: app_backend/forms/supplier.py:147 app_backend/forms/supplier.py:148
-#: app_backend/forms/supplier.py:262 app_backend/forms/supplier.py:266
-#: app_backend/forms/supplier.py:269 app_backend/forms/supplier.py:270
-#: app_backend/templates/customer/lists.html:74
-#: app_backend/templates/supplier/lists.html:74
+#: app_backend/forms/customer.py:142 app_backend/forms/customer.py:146
+#: app_backend/forms/customer.py:149 app_backend/forms/customer.py:150
+#: app_backend/forms/customer.py:265 app_backend/forms/customer.py:269
+#: app_backend/forms/customer.py:272 app_backend/forms/customer.py:273
+#: app_backend/forms/supplier.py:143 app_backend/forms/supplier.py:147
+#: app_backend/forms/supplier.py:150 app_backend/forms/supplier.py:151
+#: app_backend/forms/supplier.py:266 app_backend/forms/supplier.py:270
+#: app_backend/forms/supplier.py:273 app_backend/forms/supplier.py:274
+#: app_backend/templates/customer/lists.html:78
+#: app_backend/templates/supplier/lists.html:78
 msgid "company site"
 msgstr "公司网站"
 
-#: app_backend/forms/customer.py:152 app_backend/forms/customer.py:156
-#: app_backend/forms/customer.py:159 app_backend/forms/customer.py:160
-#: app_backend/forms/customer.py:274 app_backend/forms/customer.py:278
-#: app_backend/forms/customer.py:281 app_backend/forms/customer.py:282
+#: app_backend/forms/customer.py:155 app_backend/forms/customer.py:159
+#: app_backend/forms/customer.py:162 app_backend/forms/customer.py:163
+#: app_backend/forms/customer.py:278 app_backend/forms/customer.py:282
+#: app_backend/forms/customer.py:285 app_backend/forms/customer.py:286
 #: app_backend/forms/customer_invoice.py:131
 #: app_backend/forms/customer_invoice.py:135
 #: app_backend/forms/customer_invoice.py:138
-#: app_backend/forms/customer_invoice.py:139 app_backend/forms/supplier.py:153
-#: app_backend/forms/supplier.py:157 app_backend/forms/supplier.py:160
-#: app_backend/forms/supplier.py:161 app_backend/forms/supplier.py:275
-#: app_backend/forms/supplier.py:279 app_backend/forms/supplier.py:282
-#: app_backend/forms/supplier.py:283 app_backend/forms/supplier_invoice.py:131
+#: app_backend/forms/customer_invoice.py:139 app_backend/forms/supplier.py:156
+#: app_backend/forms/supplier.py:160 app_backend/forms/supplier.py:163
+#: app_backend/forms/supplier.py:164 app_backend/forms/supplier.py:279
+#: app_backend/forms/supplier.py:283 app_backend/forms/supplier.py:286
+#: app_backend/forms/supplier.py:287 app_backend/forms/supplier_invoice.py:131
 #: app_backend/forms/supplier_invoice.py:135
 #: app_backend/forms/supplier_invoice.py:138
 #: app_backend/forms/supplier_invoice.py:139
-#: app_backend/templates/customer/invoice/lists.html:75
-#: app_backend/templates/customer/lists.html:75
-#: app_backend/templates/supplier/invoice/lists.html:75
-#: app_backend/templates/supplier/lists.html:75
+#: app_backend/templates/customer/invoice/lists.html:80
+#: app_backend/templates/customer/lists.html:79
+#: app_backend/templates/supplier/invoice/lists.html:79
+#: app_backend/templates/supplier/lists.html:79
 msgid "company tel"
 msgstr "公司电话"
 
-#: app_backend/forms/customer.py:165 app_backend/forms/customer.py:169
-#: app_backend/forms/customer.py:172 app_backend/forms/customer.py:173
-#: app_backend/forms/customer.py:287 app_backend/forms/customer.py:291
-#: app_backend/forms/customer.py:294 app_backend/forms/customer.py:295
-#: app_backend/forms/supplier.py:166 app_backend/forms/supplier.py:170
-#: app_backend/forms/supplier.py:173 app_backend/forms/supplier.py:174
-#: app_backend/forms/supplier.py:288 app_backend/forms/supplier.py:292
-#: app_backend/forms/supplier.py:295 app_backend/forms/supplier.py:296
-#: app_backend/templates/customer/lists.html:75
-#: app_backend/templates/supplier/lists.html:75
+#: app_backend/forms/customer.py:168 app_backend/forms/customer.py:172
+#: app_backend/forms/customer.py:175 app_backend/forms/customer.py:176
+#: app_backend/forms/customer.py:291 app_backend/forms/customer.py:295
+#: app_backend/forms/customer.py:298 app_backend/forms/customer.py:299
+#: app_backend/forms/supplier.py:169 app_backend/forms/supplier.py:173
+#: app_backend/forms/supplier.py:176 app_backend/forms/supplier.py:177
+#: app_backend/forms/supplier.py:292 app_backend/forms/supplier.py:296
+#: app_backend/forms/supplier.py:299 app_backend/forms/supplier.py:300
+#: app_backend/templates/customer/lists.html:79
+#: app_backend/templates/supplier/lists.html:79
 msgid "company fax"
 msgstr "公司传真"
 
-#: app_backend/forms/customer.py:178 app_backend/forms/customer.py:182
-#: app_backend/forms/customer.py:185 app_backend/forms/customer.py:186
-#: app_backend/forms/customer.py:300 app_backend/forms/customer.py:304
-#: app_backend/forms/customer.py:307 app_backend/forms/customer.py:308
-#: app_backend/forms/supplier.py:179 app_backend/forms/supplier.py:183
-#: app_backend/forms/supplier.py:186 app_backend/forms/supplier.py:187
-#: app_backend/forms/supplier.py:301 app_backend/forms/supplier.py:305
-#: app_backend/forms/supplier.py:308 app_backend/forms/supplier.py:309
+#: app_backend/forms/customer.py:181 app_backend/forms/customer.py:185
+#: app_backend/forms/customer.py:188 app_backend/forms/customer.py:189
+#: app_backend/forms/customer.py:304 app_backend/forms/customer.py:308
+#: app_backend/forms/customer.py:311 app_backend/forms/customer.py:312
+#: app_backend/forms/supplier.py:182 app_backend/forms/supplier.py:186
+#: app_backend/forms/supplier.py:189 app_backend/forms/supplier.py:190
+#: app_backend/forms/supplier.py:305 app_backend/forms/supplier.py:309
+#: app_backend/forms/supplier.py:312 app_backend/forms/supplier.py:313
 msgid "company email"
 msgstr "公司邮箱"
 
-#: app_backend/forms/customer.py:225 app_backend/forms/customer_contact.py:157
+#: app_backend/forms/customer.py:228 app_backend/forms/customer_contact.py:157
 #: app_backend/forms/customer_contact.py:316
 #: app_backend/forms/customer_invoice.py:82 app_backend/forms/price.py:41
 #: app_backend/forms/price.py:46 app_backend/forms/price.py:49
@@ -928,88 +936,89 @@ msgstr "公司邮箱"
 msgid "customer id"
 msgstr "客户编号"
 
-#: app_backend/forms/customer.py:341 app_backend/forms/customer.py:344
+#: app_backend/forms/customer.py:345 app_backend/forms/customer.py:348
 #: app_backend/forms/customer_contact.py:289
 #: app_backend/forms/customer_contact.py:292
 #: app_backend/forms/customer_invoice.py:170
-#: app_backend/forms/customer_invoice.py:173 app_backend/forms/supplier.py:342
-#: app_backend/forms/supplier.py:345 app_backend/forms/supplier_contact.py:289
+#: app_backend/forms/customer_invoice.py:173 app_backend/forms/supplier.py:346
+#: app_backend/forms/supplier.py:349 app_backend/forms/supplier_contact.py:289
 #: app_backend/forms/supplier_contact.py:292
 #: app_backend/forms/supplier_invoice.py:170
 #: app_backend/forms/supplier_invoice.py:173
 msgid "delete status"
 msgstr "删除状态"
 
-#: app_backend/forms/customer.py:347 app_backend/forms/customer.py:349
+#: app_backend/forms/customer.py:351 app_backend/forms/customer.py:353
 #: app_backend/forms/customer_contact.py:295
 #: app_backend/forms/customer_contact.py:297
 #: app_backend/forms/customer_invoice.py:176
-#: app_backend/forms/customer_invoice.py:178 app_backend/forms/supplier.py:348
-#: app_backend/forms/supplier.py:350 app_backend/forms/supplier_contact.py:295
+#: app_backend/forms/customer_invoice.py:178 app_backend/forms/supplier.py:352
+#: app_backend/forms/supplier.py:354 app_backend/forms/supplier_contact.py:295
 #: app_backend/forms/supplier_contact.py:297
 #: app_backend/forms/supplier_invoice.py:176
 #: app_backend/forms/supplier_invoice.py:178
 msgid "delete time"
 msgstr "删除时间"
 
-#: app_backend/forms/customer.py:352 app_backend/forms/customer.py:354
+#: app_backend/forms/customer.py:356 app_backend/forms/customer.py:358
 #: app_backend/forms/customer_contact.py:300
 #: app_backend/forms/customer_contact.py:302
 #: app_backend/forms/customer_invoice.py:181
 #: app_backend/forms/customer_invoice.py:183
-#: app_backend/forms/production.py:237 app_backend/forms/production.py:239
+#: app_backend/forms/production.py:201 app_backend/forms/production.py:203
 #: app_backend/forms/production_sensitive.py:201
 #: app_backend/forms/production_sensitive.py:203
-#: app_backend/forms/supplier.py:353 app_backend/forms/supplier.py:355
+#: app_backend/forms/supplier.py:357 app_backend/forms/supplier.py:359
 #: app_backend/forms/supplier_contact.py:300
 #: app_backend/forms/supplier_contact.py:302
 #: app_backend/forms/supplier_invoice.py:181
-#: app_backend/forms/supplier_invoice.py:183 app_backend/forms/user.py:320
-#: app_backend/forms/user.py:322
-#: app_backend/templates/buyer/order/lists.html:85
-#: app_backend/templates/customer/lists.html:78
-#: app_backend/templates/delivery/lists.html:85
-#: app_backend/templates/enquiry/items/lists.html:89
-#: app_backend/templates/enquiry/lists.html:85
+#: app_backend/forms/supplier_invoice.py:183 app_backend/forms/user.py:323
+#: app_backend/forms/user.py:325
+#: app_backend/templates/buyer/order/lists.html:89
+#: app_backend/templates/customer/lists.html:82
+#: app_backend/templates/delivery/lists.html:89
+#: app_backend/templates/enquiry/items/lists.html:91
+#: app_backend/templates/enquiry/lists.html:89
 #: app_backend/templates/price/lists.html:98
 #: app_backend/templates/price/lists.html:165
 #: app_backend/templates/price/lists.html:231
 #: app_backend/templates/price/lists.html:296
-#: app_backend/templates/production/sensitive/lists.html:81
-#: app_backend/templates/purchase/lists.html:85
-#: app_backend/templates/quotation/items/lists.html:89
-#: app_backend/templates/quotation/lists.html:85
-#: app_backend/templates/rack/lists.html:66
-#: app_backend/templates/sales/order/lists.html:85
-#: app_backend/templates/supplier/lists.html:78
-#: app_backend/templates/user/lists.html:78
-#: app_backend/templates/warehouse/lists.html:69
+#: app_backend/templates/production/sensitive/lists.html:85
+#: app_backend/templates/purchase/lists.html:89
+#: app_backend/templates/quotation/items/lists.html:91
+#: app_backend/templates/quotation/lists.html:89
+#: app_backend/templates/rack/lists.html:70
+#: app_backend/templates/sales/order/lists.html:89
+#: app_backend/templates/supplier/lists.html:82
+#: app_backend/templates/user/lists.html:82
+#: app_backend/templates/warehouse/lists.html:73
 msgid "create time"
 msgstr "创建时间"
 
-#: app_backend/forms/customer.py:357 app_backend/forms/customer.py:359
+#: app_backend/forms/customer.py:361 app_backend/forms/customer.py:363
 #: app_backend/forms/customer_contact.py:305
 #: app_backend/forms/customer_contact.py:307
 #: app_backend/forms/customer_invoice.py:186
 #: app_backend/forms/customer_invoice.py:188
-#: app_backend/forms/production.py:242 app_backend/forms/production.py:244
+#: app_backend/forms/production.py:206 app_backend/forms/production.py:208
 #: app_backend/forms/production_sensitive.py:206
 #: app_backend/forms/production_sensitive.py:208
-#: app_backend/forms/supplier.py:358 app_backend/forms/supplier.py:360
+#: app_backend/forms/supplier.py:362 app_backend/forms/supplier.py:364
 #: app_backend/forms/supplier_contact.py:305
 #: app_backend/forms/supplier_contact.py:307
 #: app_backend/forms/supplier_invoice.py:186
-#: app_backend/forms/supplier_invoice.py:188 app_backend/forms/user.py:325
-#: app_backend/forms/user.py:327
-#: app_backend/templates/buyer/order/lists.html:86
-#: app_backend/templates/enquiry/lists.html:86
-#: app_backend/templates/inventory/lists.html:79
-#: app_backend/templates/production/sensitive/lists.html:82
-#: app_backend/templates/quotation/lists.html:86
-#: app_backend/templates/rack/lists.html:67
-#: app_backend/templates/sales/order/lists.html:86
-#: app_backend/templates/user/lists.html:79
-#: app_backend/templates/warehouse/lists.html:70
+#: app_backend/forms/supplier_invoice.py:188 app_backend/forms/user.py:328
+#: app_backend/forms/user.py:330
+#: app_backend/templates/buyer/order/lists.html:90
+#: app_backend/templates/enquiry/lists.html:90
+#: app_backend/templates/futures/lists.html:81
+#: app_backend/templates/inventory/lists.html:83
+#: app_backend/templates/production/sensitive/lists.html:86
+#: app_backend/templates/quotation/lists.html:90
+#: app_backend/templates/rack/lists.html:71
+#: app_backend/templates/sales/order/lists.html:90
+#: app_backend/templates/user/lists.html:83
+#: app_backend/templates/warehouse/lists.html:74
 msgid "update time"
 msgstr "更新时间"
 
@@ -1124,10 +1133,10 @@ msgstr "联系人员"
 #: app_backend/forms/supplier_contact.py:261
 #: app_backend/forms/supplier_contact.py:262
 #: app_backend/templates/customer/contact/edit.html:59
-#: app_backend/templates/customer/contact/lists.html:82
+#: app_backend/templates/customer/contact/lists.html:86
 #: app_backend/templates/customer/contact/search_modal.html:45
 #: app_backend/templates/supplier/contact/edit.html:59
-#: app_backend/templates/supplier/contact/lists.html:81
+#: app_backend/templates/supplier/contact/lists.html:85
 #: app_backend/templates/supplier/contact/search_modal.html:45
 msgid "address"
 msgstr "地址"
@@ -1147,16 +1156,16 @@ msgstr "地址"
 #: app_backend/forms/supplier_contact.py:202
 #: app_backend/forms/supplier_contact.py:206
 #: app_backend/forms/supplier_contact.py:209
-#: app_backend/forms/supplier_contact.py:210 app_backend/forms/user.py:142
-#: app_backend/forms/user.py:145 app_backend/forms/user.py:147
-#: app_backend/forms/user.py:149 app_backend/forms/user.py:251
-#: app_backend/forms/user.py:254 app_backend/forms/user.py:256
-#: app_backend/forms/user.py:258
+#: app_backend/forms/supplier_contact.py:210 app_backend/forms/user.py:144
+#: app_backend/forms/user.py:147 app_backend/forms/user.py:149
+#: app_backend/forms/user.py:151 app_backend/forms/user.py:254
+#: app_backend/forms/user.py:257 app_backend/forms/user.py:259
+#: app_backend/forms/user.py:261
 #: app_backend/templates/customer/contact/edit.html:58
-#: app_backend/templates/customer/contact/lists.html:85
+#: app_backend/templates/customer/contact/lists.html:89
 #: app_backend/templates/customer/contact/search_modal.html:42
 #: app_backend/templates/supplier/contact/edit.html:58
-#: app_backend/templates/supplier/contact/lists.html:84
+#: app_backend/templates/supplier/contact/lists.html:88
 #: app_backend/templates/supplier/contact/search_modal.html:42
 msgid "mobile"
 msgstr "手机"
@@ -1181,10 +1190,10 @@ msgstr "联系方式编号"
 #: app_backend/forms/supplier_contact.py:183
 #: app_backend/forms/supplier_contact.py:184
 #: app_backend/templates/customer/contact/edit.html:56
-#: app_backend/templates/customer/contact/lists.html:83
+#: app_backend/templates/customer/contact/lists.html:87
 #: app_backend/templates/customer/contact/search_modal.html:40
 #: app_backend/templates/supplier/contact/edit.html:56
-#: app_backend/templates/supplier/contact/lists.html:82
+#: app_backend/templates/supplier/contact/lists.html:86
 #: app_backend/templates/supplier/contact/search_modal.html:40
 msgid "contact name"
 msgstr "姓名"
@@ -1196,16 +1205,16 @@ msgstr "姓名"
 #: app_backend/forms/supplier_contact.py:189
 #: app_backend/forms/supplier_contact.py:193
 #: app_backend/forms/supplier_contact.py:196
-#: app_backend/forms/supplier_contact.py:197 app_backend/forms/user.py:131
-#: app_backend/forms/user.py:134 app_backend/forms/user.py:136
-#: app_backend/forms/user.py:138 app_backend/forms/user.py:240
-#: app_backend/forms/user.py:243 app_backend/forms/user.py:245
-#: app_backend/forms/user.py:247
+#: app_backend/forms/supplier_contact.py:197 app_backend/forms/user.py:133
+#: app_backend/forms/user.py:136 app_backend/forms/user.py:138
+#: app_backend/forms/user.py:140 app_backend/forms/user.py:243
+#: app_backend/forms/user.py:246 app_backend/forms/user.py:248
+#: app_backend/forms/user.py:250
 #: app_backend/templates/customer/contact/edit.html:57
-#: app_backend/templates/customer/contact/lists.html:84
+#: app_backend/templates/customer/contact/lists.html:88
 #: app_backend/templates/customer/contact/search_modal.html:41
 #: app_backend/templates/supplier/contact/edit.html:57
-#: app_backend/templates/supplier/contact/lists.html:83
+#: app_backend/templates/supplier/contact/lists.html:87
 #: app_backend/templates/supplier/contact/search_modal.html:41
 msgid "salutation"
 msgstr "称呼"
@@ -1217,15 +1226,15 @@ msgstr "称呼"
 #: app_backend/forms/supplier_contact.py:215
 #: app_backend/forms/supplier_contact.py:219
 #: app_backend/forms/supplier_contact.py:222
-#: app_backend/forms/supplier_contact.py:223 app_backend/forms/user.py:153
-#: app_backend/forms/user.py:156 app_backend/forms/user.py:158
-#: app_backend/forms/user.py:160 app_backend/forms/user.py:262
-#: app_backend/forms/user.py:265 app_backend/forms/user.py:267
-#: app_backend/forms/user.py:269
+#: app_backend/forms/supplier_contact.py:223 app_backend/forms/user.py:155
+#: app_backend/forms/user.py:158 app_backend/forms/user.py:160
+#: app_backend/forms/user.py:162 app_backend/forms/user.py:265
+#: app_backend/forms/user.py:268 app_backend/forms/user.py:270
+#: app_backend/forms/user.py:272
 #: app_backend/templates/customer/contact/edit.html:60
-#: app_backend/templates/customer/contact/lists.html:86
+#: app_backend/templates/customer/contact/lists.html:90
 #: app_backend/templates/supplier/contact/edit.html:60
-#: app_backend/templates/supplier/contact/lists.html:85
+#: app_backend/templates/supplier/contact/lists.html:89
 msgid "tel"
 msgstr "电话"
 
@@ -1236,15 +1245,15 @@ msgstr "电话"
 #: app_backend/forms/supplier_contact.py:228
 #: app_backend/forms/supplier_contact.py:232
 #: app_backend/forms/supplier_contact.py:235
-#: app_backend/forms/supplier_contact.py:236 app_backend/forms/user.py:164
-#: app_backend/forms/user.py:167 app_backend/forms/user.py:169
-#: app_backend/forms/user.py:171 app_backend/forms/user.py:273
-#: app_backend/forms/user.py:276 app_backend/forms/user.py:278
-#: app_backend/forms/user.py:280
+#: app_backend/forms/supplier_contact.py:236 app_backend/forms/user.py:166
+#: app_backend/forms/user.py:169 app_backend/forms/user.py:171
+#: app_backend/forms/user.py:173 app_backend/forms/user.py:276
+#: app_backend/forms/user.py:279 app_backend/forms/user.py:281
+#: app_backend/forms/user.py:283
 #: app_backend/templates/customer/contact/edit.html:61
-#: app_backend/templates/customer/contact/lists.html:86
+#: app_backend/templates/customer/contact/lists.html:90
 #: app_backend/templates/supplier/contact/edit.html:61
-#: app_backend/templates/supplier/contact/lists.html:85
+#: app_backend/templates/supplier/contact/lists.html:89
 msgid "fax"
 msgstr "传真"
 
@@ -1255,15 +1264,15 @@ msgstr "传真"
 #: app_backend/forms/supplier_contact.py:241
 #: app_backend/forms/supplier_contact.py:245
 #: app_backend/forms/supplier_contact.py:248
-#: app_backend/forms/supplier_contact.py:249 app_backend/forms/user.py:175
-#: app_backend/forms/user.py:178 app_backend/forms/user.py:180
-#: app_backend/forms/user.py:182 app_backend/forms/user.py:284
-#: app_backend/forms/user.py:287 app_backend/forms/user.py:289
-#: app_backend/forms/user.py:291
+#: app_backend/forms/supplier_contact.py:249 app_backend/forms/user.py:177
+#: app_backend/forms/user.py:180 app_backend/forms/user.py:182
+#: app_backend/forms/user.py:184 app_backend/forms/user.py:287
+#: app_backend/forms/user.py:290 app_backend/forms/user.py:292
+#: app_backend/forms/user.py:294
 #: app_backend/templates/customer/contact/edit.html:62
-#: app_backend/templates/customer/contact/lists.html:87
+#: app_backend/templates/customer/contact/lists.html:91
 #: app_backend/templates/supplier/contact/edit.html:62
-#: app_backend/templates/supplier/contact/lists.html:86
+#: app_backend/templates/supplier/contact/lists.html:90
 msgid "email"
 msgstr "邮箱"
 
@@ -1272,10 +1281,10 @@ msgstr "邮箱"
 #: app_backend/forms/supplier_contact.py:280
 #: app_backend/forms/supplier_contact.py:285
 #: app_backend/templates/customer/contact/edit.html:64
-#: app_backend/templates/customer/contact/lists.html:88
+#: app_backend/templates/customer/contact/lists.html:92
 #: app_backend/templates/customer/contact/search_modal.html:43
 #: app_backend/templates/supplier/contact/edit.html:64
-#: app_backend/templates/supplier/contact/lists.html:87
+#: app_backend/templates/supplier/contact/lists.html:91
 #: app_backend/templates/supplier/contact/search_modal.html:43
 msgid "default status"
 msgstr "默认"
@@ -1296,8 +1305,8 @@ msgstr "默认"
 #: app_backend/forms/supplier_invoice.py:109
 #: app_backend/forms/supplier_invoice.py:112
 #: app_backend/forms/supplier_invoice.py:113
-#: app_backend/templates/customer/invoice/lists.html:73
-#: app_backend/templates/supplier/invoice/lists.html:73
+#: app_backend/templates/customer/invoice/lists.html:78
+#: app_backend/templates/supplier/invoice/lists.html:77
 msgid "company tax id"
 msgstr "税号"
 
@@ -1309,8 +1318,8 @@ msgstr "税号"
 #: app_backend/forms/supplier_invoice.py:148
 #: app_backend/forms/supplier_invoice.py:151
 #: app_backend/forms/supplier_invoice.py:152
-#: app_backend/templates/customer/invoice/lists.html:76
-#: app_backend/templates/supplier/invoice/lists.html:76
+#: app_backend/templates/customer/invoice/lists.html:81
+#: app_backend/templates/supplier/invoice/lists.html:80
 msgid "company bank name"
 msgstr "开户银行"
 
@@ -1322,15 +1331,15 @@ msgstr "开户银行"
 #: app_backend/forms/supplier_invoice.py:161
 #: app_backend/forms/supplier_invoice.py:164
 #: app_backend/forms/supplier_invoice.py:165
-#: app_backend/templates/customer/invoice/lists.html:77
-#: app_backend/templates/supplier/invoice/lists.html:77
+#: app_backend/templates/customer/invoice/lists.html:82
+#: app_backend/templates/supplier/invoice/lists.html:81
 msgid "company bank account"
 msgstr "银行账号"
 
 #: app_backend/forms/delivery.py:68 app_backend/forms/delivery.py:75
 #: app_backend/forms/delivery.py:78 app_backend/forms/delivery.py:309
 #: app_backend/forms/delivery.py:316 app_backend/forms/delivery.py:319
-#: app_backend/templates/delivery/lists.html:81
+#: app_backend/templates/delivery/lists.html:85
 msgid "delivery user"
 msgstr "出货用户"
 
@@ -1354,13 +1363,13 @@ msgstr "出货编号"
 #: app_backend/templates/delivery/info.html:144
 #: app_backend/templates/delivery/pdf.html:131
 #: app_backend/templates/delivery/preview.html:131
-#: app_backend/templates/inventory/lists.html:74
+#: app_backend/templates/inventory/lists.html:78
 #: app_backend/templates/purchase/add.html:95
 #: app_backend/templates/purchase/edit.html:97
 #: app_backend/templates/purchase/info.html:144
 #: app_backend/templates/purchase/pdf.html:131
 #: app_backend/templates/purchase/preview.html:131
-#: app_backend/templates/rack/lists.html:65
+#: app_backend/templates/rack/lists.html:69
 msgid "rack name"
 msgstr "货架名称"
 
@@ -1378,12 +1387,12 @@ msgstr "货架名称"
 #: app_backend/templates/delivery/info.html:143
 #: app_backend/templates/delivery/pdf.html:130
 #: app_backend/templates/delivery/preview.html:130
-#: app_backend/templates/inventory/lists.html:73
+#: app_backend/templates/inventory/lists.html:77
 #: app_backend/templates/purchase/info.html:143
 #: app_backend/templates/purchase/pdf.html:130
 #: app_backend/templates/purchase/preview.html:130
-#: app_backend/templates/rack/lists.html:64
-#: app_backend/templates/warehouse/lists.html:64
+#: app_backend/templates/rack/lists.html:68
+#: app_backend/templates/warehouse/lists.html:68
 msgid "warehouse name"
 msgstr "仓库名称"
 
@@ -1401,7 +1410,7 @@ msgstr "切换仓库"
 #: app_backend/forms/enquiry.py:78 app_backend/forms/enquiry.py:313
 #: app_backend/forms/enquiry.py:318 app_backend/forms/enquiry.py:321
 #: app_backend/forms/enquiry.py:436 app_backend/forms/enquiry.py:439
-#: app_backend/forms/enquiry.py:442 app_backend/templates/enquiry/lists.html:81
+#: app_backend/forms/enquiry.py:442 app_backend/templates/enquiry/lists.html:85
 msgid "enquiry user"
 msgstr "询价用户"
 
@@ -1416,12 +1425,12 @@ msgstr "询价编号"
 #: app_backend/forms/quotation.py:163 app_backend/forms/quotation.py:165
 #: app_backend/templates/enquiry/add.html:81
 #: app_backend/templates/enquiry/edit.html:83
-#: app_backend/templates/enquiry/items/lists.html:81
+#: app_backend/templates/enquiry/items/lists.html:83
 #: app_backend/templates/price/lists.html:90
 #: app_backend/templates/price/lists.html:157
 #: app_backend/templates/quotation/add.html:81
 #: app_backend/templates/quotation/edit.html:88
-#: app_backend/templates/quotation/items/lists.html:81
+#: app_backend/templates/quotation/items/lists.html:83
 msgid "enquiry production model"
 msgstr "询价型号"
 
@@ -1449,7 +1458,7 @@ msgstr "下单状态"
 #: app_backend/forms/enquiry.py:387 app_backend/forms/enquiry.py:389
 #: app_backend/forms/enquiry.py:504 app_backend/forms/enquiry.py:506
 #: app_backend/forms/enquiry.py:508 app_backend/forms/enquiry.py:510
-#: app_backend/templates/enquiry/lists.html:84
+#: app_backend/templates/enquiry/lists.html:88
 msgid "enquiry note"
 msgstr "询价备注"
 
@@ -1469,9 +1478,21 @@ msgstr "订单状态"
 msgid "amount enquiry"
 msgstr "询价总额"
 
+#: app_backend/forms/futures.py:44 app_backend/forms/futures.py:46
+#: app_backend/forms/futures.py:48 app_backend/forms/futures.py:51
+#: app_backend/templates/futures/lists.html:78
+msgid "req date"
+msgstr "要求日期"
+
+#: app_backend/forms/futures.py:55 app_backend/forms/futures.py:57
+#: app_backend/forms/futures.py:59 app_backend/forms/futures.py:62
+#: app_backend/templates/futures/lists.html:79
+msgid "acc date"
+msgstr "预计日期"
+
 #: app_backend/forms/inventory.py:173 app_backend/forms/inventory.py:178
 #: app_backend/forms/inventory.py:180 app_backend/forms/inventory.py:182
-#: app_backend/templates/inventory/lists.html:75
+#: app_backend/templates/inventory/lists.html:79
 msgid "stock quantity"
 msgstr "库存数量"
 
@@ -1485,39 +1506,35 @@ msgstr "原始仓库"
 msgid "original rack"
 msgstr "原始货架"
 
-#: app_backend/forms/production.py:42 app_backend/forms/production.py:61
-msgid "Data duplication"
-msgstr "数据重复"
-
-#: app_backend/forms/production.py:150 app_backend/forms/production.py:153
-#: app_backend/forms/production.py:155 app_backend/forms/production.py:157
-#: app_backend/templates/production/lists.html:64
+#: app_backend/forms/production.py:114 app_backend/forms/production.py:117
+#: app_backend/forms/production.py:119 app_backend/forms/production.py:121
+#: app_backend/templates/production/lists.html:68
 msgid "ind"
 msgstr "内径"
 
-#: app_backend/forms/production.py:165 app_backend/forms/production.py:168
-#: app_backend/forms/production.py:170 app_backend/forms/production.py:172
-#: app_backend/templates/production/lists.html:65
+#: app_backend/forms/production.py:129 app_backend/forms/production.py:132
+#: app_backend/forms/production.py:134 app_backend/forms/production.py:136
+#: app_backend/templates/production/lists.html:69
 msgid "oud"
 msgstr "外径"
 
-#: app_backend/forms/production.py:180 app_backend/forms/production.py:183
-#: app_backend/forms/production.py:185 app_backend/forms/production.py:187
-#: app_backend/templates/production/lists.html:66
+#: app_backend/forms/production.py:144 app_backend/forms/production.py:147
+#: app_backend/forms/production.py:149 app_backend/forms/production.py:151
+#: app_backend/templates/production/lists.html:70
 msgid "wid"
 msgstr "宽度"
 
-#: app_backend/forms/production.py:195 app_backend/forms/production.py:200
-#: app_backend/forms/production.py:202
+#: app_backend/forms/production.py:159 app_backend/forms/production.py:164
+#: app_backend/forms/production.py:166
 #: app_backend/forms/production_sensitive.py:174
 #: app_backend/forms/production_sensitive.py:179
 #: app_backend/forms/production_sensitive.py:181
-#: app_backend/templates/production/lists.html:67
-#: app_backend/templates/production/sensitive/lists.html:80
+#: app_backend/templates/production/lists.html:71
+#: app_backend/templates/production/sensitive/lists.html:84
 msgid "production note"
 msgstr "产品备注"
 
-#: app_backend/forms/production.py:306
+#: app_backend/forms/production.py:270
 msgid "Type production model"
 msgstr "输入产品型号"
 
@@ -1528,7 +1545,7 @@ msgstr "敏感型号编号"
 #: app_backend/forms/purchase.py:68 app_backend/forms/purchase.py:75
 #: app_backend/forms/purchase.py:78 app_backend/forms/purchase.py:309
 #: app_backend/forms/purchase.py:316 app_backend/forms/purchase.py:319
-#: app_backend/templates/purchase/lists.html:81
+#: app_backend/templates/purchase/lists.html:85
 msgid "purchase user"
 msgstr "进货人员"
 
@@ -1547,7 +1564,7 @@ msgstr "采购总额"
 #: app_backend/forms/quotation.py:316 app_backend/forms/quotation.py:319
 #: app_backend/forms/quotation.py:434 app_backend/forms/quotation.py:437
 #: app_backend/forms/quotation.py:440
-#: app_backend/templates/quotation/lists.html:81
+#: app_backend/templates/quotation/lists.html:85
 msgid "quotation user"
 msgstr "报价人员"
 
@@ -1560,7 +1577,7 @@ msgstr "报价编号"
 #: app_backend/forms/quotation.py:385 app_backend/forms/quotation.py:387
 #: app_backend/forms/quotation.py:502 app_backend/forms/quotation.py:504
 #: app_backend/forms/quotation.py:506 app_backend/forms/quotation.py:508
-#: app_backend/templates/quotation/lists.html:84
+#: app_backend/templates/quotation/lists.html:88
 msgid "quotation note"
 msgstr "报价备注"
 
@@ -1576,7 +1593,7 @@ msgstr "报价总额"
 #: app_backend/forms/sales_order.py:313 app_backend/forms/sales_order.py:316
 #: app_backend/forms/sales_order.py:440 app_backend/forms/sales_order.py:443
 #: app_backend/forms/sales_order.py:446
-#: app_backend/templates/sales/order/lists.html:81
+#: app_backend/templates/sales/order/lists.html:85
 msgid "sales order user"
 msgstr "销售人员"
 
@@ -1589,7 +1606,7 @@ msgstr "订单编号"
 #: app_backend/forms/sales_order.py:391 app_backend/forms/sales_order.py:393
 #: app_backend/forms/sales_order.py:517 app_backend/forms/sales_order.py:519
 #: app_backend/forms/sales_order.py:521 app_backend/forms/sales_order.py:523
-#: app_backend/templates/sales/order/lists.html:84
+#: app_backend/templates/sales/order/lists.html:88
 msgid "sales order note"
 msgstr "订单备注"
 
@@ -1598,7 +1615,7 @@ msgstr "订单备注"
 msgid "sales order status"
 msgstr "订单状态"
 
-#: app_backend/forms/supplier.py:226 app_backend/forms/supplier_contact.py:157
+#: app_backend/forms/supplier.py:229 app_backend/forms/supplier_contact.py:157
 #: app_backend/forms/supplier_contact.py:316
 #: app_backend/forms/supplier_invoice.py:82
 msgid "supplier id"
@@ -1619,34 +1636,34 @@ msgstr "产品"
 msgid "quotation"
 msgstr "报价"
 
-#: app_backend/forms/user.py:41 app_backend/forms/user.py:44
-#: app_backend/forms/user.py:46 app_backend/forms/user.py:48
-#: app_backend/forms/user.py:117 app_backend/forms/user.py:123
-#: app_backend/forms/user.py:125 app_backend/forms/user.py:127
-#: app_backend/forms/user.py:226 app_backend/forms/user.py:232
-#: app_backend/forms/user.py:234 app_backend/forms/user.py:236
-#: app_backend/templates/user/lists.html:73
+#: app_backend/forms/user.py:42 app_backend/forms/user.py:45
+#: app_backend/forms/user.py:47 app_backend/forms/user.py:49
+#: app_backend/forms/user.py:118 app_backend/forms/user.py:125
+#: app_backend/forms/user.py:127 app_backend/forms/user.py:129
+#: app_backend/forms/user.py:228 app_backend/forms/user.py:235
+#: app_backend/forms/user.py:237 app_backend/forms/user.py:239
+#: app_backend/templates/user/lists.html:77
 #: app_backend/templates/user/search_modal.html:45
 msgid "user name"
 msgstr "用户名称"
 
-#: app_backend/forms/user.py:52 app_backend/forms/user.py:59
-#: app_backend/forms/user.py:62 app_backend/forms/user.py:186
-#: app_backend/forms/user.py:193 app_backend/forms/user.py:196
-#: app_backend/forms/user.py:295 app_backend/forms/user.py:302
-#: app_backend/forms/user.py:305 app_backend/templates/user/lists.html:75
+#: app_backend/forms/user.py:53 app_backend/forms/user.py:60
+#: app_backend/forms/user.py:63 app_backend/forms/user.py:188
+#: app_backend/forms/user.py:195 app_backend/forms/user.py:198
+#: app_backend/forms/user.py:298 app_backend/forms/user.py:305
+#: app_backend/forms/user.py:308 app_backend/templates/user/lists.html:79
 msgid "user role"
 msgstr "用户角色"
 
-#: app_backend/forms/user.py:66 app_backend/forms/user.py:70
-#: app_backend/forms/user.py:73 app_backend/forms/user.py:200
-#: app_backend/forms/user.py:204 app_backend/forms/user.py:207
-#: app_backend/forms/user.py:309 app_backend/forms/user.py:313
-#: app_backend/forms/user.py:316 app_backend/templates/user/lists.html:76
+#: app_backend/forms/user.py:67 app_backend/forms/user.py:71
+#: app_backend/forms/user.py:74 app_backend/forms/user.py:202
+#: app_backend/forms/user.py:206 app_backend/forms/user.py:209
+#: app_backend/forms/user.py:312 app_backend/forms/user.py:316
+#: app_backend/forms/user.py:319 app_backend/templates/user/lists.html:80
 msgid "user leader"
 msgstr "所属领导"
 
-#: app_backend/forms/user.py:217
+#: app_backend/forms/user.py:219
 msgid "user id"
 msgstr "用户编号"
 
@@ -1696,7 +1713,7 @@ msgid "Field must be %(length)s characters long."
 msgstr "当前字段必须 %(length)s 个字符"
 
 #: app_backend/forms/user_auth.py:105
-#: app_backend/templates/user_auth/index.html:111
+#: app_backend/templates/user_auth/index.html:128
 msgid "Remember me"
 msgstr "记住登录状态"
 
@@ -1714,7 +1731,7 @@ msgstr "确认密码"
 
 #: app_backend/forms/warehouse.py:47 app_backend/forms/warehouse.py:50
 #: app_backend/forms/warehouse.py:52 app_backend/forms/warehouse.py:54
-#: app_backend/templates/warehouse/lists.html:65
+#: app_backend/templates/warehouse/lists.html:69
 msgid "warehouse address"
 msgstr "仓库地址"
 
@@ -1725,13 +1742,13 @@ msgstr "仓管人员"
 
 #: app_backend/forms/warehouse.py:69 app_backend/forms/warehouse.py:72
 #: app_backend/forms/warehouse.py:74 app_backend/forms/warehouse.py:76
-#: app_backend/templates/warehouse/lists.html:67
+#: app_backend/templates/warehouse/lists.html:71
 msgid "warehouse tel"
 msgstr "仓库电话"
 
 #: app_backend/forms/warehouse.py:80 app_backend/forms/warehouse.py:83
 #: app_backend/forms/warehouse.py:85 app_backend/forms/warehouse.py:87
-#: app_backend/templates/warehouse/lists.html:68
+#: app_backend/templates/warehouse/lists.html:72
 msgid "warehouse fax"
 msgstr "仓库传真"
 
@@ -1827,16 +1844,17 @@ msgstr "传真"
 msgid "Website"
 msgstr "网址"
 
-#: app_backend/templates/_left.html:6
+#: app_backend/templates/_left.bak.html:6 app_backend/templates/_left.html:6
 #: app_backend/templates/buyer/order/lists.html:57
 #: app_backend/templates/customer/contact/lists.html:58
 #: app_backend/templates/customer/contact/search_modal.html:27
-#: app_backend/templates/customer/invoice/lists.html:48
+#: app_backend/templates/customer/invoice/lists.html:49
 #: app_backend/templates/customer/lists.html:51
 #: app_backend/templates/customer/search_modal.html:34
 #: app_backend/templates/delivery/lists.html:57
 #: app_backend/templates/enquiry/items/lists.html:58
 #: app_backend/templates/enquiry/lists.html:57
+#: app_backend/templates/futures/lists.html:47
 #: app_backend/templates/inventory/lists.html:49
 #: app_backend/templates/price/lists.html:59
 #: app_backend/templates/production/lists.html:39
@@ -1858,7 +1876,7 @@ msgstr "网址"
 msgid "Search"
 msgstr "查询"
 
-#: app_backend/templates/_left.html:18
+#: app_backend/templates/_left.bak.html:18 app_backend/templates/_left.html:18
 #: app_backend/templates/buyer/order/add.html:6
 #: app_backend/templates/buyer/order/edit.html:6
 #: app_backend/templates/buyer/order/lists.html:6
@@ -1877,6 +1895,7 @@ msgstr "查询"
 #: app_backend/templates/enquiry/edit.html:6
 #: app_backend/templates/enquiry/items/lists.html:6
 #: app_backend/templates/enquiry/lists.html:6
+#: app_backend/templates/futures/lists.html:6
 #: app_backend/templates/index.html:6
 #: app_backend/templates/inventory/add.html:6
 #: app_backend/templates/inventory/edit.html:6
@@ -1926,7 +1945,7 @@ msgstr "查询"
 msgid "management center"
 msgstr "管理中心"
 
-#: app_backend/templates/_left.html:21
+#: app_backend/templates/_left.bak.html:21 app_backend/templates/_left.html:22
 #: app_backend/templates/production/add.html:8
 #: app_backend/templates/production/edit.html:8
 #: app_backend/templates/production/lists.html:8
@@ -1936,59 +1955,54 @@ msgstr "管理中心"
 msgid "production management"
 msgstr "产品管理"
 
-#: app_backend/templates/_left.html:25
+#: app_backend/templates/_left.bak.html:25 app_backend/templates/_left.html:26
 #: app_backend/templates/production/lists.html:9
-#: app_backend/views/production.py:98 app_backend/views/production.py:132
+#: app_backend/views/production.py:103 app_backend/views/production.py:137
 msgid "production lists"
 msgstr "产品列表"
 
-#: app_backend/templates/_left.html:28
+#: app_backend/templates/_left.bak.html:28 app_backend/templates/_left.html:30
 #: app_backend/templates/production/add.html:9
-#: app_backend/views/production.py:263
+#: app_backend/views/production.py:268
 msgid "production add"
 msgstr "新增产品"
 
-#: app_backend/templates/_left.html:31
+#: app_backend/templates/_left.bak.html:31 app_backend/templates/_left.html:34
 msgid "production sensitive management"
 msgstr "敏感型号管理"
 
-#: app_backend/templates/_left.html:35
+#: app_backend/templates/_left.bak.html:35 app_backend/templates/_left.html:38
 #: app_backend/templates/production/sensitive/lists.html:9
-#: app_backend/views/production_sensitive.py:99
-#: app_backend/views/production_sensitive.py:135
+#: app_backend/views/production_sensitive.py:104
+#: app_backend/views/production_sensitive.py:140
 msgid "production sensitive lists"
 msgstr "敏感型号列表"
 
-#: app_backend/templates/_left.html:38
+#: app_backend/templates/_left.bak.html:38 app_backend/templates/_left.html:42
 #: app_backend/templates/production/sensitive/add.html:9
-#: app_backend/views/production_sensitive.py:182
+#: app_backend/views/production_sensitive.py:187
 msgid "production sensitive add"
 msgstr "新增敏感型号"
 
-#: app_backend/templates/_left.html:45 app_backend/templates/user/add.html:8
-#: app_backend/templates/user/edit.html:8
+#: app_backend/templates/_left.bak.html:45 app_backend/templates/_left.html:52
+#: app_backend/templates/user/add.html:8 app_backend/templates/user/edit.html:8
 #: app_backend/templates/user/lists.html:7
 #: app_backend/templates/user/stats.html:7
 msgid "user management"
 msgstr "用户管理"
 
-#: app_backend/templates/_left.html:49 app_backend/templates/user/lists.html:9
-#: app_backend/views/user.py:99 app_backend/views/user.py:139
+#: app_backend/templates/_left.bak.html:49 app_backend/templates/_left.html:56
+#: app_backend/templates/user/lists.html:9 app_backend/views/user.py:107
+#: app_backend/views/user.py:147
 msgid "user lists"
 msgstr "用户列表"
 
-#: app_backend/templates/_left.html:52 app_backend/templates/user/add.html:9
-#: app_backend/views/user.py:268
+#: app_backend/templates/_left.bak.html:52 app_backend/templates/_left.html:60
+#: app_backend/templates/user/add.html:9 app_backend/views/user.py:302
 msgid "user add"
 msgstr "新增用户"
 
-#: app_backend/templates/_left.html:55 app_backend/templates/user/stats.html:8
-#: app_backend/templates/user/stats.html:37
-#: app_backend/templates/user/stats.html:73 app_backend/views/user.py:551
-msgid "user stats"
-msgstr "用户统计"
-
-#: app_backend/templates/_left.html:61
+#: app_backend/templates/_left.bak.html:58 app_backend/templates/_left.html:68
 #: app_backend/templates/customer/add.html:8
 #: app_backend/templates/customer/contact/edit.html:8
 #: app_backend/templates/customer/contact/lists.html:8
@@ -2005,55 +2019,32 @@ msgstr "用户统计"
 msgid "customer management"
 msgstr "客户管理"
 
-#: app_backend/templates/_left.html:65
+#: app_backend/templates/_left.bak.html:62 app_backend/templates/_left.html:72
 #: app_backend/templates/customer/lists.html:9
-#: app_backend/views/customer.py:104 app_backend/views/customer.py:144
+#: app_backend/views/customer.py:107 app_backend/views/customer.py:147
 msgid "customer lists"
 msgstr "客户列表"
 
-#: app_backend/templates/_left.html:68
-#: app_backend/templates/customer/add.html:9 app_backend/views/customer.py:290
+#: app_backend/templates/_left.bak.html:65 app_backend/templates/_left.html:76
+#: app_backend/templates/customer/add.html:9 app_backend/views/customer.py:300
 msgid "customer add"
 msgstr "新增客户"
 
-#: app_backend/templates/_left.html:71
+#: app_backend/templates/_left.bak.html:68 app_backend/templates/_left.html:80
 #: app_backend/templates/customer/invoice/lists.html:9
-#: app_backend/views/customer_invoice.py:66
-#: app_backend/views/customer_invoice.py:99
+#: app_backend/views/customer_invoice.py:77
+#: app_backend/views/customer_invoice.py:110
 msgid "customer invoice lists"
 msgstr "开票资料"
 
-#: app_backend/templates/_left.html:74
+#: app_backend/templates/_left.bak.html:71 app_backend/templates/_left.html:83
 #: app_backend/templates/customer/contact/lists.html:9
-#: app_backend/views/customer_contact.py:113
-#: app_backend/views/customer_contact.py:151
+#: app_backend/views/customer_contact.py:115
+#: app_backend/views/customer_contact.py:153
 msgid "customer contact lists"
 msgstr "联系方式"
 
-#: app_backend/templates/_left.html:77
-#: app_backend/templates/customer/stats.html:8
-#: app_backend/templates/customer/stats.html:37
-#: app_backend/templates/customer/stats.html:73
-#: app_backend/templates/inventory/stats.html:8
-#: app_backend/templates/inventory/stats.html:37
-#: app_backend/templates/inventory/stats.html:73
-#: app_backend/templates/production/stats.html:8
-#: app_backend/templates/production/stats.html:37
-#: app_backend/templates/production/stats.html:73
-#: app_backend/templates/quotation/stats.html:8
-#: app_backend/templates/quotation/stats.html:37
-#: app_backend/templates/quotation/stats.html:73
-#: app_backend/templates/rack/stats.html:8
-#: app_backend/templates/rack/stats.html:37
-#: app_backend/templates/rack/stats.html:73
-#: app_backend/templates/warehouse/stats.html:8
-#: app_backend/templates/warehouse/stats.html:37
-#: app_backend/templates/warehouse/stats.html:73
-#: app_backend/views/customer.py:570 app_backend/views/customer_contact.py:483
-msgid "customer stats"
-msgstr "客户统计"
-
-#: app_backend/templates/_left.html:84
+#: app_backend/templates/_left.bak.html:78 app_backend/templates/_left.html:90
 #: app_backend/templates/supplier/add.html:8
 #: app_backend/templates/supplier/contact/edit.html:8
 #: app_backend/templates/supplier/contact/lists.html:8
@@ -2064,37 +2055,32 @@ msgstr "客户统计"
 msgid "supplier management"
 msgstr "渠道管理"
 
-#: app_backend/templates/_left.html:88
-#: app_backend/templates/supplier/lists.html:9 app_backend/views/supplier.py:81
-#: app_backend/views/supplier.py:121
+#: app_backend/templates/_left.bak.html:82 app_backend/templates/_left.html:94
+#: app_backend/templates/supplier/lists.html:9 app_backend/views/supplier.py:91
+#: app_backend/views/supplier.py:131
 msgid "supplier lists"
 msgstr "渠道列表"
 
-#: app_backend/templates/_left.html:91
-#: app_backend/templates/supplier/add.html:9 app_backend/views/supplier.py:267
+#: app_backend/templates/_left.bak.html:85 app_backend/templates/_left.html:98
+#: app_backend/templates/supplier/add.html:9 app_backend/views/supplier.py:283
 msgid "supplier add"
 msgstr "新增渠道"
 
-#: app_backend/templates/_left.html:94
+#: app_backend/templates/_left.bak.html:88 app_backend/templates/_left.html:102
 #: app_backend/templates/supplier/invoice/lists.html:9
-#: app_backend/views/supplier_invoice.py:66
-#: app_backend/views/supplier_invoice.py:99
+#: app_backend/views/supplier_invoice.py:74
+#: app_backend/views/supplier_invoice.py:107
 msgid "supplier invoice lists"
 msgstr "开票资料"
 
-#: app_backend/templates/_left.html:97
+#: app_backend/templates/_left.bak.html:91 app_backend/templates/_left.html:105
 #: app_backend/templates/supplier/contact/lists.html:9
-#: app_backend/views/supplier_contact.py:113
-#: app_backend/views/supplier_contact.py:151
+#: app_backend/views/supplier_contact.py:115
+#: app_backend/views/supplier_contact.py:153
 msgid "supplier contact lists"
 msgstr "联系方式"
 
-#: app_backend/templates/_left.html:100 app_backend/views/supplier.py:547
-#: app_backend/views/supplier_contact.py:483
-msgid "supplier stats"
-msgstr "渠道统计"
-
-#: app_backend/templates/_left.html:106
+#: app_backend/templates/_left.bak.html:97 app_backend/templates/_left.html:112
 #: app_backend/templates/quotation/add.html:8
 #: app_backend/templates/quotation/edit.html:8
 #: app_backend/templates/quotation/items/lists.html:8
@@ -2102,30 +2088,30 @@ msgstr "渠道统计"
 msgid "quotation management"
 msgstr "报价管理"
 
-#: app_backend/templates/_left.html:110
+#: app_backend/templates/_left.bak.html:101
+#: app_backend/templates/_left.html:116
 #: app_backend/templates/quotation/lists.html:9
-#: app_backend/views/quotation.py:104 app_backend/views/quotation.py:142
+#: app_backend/views/quotation.py:106 app_backend/views/quotation.py:144
 msgid "quotation lists"
 msgstr "报价列表"
 
-#: app_backend/templates/_left.html:113
+#: app_backend/templates/_left.bak.html:104
+#: app_backend/templates/_left.html:120
 #: app_backend/templates/quotation/add.html:9
-#: app_backend/views/quotation.py:202
+#: app_backend/views/quotation.py:207
 msgid "quotation add"
 msgstr "新增报价"
 
-#: app_backend/templates/_left.html:116
+#: app_backend/templates/_left.bak.html:107
+#: app_backend/templates/_left.html:124
 #: app_backend/templates/quotation/items/lists.html:9
-#: app_backend/views/quotation_items.py:101
-#: app_backend/views/quotation_items.py:145
+#: app_backend/views/quotation_items.py:103
+#: app_backend/views/quotation_items.py:147
 msgid "quotation item lists"
 msgstr "报价明细"
 
-#: app_backend/templates/_left.html:119 app_backend/views/quotation.py:908
-msgid "quotation stats"
-msgstr "报价统计"
-
-#: app_backend/templates/_left.html:124
+#: app_backend/templates/_left.bak.html:112
+#: app_backend/templates/_left.html:131
 #: app_backend/templates/enquiry/add.html:8
 #: app_backend/templates/enquiry/edit.html:8
 #: app_backend/templates/enquiry/items/lists.html:8
@@ -2133,107 +2119,113 @@ msgstr "报价统计"
 msgid "enquiry management"
 msgstr "询价管理"
 
-#: app_backend/templates/_left.html:128
-#: app_backend/templates/enquiry/lists.html:9 app_backend/views/enquiry.py:107
-#: app_backend/views/enquiry.py:145
+#: app_backend/templates/_left.bak.html:116
+#: app_backend/templates/_left.html:135
+#: app_backend/templates/enquiry/lists.html:9 app_backend/views/enquiry.py:110
+#: app_backend/views/enquiry.py:148
 msgid "enquiry lists"
 msgstr "询价列表"
 
-#: app_backend/templates/_left.html:131
-#: app_backend/templates/enquiry/add.html:9 app_backend/views/enquiry.py:205
+#: app_backend/templates/_left.bak.html:119
+#: app_backend/templates/_left.html:139
+#: app_backend/templates/enquiry/add.html:9 app_backend/views/enquiry.py:211
 msgid "enquiry add"
 msgstr "新增询价"
 
-#: app_backend/templates/_left.html:134
+#: app_backend/templates/_left.bak.html:122
+#: app_backend/templates/_left.html:143
 #: app_backend/templates/enquiry/items/lists.html:9
-#: app_backend/views/enquiry_items.py:101
-#: app_backend/views/enquiry_items.py:145
+#: app_backend/views/enquiry_items.py:103
+#: app_backend/views/enquiry_items.py:147
 msgid "enquiry item lists"
 msgstr "询价明细"
 
-#: app_backend/templates/_left.html:137 app_backend/views/enquiry.py:906
-msgid "enquiry stats"
-msgstr "询价统计"
-
-#: app_backend/templates/_left.html:143
+#: app_backend/templates/_left.bak.html:128
+#: app_backend/templates/_left.html:150
 msgid "sales management"
 msgstr "销售管理"
 
-#: app_backend/templates/_left.html:147
+#: app_backend/templates/_left.bak.html:132
+#: app_backend/templates/_left.html:154
 msgid "sales order management"
 msgstr "订单管理"
 
-#: app_backend/templates/_left.html:151 app_backend/views/sales_order.py:75
-#: app_backend/views/sales_order.py:113
+#: app_backend/templates/_left.bak.html:136
+#: app_backend/templates/_left.html:158 app_backend/views/sales_order.py:86
+#: app_backend/views/sales_order.py:124
 msgid "sales order lists"
 msgstr "订单列表"
 
-#: app_backend/templates/_left.html:154 app_backend/views/sales_order.py:168
+#: app_backend/templates/_left.bak.html:139
+#: app_backend/templates/_left.html:162 app_backend/views/sales_order.py:183
 msgid "sales order add"
 msgstr "新增订单"
 
-#: app_backend/templates/_left.html:157
-msgid "sales order stats"
-msgstr "订单统计"
-
-#: app_backend/templates/_left.html:162
+#: app_backend/templates/_left.bak.html:144
+#: app_backend/templates/_left.html:168
 #: app_backend/templates/delivery/add.html:8
 #: app_backend/templates/delivery/edit.html:8
 #: app_backend/templates/delivery/lists.html:8
 msgid "delivery management"
 msgstr "销货管理"
 
-#: app_backend/templates/_left.html:166
-#: app_backend/templates/delivery/lists.html:9 app_backend/views/delivery.py:94
-#: app_backend/views/delivery.py:132
+#: app_backend/templates/_left.bak.html:148
+#: app_backend/templates/_left.html:172
+#: app_backend/templates/delivery/lists.html:9 app_backend/views/delivery.py:96
+#: app_backend/views/delivery.py:134
 msgid "delivery lists"
 msgstr "销货列表"
 
-#: app_backend/templates/_left.html:169
-#: app_backend/templates/delivery/add.html:9 app_backend/views/delivery.py:192
+#: app_backend/templates/_left.bak.html:151
+#: app_backend/templates/_left.html:176
+#: app_backend/templates/delivery/add.html:9 app_backend/views/delivery.py:198
 msgid "delivery add"
 msgstr "新增销货"
 
-#: app_backend/templates/_left.html:178
+#: app_backend/templates/_left.bak.html:160
+#: app_backend/templates/_left.html:186
 msgid "buyer management"
 msgstr "采购管理"
 
-#: app_backend/templates/_left.html:182
+#: app_backend/templates/_left.bak.html:164
+#: app_backend/templates/_left.html:190
 msgid "buyer order management"
 msgstr "订单管理"
 
-#: app_backend/templates/_left.html:186 app_backend/views/buyer_order.py:73
-#: app_backend/views/buyer_order.py:111
+#: app_backend/templates/_left.bak.html:168
+#: app_backend/templates/_left.html:194 app_backend/views/buyer_order.py:85
+#: app_backend/views/buyer_order.py:123
 msgid "buyer order lists"
 msgstr "订单列表"
 
-#: app_backend/templates/_left.html:189 app_backend/views/buyer_order.py:166
+#: app_backend/templates/_left.bak.html:171
+#: app_backend/templates/_left.html:198 app_backend/views/buyer_order.py:182
 msgid "buyer order add"
 msgstr "新增订单"
 
-#: app_backend/templates/_left.html:192
-msgid "buyer order stats"
-msgstr "订单统计"
-
-#: app_backend/templates/_left.html:197
+#: app_backend/templates/_left.bak.html:176
+#: app_backend/templates/_left.html:204
 #: app_backend/templates/purchase/add.html:8
 #: app_backend/templates/purchase/edit.html:8
 #: app_backend/templates/purchase/lists.html:8
 msgid "purchase management"
 msgstr "进货管理"
 
-#: app_backend/templates/_left.html:201
-#: app_backend/templates/purchase/lists.html:9 app_backend/views/purchase.py:86
-#: app_backend/views/purchase.py:124
+#: app_backend/templates/_left.bak.html:180
+#: app_backend/templates/_left.html:208
+#: app_backend/templates/purchase/lists.html:9 app_backend/views/purchase.py:89
+#: app_backend/views/purchase.py:127
 msgid "purchase lists"
 msgstr "进货列表"
 
-#: app_backend/templates/_left.html:204
-#: app_backend/templates/purchase/add.html:9 app_backend/views/purchase.py:184
+#: app_backend/templates/_left.bak.html:183
+#: app_backend/templates/_left.html:212
+#: app_backend/templates/purchase/add.html:9 app_backend/views/purchase.py:190
 msgid "purchase add"
 msgstr "新增进货"
 
-#: app_backend/templates/_left.html:214 app_backend/templates/rack/add.html:8
+#: app_backend/templates/_left.bak.html:193
+#: app_backend/templates/_left.html:223 app_backend/templates/rack/add.html:8
 #: app_backend/templates/rack/edit.html:8
 #: app_backend/templates/rack/lists.html:8
 #: app_backend/templates/warehouse/add.html:8
@@ -2242,36 +2234,43 @@ msgstr "新增进货"
 msgid "warehouse management"
 msgstr "仓库管理"
 
-#: app_backend/templates/_left.html:218
+#: app_backend/templates/_left.bak.html:197
+#: app_backend/templates/_left.html:227
 #: app_backend/templates/warehouse/lists.html:9
-#: app_backend/views/warehouse.py:87 app_backend/views/warehouse.py:121
+#: app_backend/views/warehouse.py:94 app_backend/views/warehouse.py:128
 msgid "warehouse lists"
 msgstr "仓库列表"
 
-#: app_backend/templates/_left.html:221
+#: app_backend/templates/_left.bak.html:200
+#: app_backend/templates/_left.html:231
 #: app_backend/templates/warehouse/add.html:9
-#: app_backend/views/warehouse.py:207
+#: app_backend/views/warehouse.py:215
 msgid "warehouse add"
 msgstr "新增仓库"
 
-#: app_backend/templates/_left.html:224 app_backend/templates/rack/add.html:10
+#: app_backend/templates/_left.bak.html:203
+#: app_backend/templates/_left.html:235 app_backend/templates/rack/add.html:10
 #: app_backend/templates/rack/edit.html:10
 #: app_backend/templates/rack/lists.html:9
 msgid "rack management"
 msgstr "货架管理"
 
-#: app_backend/templates/_left.html:227
-#: app_backend/templates/rack/lists.html:11 app_backend/views/rack.py:91
-#: app_backend/views/rack.py:125
+#: app_backend/templates/_left.bak.html:206
+#: app_backend/templates/_left.html:238
+#: app_backend/templates/rack/lists.html:11 app_backend/views/rack.py:96
+#: app_backend/views/rack.py:130
 msgid "rack lists"
 msgstr "货架列表"
 
-#: app_backend/templates/_left.html:230 app_backend/templates/rack/add.html:11
-#: app_backend/views/rack.py:205
+#: app_backend/templates/_left.bak.html:209
+#: app_backend/templates/_left.html:242 app_backend/templates/rack/add.html:11
+#: app_backend/views/rack.py:209
 msgid "rack add"
 msgstr "新增货架"
 
-#: app_backend/templates/_left.html:238
+#: app_backend/templates/_left.bak.html:217
+#: app_backend/templates/_left.html:252
+#: app_backend/templates/futures/lists.html:8
 #: app_backend/templates/inventory/add.html:8
 #: app_backend/templates/inventory/edit.html:8
 #: app_backend/templates/inventory/lists.html:8
@@ -2279,31 +2278,37 @@ msgstr "新增货架"
 msgid "inventory management"
 msgstr "库存管理"
 
-#: app_backend/templates/_left.html:242
+#: app_backend/templates/_left.bak.html:221
+#: app_backend/templates/_left.html:256
 #: app_backend/templates/inventory/lists.html:9
-#: app_backend/views/inventory.py:104 app_backend/views/inventory.py:145
+#: app_backend/views/inventory.py:109 app_backend/views/inventory.py:150
 msgid "inventory lists"
 msgstr "库存列表"
 
-#: app_backend/templates/_left.html:245
+#: app_backend/templates/_left.bak.html:224
+#: app_backend/templates/_left.html:260
 #: app_backend/templates/inventory/add.html:9
-#: app_backend/views/inventory.py:215
+#: app_backend/views/inventory.py:220
 msgid "inventory add"
 msgstr "新增库存"
 
-#: app_backend/templates/_left.html:252
+#: app_backend/templates/_left.bak.html:231
+#: app_backend/templates/_left.html:272
 msgid "accountant management"
 msgstr "财务管理"
 
-#: app_backend/templates/_left.html:256
+#: app_backend/templates/_left.bak.html:235
+#: app_backend/templates/_left.html:276
 msgid "accountant lists"
 msgstr "财务列表"
 
-#: app_backend/templates/_left.html:259
+#: app_backend/templates/_left.bak.html:238
+#: app_backend/templates/_left.html:279
 msgid "accountant add"
 msgstr "新增财务"
 
-#: app_backend/templates/_left.html:265
+#: app_backend/templates/_left.bak.html:245
+#: app_backend/templates/_left.html:286
 #: app_backend/templates/system/catalogue_import.html:15
 #: app_backend/templates/system/futures_import.html:15
 #: app_backend/templates/system/production_import.html:15
@@ -2311,33 +2316,44 @@ msgstr "新增财务"
 msgid "system management"
 msgstr "系统管理"
 
-#: app_backend/templates/_left.html:269
+#: app_backend/templates/_left.bak.html:249
+#: app_backend/templates/_left.html:290
 msgid "data import"
 msgstr "数据导入"
 
-#: app_backend/templates/_left.html:272
+#: app_backend/templates/_left.bak.html:252
+#: app_backend/templates/_left.html:293
 #: app_backend/templates/system/catalogue_import.html:16
 #: app_backend/views/system.py:73
 msgid "catalogue import"
 msgstr "型录导入"
 
-#: app_backend/templates/_left.html:275
+#: app_backend/templates/_left.bak.html:255
+#: app_backend/templates/_left.html:296
 #: app_backend/templates/system/production_import.html:16
 #: app_backend/views/system.py:143
 msgid "production import"
 msgstr "产品导入"
 
-#: app_backend/templates/_left.html:278
+#: app_backend/templates/_left.bak.html:258
+#: app_backend/templates/_left.html:299
 #: app_backend/templates/system/quotation_import.html:16
 #: app_backend/views/system.py:213
 msgid "quotation import"
 msgstr "报价导入"
 
-#: app_backend/templates/_left.html:281
+#: app_backend/templates/_left.bak.html:261
+#: app_backend/templates/_left.html:302
 #: app_backend/templates/system/futures_import.html:16
 #: app_backend/views/system.py:283
 msgid "futures import"
-msgstr "在途导入"
+msgstr "期货导入"
+
+#: app_backend/templates/_left.html:264
+#: app_backend/templates/futures/lists.html:9 app_backend/views/futures.py:82
+#: app_backend/views/futures.py:120
+msgid "futures lists"
+msgstr "期货列表"
 
 #: app_backend/templates/_modal_agreement.html:7
 msgid "Agreement"
@@ -2348,7 +2364,7 @@ msgid "Forgot Password"
 msgstr "忘记密码"
 
 #: app_backend/templates/_top.html:23 app_backend/templates/home.html:7
-#: app_backend/views/__init__.py:470
+#: app_backend/views/__init__.py:247
 msgid "personal information"
 msgstr "个人信息"
 
@@ -2370,7 +2386,7 @@ msgstr "最新消息"
 msgid "Emptying all the messages"
 msgstr "清空消息"
 
-#: app_backend/templates/client_info.html:7 app_backend/views/__init__.py:649
+#: app_backend/templates/client_info.html:7 app_backend/views/__init__.py:429
 msgid "client information"
 msgstr "客户端信息"
 
@@ -2408,27 +2424,28 @@ msgstr "交易总数"
 msgid "Latest transaction"
 msgstr "最新交易"
 
-#: app_backend/templates/index.html:7 app_backend/views/__init__.py:459
+#: app_backend/templates/index.html:7 app_backend/views/__init__.py:236
 msgid "management homepage"
 msgstr "管理主页"
 
-#: app_backend/templates/buyer/order/lists.html:171
-#: app_backend/templates/customer/contact/lists.html:163
-#: app_backend/templates/customer/lists.html:137
-#: app_backend/templates/delivery/lists.html:166
-#: app_backend/templates/enquiry/lists.html:171
-#: app_backend/templates/inventory/lists.html:146
+#: app_backend/templates/buyer/order/lists.html:175
+#: app_backend/templates/customer/contact/lists.html:167
+#: app_backend/templates/customer/lists.html:141
+#: app_backend/templates/delivery/lists.html:170
+#: app_backend/templates/enquiry/lists.html:175
+#: app_backend/templates/futures/lists.html:119
+#: app_backend/templates/inventory/lists.html:150
 #: app_backend/templates/layout.html:149
-#: app_backend/templates/production/lists.html:130
-#: app_backend/templates/production/sensitive/lists.html:145
-#: app_backend/templates/purchase/lists.html:166
-#: app_backend/templates/quotation/lists.html:171
-#: app_backend/templates/rack/lists.html:126
-#: app_backend/templates/sales/order/lists.html:171
-#: app_backend/templates/supplier/contact/lists.html:161
-#: app_backend/templates/supplier/lists.html:137
-#: app_backend/templates/user/lists.html:147
-#: app_backend/templates/warehouse/lists.html:130
+#: app_backend/templates/production/lists.html:134
+#: app_backend/templates/production/sensitive/lists.html:149
+#: app_backend/templates/purchase/lists.html:170
+#: app_backend/templates/quotation/lists.html:175
+#: app_backend/templates/rack/lists.html:130
+#: app_backend/templates/sales/order/lists.html:175
+#: app_backend/templates/supplier/contact/lists.html:165
+#: app_backend/templates/supplier/lists.html:141
+#: app_backend/templates/user/lists.html:151
+#: app_backend/templates/warehouse/lists.html:134
 msgid "Deleted data can not be recovered, whether to confirm deletion?"
 msgstr "删除数据不能恢复，是否确认删除？"
 
@@ -2436,7 +2453,7 @@ msgstr "删除数据不能恢复，是否确认删除？"
 msgid "Please select what you want to delete"
 msgstr "请选择需要删除的内容"
 
-#: app_backend/templates/server_info.html:7 app_backend/views/__init__.py:666
+#: app_backend/templates/server_info.html:7 app_backend/views/__init__.py:446
 msgid "server information"
 msgstr "服务端信息"
 
@@ -2635,52 +2652,53 @@ msgstr "新增"
 
 #: app_backend/templates/buyer/order/add.html:162
 #: app_backend/templates/buyer/order/edit.html:142
-#: app_backend/templates/buyer/order/lists.html:61
-#: app_backend/templates/buyer/order/lists.html:123
+#: app_backend/templates/buyer/order/lists.html:64
+#: app_backend/templates/buyer/order/lists.html:127
 #: app_backend/templates/customer/contact/edit.html:108
-#: app_backend/templates/customer/contact/lists.html:62
-#: app_backend/templates/customer/contact/lists.html:127
-#: app_backend/templates/customer/invoice/lists.html:52
-#: app_backend/templates/customer/lists.html:55
-#: app_backend/templates/customer/lists.html:114
+#: app_backend/templates/customer/contact/lists.html:65
+#: app_backend/templates/customer/contact/lists.html:131
+#: app_backend/templates/customer/invoice/lists.html:56
+#: app_backend/templates/customer/lists.html:58
+#: app_backend/templates/customer/lists.html:118
 #: app_backend/templates/delivery/add.html:156
 #: app_backend/templates/delivery/edit.html:168
-#: app_backend/templates/delivery/lists.html:61
-#: app_backend/templates/delivery/lists.html:123
+#: app_backend/templates/delivery/lists.html:64
+#: app_backend/templates/delivery/lists.html:127
 #: app_backend/templates/enquiry/add.html:154
 #: app_backend/templates/enquiry/edit.html:157
-#: app_backend/templates/enquiry/lists.html:61
-#: app_backend/templates/enquiry/lists.html:123
-#: app_backend/templates/inventory/lists.html:53
-#: app_backend/templates/inventory/lists.html:118
-#: app_backend/templates/production/lists.html:43
-#: app_backend/templates/production/lists.html:107
-#: app_backend/templates/production/sensitive/lists.html:58
-#: app_backend/templates/production/sensitive/lists.html:117
+#: app_backend/templates/enquiry/lists.html:64
+#: app_backend/templates/enquiry/lists.html:127
+#: app_backend/templates/futures/lists.html:54
+#: app_backend/templates/inventory/lists.html:56
+#: app_backend/templates/inventory/lists.html:122
+#: app_backend/templates/production/lists.html:46
+#: app_backend/templates/production/lists.html:111
+#: app_backend/templates/production/sensitive/lists.html:61
+#: app_backend/templates/production/sensitive/lists.html:121
 #: app_backend/templates/purchase/add.html:148
 #: app_backend/templates/purchase/edit.html:157
-#: app_backend/templates/purchase/lists.html:61
-#: app_backend/templates/purchase/lists.html:123
+#: app_backend/templates/purchase/lists.html:64
+#: app_backend/templates/purchase/lists.html:127
 #: app_backend/templates/quotation/add.html:154
 #: app_backend/templates/quotation/edit.html:162
-#: app_backend/templates/quotation/lists.html:61
-#: app_backend/templates/quotation/lists.html:123
-#: app_backend/templates/rack/lists.html:46
-#: app_backend/templates/rack/lists.html:103
+#: app_backend/templates/quotation/lists.html:64
+#: app_backend/templates/quotation/lists.html:127
+#: app_backend/templates/rack/lists.html:49
+#: app_backend/templates/rack/lists.html:107
 #: app_backend/templates/sales/order/add.html:162
 #: app_backend/templates/sales/order/edit.html:142
-#: app_backend/templates/sales/order/lists.html:61
-#: app_backend/templates/sales/order/lists.html:123
+#: app_backend/templates/sales/order/lists.html:64
+#: app_backend/templates/sales/order/lists.html:127
 #: app_backend/templates/supplier/contact/edit.html:108
-#: app_backend/templates/supplier/contact/lists.html:61
-#: app_backend/templates/supplier/contact/lists.html:126
-#: app_backend/templates/supplier/invoice/lists.html:52
-#: app_backend/templates/supplier/lists.html:55
-#: app_backend/templates/supplier/lists.html:114
-#: app_backend/templates/user/lists.html:55
-#: app_backend/templates/user/lists.html:124
-#: app_backend/templates/warehouse/lists.html:45
-#: app_backend/templates/warehouse/lists.html:107
+#: app_backend/templates/supplier/contact/lists.html:64
+#: app_backend/templates/supplier/contact/lists.html:130
+#: app_backend/templates/supplier/invoice/lists.html:55
+#: app_backend/templates/supplier/lists.html:58
+#: app_backend/templates/supplier/lists.html:118
+#: app_backend/templates/user/lists.html:58
+#: app_backend/templates/user/lists.html:128
+#: app_backend/templates/warehouse/lists.html:48
+#: app_backend/templates/warehouse/lists.html:111
 msgid "Delete"
 msgstr "删除"
 
@@ -2743,19 +2761,19 @@ msgid "Buyer Order"
 msgstr "采购订单"
 
 #: app_backend/templates/buyer/order/info.html:89
-#: app_backend/templates/buyer/order/lists.html:135
-#: app_backend/templates/customer/invoice/lists.html:112
+#: app_backend/templates/buyer/order/lists.html:139
+#: app_backend/templates/customer/invoice/lists.html:119
 #: app_backend/templates/delivery/info.html:89
-#: app_backend/templates/delivery/lists.html:130
+#: app_backend/templates/delivery/lists.html:134
 #: app_backend/templates/enquiry/info.html:89
-#: app_backend/templates/enquiry/lists.html:135
+#: app_backend/templates/enquiry/lists.html:139
 #: app_backend/templates/purchase/info.html:89
-#: app_backend/templates/purchase/lists.html:130
+#: app_backend/templates/purchase/lists.html:134
 #: app_backend/templates/quotation/info.html:89
-#: app_backend/templates/quotation/lists.html:135
+#: app_backend/templates/quotation/lists.html:139
 #: app_backend/templates/sales/order/info.html:89
-#: app_backend/templates/sales/order/lists.html:135
-#: app_backend/templates/supplier/invoice/lists.html:112
+#: app_backend/templates/sales/order/lists.html:139
+#: app_backend/templates/supplier/invoice/lists.html:116
 msgid "Print"
 msgstr "打印"
 
@@ -2990,6 +3008,7 @@ msgstr "采购订单列表"
 #: app_backend/templates/delivery/lists.html:17
 #: app_backend/templates/enquiry/items/lists.html:17
 #: app_backend/templates/enquiry/lists.html:17
+#: app_backend/templates/futures/lists.html:17
 #: app_backend/templates/inventory/lists.html:17
 #: app_backend/templates/price/lists.html:19
 #: app_backend/templates/production/lists.html:17
@@ -3014,12 +3033,13 @@ msgstr "搜索工具"
 #: app_backend/templates/buyer/order/lists.html:19
 #: app_backend/templates/customer/contact/lists.html:20
 #: app_backend/templates/customer/contact/search_modal.html:12
-#: app_backend/templates/customer/invoice/lists.html:18
+#: app_backend/templates/customer/invoice/lists.html:19
 #: app_backend/templates/customer/lists.html:19
 #: app_backend/templates/customer/search_modal.html:12
 #: app_backend/templates/delivery/lists.html:19
 #: app_backend/templates/enquiry/items/lists.html:19
 #: app_backend/templates/enquiry/lists.html:19
+#: app_backend/templates/futures/lists.html:19
 #: app_backend/templates/inventory/lists.html:19
 #: app_backend/templates/price/lists.html:21
 #: app_backend/templates/price/lists.html:74
@@ -3045,155 +3065,159 @@ msgstr "搜索工具"
 msgid "Resize"
 msgstr "缩放"
 
-#: app_backend/templates/buyer/order/lists.html:59
-#: app_backend/templates/customer/contact/lists.html:60
-#: app_backend/templates/customer/invoice/lists.html:50
-#: app_backend/templates/customer/lists.html:53
-#: app_backend/templates/delivery/lists.html:59
-#: app_backend/templates/enquiry/items/lists.html:60
-#: app_backend/templates/enquiry/lists.html:59
-#: app_backend/templates/inventory/lists.html:51
-#: app_backend/templates/production/lists.html:41
-#: app_backend/templates/production/sensitive/lists.html:56
-#: app_backend/templates/purchase/lists.html:59
-#: app_backend/templates/quotation/items/lists.html:60
-#: app_backend/templates/quotation/lists.html:59
-#: app_backend/templates/rack/lists.html:44
-#: app_backend/templates/sales/order/lists.html:59
-#: app_backend/templates/supplier/contact/lists.html:59
-#: app_backend/templates/supplier/invoice/lists.html:50
-#: app_backend/templates/supplier/lists.html:53
-#: app_backend/templates/user/lists.html:53
-#: app_backend/templates/warehouse/lists.html:43
+#: app_backend/templates/buyer/order/lists.html:60
+#: app_backend/templates/customer/contact/lists.html:61
+#: app_backend/templates/customer/invoice/lists.html:52
+#: app_backend/templates/customer/lists.html:54
+#: app_backend/templates/delivery/lists.html:60
+#: app_backend/templates/enquiry/items/lists.html:61
+#: app_backend/templates/enquiry/lists.html:60
+#: app_backend/templates/futures/lists.html:50
+#: app_backend/templates/inventory/lists.html:52
+#: app_backend/templates/production/lists.html:42
+#: app_backend/templates/production/sensitive/lists.html:57
+#: app_backend/templates/purchase/lists.html:60
+#: app_backend/templates/quotation/items/lists.html:61
+#: app_backend/templates/quotation/lists.html:60
+#: app_backend/templates/rack/lists.html:45
+#: app_backend/templates/sales/order/lists.html:60
+#: app_backend/templates/supplier/contact/lists.html:60
+#: app_backend/templates/supplier/invoice/lists.html:51
+#: app_backend/templates/supplier/lists.html:54
+#: app_backend/templates/user/lists.html:54
+#: app_backend/templates/warehouse/lists.html:44
 msgid "Export"
 msgstr "导出"
 
-#: app_backend/templates/buyer/order/lists.html:75
-#: app_backend/templates/buyer/order/lists.html:77
-#: app_backend/templates/customer/contact/lists.html:76
-#: app_backend/templates/customer/contact/lists.html:78
-#: app_backend/templates/customer/invoice/lists.html:66
-#: app_backend/templates/customer/invoice/lists.html:68
-#: app_backend/templates/customer/lists.html:68
-#: app_backend/templates/customer/lists.html:70
-#: app_backend/templates/delivery/lists.html:75
-#: app_backend/templates/delivery/lists.html:77
-#: app_backend/templates/enquiry/lists.html:75
-#: app_backend/templates/enquiry/lists.html:77
-#: app_backend/templates/inventory/lists.html:66
-#: app_backend/templates/inventory/lists.html:68
-#: app_backend/templates/production/lists.html:56
-#: app_backend/templates/production/lists.html:58
-#: app_backend/templates/production/sensitive/lists.html:71
-#: app_backend/templates/production/sensitive/lists.html:73
-#: app_backend/templates/purchase/lists.html:75
-#: app_backend/templates/purchase/lists.html:77
-#: app_backend/templates/quotation/lists.html:75
-#: app_backend/templates/quotation/lists.html:77
-#: app_backend/templates/rack/lists.html:59
-#: app_backend/templates/rack/lists.html:61
-#: app_backend/templates/sales/order/lists.html:75
-#: app_backend/templates/sales/order/lists.html:77
-#: app_backend/templates/supplier/contact/lists.html:75
-#: app_backend/templates/supplier/contact/lists.html:77
-#: app_backend/templates/supplier/invoice/lists.html:66
-#: app_backend/templates/supplier/invoice/lists.html:68
-#: app_backend/templates/supplier/lists.html:68
-#: app_backend/templates/supplier/lists.html:70
-#: app_backend/templates/user/lists.html:68
-#: app_backend/templates/user/lists.html:70
-#: app_backend/templates/warehouse/lists.html:59
-#: app_backend/templates/warehouse/lists.html:61
+#: app_backend/templates/buyer/order/lists.html:79
+#: app_backend/templates/buyer/order/lists.html:81
+#: app_backend/templates/customer/contact/lists.html:80
+#: app_backend/templates/customer/contact/lists.html:82
+#: app_backend/templates/customer/invoice/lists.html:71
+#: app_backend/templates/customer/invoice/lists.html:73
+#: app_backend/templates/customer/lists.html:72
+#: app_backend/templates/customer/lists.html:74
+#: app_backend/templates/delivery/lists.html:79
+#: app_backend/templates/delivery/lists.html:81
+#: app_backend/templates/enquiry/lists.html:79
+#: app_backend/templates/enquiry/lists.html:81
+#: app_backend/templates/futures/lists.html:68
+#: app_backend/templates/futures/lists.html:70
+#: app_backend/templates/inventory/lists.html:70
+#: app_backend/templates/inventory/lists.html:72
+#: app_backend/templates/production/lists.html:60
+#: app_backend/templates/production/lists.html:62
+#: app_backend/templates/production/sensitive/lists.html:75
+#: app_backend/templates/production/sensitive/lists.html:77
+#: app_backend/templates/purchase/lists.html:79
+#: app_backend/templates/purchase/lists.html:81
+#: app_backend/templates/quotation/lists.html:79
+#: app_backend/templates/quotation/lists.html:81
+#: app_backend/templates/rack/lists.html:63
+#: app_backend/templates/rack/lists.html:65
+#: app_backend/templates/sales/order/lists.html:79
+#: app_backend/templates/sales/order/lists.html:81
+#: app_backend/templates/supplier/contact/lists.html:79
+#: app_backend/templates/supplier/contact/lists.html:81
+#: app_backend/templates/supplier/invoice/lists.html:70
+#: app_backend/templates/supplier/invoice/lists.html:72
+#: app_backend/templates/supplier/lists.html:72
+#: app_backend/templates/supplier/lists.html:74
+#: app_backend/templates/user/lists.html:72
+#: app_backend/templates/user/lists.html:74
+#: app_backend/templates/warehouse/lists.html:63
+#: app_backend/templates/warehouse/lists.html:65
 msgid "Select All"
 msgstr "全选"
 
-#: app_backend/templates/buyer/order/lists.html:80
+#: app_backend/templates/buyer/order/lists.html:84
 msgid "buyer order code"
 msgstr "订单编号"
 
-#: app_backend/templates/buyer/order/lists.html:82
-#: app_backend/templates/enquiry/items/lists.html:80
-#: app_backend/templates/enquiry/lists.html:82
+#: app_backend/templates/buyer/order/lists.html:86
+#: app_backend/templates/enquiry/items/lists.html:82
+#: app_backend/templates/enquiry/lists.html:86
 #: app_backend/templates/price/lists.html:288
-#: app_backend/templates/purchase/lists.html:82
-#: app_backend/templates/supplier/contact/lists.html:81
+#: app_backend/templates/purchase/lists.html:86
+#: app_backend/templates/supplier/contact/lists.html:85
 msgid "supplier company"
 msgstr "渠道公司"
 
-#: app_backend/templates/buyer/order/lists.html:83
+#: app_backend/templates/buyer/order/lists.html:87
 msgid "buyer order amount"
 msgstr "订单总额"
 
-#: app_backend/templates/buyer/order/lists.html:87
-#: app_backend/templates/delivery/lists.html:87
-#: app_backend/templates/enquiry/lists.html:87
-#: app_backend/templates/purchase/lists.html:87
-#: app_backend/templates/quotation/lists.html:87
-#: app_backend/templates/sales/order/lists.html:87
+#: app_backend/templates/buyer/order/lists.html:91
+#: app_backend/templates/delivery/lists.html:91
+#: app_backend/templates/enquiry/lists.html:91
+#: app_backend/templates/purchase/lists.html:91
+#: app_backend/templates/quotation/lists.html:91
+#: app_backend/templates/sales/order/lists.html:91
 msgid "audit status"
 msgstr "审核状态"
 
-#: app_backend/templates/buyer/order/lists.html:96
-#: app_backend/templates/customer/contact/lists.html:97
+#: app_backend/templates/buyer/order/lists.html:100
+#: app_backend/templates/customer/contact/lists.html:101
 #: app_backend/templates/customer/contact/search_modal.html:53
-#: app_backend/templates/customer/invoice/lists.html:86
-#: app_backend/templates/customer/lists.html:87
+#: app_backend/templates/customer/invoice/lists.html:91
+#: app_backend/templates/customer/lists.html:91
 #: app_backend/templates/customer/search_modal.html:56
-#: app_backend/templates/delivery/lists.html:96
-#: app_backend/templates/enquiry/lists.html:96
-#: app_backend/templates/inventory/lists.html:88
-#: app_backend/templates/production/lists.html:78
+#: app_backend/templates/delivery/lists.html:100
+#: app_backend/templates/enquiry/lists.html:100
+#: app_backend/templates/futures/lists.html:89
+#: app_backend/templates/inventory/lists.html:92
+#: app_backend/templates/production/lists.html:82
 #: app_backend/templates/production/search_modal.html:53
-#: app_backend/templates/production/sensitive/lists.html:91
-#: app_backend/templates/purchase/lists.html:96
-#: app_backend/templates/quotation/lists.html:96
-#: app_backend/templates/rack/lists.html:76
-#: app_backend/templates/sales/order/lists.html:96
-#: app_backend/templates/supplier/contact/lists.html:96
+#: app_backend/templates/production/sensitive/lists.html:95
+#: app_backend/templates/purchase/lists.html:100
+#: app_backend/templates/quotation/lists.html:100
+#: app_backend/templates/rack/lists.html:80
+#: app_backend/templates/sales/order/lists.html:100
+#: app_backend/templates/supplier/contact/lists.html:100
 #: app_backend/templates/supplier/contact/search_modal.html:53
-#: app_backend/templates/supplier/invoice/lists.html:86
-#: app_backend/templates/supplier/lists.html:87
+#: app_backend/templates/supplier/invoice/lists.html:90
+#: app_backend/templates/supplier/lists.html:91
 #: app_backend/templates/supplier/search_modal.html:56
-#: app_backend/templates/user/lists.html:88
+#: app_backend/templates/user/lists.html:92
 #: app_backend/templates/user/search_modal.html:55
-#: app_backend/templates/warehouse/lists.html:79
+#: app_backend/templates/warehouse/lists.html:83
 msgid "Select"
 msgstr "选择"
 
-#: app_backend/templates/buyer/order/lists.html:113
-#: app_backend/templates/customer/contact/lists.html:116
-#: app_backend/templates/customer/invoice/lists.html:101
-#: app_backend/templates/customer/lists.html:104
-#: app_backend/templates/delivery/lists.html:113
-#: app_backend/templates/enquiry/lists.html:113
-#: app_backend/templates/inventory/lists.html:108
-#: app_backend/templates/production/lists.html:97
-#: app_backend/templates/production/sensitive/lists.html:107
-#: app_backend/templates/purchase/lists.html:113
-#: app_backend/templates/quotation/lists.html:113
-#: app_backend/templates/rack/lists.html:93
-#: app_backend/templates/sales/order/lists.html:113
-#: app_backend/templates/supplier/contact/lists.html:115
-#: app_backend/templates/supplier/invoice/lists.html:101
-#: app_backend/templates/supplier/lists.html:104
-#: app_backend/templates/user/lists.html:114
-#: app_backend/templates/warehouse/lists.html:97
+#: app_backend/templates/buyer/order/lists.html:117
+#: app_backend/templates/customer/contact/lists.html:120
+#: app_backend/templates/customer/invoice/lists.html:107
+#: app_backend/templates/customer/lists.html:108
+#: app_backend/templates/delivery/lists.html:117
+#: app_backend/templates/enquiry/lists.html:117
+#: app_backend/templates/inventory/lists.html:112
+#: app_backend/templates/production/lists.html:101
+#: app_backend/templates/production/sensitive/lists.html:111
+#: app_backend/templates/purchase/lists.html:117
+#: app_backend/templates/quotation/lists.html:117
+#: app_backend/templates/rack/lists.html:97
+#: app_backend/templates/sales/order/lists.html:117
+#: app_backend/templates/supplier/contact/lists.html:119
+#: app_backend/templates/supplier/invoice/lists.html:105
+#: app_backend/templates/supplier/lists.html:108
+#: app_backend/templates/user/lists.html:118
+#: app_backend/templates/warehouse/lists.html:101
 msgid "Edit"
 msgstr "编辑"
 
-#: app_backend/templates/buyer/order/lists.html:128
-#: app_backend/templates/enquiry/lists.html:128
-#: app_backend/templates/quotation/lists.html:128
-#: app_backend/templates/sales/order/lists.html:128
+#: app_backend/templates/buyer/order/lists.html:132
+#: app_backend/templates/enquiry/lists.html:132
+#: app_backend/templates/quotation/lists.html:132
+#: app_backend/templates/sales/order/lists.html:132
 msgid "Clone"
 msgstr "复制"
 
-#: app_backend/templates/buyer/order/lists.html:141
-#: app_backend/templates/delivery/lists.html:136
-#: app_backend/templates/enquiry/lists.html:141
-#: app_backend/templates/purchase/lists.html:136
-#: app_backend/templates/quotation/lists.html:141
-#: app_backend/templates/sales/order/lists.html:141
+#: app_backend/templates/buyer/order/lists.html:145
+#: app_backend/templates/delivery/lists.html:140
+#: app_backend/templates/enquiry/lists.html:145
+#: app_backend/templates/purchase/lists.html:140
+#: app_backend/templates/quotation/lists.html:145
+#: app_backend/templates/sales/order/lists.html:145
 msgid "Download"
 msgstr "下载"
 
@@ -3217,7 +3241,7 @@ msgstr "含税单价"
 #: app_backend/templates/customer/edit.html:9
 #: app_backend/templates/customer/edit.html:13
 #: app_backend/templates/customer/invoice/edit.html:13
-#: app_backend/views/customer.py:274
+#: app_backend/views/customer.py:284
 msgid "customer info"
 msgstr "客户信息"
 
@@ -3242,6 +3266,28 @@ msgstr "开票资料"
 msgid "customer contact"
 msgstr "联系方式"
 
+#: app_backend/templates/customer/stats.html:8
+#: app_backend/templates/customer/stats.html:37
+#: app_backend/templates/customer/stats.html:73
+#: app_backend/templates/inventory/stats.html:8
+#: app_backend/templates/inventory/stats.html:37
+#: app_backend/templates/inventory/stats.html:73
+#: app_backend/templates/production/stats.html:8
+#: app_backend/templates/production/stats.html:37
+#: app_backend/templates/production/stats.html:73
+#: app_backend/templates/quotation/stats.html:8
+#: app_backend/templates/quotation/stats.html:37
+#: app_backend/templates/quotation/stats.html:73
+#: app_backend/templates/rack/stats.html:8
+#: app_backend/templates/rack/stats.html:37
+#: app_backend/templates/rack/stats.html:73
+#: app_backend/templates/warehouse/stats.html:8
+#: app_backend/templates/warehouse/stats.html:37
+#: app_backend/templates/warehouse/stats.html:73
+#: app_backend/views/customer.py:575 app_backend/views/customer_contact.py:481
+msgid "customer stats"
+msgstr "客户统计"
+
 #: app_backend/templates/customer/stats.html:38
 #: app_backend/templates/inventory/stats.html:38
 #: app_backend/templates/production/stats.html:38
@@ -3252,25 +3298,25 @@ msgstr "联系方式"
 msgid "Refresh"
 msgstr "刷新"
 
-#: app_backend/templates/customer/contact/lists.html:82
-#: app_backend/templates/delivery/lists.html:82
+#: app_backend/templates/customer/contact/lists.html:86
+#: app_backend/templates/delivery/lists.html:86
 #: app_backend/templates/price/lists.html:89
 #: app_backend/templates/price/lists.html:156
 #: app_backend/templates/price/lists.html:223
-#: app_backend/templates/quotation/items/lists.html:80
-#: app_backend/templates/quotation/lists.html:82
-#: app_backend/templates/sales/order/lists.html:82
+#: app_backend/templates/quotation/items/lists.html:82
+#: app_backend/templates/quotation/lists.html:86
+#: app_backend/templates/sales/order/lists.html:86
 msgid "customer company"
 msgstr "客户公司"
 
-#: app_backend/templates/delivery/edit.html:9 app_backend/views/delivery.py:367
+#: app_backend/templates/delivery/edit.html:9 app_backend/views/delivery.py:373
 msgid "delivery edit"
 msgstr "出货编辑"
 
 #: app_backend/templates/delivery/info.html:87
 #: app_backend/templates/delivery/pdf.html:87
 #: app_backend/templates/delivery/preview.html:87
-#: app_backend/views/delivery.py:351
+#: app_backend/views/delivery.py:357
 msgid "Delivery"
 msgstr "出货单"
 
@@ -3304,21 +3350,21 @@ msgstr "客户地址"
 msgid "Delivery Code"
 msgstr "出货单号"
 
-#: app_backend/templates/delivery/lists.html:80
+#: app_backend/templates/delivery/lists.html:84
 #: app_backend/templates/price/lists.html:222
 msgid "delivery code"
 msgstr "出货编码"
 
-#: app_backend/templates/delivery/lists.html:83
+#: app_backend/templates/delivery/lists.html:87
 msgid "delivery amount"
 msgstr "出货总额"
 
-#: app_backend/templates/delivery/lists.html:84
+#: app_backend/templates/delivery/lists.html:88
 msgid "delivery note"
 msgstr "出货备注"
 
-#: app_backend/templates/enquiry/edit.html:9 app_backend/views/enquiry.py:406
-#: app_backend/views/enquiry.py:653 app_backend/views/enquiry.py:703
+#: app_backend/templates/enquiry/edit.html:9 app_backend/views/enquiry.py:408
+#: app_backend/views/enquiry.py:653 app_backend/views/enquiry.py:704
 msgid "enquiry edit"
 msgstr "询价编辑"
 
@@ -3346,47 +3392,55 @@ msgstr "询价效期"
 msgid "Inquirer"
 msgstr "询价人"
 
-#: app_backend/templates/enquiry/items/lists.html:79
-#: app_backend/templates/enquiry/lists.html:80
+#: app_backend/templates/enquiry/items/lists.html:81
+#: app_backend/templates/enquiry/lists.html:84
 #: app_backend/templates/price/lists.html:155
 msgid "enquiry code"
 msgstr "询价编号"
 
-#: app_backend/templates/enquiry/lists.html:83
+#: app_backend/templates/enquiry/lists.html:87
 msgid "enquiry amount"
 msgstr "询价总额"
 
+#: app_backend/templates/futures/lists.html:77
+msgid "sub total"
+msgstr "小计"
+
+#: app_backend/templates/futures/lists.html:80
+msgid "futures note"
+msgstr "期货备注"
+
 #: app_backend/templates/inventory/edit.html:9
-#: app_backend/views/inventory.py:319
+#: app_backend/views/inventory.py:324
 msgid "inventory edit"
 msgstr "库存编辑"
 
-#: app_backend/templates/inventory/lists.html:77
+#: app_backend/templates/inventory/lists.html:81
 msgid "inventory note"
 msgstr "库存备注"
 
-#: app_backend/templates/inventory/lists.html:95
-#: app_backend/templates/production/lists.html:84
-#: app_backend/templates/production/sensitive/lists.html:97
-#: app_backend/templates/rack/lists.html:81
-#: app_backend/templates/rack/lists.html:84
-#: app_backend/templates/user/lists.html:93
-#: app_backend/templates/warehouse/lists.html:84
+#: app_backend/templates/inventory/lists.html:99
+#: app_backend/templates/production/lists.html:88
+#: app_backend/templates/production/sensitive/lists.html:101
+#: app_backend/templates/rack/lists.html:85
+#: app_backend/templates/rack/lists.html:88
+#: app_backend/templates/user/lists.html:97
+#: app_backend/templates/warehouse/lists.html:88
 msgid "Click details"
 msgstr "点击详情"
 
-#: app_backend/templates/inventory/lists.html:123
+#: app_backend/templates/inventory/lists.html:127
 msgid "Warehouse shifting"
 msgstr "移库"
 
 #: app_backend/templates/inventory/transfer.html:9
-#: app_backend/views/inventory.py:429
+#: app_backend/views/inventory.py:435
 msgid "inventory transfer"
 msgstr "库存移位"
 
 #: app_backend/templates/modal/customer_contact_select.html:7
 #: app_backend/templates/modal/supplier_contact_select.html:7
-#: app_backend/views/customer_contact.py:341
+#: app_backend/views/customer_contact.py:339
 msgid "Customer Contact Search"
 msgstr "联系方式搜索"
 
@@ -3411,7 +3465,7 @@ msgid "Please select a customer contact"
 msgstr "请选择一个联系方式"
 
 #: app_backend/templates/modal/customer_select.html:7
-#: app_backend/views/customer.py:218
+#: app_backend/views/customer.py:231
 msgid "Customer Search"
 msgstr "客户搜索"
 
@@ -3420,7 +3474,7 @@ msgid "Please select a customer"
 msgstr "请选择一个客户"
 
 #: app_backend/templates/modal/production_select.html:7
-#: app_backend/views/production.py:195
+#: app_backend/views/production.py:200
 msgid "Production Search"
 msgstr "产品搜索"
 
@@ -3433,7 +3487,7 @@ msgid "Please select a production"
 msgstr "请选择一个产品"
 
 #: app_backend/templates/modal/supplier_select.html:7
-#: app_backend/views/supplier.py:195
+#: app_backend/views/supplier.py:214
 msgid "Supplier Search"
 msgstr "渠道搜索"
 
@@ -3450,8 +3504,8 @@ msgid "quotation items"
 msgstr "报价明细"
 
 #: app_backend/templates/price/lists.html:88
-#: app_backend/templates/quotation/items/lists.html:79
-#: app_backend/templates/quotation/lists.html:80
+#: app_backend/templates/quotation/items/lists.html:81
+#: app_backend/templates/quotation/lists.html:84
 msgid "quotation code"
 msgstr "报价单号"
 
@@ -3468,7 +3522,7 @@ msgid "buyer orders items"
 msgstr "采购明细"
 
 #: app_backend/templates/price/lists.html:287
-#: app_backend/templates/purchase/lists.html:80
+#: app_backend/templates/purchase/lists.html:84
 msgid "purchase code"
 msgstr "进货编码"
 
@@ -3477,23 +3531,23 @@ msgid "recommended productions"
 msgstr "推荐型号"
 
 #: app_backend/templates/production/edit.html:9
-#: app_backend/views/production.py:338
+#: app_backend/views/production.py:343
 msgid "production edit"
 msgstr "产品编辑"
 
 #: app_backend/templates/production/sensitive/edit.html:9
-#: app_backend/views/production_sensitive.py:257
+#: app_backend/views/production_sensitive.py:262
 msgid "production sensitive edit"
 msgstr "敏感型号编辑"
 
-#: app_backend/templates/purchase/edit.html:9 app_backend/views/purchase.py:359
+#: app_backend/templates/purchase/edit.html:9 app_backend/views/purchase.py:365
 msgid "purchase edit"
 msgstr "进货编辑"
 
 #: app_backend/templates/purchase/info.html:87
 #: app_backend/templates/purchase/pdf.html:87
 #: app_backend/templates/purchase/preview.html:87
-#: app_backend/views/purchase.py:343
+#: app_backend/views/purchase.py:349
 msgid "Purchase"
 msgstr "进货单"
 
@@ -3503,11 +3557,11 @@ msgstr "进货单"
 msgid "Purchase Code"
 msgstr "进货单号"
 
-#: app_backend/templates/purchase/lists.html:83
+#: app_backend/templates/purchase/lists.html:87
 msgid "purchase amount"
 msgstr "进货总额"
 
-#: app_backend/templates/purchase/lists.html:84
+#: app_backend/templates/purchase/lists.html:88
 msgid "purchase note"
 msgstr "采购备注"
 
@@ -3517,7 +3571,7 @@ msgid "purchase time"
 msgstr "进货时间"
 
 #: app_backend/templates/quotation/edit.html:9
-#: app_backend/views/quotation.py:405
+#: app_backend/views/quotation.py:406
 msgid "quotation edit"
 msgstr "报价编辑"
 
@@ -3545,11 +3599,11 @@ msgstr "报价效期"
 msgid "Offerer"
 msgstr "报价人"
 
-#: app_backend/templates/quotation/lists.html:83
+#: app_backend/templates/quotation/lists.html:87
 msgid "quotation amount"
 msgstr "报价金额"
 
-#: app_backend/templates/rack/edit.html:11 app_backend/views/rack.py:277
+#: app_backend/templates/rack/edit.html:11 app_backend/views/rack.py:281
 msgid "rack edit"
 msgstr "货架编辑"
 
@@ -3583,11 +3637,11 @@ msgstr "销售单号"
 msgid "sales orders lists"
 msgstr "订单列表"
 
-#: app_backend/templates/sales/order/lists.html:80
+#: app_backend/templates/sales/order/lists.html:84
 msgid "sales order code"
 msgstr "订单编码"
 
-#: app_backend/templates/sales/order/lists.html:83
+#: app_backend/templates/sales/order/lists.html:87
 msgid "sales order amount"
 msgstr "订单总额"
 
@@ -3596,7 +3650,7 @@ msgstr "订单总额"
 #: app_backend/templates/supplier/edit.html:9
 #: app_backend/templates/supplier/edit.html:13
 #: app_backend/templates/supplier/invoice/edit.html:13
-#: app_backend/views/supplier.py:251
+#: app_backend/views/supplier.py:267
 msgid "supplier info"
 msgstr "渠道信息"
 
@@ -3714,7 +3768,7 @@ msgstr "正在导入"
 
 #: app_backend/templates/system/futures_import.html:56
 msgid "futures record"
-msgstr "在途记录"
+msgstr "期货记录"
 
 #: app_backend/templates/system/production_import.html:56
 msgid "production record"
@@ -3724,23 +3778,23 @@ msgstr "产品记录"
 msgid "quotation record"
 msgstr "报价记录"
 
-#: app_backend/templates/user/edit.html:9 app_backend/views/user.py:373
+#: app_backend/templates/user/edit.html:9 app_backend/views/user.py:403
 msgid "user edit"
 msgstr "用户编辑"
 
-#: app_backend/templates/user/lists.html:74
+#: app_backend/templates/user/lists.html:78
 msgid "user mobile"
 msgstr "用户手机"
 
-#: app_backend/templates/user/lists.html:77
+#: app_backend/templates/user/lists.html:81
 msgid "online status"
 msgstr "在线状态"
 
-#: app_backend/templates/user/lists.html:98
+#: app_backend/templates/user/lists.html:102
 msgid "Online"
 msgstr "在线"
 
-#: app_backend/templates/user/lists.html:99
+#: app_backend/templates/user/lists.html:103
 msgid "Offline"
 msgstr "离线"
 
@@ -3748,429 +3802,453 @@ msgstr "离线"
 msgid "role type"
 msgstr "角色类型"
 
-#: app_backend/templates/user_auth/index.html:55
+#: app_backend/templates/user/stats.html:8
+#: app_backend/templates/user/stats.html:37
+#: app_backend/templates/user/stats.html:73 app_backend/views/user.py:611
+msgid "user stats"
+msgstr "用户统计"
+
+#: app_backend/templates/user_auth/index.html:56
 msgid "Sign in to Website"
 msgstr "登录站点"
 
-#: app_backend/templates/user_auth/index.html:78
-#: app_backend/templates/user_auth/index.html:154
+#: app_backend/templates/user_auth/index.html:95
+#: app_backend/templates/user_auth/index.html:171
 msgid "Show"
 msgstr "显示"
 
-#: app_backend/templates/user_auth/index.html:78
-#: app_backend/templates/user_auth/index.html:149
-#: app_backend/templates/user_auth/index.html:154
+#: app_backend/templates/user_auth/index.html:95
+#: app_backend/templates/user_auth/index.html:166
+#: app_backend/templates/user_auth/index.html:171
 msgid "password"
 msgstr "密码"
 
-#: app_backend/templates/user_auth/index.html:95
+#: app_backend/templates/user_auth/index.html:112
 msgid "Unsharpness<br/>Change next"
 msgstr "看不清<br/>换一张"
 
-#: app_backend/templates/user_auth/index.html:119
+#: app_backend/templates/user_auth/index.html:136
 msgid "Signing on"
 msgstr "正在登录"
 
-#: app_backend/templates/user_auth/index.html:119
+#: app_backend/templates/user_auth/index.html:136
 msgid "Sign in"
 msgstr "登录"
 
-#: app_backend/templates/user_auth/index.html:149
+#: app_backend/templates/user_auth/index.html:166
 msgid "Hidden"
 msgstr "隐藏"
 
 #: app_backend/templates/warehouse/edit.html:9
-#: app_backend/views/warehouse.py:280
+#: app_backend/views/warehouse.py:288
 msgid "warehouse edit"
 msgstr "仓库编辑"
 
-#: app_backend/templates/warehouse/lists.html:66
+#: app_backend/templates/warehouse/lists.html:70
 msgid "store keeper"
 msgstr "仓管人员"
 
-#: app_backend/views/__init__.py:514
+#: app_backend/validators/customer.py:35 app_backend/validators/customer.py:54
+#: app_backend/validators/production.py:35
+#: app_backend/validators/production.py:55
+#: app_backend/validators/supplier.py:35 app_backend/validators/supplier.py:54
+#: app_backend/validators/user.py:35 app_backend/validators/user.py:54
+#: app_backend/validators/user_auth.py:36
+#: app_backend/validators/user_auth.py:56
+msgid "Data duplication"
+msgstr "数据重复"
+
+#: app_backend/views/__init__.py:291
 msgid "Exit Success"
 msgstr "退出成功"
 
-#: app_backend/views/__init__.py:570
+#: app_backend/views/__init__.py:347
 msgid "Unauthorized"
 msgstr "未被授权"
 
-#: app_backend/views/__init__.py:576
+#: app_backend/views/__init__.py:353
 msgid "Forbidden"
 msgstr "禁止访问"
 
-#: app_backend/views/__init__.py:584
+#: app_backend/views/__init__.py:361
 msgid "Not Found"
 msgstr "没有找到"
 
-#: app_backend/views/__init__.py:590 app_backend/views/buyer_order.py:702
-#: app_backend/views/buyer_order.py:767 app_backend/views/customer.py:455
-#: app_backend/views/customer_contact.py:387 app_backend/views/delivery.py:715
-#: app_backend/views/delivery.py:780 app_backend/views/enquiry.py:739
-#: app_backend/views/enquiry.py:804 app_backend/views/inventory.py:500
-#: app_backend/views/production.py:412 app_backend/views/production.py:523
-#: app_backend/views/production_sensitive.py:331
-#: app_backend/views/purchase.py:701 app_backend/views/purchase.py:766
-#: app_backend/views/quotation.py:741 app_backend/views/quotation.py:806
-#: app_backend/views/rack.py:340 app_backend/views/sales_order.py:702
-#: app_backend/views/sales_order.py:767 app_backend/views/supplier.py:432
-#: app_backend/views/supplier_contact.py:387 app_backend/views/user.py:450
-#: app_backend/views/warehouse.py:349
+#: app_backend/views/__init__.py:367 app_backend/views/buyer_order.py:723
+#: app_backend/views/buyer_order.py:787 app_backend/views/customer.py:467
+#: app_backend/views/customer_contact.py:385 app_backend/views/delivery.py:721
+#: app_backend/views/delivery.py:786 app_backend/views/enquiry.py:746
+#: app_backend/views/enquiry.py:810 app_backend/views/futures.py:197
+#: app_backend/views/inventory.py:512 app_backend/views/production.py:417
+#: app_backend/views/production.py:528
+#: app_backend/views/production_sensitive.py:342
+#: app_backend/views/purchase.py:707 app_backend/views/purchase.py:772
+#: app_backend/views/quotation.py:747 app_backend/views/quotation.py:811
+#: app_backend/views/rack.py:350 app_backend/views/sales_order.py:727
+#: app_backend/views/sales_order.py:791 app_backend/views/supplier.py:450
+#: app_backend/views/supplier_contact.py:385 app_backend/views/user.py:516
+#: app_backend/views/warehouse.py:363
 msgid "Method Not Allowed"
 msgstr "请求方式不被允许"
 
-#: app_backend/views/__init__.py:596
+#: app_backend/views/__init__.py:373
 msgid "Gone"
 msgstr "已被删除"
 
-#: app_backend/views/__init__.py:602
+#: app_backend/views/__init__.py:379
 msgid "Request Entity Too Large"
 msgstr "请求过大"
 
-#: app_backend/views/__init__.py:609
+#: app_backend/views/__init__.py:386
 msgid "Locked"
 msgstr "已被锁定"
 
-#: app_backend/views/__init__.py:615
+#: app_backend/views/__init__.py:392
 msgid "Too Many Requests"
 msgstr "请求过多"
 
-#: app_backend/views/__init__.py:626 app_backend/views/__init__.py:635
-#: app_backend/views/__init__.py:639
+#: app_backend/views/__init__.py:398
 msgid "Internal Server Error"
 msgstr "内部错误"
 
-#: app_backend/views/buyer_order.py:86 app_backend/views/catalogue.py:105
-#: app_backend/views/customer.py:117 app_backend/views/customer.py:231
-#: app_backend/views/customer_contact.py:125
-#: app_backend/views/customer_contact.py:353
-#: app_backend/views/customer_invoice.py:78 app_backend/views/delivery.py:107
-#: app_backend/views/enquiry.py:120 app_backend/views/enquiry_items.py:114
-#: app_backend/views/inventory.py:119 app_backend/views/price.py:108
-#: app_backend/views/production.py:111 app_backend/views/production.py:208
-#: app_backend/views/production_sensitive.py:112
-#: app_backend/views/purchase.py:99 app_backend/views/quotation.py:117
-#: app_backend/views/quotation_items.py:114 app_backend/views/rack.py:104
-#: app_backend/views/sales_order.py:88 app_backend/views/supplier.py:94
-#: app_backend/views/supplier.py:208 app_backend/views/supplier_contact.py:125
-#: app_backend/views/supplier_contact.py:353
-#: app_backend/views/supplier_invoice.py:78 app_backend/views/user.py:112
-#: app_backend/views/warehouse.py:100
+#: app_backend/views/buyer_order.py:98 app_backend/views/catalogue.py:105
+#: app_backend/views/customer.py:120 app_backend/views/customer.py:244
+#: app_backend/views/customer_contact.py:127
+#: app_backend/views/customer_contact.py:351
+#: app_backend/views/customer_invoice.py:89 app_backend/views/delivery.py:109
+#: app_backend/views/enquiry.py:123 app_backend/views/enquiry_items.py:116
+#: app_backend/views/futures.py:95 app_backend/views/inventory.py:124
+#: app_backend/views/price.py:108 app_backend/views/production.py:116
+#: app_backend/views/production.py:213
+#: app_backend/views/production_sensitive.py:117
+#: app_backend/views/purchase.py:102 app_backend/views/quotation.py:119
+#: app_backend/views/quotation_items.py:116 app_backend/views/rack.py:109
+#: app_backend/views/sales_order.py:99 app_backend/views/supplier.py:104
+#: app_backend/views/supplier.py:227 app_backend/views/supplier_contact.py:127
+#: app_backend/views/supplier_contact.py:351
+#: app_backend/views/supplier_invoice.py:86 app_backend/views/user.py:120
+#: app_backend/views/warehouse.py:107
 msgid "Search Failure"
 msgstr "查询失败"
 
-#: app_backend/views/buyer_order.py:121 app_backend/views/buyer_order.py:716
-#: app_backend/views/buyer_order.py:782 app_backend/views/customer.py:155
-#: app_backend/views/customer.py:469 app_backend/views/customer_contact.py:401
-#: app_backend/views/delivery.py:142 app_backend/views/delivery.py:729
-#: app_backend/views/delivery.py:799 app_backend/views/enquiry.py:155
-#: app_backend/views/enquiry.py:753 app_backend/views/enquiry.py:819
-#: app_backend/views/inventory.py:152 app_backend/views/inventory.py:513
-#: app_backend/views/production.py:139 app_backend/views/production.py:425
-#: app_backend/views/production_sensitive.py:142
-#: app_backend/views/production_sensitive.py:344
-#: app_backend/views/purchase.py:134 app_backend/views/purchase.py:715
-#: app_backend/views/purchase.py:785 app_backend/views/quotation.py:152
-#: app_backend/views/quotation.py:755 app_backend/views/quotation.py:821
-#: app_backend/views/rack.py:132 app_backend/views/rack.py:353
-#: app_backend/views/sales_order.py:123 app_backend/views/sales_order.py:716
-#: app_backend/views/sales_order.py:782 app_backend/views/supplier.py:132
-#: app_backend/views/supplier.py:446 app_backend/views/supplier_contact.py:401
-#: app_backend/views/user.py:146 app_backend/views/user.py:463
-#: app_backend/views/warehouse.py:128 app_backend/views/warehouse.py:362
+#: app_backend/views/buyer_order.py:136 app_backend/views/buyer_order.py:717
+#: app_backend/views/buyer_order.py:781 app_backend/views/customer.py:161
+#: app_backend/views/customer.py:461 app_backend/views/customer_contact.py:399
+#: app_backend/views/delivery.py:147 app_backend/views/delivery.py:735
+#: app_backend/views/delivery.py:805 app_backend/views/enquiry.py:161
+#: app_backend/views/enquiry.py:740 app_backend/views/enquiry.py:804
+#: app_backend/views/futures.py:191 app_backend/views/inventory.py:506
+#: app_backend/views/production.py:144 app_backend/views/production.py:430
+#: app_backend/views/production_sensitive.py:147
+#: app_backend/views/production_sensitive.py:336
+#: app_backend/views/purchase.py:140 app_backend/views/purchase.py:721
+#: app_backend/views/purchase.py:791 app_backend/views/quotation.py:157
+#: app_backend/views/quotation.py:741 app_backend/views/quotation.py:805
+#: app_backend/views/rack.py:344 app_backend/views/sales_order.py:137
+#: app_backend/views/sales_order.py:721 app_backend/views/sales_order.py:785
+#: app_backend/views/supplier.py:144 app_backend/views/supplier.py:444
+#: app_backend/views/supplier_contact.py:399 app_backend/views/user.py:510
+#: app_backend/views/warehouse.py:135 app_backend/views/warehouse.py:357
 msgid "Permission Denied"
 msgstr "权限拒绝"
 
-#: app_backend/views/buyer_order.py:122 app_backend/views/buyer_order.py:703
-#: app_backend/views/buyer_order.py:710 app_backend/views/buyer_order.py:717
-#: app_backend/views/buyer_order.py:724 app_backend/views/buyer_order.py:729
-#: app_backend/views/customer.py:156 app_backend/views/customer.py:163
-#: app_backend/views/customer.py:168 app_backend/views/customer.py:456
-#: app_backend/views/customer.py:463 app_backend/views/customer.py:470
-#: app_backend/views/customer.py:477 app_backend/views/customer.py:482
-#: app_backend/views/customer.py:488 app_backend/views/customer.py:492
-#: app_backend/views/customer_contact.py:388
-#: app_backend/views/customer_contact.py:395
-#: app_backend/views/customer_contact.py:402
-#: app_backend/views/customer_contact.py:409
-#: app_backend/views/customer_contact.py:414 app_backend/views/delivery.py:143
-#: app_backend/views/delivery.py:716 app_backend/views/delivery.py:723
-#: app_backend/views/delivery.py:730 app_backend/views/delivery.py:737
-#: app_backend/views/delivery.py:742 app_backend/views/enquiry.py:156
-#: app_backend/views/enquiry.py:740 app_backend/views/enquiry.py:747
+#: app_backend/views/buyer_order.py:137 app_backend/views/buyer_order.py:718
+#: app_backend/views/buyer_order.py:724 app_backend/views/buyer_order.py:731
+#: app_backend/views/buyer_order.py:738 app_backend/views/buyer_order.py:743
+#: app_backend/views/customer.py:162 app_backend/views/customer.py:169
+#: app_backend/views/customer.py:175 app_backend/views/customer.py:181
+#: app_backend/views/customer.py:462 app_backend/views/customer.py:468
+#: app_backend/views/customer.py:475 app_backend/views/customer.py:482
+#: app_backend/views/customer.py:487 app_backend/views/customer.py:493
+#: app_backend/views/customer.py:497 app_backend/views/customer_contact.py:386
+#: app_backend/views/customer_contact.py:393
+#: app_backend/views/customer_contact.py:400
+#: app_backend/views/customer_contact.py:407
+#: app_backend/views/customer_contact.py:412 app_backend/views/delivery.py:148
+#: app_backend/views/delivery.py:722 app_backend/views/delivery.py:729
+#: app_backend/views/delivery.py:736 app_backend/views/delivery.py:743
+#: app_backend/views/delivery.py:748 app_backend/views/enquiry.py:162
+#: app_backend/views/enquiry.py:741 app_backend/views/enquiry.py:747
 #: app_backend/views/enquiry.py:754 app_backend/views/enquiry.py:761
-#: app_backend/views/enquiry.py:766 app_backend/views/inventory.py:153
-#: app_backend/views/inventory.py:501 app_backend/views/inventory.py:508
-#: app_backend/views/inventory.py:514 app_backend/views/inventory.py:521
-#: app_backend/views/inventory.py:526 app_backend/views/production.py:140
-#: app_backend/views/production.py:148 app_backend/views/production.py:153
-#: app_backend/views/production.py:413 app_backend/views/production.py:420
-#: app_backend/views/production.py:426 app_backend/views/production.py:433
-#: app_backend/views/production.py:438 app_backend/views/production.py:444
-#: app_backend/views/production.py:448
-#: app_backend/views/production_sensitive.py:143
-#: app_backend/views/production_sensitive.py:332
-#: app_backend/views/production_sensitive.py:339
-#: app_backend/views/production_sensitive.py:345
-#: app_backend/views/production_sensitive.py:352
+#: app_backend/views/enquiry.py:766 app_backend/views/futures.py:192
+#: app_backend/views/futures.py:198 app_backend/views/futures.py:205
+#: app_backend/views/futures.py:212 app_backend/views/futures.py:217
+#: app_backend/views/inventory.py:507 app_backend/views/inventory.py:513
+#: app_backend/views/inventory.py:520 app_backend/views/inventory.py:527
+#: app_backend/views/inventory.py:532 app_backend/views/production.py:145
+#: app_backend/views/production.py:153 app_backend/views/production.py:158
+#: app_backend/views/production.py:418 app_backend/views/production.py:425
+#: app_backend/views/production.py:431 app_backend/views/production.py:438
+#: app_backend/views/production.py:443 app_backend/views/production.py:449
+#: app_backend/views/production.py:453
+#: app_backend/views/production_sensitive.py:148
+#: app_backend/views/production_sensitive.py:337
+#: app_backend/views/production_sensitive.py:343
+#: app_backend/views/production_sensitive.py:350
 #: app_backend/views/production_sensitive.py:357
-#: app_backend/views/purchase.py:135 app_backend/views/purchase.py:702
-#: app_backend/views/purchase.py:709 app_backend/views/purchase.py:716
-#: app_backend/views/purchase.py:723 app_backend/views/purchase.py:728
-#: app_backend/views/quotation.py:153 app_backend/views/quotation.py:742
-#: app_backend/views/quotation.py:749 app_backend/views/quotation.py:756
-#: app_backend/views/quotation.py:763 app_backend/views/quotation.py:768
-#: app_backend/views/rack.py:133 app_backend/views/rack.py:141
-#: app_backend/views/rack.py:341 app_backend/views/rack.py:348
-#: app_backend/views/rack.py:354 app_backend/views/rack.py:361
-#: app_backend/views/rack.py:366 app_backend/views/rack.py:372
-#: app_backend/views/sales_order.py:124 app_backend/views/sales_order.py:703
-#: app_backend/views/sales_order.py:710 app_backend/views/sales_order.py:717
-#: app_backend/views/sales_order.py:724 app_backend/views/sales_order.py:729
-#: app_backend/views/supplier.py:133 app_backend/views/supplier.py:140
-#: app_backend/views/supplier.py:145 app_backend/views/supplier.py:433
-#: app_backend/views/supplier.py:440 app_backend/views/supplier.py:447
-#: app_backend/views/supplier.py:454 app_backend/views/supplier.py:459
-#: app_backend/views/supplier.py:465 app_backend/views/supplier.py:469
-#: app_backend/views/supplier_contact.py:388
-#: app_backend/views/supplier_contact.py:395
-#: app_backend/views/supplier_contact.py:402
-#: app_backend/views/supplier_contact.py:409
-#: app_backend/views/supplier_contact.py:414 app_backend/views/user.py:147
-#: app_backend/views/user.py:155 app_backend/views/user.py:451
-#: app_backend/views/user.py:458 app_backend/views/user.py:464
-#: app_backend/views/user.py:471 app_backend/views/user.py:476
-#: app_backend/views/user.py:482 app_backend/views/warehouse.py:129
-#: app_backend/views/warehouse.py:137 app_backend/views/warehouse.py:142
-#: app_backend/views/warehouse.py:350 app_backend/views/warehouse.py:357
-#: app_backend/views/warehouse.py:363 app_backend/views/warehouse.py:370
-#: app_backend/views/warehouse.py:375 app_backend/views/warehouse.py:381
-#: app_backend/views/warehouse.py:385
+#: app_backend/views/production_sensitive.py:362
+#: app_backend/views/purchase.py:141 app_backend/views/purchase.py:708
+#: app_backend/views/purchase.py:715 app_backend/views/purchase.py:722
+#: app_backend/views/purchase.py:729 app_backend/views/purchase.py:734
+#: app_backend/views/quotation.py:158 app_backend/views/quotation.py:742
+#: app_backend/views/quotation.py:748 app_backend/views/quotation.py:755
+#: app_backend/views/quotation.py:762 app_backend/views/quotation.py:767
+#: app_backend/views/rack.py:144 app_backend/views/rack.py:345
+#: app_backend/views/rack.py:351 app_backend/views/rack.py:358
+#: app_backend/views/rack.py:365 app_backend/views/rack.py:370
+#: app_backend/views/rack.py:376 app_backend/views/sales_order.py:138
+#: app_backend/views/sales_order.py:722 app_backend/views/sales_order.py:728
+#: app_backend/views/sales_order.py:735 app_backend/views/sales_order.py:742
+#: app_backend/views/sales_order.py:747 app_backend/views/supplier.py:145
+#: app_backend/views/supplier.py:152 app_backend/views/supplier.py:158
+#: app_backend/views/supplier.py:164 app_backend/views/supplier.py:445
+#: app_backend/views/supplier.py:451 app_backend/views/supplier.py:458
+#: app_backend/views/supplier.py:465 app_backend/views/supplier.py:470
+#: app_backend/views/supplier.py:476 app_backend/views/supplier.py:480
+#: app_backend/views/supplier_contact.py:386
+#: app_backend/views/supplier_contact.py:393
+#: app_backend/views/supplier_contact.py:400
+#: app_backend/views/supplier_contact.py:407
+#: app_backend/views/supplier_contact.py:412 app_backend/views/user.py:162
+#: app_backend/views/user.py:168 app_backend/views/user.py:174
+#: app_backend/views/user.py:180 app_backend/views/user.py:186
+#: app_backend/views/user.py:192 app_backend/views/user.py:511
+#: app_backend/views/user.py:517 app_backend/views/user.py:524
+#: app_backend/views/user.py:531 app_backend/views/user.py:536
+#: app_backend/views/user.py:542 app_backend/views/warehouse.py:136
+#: app_backend/views/warehouse.py:144 app_backend/views/warehouse.py:149
+#: app_backend/views/warehouse.py:358 app_backend/views/warehouse.py:364
+#: app_backend/views/warehouse.py:371 app_backend/views/warehouse.py:378
+#: app_backend/views/warehouse.py:383 app_backend/views/warehouse.py:389
+#: app_backend/views/warehouse.py:393
 #, python-format
 msgid "Del Failure, %(ext_msg)s"
 msgstr "删除失败, %(ext_msg)s"
 
-#: app_backend/views/buyer_order.py:145 app_backend/views/buyer_order.py:748
-#: app_backend/views/customer.py:191 app_backend/views/customer.py:512
-#: app_backend/views/customer_contact.py:425 app_backend/views/delivery.py:166
-#: app_backend/views/delivery.py:761 app_backend/views/enquiry.py:179
-#: app_backend/views/enquiry.py:785 app_backend/views/inventory.py:166
-#: app_backend/views/inventory.py:537 app_backend/views/production.py:168
-#: app_backend/views/production.py:459
-#: app_backend/views/production_sensitive.py:156
-#: app_backend/views/production_sensitive.py:368
-#: app_backend/views/purchase.py:158 app_backend/views/purchase.py:747
-#: app_backend/views/quotation.py:176 app_backend/views/quotation.py:787
-#: app_backend/views/rack.py:156 app_backend/views/rack.py:383
-#: app_backend/views/sales_order.py:147 app_backend/views/sales_order.py:748
-#: app_backend/views/supplier.py:168 app_backend/views/supplier.py:489
-#: app_backend/views/supplier_contact.py:425 app_backend/views/user.py:170
-#: app_backend/views/user.py:493 app_backend/views/warehouse.py:157
-#: app_backend/views/warehouse.py:396
+#: app_backend/views/buyer_order.py:160 app_backend/views/buyer_order.py:762
+#: app_backend/views/customer.py:204 app_backend/views/customer.py:517
+#: app_backend/views/customer_contact.py:423 app_backend/views/delivery.py:171
+#: app_backend/views/delivery.py:767 app_backend/views/enquiry.py:185
+#: app_backend/views/enquiry.py:785 app_backend/views/futures.py:140
+#: app_backend/views/futures.py:228 app_backend/views/inventory.py:170
+#: app_backend/views/inventory.py:543 app_backend/views/production.py:173
+#: app_backend/views/production.py:464
+#: app_backend/views/production_sensitive.py:161
+#: app_backend/views/production_sensitive.py:373
+#: app_backend/views/purchase.py:164 app_backend/views/purchase.py:753
+#: app_backend/views/quotation.py:181 app_backend/views/quotation.py:786
+#: app_backend/views/rack.py:159 app_backend/views/rack.py:387
+#: app_backend/views/sales_order.py:161 app_backend/views/sales_order.py:766
+#: app_backend/views/supplier.py:187 app_backend/views/supplier.py:500
+#: app_backend/views/supplier_contact.py:423 app_backend/views/user.py:207
+#: app_backend/views/user.py:553 app_backend/views/warehouse.py:164
+#: app_backend/views/warehouse.py:404
 msgid "Del Success"
 msgstr "删除成功"
 
-#: app_backend/views/buyer_order.py:147 app_backend/views/buyer_order.py:751
-#: app_backend/views/customer.py:193 app_backend/views/customer.py:515
-#: app_backend/views/customer_contact.py:428 app_backend/views/delivery.py:168
-#: app_backend/views/delivery.py:764 app_backend/views/enquiry.py:181
-#: app_backend/views/enquiry.py:788 app_backend/views/inventory.py:168
-#: app_backend/views/inventory.py:540 app_backend/views/production.py:170
-#: app_backend/views/production.py:462
-#: app_backend/views/production_sensitive.py:158
-#: app_backend/views/production_sensitive.py:371
-#: app_backend/views/purchase.py:160 app_backend/views/purchase.py:750
-#: app_backend/views/quotation.py:178 app_backend/views/quotation.py:790
-#: app_backend/views/rack.py:158 app_backend/views/rack.py:386
-#: app_backend/views/sales_order.py:149 app_backend/views/sales_order.py:751
-#: app_backend/views/supplier.py:170 app_backend/views/supplier.py:492
-#: app_backend/views/supplier_contact.py:428 app_backend/views/user.py:172
-#: app_backend/views/user.py:496 app_backend/views/warehouse.py:159
-#: app_backend/views/warehouse.py:399
+#: app_backend/views/buyer_order.py:162 app_backend/views/buyer_order.py:765
+#: app_backend/views/customer.py:206 app_backend/views/customer.py:520
+#: app_backend/views/customer_contact.py:426 app_backend/views/delivery.py:173
+#: app_backend/views/delivery.py:770 app_backend/views/enquiry.py:187
+#: app_backend/views/enquiry.py:788 app_backend/views/futures.py:142
+#: app_backend/views/futures.py:231 app_backend/views/inventory.py:172
+#: app_backend/views/inventory.py:546 app_backend/views/production.py:175
+#: app_backend/views/production.py:467
+#: app_backend/views/production_sensitive.py:163
+#: app_backend/views/production_sensitive.py:376
+#: app_backend/views/purchase.py:166 app_backend/views/purchase.py:756
+#: app_backend/views/quotation.py:183 app_backend/views/quotation.py:789
+#: app_backend/views/rack.py:161 app_backend/views/rack.py:390
+#: app_backend/views/sales_order.py:163 app_backend/views/sales_order.py:769
+#: app_backend/views/supplier.py:189 app_backend/views/supplier.py:503
+#: app_backend/views/supplier_contact.py:426 app_backend/views/user.py:209
+#: app_backend/views/user.py:556 app_backend/views/warehouse.py:166
+#: app_backend/views/warehouse.py:407
 msgid "Del Failure"
 msgstr "删除失败"
 
-#: app_backend/views/buyer_order.py:261 app_backend/views/buyer_order.py:330
-#: app_backend/views/customer.py:313 app_backend/views/customer.py:341
-#: app_backend/views/delivery.py:256 app_backend/views/delivery.py:323
-#: app_backend/views/enquiry.py:301 app_backend/views/enquiry.py:370
-#: app_backend/views/inventory.py:244 app_backend/views/inventory.py:286
-#: app_backend/views/production.py:281 app_backend/views/production.py:308
-#: app_backend/views/production_sensitive.py:200
-#: app_backend/views/production_sensitive.py:227
-#: app_backend/views/purchase.py:248 app_backend/views/purchase.py:315
-#: app_backend/views/quotation.py:298 app_backend/views/quotation.py:369
-#: app_backend/views/rack.py:224 app_backend/views/rack.py:246
-#: app_backend/views/sales_order.py:263 app_backend/views/sales_order.py:332
-#: app_backend/views/supplier.py:290 app_backend/views/supplier.py:318
-#: app_backend/views/user.py:289 app_backend/views/user.py:314
-#: app_backend/views/user.py:336 app_backend/views/warehouse.py:225
-#: app_backend/views/warehouse.py:250
+#: app_backend/views/buyer_order.py:277 app_backend/views/buyer_order.py:346
+#: app_backend/views/customer.py:323 app_backend/views/customer.py:351
+#: app_backend/views/delivery.py:262 app_backend/views/delivery.py:329
+#: app_backend/views/enquiry.py:307 app_backend/views/enquiry.py:376
+#: app_backend/views/inventory.py:249 app_backend/views/inventory.py:291
+#: app_backend/views/production.py:286 app_backend/views/production.py:313
+#: app_backend/views/production_sensitive.py:205
+#: app_backend/views/production_sensitive.py:232
+#: app_backend/views/purchase.py:254 app_backend/views/purchase.py:321
+#: app_backend/views/quotation.py:303 app_backend/views/quotation.py:374
+#: app_backend/views/rack.py:228 app_backend/views/rack.py:250
+#: app_backend/views/sales_order.py:278 app_backend/views/sales_order.py:347
+#: app_backend/views/supplier.py:306 app_backend/views/supplier.py:334
+#: app_backend/views/user.py:323 app_backend/views/user.py:348
+#: app_backend/views/user.py:370 app_backend/views/warehouse.py:233
+#: app_backend/views/warehouse.py:258
 msgid "Add Failure"
 msgstr "创建失败"
 
-#: app_backend/views/buyer_order.py:326 app_backend/views/customer.py:337
-#: app_backend/views/delivery.py:319 app_backend/views/enquiry.py:366
-#: app_backend/views/inventory.py:282 app_backend/views/production.py:304
-#: app_backend/views/production_sensitive.py:223
-#: app_backend/views/purchase.py:311 app_backend/views/quotation.py:365
-#: app_backend/views/rack.py:242 app_backend/views/sales_order.py:328
-#: app_backend/views/supplier.py:314 app_backend/views/user.py:332
-#: app_backend/views/warehouse.py:246
+#: app_backend/views/buyer_order.py:342 app_backend/views/customer.py:347
+#: app_backend/views/delivery.py:325 app_backend/views/enquiry.py:372
+#: app_backend/views/inventory.py:287 app_backend/views/production.py:309
+#: app_backend/views/production_sensitive.py:228
+#: app_backend/views/purchase.py:317 app_backend/views/quotation.py:370
+#: app_backend/views/rack.py:246 app_backend/views/sales_order.py:343
+#: app_backend/views/supplier.py:330 app_backend/views/user.py:366
+#: app_backend/views/warehouse.py:254
 msgid "Add Success"
 msgstr "创建成功"
 
-#: app_backend/views/buyer_order.py:358 app_backend/views/sales_order.py:360
+#: app_backend/views/buyer_order.py:370 app_backend/views/sales_order.py:376
 msgid "Order"
 msgstr "订单"
 
-#: app_backend/views/buyer_order.py:360 app_backend/views/delivery.py:353
-#: app_backend/views/purchase.py:345 app_backend/views/sales_order.py:362
+#: app_backend/views/buyer_order.py:372 app_backend/views/delivery.py:359
+#: app_backend/views/purchase.py:351 app_backend/views/sales_order.py:378
 #, python-format
 msgid "The %(resource)s has been approved, it cannot be modified"
 msgstr "当前 %(resource)s 已被核准, 不能修改"
 
-#: app_backend/views/buyer_order.py:371
+#: app_backend/views/buyer_order.py:383
 msgid "buyer order edit"
 msgstr "订单编辑"
 
-#: app_backend/views/buyer_order.py:450 app_backend/views/buyer_order.py:525
-#: app_backend/views/customer.py:406 app_backend/views/customer.py:434
-#: app_backend/views/customer_contact.py:266
-#: app_backend/views/customer_contact.py:321
-#: app_backend/views/customer_invoice.py:167
-#: app_backend/views/customer_invoice.py:199 app_backend/views/delivery.py:461
-#: app_backend/views/delivery.py:538 app_backend/views/enquiry.py:482
-#: app_backend/views/enquiry.py:557 app_backend/views/inventory.py:352
-#: app_backend/views/inventory.py:394 app_backend/views/production.py:365
-#: app_backend/views/production.py:391
-#: app_backend/views/production_sensitive.py:284
-#: app_backend/views/production_sensitive.py:310
-#: app_backend/views/purchase.py:449 app_backend/views/purchase.py:524
-#: app_backend/views/quotation.py:483 app_backend/views/quotation.py:560
-#: app_backend/views/rack.py:298 app_backend/views/rack.py:319
-#: app_backend/views/sales_order.py:450 app_backend/views/sales_order.py:525
-#: app_backend/views/supplier.py:383 app_backend/views/supplier.py:411
-#: app_backend/views/supplier_contact.py:266
-#: app_backend/views/supplier_contact.py:321
-#: app_backend/views/supplier_invoice.py:167
-#: app_backend/views/supplier_invoice.py:199 app_backend/views/user.py:401
-#: app_backend/views/user.py:429 app_backend/views/user_auth.py:194
-#: app_backend/views/warehouse.py:304 app_backend/views/warehouse.py:328
+#: app_backend/views/buyer_order.py:462 app_backend/views/buyer_order.py:537
+#: app_backend/views/customer.py:412 app_backend/views/customer.py:440
+#: app_backend/views/customer_contact.py:264
+#: app_backend/views/customer_contact.py:319
+#: app_backend/views/customer_invoice.py:174
+#: app_backend/views/customer_invoice.py:206 app_backend/views/delivery.py:467
+#: app_backend/views/delivery.py:544 app_backend/views/enquiry.py:484
+#: app_backend/views/enquiry.py:559 app_backend/views/inventory.py:357
+#: app_backend/views/inventory.py:399 app_backend/views/production.py:370
+#: app_backend/views/production.py:396
+#: app_backend/views/production_sensitive.py:289
+#: app_backend/views/production_sensitive.py:315
+#: app_backend/views/purchase.py:455 app_backend/views/purchase.py:530
+#: app_backend/views/quotation.py:484 app_backend/views/quotation.py:561
+#: app_backend/views/rack.py:302 app_backend/views/rack.py:323
+#: app_backend/views/sales_order.py:466 app_backend/views/sales_order.py:541
+#: app_backend/views/supplier.py:395 app_backend/views/supplier.py:423
+#: app_backend/views/supplier_contact.py:264
+#: app_backend/views/supplier_contact.py:319
+#: app_backend/views/supplier_invoice.py:171
+#: app_backend/views/supplier_invoice.py:203 app_backend/views/user.py:431
+#: app_backend/views/user.py:457 app_backend/views/user.py:468
+#: app_backend/views/user.py:486 app_backend/views/user_auth.py:194
+#: app_backend/views/warehouse.py:312 app_backend/views/warehouse.py:336
 msgid "Edit Failure"
 msgstr "编辑失败"
 
-#: app_backend/views/buyer_order.py:521 app_backend/views/customer.py:430
-#: app_backend/views/customer_contact.py:317
-#: app_backend/views/customer_invoice.py:195 app_backend/views/delivery.py:534
-#: app_backend/views/enquiry.py:553 app_backend/views/inventory.py:390
-#: app_backend/views/production.py:387
-#: app_backend/views/production_sensitive.py:306
-#: app_backend/views/purchase.py:520 app_backend/views/quotation.py:556
-#: app_backend/views/rack.py:315 app_backend/views/sales_order.py:521
-#: app_backend/views/supplier.py:407 app_backend/views/supplier_contact.py:317
-#: app_backend/views/supplier_invoice.py:195 app_backend/views/user.py:425
-#: app_backend/views/user_auth.py:190 app_backend/views/warehouse.py:324
+#: app_backend/views/buyer_order.py:533 app_backend/views/customer.py:436
+#: app_backend/views/customer_contact.py:315
+#: app_backend/views/customer_invoice.py:202 app_backend/views/delivery.py:540
+#: app_backend/views/enquiry.py:555 app_backend/views/inventory.py:395
+#: app_backend/views/production.py:392
+#: app_backend/views/production_sensitive.py:311
+#: app_backend/views/purchase.py:526 app_backend/views/quotation.py:557
+#: app_backend/views/rack.py:319 app_backend/views/sales_order.py:537
+#: app_backend/views/supplier.py:419 app_backend/views/supplier_contact.py:315
+#: app_backend/views/supplier_invoice.py:199 app_backend/views/user.py:494
+#: app_backend/views/user_auth.py:190 app_backend/views/warehouse.py:332
 msgid "Edit Success"
 msgstr "编辑成功"
 
-#: app_backend/views/buyer_order.py:566
+#: app_backend/views/buyer_order.py:579
 msgid "buyer order info"
 msgstr "订单信息"
 
-#: app_backend/views/buyer_order.py:616
+#: app_backend/views/buyer_order.py:630
 msgid "buyer order preview"
 msgstr "订单预览"
 
-#: app_backend/views/buyer_order.py:666
+#: app_backend/views/buyer_order.py:681
 msgid "buyer order pdf"
 msgstr "订单下载"
 
-#: app_backend/views/buyer_order.py:709 app_backend/views/buyer_order.py:723
-#: app_backend/views/buyer_order.py:775 app_backend/views/buyer_order.py:789
-#: app_backend/views/customer.py:462 app_backend/views/customer.py:476
-#: app_backend/views/customer_contact.py:394
-#: app_backend/views/customer_contact.py:408 app_backend/views/delivery.py:722
-#: app_backend/views/delivery.py:736 app_backend/views/delivery.py:788
-#: app_backend/views/delivery.py:806 app_backend/views/enquiry.py:746
-#: app_backend/views/enquiry.py:760 app_backend/views/enquiry.py:812
-#: app_backend/views/enquiry.py:826 app_backend/views/inventory.py:507
-#: app_backend/views/inventory.py:520 app_backend/views/production.py:419
-#: app_backend/views/production.py:432 app_backend/views/production.py:530
-#: app_backend/views/production.py:538
-#: app_backend/views/production_sensitive.py:338
-#: app_backend/views/production_sensitive.py:351
-#: app_backend/views/purchase.py:708 app_backend/views/purchase.py:722
-#: app_backend/views/purchase.py:774 app_backend/views/purchase.py:792
-#: app_backend/views/quotation.py:748 app_backend/views/quotation.py:762
-#: app_backend/views/quotation.py:814 app_backend/views/quotation.py:828
-#: app_backend/views/rack.py:347 app_backend/views/rack.py:360
-#: app_backend/views/sales_order.py:709 app_backend/views/sales_order.py:723
-#: app_backend/views/sales_order.py:775 app_backend/views/sales_order.py:789
-#: app_backend/views/supplier.py:439 app_backend/views/supplier.py:453
-#: app_backend/views/supplier_contact.py:394
-#: app_backend/views/supplier_contact.py:408 app_backend/views/user.py:457
-#: app_backend/views/user.py:470 app_backend/views/warehouse.py:356
-#: app_backend/views/warehouse.py:369
+#: app_backend/views/buyer_order.py:730 app_backend/views/buyer_order.py:737
+#: app_backend/views/buyer_order.py:795 app_backend/views/buyer_order.py:802
+#: app_backend/views/customer.py:474 app_backend/views/customer.py:481
+#: app_backend/views/customer_contact.py:392
+#: app_backend/views/customer_contact.py:406 app_backend/views/delivery.py:728
+#: app_backend/views/delivery.py:742 app_backend/views/delivery.py:794
+#: app_backend/views/delivery.py:812 app_backend/views/enquiry.py:753
+#: app_backend/views/enquiry.py:760 app_backend/views/enquiry.py:818
+#: app_backend/views/enquiry.py:825 app_backend/views/futures.py:204
+#: app_backend/views/futures.py:211 app_backend/views/inventory.py:519
+#: app_backend/views/inventory.py:526 app_backend/views/production.py:424
+#: app_backend/views/production.py:437 app_backend/views/production.py:535
+#: app_backend/views/production.py:543
+#: app_backend/views/production_sensitive.py:349
+#: app_backend/views/production_sensitive.py:356
+#: app_backend/views/purchase.py:714 app_backend/views/purchase.py:728
+#: app_backend/views/purchase.py:780 app_backend/views/purchase.py:798
+#: app_backend/views/quotation.py:754 app_backend/views/quotation.py:761
+#: app_backend/views/quotation.py:819 app_backend/views/quotation.py:826
+#: app_backend/views/rack.py:357 app_backend/views/rack.py:364
+#: app_backend/views/sales_order.py:734 app_backend/views/sales_order.py:741
+#: app_backend/views/sales_order.py:799 app_backend/views/sales_order.py:806
+#: app_backend/views/supplier.py:457 app_backend/views/supplier.py:464
+#: app_backend/views/supplier_contact.py:392
+#: app_backend/views/supplier_contact.py:406 app_backend/views/user.py:523
+#: app_backend/views/user.py:530 app_backend/views/warehouse.py:370
+#: app_backend/views/warehouse.py:377
 msgid "ID does not exist"
 msgstr "ID不存在"
 
-#: app_backend/views/buyer_order.py:728 app_backend/views/buyer_order.py:794
-#: app_backend/views/customer.py:481 app_backend/views/customer_contact.py:413
-#: app_backend/views/delivery.py:741 app_backend/views/delivery.py:811
-#: app_backend/views/enquiry.py:765 app_backend/views/enquiry.py:831
-#: app_backend/views/inventory.py:525 app_backend/views/production.py:437
-#: app_backend/views/production.py:544
-#: app_backend/views/production_sensitive.py:356
-#: app_backend/views/purchase.py:727 app_backend/views/purchase.py:797
-#: app_backend/views/quotation.py:767 app_backend/views/quotation.py:833
-#: app_backend/views/rack.py:365 app_backend/views/sales_order.py:728
-#: app_backend/views/sales_order.py:794 app_backend/views/supplier.py:458
-#: app_backend/views/supplier_contact.py:413 app_backend/views/user.py:475
-#: app_backend/views/warehouse.py:374
+#: app_backend/views/buyer_order.py:742 app_backend/views/buyer_order.py:807
+#: app_backend/views/customer.py:486 app_backend/views/customer_contact.py:411
+#: app_backend/views/delivery.py:747 app_backend/views/delivery.py:817
+#: app_backend/views/enquiry.py:765 app_backend/views/enquiry.py:830
+#: app_backend/views/futures.py:216 app_backend/views/inventory.py:531
+#: app_backend/views/production.py:442 app_backend/views/production.py:549
+#: app_backend/views/production_sensitive.py:361
+#: app_backend/views/purchase.py:733 app_backend/views/purchase.py:803
+#: app_backend/views/quotation.py:766 app_backend/views/quotation.py:831
+#: app_backend/views/rack.py:369 app_backend/views/sales_order.py:746
+#: app_backend/views/sales_order.py:811 app_backend/views/supplier.py:469
+#: app_backend/views/supplier_contact.py:411 app_backend/views/user.py:535
+#: app_backend/views/warehouse.py:382
 msgid "Already deleted"
 msgstr "已经删除"
 
-#: app_backend/views/buyer_order.py:768 app_backend/views/buyer_order.py:776
-#: app_backend/views/buyer_order.py:783 app_backend/views/buyer_order.py:790
-#: app_backend/views/buyer_order.py:795 app_backend/views/buyer_order.py:800
-#: app_backend/views/delivery.py:781 app_backend/views/delivery.py:789
-#: app_backend/views/delivery.py:793 app_backend/views/delivery.py:800
-#: app_backend/views/delivery.py:807 app_backend/views/delivery.py:812
-#: app_backend/views/delivery.py:817 app_backend/views/enquiry.py:805
-#: app_backend/views/enquiry.py:813 app_backend/views/enquiry.py:820
-#: app_backend/views/enquiry.py:827 app_backend/views/enquiry.py:832
-#: app_backend/views/enquiry.py:837 app_backend/views/purchase.py:767
-#: app_backend/views/purchase.py:775 app_backend/views/purchase.py:779
-#: app_backend/views/purchase.py:786 app_backend/views/purchase.py:793
-#: app_backend/views/purchase.py:798 app_backend/views/purchase.py:803
-#: app_backend/views/quotation.py:807 app_backend/views/quotation.py:815
-#: app_backend/views/quotation.py:822 app_backend/views/quotation.py:829
-#: app_backend/views/quotation.py:834 app_backend/views/quotation.py:839
-#: app_backend/views/sales_order.py:768 app_backend/views/sales_order.py:776
-#: app_backend/views/sales_order.py:783 app_backend/views/sales_order.py:790
-#: app_backend/views/sales_order.py:795 app_backend/views/sales_order.py:800
+#: app_backend/views/buyer_order.py:782 app_backend/views/buyer_order.py:788
+#: app_backend/views/buyer_order.py:796 app_backend/views/buyer_order.py:803
+#: app_backend/views/buyer_order.py:808 app_backend/views/buyer_order.py:813
+#: app_backend/views/delivery.py:787 app_backend/views/delivery.py:795
+#: app_backend/views/delivery.py:799 app_backend/views/delivery.py:806
+#: app_backend/views/delivery.py:813 app_backend/views/delivery.py:818
+#: app_backend/views/delivery.py:823 app_backend/views/enquiry.py:805
+#: app_backend/views/enquiry.py:811 app_backend/views/enquiry.py:819
+#: app_backend/views/enquiry.py:826 app_backend/views/enquiry.py:831
+#: app_backend/views/enquiry.py:836 app_backend/views/purchase.py:773
+#: app_backend/views/purchase.py:781 app_backend/views/purchase.py:785
+#: app_backend/views/purchase.py:792 app_backend/views/purchase.py:799
+#: app_backend/views/purchase.py:804 app_backend/views/purchase.py:809
+#: app_backend/views/quotation.py:806 app_backend/views/quotation.py:812
+#: app_backend/views/quotation.py:820 app_backend/views/quotation.py:827
+#: app_backend/views/quotation.py:832 app_backend/views/quotation.py:837
+#: app_backend/views/sales_order.py:786 app_backend/views/sales_order.py:792
+#: app_backend/views/sales_order.py:800 app_backend/views/sales_order.py:807
+#: app_backend/views/sales_order.py:812 app_backend/views/sales_order.py:817
 #, python-format
 msgid "Audit Failure, %(ext_msg)s"
 msgstr "审核失败, %(ext_msg)s"
 
-#: app_backend/views/buyer_order.py:799 app_backend/views/delivery.py:816
-#: app_backend/views/enquiry.py:836 app_backend/views/purchase.py:802
-#: app_backend/views/quotation.py:838 app_backend/views/sales_order.py:799
+#: app_backend/views/buyer_order.py:812 app_backend/views/delivery.py:822
+#: app_backend/views/enquiry.py:835 app_backend/views/purchase.py:808
+#: app_backend/views/quotation.py:836 app_backend/views/sales_order.py:816
 msgid "Already audited"
 msgstr "已经审核"
 
-#: app_backend/views/buyer_order.py:811 app_backend/views/delivery.py:826
-#: app_backend/views/enquiry.py:848 app_backend/views/purchase.py:812
-#: app_backend/views/quotation.py:850 app_backend/views/sales_order.py:811
+#: app_backend/views/buyer_order.py:824 app_backend/views/delivery.py:832
+#: app_backend/views/enquiry.py:847 app_backend/views/purchase.py:818
+#: app_backend/views/quotation.py:848 app_backend/views/sales_order.py:828
 #: app_common/maps/status_audit.py:24
 msgid "Audit Success"
 msgstr "审核成功"
 
-#: app_backend/views/buyer_order.py:814 app_backend/views/delivery.py:829
-#: app_backend/views/enquiry.py:851 app_backend/views/purchase.py:815
-#: app_backend/views/quotation.py:853 app_backend/views/sales_order.py:814
+#: app_backend/views/buyer_order.py:827 app_backend/views/delivery.py:835
+#: app_backend/views/enquiry.py:850 app_backend/views/purchase.py:821
+#: app_backend/views/quotation.py:851 app_backend/views/sales_order.py:831
 #: app_common/maps/status_audit.py:25
 msgid "Audit Failure"
 msgstr "审核失败"
@@ -4179,102 +4257,114 @@ msgstr "审核失败"
 msgid "catalogue lists"
 msgstr "型录列表"
 
-#: app_backend/views/customer.py:162 app_backend/views/customer.py:167
-#: app_backend/views/customer.py:487 app_backend/views/customer.py:491
-#: app_backend/views/production.py:147 app_backend/views/production.py:152
-#: app_backend/views/production.py:443 app_backend/views/production.py:447
-#: app_backend/views/rack.py:140 app_backend/views/rack.py:371
-#: app_backend/views/supplier.py:139 app_backend/views/supplier.py:144
-#: app_backend/views/supplier.py:464 app_backend/views/supplier.py:468
-#: app_backend/views/user.py:154 app_backend/views/user.py:481
-#: app_backend/views/warehouse.py:136 app_backend/views/warehouse.py:141
-#: app_backend/views/warehouse.py:380 app_backend/views/warehouse.py:384
+#: app_backend/views/customer.py:168 app_backend/views/customer.py:174
+#: app_backend/views/customer.py:180 app_backend/views/customer.py:492
+#: app_backend/views/customer.py:496 app_backend/views/production.py:152
+#: app_backend/views/production.py:157 app_backend/views/production.py:448
+#: app_backend/views/production.py:452 app_backend/views/rack.py:143
+#: app_backend/views/rack.py:375 app_backend/views/supplier.py:151
+#: app_backend/views/supplier.py:157 app_backend/views/supplier.py:163
+#: app_backend/views/supplier.py:475 app_backend/views/supplier.py:479
+#: app_backend/views/user.py:161 app_backend/views/user.py:167
+#: app_backend/views/user.py:173 app_backend/views/user.py:179
+#: app_backend/views/user.py:185 app_backend/views/user.py:191
+#: app_backend/views/user.py:541 app_backend/views/warehouse.py:143
+#: app_backend/views/warehouse.py:148 app_backend/views/warehouse.py:388
+#: app_backend/views/warehouse.py:392
 msgid "Currently In Use"
 msgstr "当前正在使用"
 
-#: app_backend/views/customer.py:378
+#: app_backend/views/customer.py:384
 msgid "customer edit"
 msgstr "客户编辑"
 
-#: app_backend/views/customer.py:600 app_backend/views/customer_contact.py:513
+#: app_backend/views/customer.py:605 app_backend/views/customer_contact.py:511
 msgid "customer stats item"
 msgstr "客户统计明细"
 
-#: app_backend/views/customer_contact.py:194
+#: app_backend/views/customer_contact.py:192
 msgid "customer contact edit"
 msgstr "联系方式编辑"
 
-#: app_backend/views/customer_invoice.py:141
+#: app_backend/views/customer_invoice.py:148
 msgid "customer invoice edit"
 msgstr "开票资料编辑"
 
-#: app_backend/views/delivery.py:579
+#: app_backend/views/delivery.py:585
 msgid "delivery info"
 msgstr "销货信息"
 
-#: app_backend/views/delivery.py:629
+#: app_backend/views/delivery.py:635
 msgid "delivery preview"
 msgstr "销货预览"
 
-#: app_backend/views/delivery.py:679
+#: app_backend/views/delivery.py:685
 msgid "delivery pdf"
 msgstr "销货下载"
 
-#: app_backend/views/delivery.py:792 app_backend/views/purchase.py:778
+#: app_backend/views/delivery.py:798 app_backend/views/purchase.py:784
 msgid "Status not exist"
 msgstr "状态不存在"
 
-#: app_backend/views/enquiry.py:603
+#: app_backend/views/enquiry.py:602
 msgid "enquiry info"
 msgstr "询价信息"
 
-#: app_backend/views/enquiry.py:936
+#: app_backend/views/enquiry.py:905
+msgid "enquiry stats"
+msgstr "询价统计"
+
+#: app_backend/views/enquiry.py:935
 msgid "enquiry stats item"
 msgstr "询价统计明细"
 
-#: app_backend/views/inventory.py:199
+#: app_backend/views/futures.py:174
+msgid "futures info"
+msgstr "期货信息"
+
+#: app_backend/views/inventory.py:204
 msgid "inventory info"
 msgstr "库存信息"
 
-#: app_backend/views/inventory.py:464 app_backend/views/inventory.py:479
+#: app_backend/views/inventory.py:470 app_backend/views/inventory.py:485
 msgid "Transfer Failure"
 msgstr "移库失败"
 
-#: app_backend/views/inventory.py:475
+#: app_backend/views/inventory.py:481
 msgid "Transfer Success"
 msgstr "移库成功"
 
-#: app_backend/views/production.py:247
+#: app_backend/views/production.py:252
 msgid "production info"
 msgstr "产品信息"
 
-#: app_backend/views/production.py:524 app_backend/views/production.py:531
-#: app_backend/views/production.py:539 app_backend/views/production.py:545
+#: app_backend/views/production.py:529 app_backend/views/production.py:536
+#: app_backend/views/production.py:544 app_backend/views/production.py:550
 #, python-format
 msgid "Get Failure, %(ext_msg)s"
 msgstr "获取失败, %(ext_msg)s"
 
-#: app_backend/views/production.py:548
+#: app_backend/views/production.py:553
 msgid "Get Success"
 msgstr "获取成功"
 
-#: app_backend/views/purchase.py:565
+#: app_backend/views/purchase.py:571
 msgid "purchase info"
 msgstr "进货信息"
 
-#: app_backend/views/purchase.py:615
+#: app_backend/views/purchase.py:621
 msgid "purchase preview"
 msgstr "进货预览"
 
-#: app_backend/views/purchase.py:665
+#: app_backend/views/purchase.py:671
 msgid "purchase pdf"
 msgstr "进货下载"
 
-#: app_backend/views/quotation.py:605
+#: app_backend/views/quotation.py:603
 msgid "quotation info"
 msgstr "报价信息"
 
-#: app_backend/views/quotation.py:655
+#: app_backend/views/quotation.py:654
 msgid "quotation preview"
 msgstr "报价预览"
 
@@ -4282,27 +4372,31 @@ msgstr "报价预览"
 msgid "quotation download"
 msgstr "报价下载"
 
-#: app_backend/views/quotation.py:938
+#: app_backend/views/quotation.py:906
+msgid "quotation stats"
+msgstr "报价统计"
+
+#: app_backend/views/quotation.py:936
 msgid "quotation stats item"
 msgstr "报价明细统计"
 
-#: app_backend/views/rack.py:189
+#: app_backend/views/rack.py:193
 msgid "rack info"
 msgstr "货架信息"
 
-#: app_backend/views/sales_order.py:373
+#: app_backend/views/sales_order.py:389
 msgid "sales order edit"
 msgstr "订单编辑"
 
-#: app_backend/views/sales_order.py:566
+#: app_backend/views/sales_order.py:583
 msgid "sales order info"
 msgstr "订单信息"
 
-#: app_backend/views/sales_order.py:616
+#: app_backend/views/sales_order.py:634
 msgid "sales order preview"
 msgstr "订单预览"
 
-#: app_backend/views/sales_order.py:666
+#: app_backend/views/sales_order.py:685
 msgid "sales order pdf"
 msgstr "订单下载"
 
@@ -4324,31 +4418,35 @@ msgstr "用户退出"
 msgid "User [%(user_name)s] has logged out"
 msgstr "用户 [%(user_name)s] 已经退出"
 
-#: app_backend/views/supplier.py:355
+#: app_backend/views/supplier.py:367
 msgid "supplier edit"
 msgstr "渠道编辑"
 
-#: app_backend/views/supplier.py:577 app_backend/views/supplier_contact.py:513
+#: app_backend/views/supplier.py:558 app_backend/views/supplier_contact.py:481
+msgid "supplier stats"
+msgstr "渠道统计"
+
+#: app_backend/views/supplier.py:588 app_backend/views/supplier_contact.py:511
 msgid "supplier stats item"
 msgstr "渠道统计明细"
 
-#: app_backend/views/supplier_contact.py:194
+#: app_backend/views/supplier_contact.py:192
 msgid "supplier contact edit"
 msgstr "联系方式编辑"
 
-#: app_backend/views/supplier_contact.py:341
+#: app_backend/views/supplier_contact.py:339
 msgid "Supplier Contact Search"
 msgstr "联系方式搜索"
 
-#: app_backend/views/supplier_invoice.py:141
+#: app_backend/views/supplier_invoice.py:145
 msgid "supplier invoice edit"
 msgstr "开票资料编辑"
 
-#: app_backend/views/user.py:252
+#: app_backend/views/user.py:286
 msgid "user info"
 msgstr "用户信息"
 
-#: app_backend/views/user.py:581
+#: app_backend/views/user.py:641
 msgid "user stats item"
 msgstr "用户统计明细"
 
@@ -4389,7 +4487,7 @@ msgstr "不能修改密码"
 msgid "Current Password Error"
 msgstr "当前密码错误"
 
-#: app_backend/views/warehouse.py:191
+#: app_backend/views/warehouse.py:199
 msgid "warehouse info"
 msgstr "仓库信息"
 
@@ -4509,31 +4607,30 @@ msgstr "未税"
 msgid "Has Tax"
 msgstr "含税"
 
-#: config/default.py:114
+#: config/default.py:117
 msgid "Website Name"
 msgstr "网站名称"
 
-#: config/default.py:116 config/develop.py:116
+#: config/default.py:119 config/develop.py:119
 msgid "App Name"
 msgstr "应用名称"
 
-#: config/default.py:118
+#: config/default.py:121
 msgid "Bearing Technology Co., Ltd."
 msgstr "轴承科技有限公司"
 
-#: config/default.py:120
+#: config/default.py:123
 msgid ""
 "Room 1024 Level 10, No.100, East Yan'an Road, Huangpu District, Shanghai,"
 " P. R. China"
 msgstr "上海市黄浦区延安东路100号1024室"
 
-#: config/develop.py:118
+#: config/develop.py:121
 msgid "Xinai Electromechainical Technology (shanghai) Co., Ltd."
 msgstr "上海鑫艾机电科技有限公司"
 
-#: config/develop.py:120
+#: config/develop.py:123
 msgid ""
 "Room 701, No.1399, West Tianmu Road, Jing'an District, Shanghai, P. R. "
 "China"
 msgstr "上海市静安区天目西路1399号701室"
-
