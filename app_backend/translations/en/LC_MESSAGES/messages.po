@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-14 00:17+0800\n"
+"POT-Creation-Date: 2019-08-15 00:22+0800\n"
 "PO-Revision-Date: 2018-05-03 13:57+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -1686,13 +1686,14 @@ msgstr "Username"
 
 #: app_backend/forms/user_auth.py:55 app_backend/forms/user_auth.py:72
 #: app_backend/forms/user_auth.py:89 app_backend/forms/user_auth.py:115
-#: app_backend/forms/user_auth.py:132 app_backend/forms/user_auth.py:149
+#: app_backend/forms/user_auth.py:133 app_backend/forms/user_auth.py:150
+#: app_backend/forms/user_auth.py:167
 msgid "This field is required."
 msgstr "This field is required."
 
 #: app_backend/forms/user_auth.py:59 app_backend/forms/user_auth.py:76
-#: app_backend/forms/user_auth.py:119 app_backend/forms/user_auth.py:136
-#: app_backend/forms/user_auth.py:153
+#: app_backend/forms/user_auth.py:137 app_backend/forms/user_auth.py:154
+#: app_backend/forms/user_auth.py:171
 #, python-format
 msgid "Field must be between %(min)s and %(max)s characters long."
 msgstr "Field must be between %(min)s and %(max)s characters long."
@@ -1714,18 +1715,66 @@ msgstr "Field must be %(length)s characters long."
 
 #: app_backend/forms/user_auth.py:105
 #: app_backend/templates/user_auth/index.html:128
+#: app_backend/templates/user_auth/mobile.html:128
 msgid "Remember me"
 msgstr "Remember me"
 
-#: app_backend/forms/user_auth.py:113 app_backend/forms/user_auth.py:124
+#: app_backend/forms/user_auth.py:113 app_backend/forms/user_auth.py:120
+#: app_backend/templates/buyer/order/info.html:115
+#: app_backend/templates/buyer/order/info.html:128
+#: app_backend/templates/buyer/order/pdf.html:102
+#: app_backend/templates/buyer/order/pdf.html:115
+#: app_backend/templates/buyer/order/preview.html:102
+#: app_backend/templates/buyer/order/preview.html:115
+#: app_backend/templates/delivery/info.html:115
+#: app_backend/templates/delivery/info.html:128
+#: app_backend/templates/delivery/pdf.html:102
+#: app_backend/templates/delivery/pdf.html:115
+#: app_backend/templates/delivery/preview.html:102
+#: app_backend/templates/delivery/preview.html:115
+#: app_backend/templates/enquiry/info.html:115
+#: app_backend/templates/enquiry/info.html:128
+#: app_backend/templates/enquiry/pdf.html:102
+#: app_backend/templates/enquiry/pdf.html:115
+#: app_backend/templates/enquiry/preview.html:102
+#: app_backend/templates/enquiry/preview.html:115
+#: app_backend/templates/purchase/info.html:115
+#: app_backend/templates/purchase/info.html:128
+#: app_backend/templates/purchase/pdf.html:102
+#: app_backend/templates/purchase/pdf.html:115
+#: app_backend/templates/purchase/preview.html:102
+#: app_backend/templates/purchase/preview.html:115
+#: app_backend/templates/quotation/info.html:115
+#: app_backend/templates/quotation/info.html:128
+#: app_backend/templates/quotation/pdf.html:102
+#: app_backend/templates/quotation/pdf.html:115
+#: app_backend/templates/quotation/preview.html:102
+#: app_backend/templates/quotation/preview.html:115
+#: app_backend/templates/sales/order/info.html:115
+#: app_backend/templates/sales/order/info.html:128
+#: app_backend/templates/sales/order/pdf.html:102
+#: app_backend/templates/sales/order/pdf.html:115
+#: app_backend/templates/sales/order/preview.html:102
+#: app_backend/templates/sales/order/preview.html:115
+#: app_common/maps/type_auth.py:26
+msgid "Email"
+msgstr "Email"
+
+#: app_backend/forms/user_auth.py:118
+msgid ""
+"Type email, click the login button, then enter mailbox, click the "
+"authentication link to sign in"
+msgstr ""
+
+#: app_backend/forms/user_auth.py:131 app_backend/forms/user_auth.py:142
 msgid "Current Password"
 msgstr ""
 
-#: app_backend/forms/user_auth.py:130 app_backend/forms/user_auth.py:141
+#: app_backend/forms/user_auth.py:148 app_backend/forms/user_auth.py:159
 msgid "New Password"
 msgstr ""
 
-#: app_backend/forms/user_auth.py:147 app_backend/forms/user_auth.py:162
+#: app_backend/forms/user_auth.py:165 app_backend/forms/user_auth.py:180
 msgid "Confirm Password"
 msgstr ""
 
@@ -2370,7 +2419,7 @@ msgstr "personal information"
 
 #: app_backend/templates/_top.html:25
 #: app_backend/templates/user_auth/change_password.html:6
-#: app_backend/views/user_auth.py:142
+#: app_backend/views/user_auth.py:218
 msgid "change password"
 msgstr ""
 
@@ -2879,46 +2928,6 @@ msgstr ""
 #: app_common/maps/type_auth.py:27
 msgid "Mobile"
 msgstr "Mobile"
-
-#: app_backend/templates/buyer/order/info.html:115
-#: app_backend/templates/buyer/order/info.html:128
-#: app_backend/templates/buyer/order/pdf.html:102
-#: app_backend/templates/buyer/order/pdf.html:115
-#: app_backend/templates/buyer/order/preview.html:102
-#: app_backend/templates/buyer/order/preview.html:115
-#: app_backend/templates/delivery/info.html:115
-#: app_backend/templates/delivery/info.html:128
-#: app_backend/templates/delivery/pdf.html:102
-#: app_backend/templates/delivery/pdf.html:115
-#: app_backend/templates/delivery/preview.html:102
-#: app_backend/templates/delivery/preview.html:115
-#: app_backend/templates/enquiry/info.html:115
-#: app_backend/templates/enquiry/info.html:128
-#: app_backend/templates/enquiry/pdf.html:102
-#: app_backend/templates/enquiry/pdf.html:115
-#: app_backend/templates/enquiry/preview.html:102
-#: app_backend/templates/enquiry/preview.html:115
-#: app_backend/templates/purchase/info.html:115
-#: app_backend/templates/purchase/info.html:128
-#: app_backend/templates/purchase/pdf.html:102
-#: app_backend/templates/purchase/pdf.html:115
-#: app_backend/templates/purchase/preview.html:102
-#: app_backend/templates/purchase/preview.html:115
-#: app_backend/templates/quotation/info.html:115
-#: app_backend/templates/quotation/info.html:128
-#: app_backend/templates/quotation/pdf.html:102
-#: app_backend/templates/quotation/pdf.html:115
-#: app_backend/templates/quotation/preview.html:102
-#: app_backend/templates/quotation/preview.html:115
-#: app_backend/templates/sales/order/info.html:115
-#: app_backend/templates/sales/order/info.html:128
-#: app_backend/templates/sales/order/pdf.html:102
-#: app_backend/templates/sales/order/pdf.html:115
-#: app_backend/templates/sales/order/preview.html:102
-#: app_backend/templates/sales/order/preview.html:115
-#: app_common/maps/type_auth.py:26
-msgid "Email"
-msgstr "Email"
 
 #: app_backend/templates/buyer/order/info.html:119
 #: app_backend/templates/buyer/order/pdf.html:106
@@ -3808,34 +3817,66 @@ msgstr "role type"
 msgid "user stats"
 msgstr "user stats"
 
+#: app_backend/templates/user_auth/email.html:56
+#: app_backend/templates/user_auth/index.html:66
+#: app_backend/templates/user_auth/mobile.html:64
+#: app_backend/views/user_auth.py:147
+msgid "Sign in with email"
+msgstr ""
+
+#: app_backend/templates/user_auth/email.html:64
+#: app_backend/templates/user_auth/index.html:64
+msgid "Temporary does not support"
+msgstr ""
+
+#: app_backend/templates/user_auth/email.html:64
+#: app_backend/templates/user_auth/index.html:64
+#: app_backend/templates/user_auth/mobile.html:56
+msgid "Sign in with mobile"
+msgstr ""
+
+#: app_backend/templates/user_auth/email.html:66
 #: app_backend/templates/user_auth/index.html:56
-msgid "Sign in to Website"
-msgstr "Sign in to Website"
+#: app_backend/templates/user_auth/mobile.html:66
+#: app_backend/views/user_auth.py:64
+msgid "Sign in with account"
+msgstr ""
+
+#: app_backend/templates/user_auth/email.html:91
+#: app_backend/templates/user_auth/index.html:136
+#: app_backend/templates/user_auth/mobile.html:136
+msgid "Signing on"
+msgstr "Signing on"
+
+#: app_backend/templates/user_auth/email.html:91
+#: app_backend/templates/user_auth/index.html:136
+#: app_backend/templates/user_auth/mobile.html:136
+msgid "Sign in"
+msgstr "Sign in"
 
 #: app_backend/templates/user_auth/index.html:95
 #: app_backend/templates/user_auth/index.html:171
+#: app_backend/templates/user_auth/mobile.html:95
+#: app_backend/templates/user_auth/mobile.html:171
 msgid "Show"
 msgstr "Show"
 
 #: app_backend/templates/user_auth/index.html:95
 #: app_backend/templates/user_auth/index.html:166
 #: app_backend/templates/user_auth/index.html:171
+#: app_backend/templates/user_auth/mobile.html:95
+#: app_backend/templates/user_auth/mobile.html:166
+#: app_backend/templates/user_auth/mobile.html:171
 msgid "password"
 msgstr "password"
 
 #: app_backend/templates/user_auth/index.html:112
+#: app_backend/templates/user_auth/mobile.html:112
 msgid "Unsharpness<br/>Change next"
 msgstr "Unsharpness<br/>Change next"
 
-#: app_backend/templates/user_auth/index.html:136
-msgid "Signing on"
-msgstr "Signing on"
-
-#: app_backend/templates/user_auth/index.html:136
-msgid "Sign in"
-msgstr "Sign in"
-
 #: app_backend/templates/user_auth/index.html:166
+#: app_backend/templates/user_auth/mobile.html:166
 msgid "Hidden"
 msgstr "Hidden"
 
@@ -4133,7 +4174,7 @@ msgstr "buyer order edit"
 #: app_backend/views/supplier_invoice.py:171
 #: app_backend/views/supplier_invoice.py:203 app_backend/views/user.py:431
 #: app_backend/views/user.py:457 app_backend/views/user.py:468
-#: app_backend/views/user.py:486 app_backend/views/user_auth.py:194
+#: app_backend/views/user.py:486 app_backend/views/user_auth.py:270
 #: app_backend/views/warehouse.py:312 app_backend/views/warehouse.py:336
 msgid "Edit Failure"
 msgstr "Edit Failure"
@@ -4148,7 +4189,7 @@ msgstr "Edit Failure"
 #: app_backend/views/rack.py:319 app_backend/views/sales_order.py:537
 #: app_backend/views/supplier.py:419 app_backend/views/supplier_contact.py:315
 #: app_backend/views/supplier_invoice.py:199 app_backend/views/user.py:494
-#: app_backend/views/user_auth.py:190 app_backend/views/warehouse.py:332
+#: app_backend/views/user_auth.py:266 app_backend/views/warehouse.py:332
 msgid "Edit Success"
 msgstr "Edit Success"
 
@@ -4450,40 +4491,46 @@ msgstr "user info"
 msgid "user stats item"
 msgstr "user stats item"
 
-#: app_backend/views/user_auth.py:62
-msgid "account login"
-msgstr "account login"
-
-#: app_backend/views/user_auth.py:80 app_backend/views/user_auth.py:96
-#: app_backend/views/user_auth.py:105 app_backend/views/user_auth.py:114
+#: app_backend/views/user_auth.py:82 app_backend/views/user_auth.py:98
+#: app_backend/views/user_auth.py:107 app_backend/views/user_auth.py:116
+#: app_backend/views/user_auth.py:165 app_backend/views/user_auth.py:181
+#: app_backend/views/user_auth.py:198
 msgid "Auth Failure"
 msgstr "Auth Failure"
 
-#: app_backend/views/user_auth.py:95
+#: app_backend/views/user_auth.py:97
 msgid "Username Error"
 msgstr "Username Error"
 
-#: app_backend/views/user_auth.py:104
+#: app_backend/views/user_auth.py:106
 msgid "Need Verify"
 msgstr "Need Verify"
 
-#: app_backend/views/user_auth.py:113
+#: app_backend/views/user_auth.py:115
 msgid "Password Error"
 msgstr "Password Error"
 
-#: app_backend/views/user_auth.py:129
+#: app_backend/views/user_auth.py:131
 msgid "Auth Success"
 msgstr "Auth Success"
 
-#: app_backend/views/user_auth.py:150
+#: app_backend/views/user_auth.py:180
+msgid "Email not exist"
+msgstr ""
+
+#: app_backend/views/user_auth.py:200
+msgid "Auth Success, Enter mailbox, click the authentication link to sign in"
+msgstr ""
+
+#: app_backend/views/user_auth.py:226
 msgid "Change Password Failure"
 msgstr ""
 
-#: app_backend/views/user_auth.py:164
+#: app_backend/views/user_auth.py:240
 msgid "Cann't Change Password"
 msgstr ""
 
-#: app_backend/views/user_auth.py:171
+#: app_backend/views/user_auth.py:247
 msgid "Current Password Error"
 msgstr ""
 
@@ -4634,3 +4681,13 @@ msgid ""
 "Room 701, No.1399, West Tianmu Road, Jing'an District, Shanghai, P. R. "
 "China"
 msgstr ""
+
+#~ msgid "Sign in to Website"
+#~ msgstr "Sign in to Website"
+
+#~ msgid "account login"
+#~ msgstr "account login"
+
+#~ msgid "Email Error"
+#~ msgstr ""
+

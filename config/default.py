@@ -198,8 +198,9 @@ WEIBO_OAUTH = {
 
 
 # 邮件配置
+# python -m smtpd -n -c DebuggingServer localhost:1025
 MAIL_SERVER = 'localhost'
-MAIL_PORT = 25
+MAIL_PORT = 1025
 MAIL_USE_TLS = False
 MAIL_USE_SSL = False
 MAIL_DEBUG = DEBUG

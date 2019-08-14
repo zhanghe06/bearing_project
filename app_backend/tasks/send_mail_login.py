@@ -8,15 +8,64 @@
 @time: 2019-07-29 23:46
 """
 
+from __future__ import print_function
+from __future__ import unicode_literals
 
-def func():
-    pass
+import json
+from flask import render_template
+from flask_babel import gettext as _
+
+from app_backend import app, mail
+from app_common.libs.email import MailClient
+from app_common.libs.redis_pub_sub import RedisPubSub
+from app_backend.clients.client_redis import redis_client
+from app_common.decorators.exception import ignore_exception
+
+ctx = app.app_context()
+ctx.push()
+
+prefix_key = 'email_login'
+
+redis_pub_sub_obj = RedisPubSub('email_login', redis_client=redis_client)
 
 
-class Main(object):
-    def __init__(self):
-        pass
+def pub(email, message):
+    key = ':'.join([prefix_key, email])
+    # SET 'email_login:zhang_he06@163.com' '{"name": "空ping子", "email": "zhang_he06@163.com", "link": "http://www.baidu.com"}' EX 60 NX
+    result = redis_client.set(key, message, ex=60, nx=True)
+    if not result:
+        return False
+    redis_pub_sub_obj.pub('email', message)
+    return True
+
+
+def sub():
+    for message in redis_pub_sub_obj.sub('email'):
+        # print(message)
+        send_email(message)
+
+
+@ignore_exception
+def send_email(message):
+    data = json.loads(message)
+    name = data.get('name')
+    email = data.get('email')
+    link = data.get('link')
+    if not (name and email and link):
+        return
+    template_name = 'email/email_login.html'
+    mail_client = MailClient(mail)
+    mail_client.send_html_email(
+        # _('Sign in with email'),
+        "邮箱登录",
+        [email],
+        render_template(
+            template_name,
+            name=name,
+            link=link,
+        )
+    )
 
 
 if __name__ == '__main__':
-    pass
+    sub()

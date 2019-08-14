@@ -53,7 +53,7 @@
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <span class="glyphicon glyphicon-qrcode"></span> {{ _('Sign in with account') }}
+                        <span class="glyphicon glyphicon-qrcode"></span> {{ _('Sign in with mobile') }}
                         <ul class="nav navbar-right">
                             <!-- /.dropdown -->
                             <li class="dropdown">
@@ -61,9 +61,9 @@
                                     <i class="fa glyphicon glyphicon-option-vertical"></i>  <i class="fa fa-caret-down"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0);" onclick="alert('{{ _('Temporary does not support') }}');"><i class="glyphicon glyphicon-phone"></i> {{ _('Sign in with mobile') }}</a></li>
-                                    <li class="divider"></li>
                                     <li><a href="{{ url_for('auth.email') }}"><i class="glyphicon glyphicon-envelope"></i> {{ _('Sign in with email') }}</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="{{ url_for('auth.index') }}"><i class="glyphicon glyphicon-phone"></i> {{ _('Sign in with account') }}</a></li>
                                 </ul>
                                 <!-- /.dropdown-user -->
                             </li>

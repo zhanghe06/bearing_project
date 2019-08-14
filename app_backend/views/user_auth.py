@@ -10,6 +10,7 @@
 
 from __future__ import unicode_literals
 
+import json
 from datetime import datetime
 
 from flask import (
@@ -32,11 +33,12 @@ from flask_login import (
 from app_backend import app
 from app_backend.api.login_user import get_login_user_row_by_id
 from app_backend.api.user_auth import get_user_auth_row, edit_user_auth
-from app_backend.forms.user_auth import UserAuthForm, UserAuthChangePasswordForm
+from app_backend.forms.user_auth import UserAuthForm, UserAuthChangePasswordForm, UserAuthEmailForm
 from app_common.maps.status_verified import STATUS_VERIFIED_OK
-from app_common.maps.type_auth import TYPE_AUTH_ACCOUNT
+from app_common.maps.type_auth import TYPE_AUTH_ACCOUNT, TYPE_AUTH_EMAIL
 from app_common.tools.date_time import get_tc
 from flask_babel import gettext as _, ngettext
+from app_backend.tasks.send_mail_login import pub
 
 bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -59,7 +61,7 @@ def index():
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
-    document_info['TITLE'] = _('account login')
+    document_info['TITLE'] = _('Sign in with account')
 
     # 加载表单
     form = UserAuthForm(request.form)
@@ -128,6 +130,80 @@ def index():
 
         flash(_('Auth Success'), 'success')
         return redirect(request.args.get('next') or url_for('index'))
+
+
+@bp_auth.route('/email.html', methods=['GET', 'POST'])
+def email():
+    """
+    邮箱登录（邮箱链接登录）
+    """
+    if current_user and current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    template_name = 'user_auth/email.html'
+
+    # 文档信息
+    document_info = DOCUMENT_INFO.copy()
+    document_info['TITLE'] = _('Sign in with email')
+
+    # 加载表单
+    form = UserAuthEmailForm(request.form)
+
+    # 进入页面
+    if request.method == 'GET':
+        # 渲染页面
+        return render_template(
+            template_name,
+            form=form,
+            t=get_tc(),
+            **document_info
+        )
+    # 处理认证
+    if request.method == 'POST':
+        # 表单校验失败
+        if not form.validate_on_submit():
+            flash(_('Auth Failure'), 'danger')
+            return render_template(
+                template_name,
+                form=form,
+                t=get_tc(),
+                **document_info
+            )
+        # 表单校验成功
+        condition = {
+            'type_auth': TYPE_AUTH_EMAIL,
+            'auth_key': form.auth_key.data,
+            # 'auth_secret': form.auth_secret.data
+        }
+        user_auth_info = get_user_auth_row(**condition)
+        if not user_auth_info:
+            form.auth_key.errors.append(_('Email not exist'))
+            flash(_('Auth Failure'), 'danger')
+            return render_template(
+                template_name,
+                form=form,
+                t=get_tc(),
+                **document_info
+            )
+        # send email task
+        message = json.dumps(
+            {
+                'name': '尊敬的用户',
+                'email': form.auth_key.data,
+                'link': 'http://www.baidu.com'
+            }
+        )
+        result = pub(form.auth_key.data, message)
+        if not result:
+            flash(_('Auth Failure'), 'danger')
+
+        flash(_('Auth Success, Enter mailbox, click the authentication link to sign in'), 'success')
+        return render_template(
+            template_name,
+            form=form,
+            t=get_tc(),
+            **document_info
+        )
 
 
 @app.route('/change_password.html', methods=['GET', 'POST'])

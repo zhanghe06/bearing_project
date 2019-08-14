@@ -105,6 +105,24 @@ class UserAuthForm(FlaskForm):
     remember = BooleanField(_('Remember me'), default=False)
 
 
+class UserAuthEmailForm(FlaskForm):
+    """
+    表单(用户邮箱登录)
+    """
+    auth_key = StringField(
+        _('Email'),
+        validators=[
+            DataRequired(_('This field is required.')),
+            Email(),
+        ],
+        description=_('Type email, click the login button, then enter mailbox, click the authentication link to sign in'),
+        render_kw={
+            'placeholder': _('Email'),
+            'type': 'mail',
+        }
+    )
+
+
 class UserAuthChangePasswordForm(FlaskForm):
     """
     修改密码

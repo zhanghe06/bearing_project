@@ -53,7 +53,7 @@
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <span class="glyphicon glyphicon-qrcode"></span> {{ _('Sign in with account') }}
+                        <span class="glyphicon glyphicon-qrcode"></span> {{ _('Sign in with email') }}
                         <ul class="nav navbar-right">
                             <!-- /.dropdown -->
                             <li class="dropdown">
@@ -63,7 +63,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="javascript:void(0);" onclick="alert('{{ _('Temporary does not support') }}');"><i class="glyphicon glyphicon-phone"></i> {{ _('Sign in with mobile') }}</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="{{ url_for('auth.email') }}"><i class="glyphicon glyphicon-envelope"></i> {{ _('Sign in with email') }}</a></li>
+                                    <li><a href="{{ url_for('auth.index') }}"><i class="glyphicon glyphicon-envelope"></i> {{ _('Sign in with account') }}</a></li>
                                 </ul>
                                 <!-- /.dropdown-user -->
                             </li>
@@ -78,58 +78,13 @@
                         <div class="form-group{% if form.auth_key.errors %} has-error{% endif %}">
                             <div class="col-sm-12">
                                 {{ form.auth_key(class="form-control") }}
+                                <span class="help-block">{{ form.auth_key.description }}</span>
                                 {% for error in form.auth_key.errors %}
                                     <span class="help-block">{{ error }}</span>
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="form-group{% if form.auth_secret.errors %} has-error{% endif %}">
-                            <div class="col-sm-12">
-                                <div class="input-group">
-                                    {{ form.auth_secret(class="form-control") }}
-                                    <span id="toggle_password"
-                                          class="input-group-addon glyphicon glyphicon-eye-close"
-                                          style="top: 0; cursor:pointer; border-radius: 0 4px 4px 0; border-left: 0;"
-                                          rel="tooltip"
-                                          data-html="true" data-toggle="tooltip" data-placement="top"
-                                          title="<span style='white-space: nowrap;'>{{ _('Show') }}</span><br/>{{ _('password') }}">
-                                    </span>
-                                </div>
-                                {% for error in form.auth_secret.errors %}
-                                    <span class="help-block">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        </div>
 
-                        <div class="input-group{% if form.captcha.errors %} has-error{% endif %}">
-                            {{ form.captcha(class="form-control") }}
-
-                            <span class="input-group-addon" id="basic-addon2" style="padding: 0;border: 0">
-{#                            <img src="{{ url_for('captcha.get_code', code_type='login', t=t) }}"#}
-                            <img src="{{ url_for('static', filename='img/code.png') }}"
-                                 data-html="true" data-toggle="tooltip" data-placement="top"
-                                 rel="tooltip"
-                                 title="{{ _('Unsharpness<br/>Change next') }}"
-                                 id="captcha_img"
-                                 style="cursor: pointer">
-                            </span>
-
-                        </div>
-                        {% for error in form.captcha.errors %}
-                            <div class="has-error">
-                                <span class="help-block">{{ error }}</span>
-                            </div>
-                        {% endfor %}
-
-                        <div class="form-group{% if form.remember.errors %} has-error{% endif %}">
-                            <div class="col-sm-12">
-                                <div class="checkbox">
-                                    <label>
-                                        {{ form.remember(checked=form.remember.data) }} {{- _('Remember me') -}}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <button type="submit" class="btn btn-success btn-load btn-block"
@@ -155,29 +110,6 @@
 <script src="{{ url_for('static', filename='js/custom.js', v=g.STATIC_RES_VER) }}"></script>
 
 <script>
-    // 显隐密码
-    function toggle_password () {
-        var auth_secret_obj = $('input[name="auth_secret"]')
-        var span_obj = $('span#toggle_password')
-        if (auth_secret_obj.prop('type') === 'password') {
-            auth_secret_obj.prop('type', 'text')
-            span_obj.removeClass('glyphicon-eye-close')
-            span_obj.addClass('glyphicon-eye-open')
-            span_obj.prop('title', "<span style='white-space: nowrap;'>{{ _('Hidden')}}</span><br/>{{ _('password') }}").tooltip('fixTitle').tooltip('show');
-        } else {
-            auth_secret_obj.prop('type', 'password')
-            span_obj.removeClass('glyphicon-eye-open')
-            span_obj.addClass('glyphicon-eye-close')
-            span_obj.prop('title', "<span style='white-space: nowrap;'>{{ _('Show')}}</span><br/>{{ _('password') }}").tooltip('fixTitle').tooltip('show');
-        }
-    }
-
-    // 刷新验证码
-    function refresh_code () {
-        var now = new Date()
-        $('#captcha_img').attr('src', '{{ url_for('captcha.get_code', code_type='login') }}' + '?t=' + now.getTime())
-    }
-
     // 兼容PC、移动端点击事件
     $(function () {
         var is_mobile = window.hasOwnProperty('ontouchstart')
@@ -191,9 +123,6 @@
             toggle_password_obj.bind('click', toggle_password)
             captcha_img_obj.bind('click', refresh_code)
         }
-
-        // 强制刷新验证码
-        refresh_code()
     })
 
 </script>

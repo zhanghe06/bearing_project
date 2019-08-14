@@ -45,8 +45,8 @@ class RedisPubSub(object):
         ps.subscribe(ch)
         for item in ps.listen():
             # {'pattern': None, 'type': 'subscribe', 'channel': 'pub/sub:test:hh', 'data': 1L}
-            yield item
-            if item['type'] == 'message':
+            # yield item
+            if item.get('type') == 'message':
                 yield item.get('data')
 
     def p_sub(self, k):
@@ -64,7 +64,7 @@ class RedisPubSub(object):
         for item in ps.listen():
             # {'pattern': None, 'type': 'psubscribe', 'channel': 'pub/sub:test:*:hh', 'data': 1L}
             # yield item
-            if item['type'] == 'pmessage':
+            if item.get('type') == 'pmessage':
                 # {'pattern': 'pub/sub:test:*:hh', 'type': 'pmessage', 'channel': 'pub/sub:test:aa:hh', 'data': '123'}
                 yield item.get('data')
 
@@ -78,7 +78,7 @@ class RedisPubSub(object):
         ch = '%s:%s' % (self.key, k)
         ps.subscribe(ch)
         for item in ps.listen():
-            if item['type'] == 'message':
+            if item.get('type') == 'message':
                 return item.get('data')
 
     def p_sub_not_loop(self, k):
@@ -91,5 +91,5 @@ class RedisPubSub(object):
         ch = '%s:%s' % (self.key, k)
         ps.psubscribe(ch)
         for item in ps.listen():
-            if item['type'] == 'pmessage':
+            if item.get('type') == 'pmessage':
                 return item.get('data')

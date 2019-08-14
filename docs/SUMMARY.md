@@ -42,7 +42,10 @@
     * [Mac](OperationSystem/Mac.md)
     * [Ubuntu](OperationSystem/Ubuntu.md)
 * Plugins
-    * [FlaskSQLAlchemy](Plugins/FlaskSQLAlchemy.md)
+    * [Flask-Babel](Plugins/Flask-Babel.md)
+    * [Flask-SQLAlchemy](Plugins/Flask-SQLAlchemy.md)
+    * [Flask-SSE](Plugins/Flask-SSE.md)
+    * [Flask-WTF](Plugins/Flask-WTF.md)
 * Security
     * [CCAttack](Security/CCAttack.md)
     * [DDoSAttack](Security/DDoSAttack.md)
