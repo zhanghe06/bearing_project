@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-15 00:22+0800\n"
+"POT-Creation-Date: 2019-08-15 14:21+0800\n"
 "PO-Revision-Date: 2018-05-03 13:57+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -2413,13 +2413,13 @@ msgid "Forgot Password"
 msgstr "忘记密码"
 
 #: app_backend/templates/_top.html:23 app_backend/templates/home.html:7
-#: app_backend/views/__init__.py:247
+#: app_backend/views/__init__.py:286
 msgid "personal information"
 msgstr "个人信息"
 
 #: app_backend/templates/_top.html:25
 #: app_backend/templates/user_auth/change_password.html:6
-#: app_backend/views/user_auth.py:218
+#: app_backend/views/user_auth.py:225
 msgid "change password"
 msgstr "修改密码"
 
@@ -2435,7 +2435,7 @@ msgstr "最新消息"
 msgid "Emptying all the messages"
 msgstr "清空消息"
 
-#: app_backend/templates/client_info.html:7 app_backend/views/__init__.py:429
+#: app_backend/templates/client_info.html:7 app_backend/views/__init__.py:468
 msgid "client information"
 msgstr "客户端信息"
 
@@ -2473,7 +2473,8 @@ msgstr "交易总数"
 msgid "Latest transaction"
 msgstr "最新交易"
 
-#: app_backend/templates/index.html:7 app_backend/views/__init__.py:236
+#: app_backend/templates/index.html:7 app_backend/views/__init__.py:261
+#: app_backend/views/__init__.py:275
 msgid "management homepage"
 msgstr "管理主页"
 
@@ -2502,7 +2503,7 @@ msgstr "删除数据不能恢复，是否确认删除？"
 msgid "Please select what you want to delete"
 msgstr "请选择需要删除的内容"
 
-#: app_backend/templates/server_info.html:7 app_backend/views/__init__.py:446
+#: app_backend/templates/server_info.html:7 app_backend/views/__init__.py:485
 msgid "server information"
 msgstr "服务端信息"
 
@@ -3820,7 +3821,7 @@ msgstr "用户统计"
 #: app_backend/templates/user_auth/email.html:56
 #: app_backend/templates/user_auth/index.html:66
 #: app_backend/templates/user_auth/mobile.html:64
-#: app_backend/views/user_auth.py:147
+#: app_backend/views/user_auth.py:149
 msgid "Sign in with email"
 msgstr "邮箱登录"
 
@@ -3838,21 +3839,17 @@ msgstr "手机登录"
 #: app_backend/templates/user_auth/email.html:66
 #: app_backend/templates/user_auth/index.html:56
 #: app_backend/templates/user_auth/mobile.html:66
-#: app_backend/views/user_auth.py:64
+#: app_backend/views/user_auth.py:66
 msgid "Sign in with account"
 msgstr "账号登录"
 
 #: app_backend/templates/user_auth/email.html:91
-#: app_backend/templates/user_auth/index.html:136
-#: app_backend/templates/user_auth/mobile.html:136
-msgid "Signing on"
-msgstr "正在登录"
+msgid "Applying"
+msgstr "正在申请"
 
 #: app_backend/templates/user_auth/email.html:91
-#: app_backend/templates/user_auth/index.html:136
-#: app_backend/templates/user_auth/mobile.html:136
-msgid "Sign in"
-msgstr "登录"
+msgid "Apply for sign in"
+msgstr "申请登录"
 
 #: app_backend/templates/user_auth/index.html:95
 #: app_backend/templates/user_auth/index.html:171
@@ -3874,6 +3871,16 @@ msgstr "密码"
 #: app_backend/templates/user_auth/mobile.html:112
 msgid "Unsharpness<br/>Change next"
 msgstr "看不清<br/>换一张"
+
+#: app_backend/templates/user_auth/index.html:136
+#: app_backend/templates/user_auth/mobile.html:136
+msgid "Signing on"
+msgstr "正在登录"
+
+#: app_backend/templates/user_auth/index.html:136
+#: app_backend/templates/user_auth/mobile.html:136
+msgid "Sign in"
+msgstr "登录"
 
 #: app_backend/templates/user_auth/index.html:166
 #: app_backend/templates/user_auth/mobile.html:166
@@ -3899,23 +3906,35 @@ msgstr "仓管人员"
 msgid "Data duplication"
 msgstr "数据重复"
 
-#: app_backend/views/__init__.py:291
+#: app_backend/views/__init__.py:246 app_backend/views/user_auth.py:133
+msgid "Auth Success"
+msgstr "认证成功"
+
+#: app_backend/views/__init__.py:249
+msgid "Signature Expired"
+msgstr "认证失效"
+
+#: app_backend/views/__init__.py:253
+msgid "Signature Error"
+msgstr "认证失败"
+
+#: app_backend/views/__init__.py:330
 msgid "Exit Success"
 msgstr "退出成功"
 
-#: app_backend/views/__init__.py:347
+#: app_backend/views/__init__.py:386
 msgid "Unauthorized"
 msgstr "未被授权"
 
-#: app_backend/views/__init__.py:353
+#: app_backend/views/__init__.py:392
 msgid "Forbidden"
 msgstr "禁止访问"
 
-#: app_backend/views/__init__.py:361
+#: app_backend/views/__init__.py:400
 msgid "Not Found"
 msgstr "没有找到"
 
-#: app_backend/views/__init__.py:367 app_backend/views/buyer_order.py:723
+#: app_backend/views/__init__.py:406 app_backend/views/buyer_order.py:723
 #: app_backend/views/buyer_order.py:787 app_backend/views/customer.py:467
 #: app_backend/views/customer_contact.py:385 app_backend/views/delivery.py:721
 #: app_backend/views/delivery.py:786 app_backend/views/enquiry.py:746
@@ -3932,23 +3951,23 @@ msgstr "没有找到"
 msgid "Method Not Allowed"
 msgstr "请求方式不被允许"
 
-#: app_backend/views/__init__.py:373
+#: app_backend/views/__init__.py:412
 msgid "Gone"
 msgstr "已被删除"
 
-#: app_backend/views/__init__.py:379
+#: app_backend/views/__init__.py:418
 msgid "Request Entity Too Large"
 msgstr "请求过大"
 
-#: app_backend/views/__init__.py:386
+#: app_backend/views/__init__.py:425
 msgid "Locked"
 msgstr "已被锁定"
 
-#: app_backend/views/__init__.py:392
+#: app_backend/views/__init__.py:431
 msgid "Too Many Requests"
 msgstr "请求过多"
 
-#: app_backend/views/__init__.py:398
+#: app_backend/views/__init__.py:437
 msgid "Internal Server Error"
 msgstr "内部错误"
 
@@ -4174,7 +4193,7 @@ msgstr "订单编辑"
 #: app_backend/views/supplier_invoice.py:171
 #: app_backend/views/supplier_invoice.py:203 app_backend/views/user.py:431
 #: app_backend/views/user.py:457 app_backend/views/user.py:468
-#: app_backend/views/user.py:486 app_backend/views/user_auth.py:270
+#: app_backend/views/user.py:486 app_backend/views/user_auth.py:277
 #: app_backend/views/warehouse.py:312 app_backend/views/warehouse.py:336
 msgid "Edit Failure"
 msgstr "编辑失败"
@@ -4189,7 +4208,7 @@ msgstr "编辑失败"
 #: app_backend/views/rack.py:319 app_backend/views/sales_order.py:537
 #: app_backend/views/supplier.py:419 app_backend/views/supplier_contact.py:315
 #: app_backend/views/supplier_invoice.py:199 app_backend/views/user.py:494
-#: app_backend/views/user_auth.py:266 app_backend/views/warehouse.py:332
+#: app_backend/views/user_auth.py:273 app_backend/views/warehouse.py:332
 msgid "Edit Success"
 msgstr "编辑成功"
 
@@ -4491,46 +4510,47 @@ msgstr "用户信息"
 msgid "user stats item"
 msgstr "用户统计明细"
 
-#: app_backend/views/user_auth.py:82 app_backend/views/user_auth.py:98
-#: app_backend/views/user_auth.py:107 app_backend/views/user_auth.py:116
-#: app_backend/views/user_auth.py:165 app_backend/views/user_auth.py:181
-#: app_backend/views/user_auth.py:198
+#: app_backend/views/user_auth.py:84 app_backend/views/user_auth.py:100
+#: app_backend/views/user_auth.py:109 app_backend/views/user_auth.py:118
+#: app_backend/views/user_auth.py:167 app_backend/views/user_auth.py:183
 msgid "Auth Failure"
 msgstr "认证失败"
 
-#: app_backend/views/user_auth.py:97
+#: app_backend/views/user_auth.py:99
 msgid "Username Error"
 msgstr "登录账号错误"
 
-#: app_backend/views/user_auth.py:106
+#: app_backend/views/user_auth.py:108
 msgid "Need Verify"
 msgstr "需要认证"
 
-#: app_backend/views/user_auth.py:115
+#: app_backend/views/user_auth.py:117
 msgid "Password Error"
 msgstr "密码错误"
 
-#: app_backend/views/user_auth.py:131
-msgid "Auth Success"
-msgstr "认证成功"
-
-#: app_backend/views/user_auth.py:180
+#: app_backend/views/user_auth.py:182
 msgid "Email not exist"
 msgstr "邮箱不存在"
 
-#: app_backend/views/user_auth.py:200
+#: app_backend/views/user_auth.py:205
+msgid ""
+"Repeat application, Enter mailbox, click the authentication link to sign "
+"in"
+msgstr "重复申请，请进入邮箱，点击认证链接直接登录"
+
+#: app_backend/views/user_auth.py:207
 msgid "Auth Success, Enter mailbox, click the authentication link to sign in"
 msgstr "认证成功，请进入邮箱，点击认证链接直接登录"
 
-#: app_backend/views/user_auth.py:226
+#: app_backend/views/user_auth.py:233
 msgid "Change Password Failure"
 msgstr "修改密码失败"
 
-#: app_backend/views/user_auth.py:240
+#: app_backend/views/user_auth.py:247
 msgid "Cann't Change Password"
 msgstr "不能修改密码"
 
-#: app_backend/views/user_auth.py:247
+#: app_backend/views/user_auth.py:254
 msgid "Current Password Error"
 msgstr "当前密码错误"
 

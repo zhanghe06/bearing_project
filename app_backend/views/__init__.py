@@ -48,6 +48,7 @@ from flask_login import (
 )
 
 from flask_wtf.csrf import CSRFError
+from itsdangerous import SignatureExpired, BadTimeSignature
 
 from app_backend.identities import identity_role_administrator, identity_role_sales, identity_role_purchaser, \
     identity_role_manager, identity_role_stock_keeper, identity_role_accountant
@@ -70,6 +71,7 @@ from app_backend.permissions import (
     permission_role_administrator,
     permission_role_default, permission_role_sales, permission_role_manager, permission_role_stock_keeper,
     permission_role_accountant, permission_role_purchaser)
+from app_common.libs.auth_token import AuthToken
 from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
     TYPE_ROLE_PURCHASER,
@@ -221,6 +223,41 @@ def static_from_root():
     :return:
     """
     return send_from_directory(app.static_folder, request.path[1:])
+
+
+@app.route('/s')
+def sign():
+    """
+    认证
+    """
+    auth_token = request.args.get('auth_token')
+    if not auth_token:
+        return redirect(url_for('auth.index'))
+    try:
+        auth_token_obj = AuthToken(app.secret_key)
+        data = auth_token_obj.verify(auth_token)
+        user_id = data.get('user_id')
+        # 认证成功
+        # 用户登录
+        login_user(get_login_user_row_by_id(user_id))
+
+        # 加载权限信号通知(Tell Flask-Principal the identity changed)
+        identity_changed.send(app, identity=Identity(user_id))
+
+        flash(_('Auth Success'), 'success')
+        return redirect(url_for('index'))
+    except SignatureExpired as e:
+        # 处理签名超时
+        flash(_('Signature Expired'), 'danger')
+        return redirect(url_for('auth.index'))
+    except BadTimeSignature as e:
+        # 处理签名错误
+        flash(_('Signature Error'), 'danger')
+        return redirect(url_for('auth.index'))
+    except Exception as e:
+        # 其它异常
+        flash(_('Signature Error'), 'danger')
+        return redirect(url_for('auth.index'))
 
 
 @app.route('/')

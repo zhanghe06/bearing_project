@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-15 00:22+0800\n"
+"POT-Creation-Date: 2019-08-15 14:21+0800\n"
 "PO-Revision-Date: 2018-05-03 13:57+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -2413,13 +2413,13 @@ msgid "Forgot Password"
 msgstr "Forgot Password"
 
 #: app_backend/templates/_top.html:23 app_backend/templates/home.html:7
-#: app_backend/views/__init__.py:247
+#: app_backend/views/__init__.py:286
 msgid "personal information"
 msgstr "personal information"
 
 #: app_backend/templates/_top.html:25
 #: app_backend/templates/user_auth/change_password.html:6
-#: app_backend/views/user_auth.py:218
+#: app_backend/views/user_auth.py:225
 msgid "change password"
 msgstr ""
 
@@ -2435,7 +2435,7 @@ msgstr "Up-to-date Messages"
 msgid "Emptying all the messages"
 msgstr "Emptying all the messages"
 
-#: app_backend/templates/client_info.html:7 app_backend/views/__init__.py:429
+#: app_backend/templates/client_info.html:7 app_backend/views/__init__.py:468
 msgid "client information"
 msgstr "client information"
 
@@ -2473,7 +2473,8 @@ msgstr ""
 msgid "Latest transaction"
 msgstr ""
 
-#: app_backend/templates/index.html:7 app_backend/views/__init__.py:236
+#: app_backend/templates/index.html:7 app_backend/views/__init__.py:261
+#: app_backend/views/__init__.py:275
 msgid "management homepage"
 msgstr "management homepage"
 
@@ -2502,7 +2503,7 @@ msgstr "Deleted data can not be recovered, whether to confirm deletion?"
 msgid "Please select what you want to delete"
 msgstr "Please select what you want to delete"
 
-#: app_backend/templates/server_info.html:7 app_backend/views/__init__.py:446
+#: app_backend/templates/server_info.html:7 app_backend/views/__init__.py:485
 msgid "server information"
 msgstr "server information"
 
@@ -3820,7 +3821,7 @@ msgstr "user stats"
 #: app_backend/templates/user_auth/email.html:56
 #: app_backend/templates/user_auth/index.html:66
 #: app_backend/templates/user_auth/mobile.html:64
-#: app_backend/views/user_auth.py:147
+#: app_backend/views/user_auth.py:149
 msgid "Sign in with email"
 msgstr ""
 
@@ -3838,21 +3839,17 @@ msgstr ""
 #: app_backend/templates/user_auth/email.html:66
 #: app_backend/templates/user_auth/index.html:56
 #: app_backend/templates/user_auth/mobile.html:66
-#: app_backend/views/user_auth.py:64
+#: app_backend/views/user_auth.py:66
 msgid "Sign in with account"
 msgstr ""
 
 #: app_backend/templates/user_auth/email.html:91
-#: app_backend/templates/user_auth/index.html:136
-#: app_backend/templates/user_auth/mobile.html:136
-msgid "Signing on"
-msgstr "Signing on"
+msgid "Applying"
+msgstr ""
 
 #: app_backend/templates/user_auth/email.html:91
-#: app_backend/templates/user_auth/index.html:136
-#: app_backend/templates/user_auth/mobile.html:136
-msgid "Sign in"
-msgstr "Sign in"
+msgid "Apply for sign in"
+msgstr ""
 
 #: app_backend/templates/user_auth/index.html:95
 #: app_backend/templates/user_auth/index.html:171
@@ -3874,6 +3871,16 @@ msgstr "password"
 #: app_backend/templates/user_auth/mobile.html:112
 msgid "Unsharpness<br/>Change next"
 msgstr "Unsharpness<br/>Change next"
+
+#: app_backend/templates/user_auth/index.html:136
+#: app_backend/templates/user_auth/mobile.html:136
+msgid "Signing on"
+msgstr "Signing on"
+
+#: app_backend/templates/user_auth/index.html:136
+#: app_backend/templates/user_auth/mobile.html:136
+msgid "Sign in"
+msgstr "Sign in"
 
 #: app_backend/templates/user_auth/index.html:166
 #: app_backend/templates/user_auth/mobile.html:166
@@ -3899,23 +3906,35 @@ msgstr "store keeper"
 msgid "Data duplication"
 msgstr "Data duplication"
 
-#: app_backend/views/__init__.py:291
+#: app_backend/views/__init__.py:246 app_backend/views/user_auth.py:133
+msgid "Auth Success"
+msgstr "Auth Success"
+
+#: app_backend/views/__init__.py:249
+msgid "Signature Expired"
+msgstr ""
+
+#: app_backend/views/__init__.py:253
+msgid "Signature Error"
+msgstr ""
+
+#: app_backend/views/__init__.py:330
 msgid "Exit Success"
 msgstr "Exit Success"
 
-#: app_backend/views/__init__.py:347
+#: app_backend/views/__init__.py:386
 msgid "Unauthorized"
 msgstr "Unauthorized"
 
-#: app_backend/views/__init__.py:353
+#: app_backend/views/__init__.py:392
 msgid "Forbidden"
 msgstr "Forbidden"
 
-#: app_backend/views/__init__.py:361
+#: app_backend/views/__init__.py:400
 msgid "Not Found"
 msgstr "Not Found"
 
-#: app_backend/views/__init__.py:367 app_backend/views/buyer_order.py:723
+#: app_backend/views/__init__.py:406 app_backend/views/buyer_order.py:723
 #: app_backend/views/buyer_order.py:787 app_backend/views/customer.py:467
 #: app_backend/views/customer_contact.py:385 app_backend/views/delivery.py:721
 #: app_backend/views/delivery.py:786 app_backend/views/enquiry.py:746
@@ -3932,23 +3951,23 @@ msgstr "Not Found"
 msgid "Method Not Allowed"
 msgstr "Method Not Allowed"
 
-#: app_backend/views/__init__.py:373
+#: app_backend/views/__init__.py:412
 msgid "Gone"
 msgstr "Gone"
 
-#: app_backend/views/__init__.py:379
+#: app_backend/views/__init__.py:418
 msgid "Request Entity Too Large"
 msgstr "Request Entity Too Large"
 
-#: app_backend/views/__init__.py:386
+#: app_backend/views/__init__.py:425
 msgid "Locked"
 msgstr ""
 
-#: app_backend/views/__init__.py:392
+#: app_backend/views/__init__.py:431
 msgid "Too Many Requests"
 msgstr "Too Many Requests"
 
-#: app_backend/views/__init__.py:398
+#: app_backend/views/__init__.py:437
 msgid "Internal Server Error"
 msgstr "Internal Server Error"
 
@@ -4174,7 +4193,7 @@ msgstr "buyer order edit"
 #: app_backend/views/supplier_invoice.py:171
 #: app_backend/views/supplier_invoice.py:203 app_backend/views/user.py:431
 #: app_backend/views/user.py:457 app_backend/views/user.py:468
-#: app_backend/views/user.py:486 app_backend/views/user_auth.py:270
+#: app_backend/views/user.py:486 app_backend/views/user_auth.py:277
 #: app_backend/views/warehouse.py:312 app_backend/views/warehouse.py:336
 msgid "Edit Failure"
 msgstr "Edit Failure"
@@ -4189,7 +4208,7 @@ msgstr "Edit Failure"
 #: app_backend/views/rack.py:319 app_backend/views/sales_order.py:537
 #: app_backend/views/supplier.py:419 app_backend/views/supplier_contact.py:315
 #: app_backend/views/supplier_invoice.py:199 app_backend/views/user.py:494
-#: app_backend/views/user_auth.py:266 app_backend/views/warehouse.py:332
+#: app_backend/views/user_auth.py:273 app_backend/views/warehouse.py:332
 msgid "Edit Success"
 msgstr "Edit Success"
 
@@ -4491,46 +4510,47 @@ msgstr "user info"
 msgid "user stats item"
 msgstr "user stats item"
 
-#: app_backend/views/user_auth.py:82 app_backend/views/user_auth.py:98
-#: app_backend/views/user_auth.py:107 app_backend/views/user_auth.py:116
-#: app_backend/views/user_auth.py:165 app_backend/views/user_auth.py:181
-#: app_backend/views/user_auth.py:198
+#: app_backend/views/user_auth.py:84 app_backend/views/user_auth.py:100
+#: app_backend/views/user_auth.py:109 app_backend/views/user_auth.py:118
+#: app_backend/views/user_auth.py:167 app_backend/views/user_auth.py:183
 msgid "Auth Failure"
 msgstr "Auth Failure"
 
-#: app_backend/views/user_auth.py:97
+#: app_backend/views/user_auth.py:99
 msgid "Username Error"
 msgstr "Username Error"
 
-#: app_backend/views/user_auth.py:106
+#: app_backend/views/user_auth.py:108
 msgid "Need Verify"
 msgstr "Need Verify"
 
-#: app_backend/views/user_auth.py:115
+#: app_backend/views/user_auth.py:117
 msgid "Password Error"
 msgstr "Password Error"
 
-#: app_backend/views/user_auth.py:131
-msgid "Auth Success"
-msgstr "Auth Success"
-
-#: app_backend/views/user_auth.py:180
+#: app_backend/views/user_auth.py:182
 msgid "Email not exist"
 msgstr ""
 
-#: app_backend/views/user_auth.py:200
+#: app_backend/views/user_auth.py:205
+msgid ""
+"Repeat application, Enter mailbox, click the authentication link to sign "
+"in"
+msgstr ""
+
+#: app_backend/views/user_auth.py:207
 msgid "Auth Success, Enter mailbox, click the authentication link to sign in"
 msgstr ""
 
-#: app_backend/views/user_auth.py:226
+#: app_backend/views/user_auth.py:233
 msgid "Change Password Failure"
 msgstr ""
 
-#: app_backend/views/user_auth.py:240
+#: app_backend/views/user_auth.py:247
 msgid "Cann't Change Password"
 msgstr ""
 
-#: app_backend/views/user_auth.py:247
+#: app_backend/views/user_auth.py:254
 msgid "Current Password Error"
 msgstr ""
 

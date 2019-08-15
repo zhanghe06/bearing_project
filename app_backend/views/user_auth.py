@@ -34,6 +34,7 @@ from app_backend import app
 from app_backend.api.login_user import get_login_user_row_by_id
 from app_backend.api.user_auth import get_user_auth_row, edit_user_auth
 from app_backend.forms.user_auth import UserAuthForm, UserAuthChangePasswordForm, UserAuthEmailForm
+from app_common.libs.auth_token import AuthToken
 from app_common.maps.status_verified import STATUS_VERIFIED_OK
 from app_common.maps.type_auth import TYPE_AUTH_ACCOUNT, TYPE_AUTH_EMAIL
 from app_common.tools.date_time import get_tc
@@ -47,6 +48,7 @@ DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 PER_PAGE_BACKEND = app.config.get('PER_PAGE_BACKEND', 20)
 AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
+PREFERRED_URL_SCHEME = app.config.get('PREFERRED_URL_SCHEME', 'http')
 
 
 @bp_auth.route('/index.html', methods=['GET', 'POST'])
@@ -185,19 +187,24 @@ def email():
                 t=get_tc(),
                 **document_info
             )
+        user_id = user_auth_info.user_id
+        auth_token_obj = AuthToken(app.secret_key)
+        token = auth_token_obj.create(user_id)
+
         # send email task
         message = json.dumps(
             {
                 'name': '尊敬的用户',
                 'email': form.auth_key.data,
-                'link': 'http://www.baidu.com'
+                'link': url_for('sign', auth_token=token, _external=True, _scheme=PREFERRED_URL_SCHEME)
             }
         )
+
         result = pub(form.auth_key.data, message)
         if not result:
-            flash(_('Auth Failure'), 'danger')
-
-        flash(_('Auth Success, Enter mailbox, click the authentication link to sign in'), 'success')
+            flash(_('Repeat application, Enter mailbox, click the authentication link to sign in'), 'success')
+        else:
+            flash(_('Auth Success, Enter mailbox, click the authentication link to sign in'), 'success')
         return render_template(
             template_name,
             form=form,
