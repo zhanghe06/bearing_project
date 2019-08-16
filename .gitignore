@@ -38,6 +38,7 @@ docker/Redis/data/
 
 # RabbitMQ
 docker/RabbitMQ/data/
+docker/RabbitMQ/log/
 
 
 # Config

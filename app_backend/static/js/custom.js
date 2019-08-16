@@ -101,10 +101,6 @@ $('.alert-success,.alert-warning,.alert-danger').fadeTo(3500, 0.8).slideUp(500, 
     $(this).slideUp(500)
 })
 
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-  $('.selectpicker').selectpicker('mobile');
-}
-
 /*按钮虚框移除*/
 $('button').on('click', function () {
     $(this).blur();

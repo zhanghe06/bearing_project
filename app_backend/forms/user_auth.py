@@ -118,7 +118,7 @@ class UserAuthEmailForm(FlaskForm):
         description=_('Type email, click the login button, then enter mailbox, click the authentication link to sign in'),
         render_kw={
             'placeholder': _('Email'),
-            'type': 'mail',
+            'type': 'email',
         }
     )
 
