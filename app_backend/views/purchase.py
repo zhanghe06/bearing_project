@@ -8,10 +8,8 @@
 @time: 2018-08-31 15:41
 """
 
-
 from __future__ import unicode_literals
 
-import json
 from datetime import datetime
 
 from flask import (
@@ -27,47 +25,36 @@ from flask import (
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
 from flask_weasyprint import render_pdf, HTML, CSS
+from werkzeug import exceptions
 
 from app_backend import (
     app,
     excel,
 )
-from werkzeug import exceptions
-
-from app_backend.api.rack import get_rack_choices
-from app_backend.api.supplier import get_supplier_row_by_id
-from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
-from app_backend.api.warehouse import get_warehouse_choices
-from app_backend.signals.purchase import signal_purchase_status_delete
-
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_backend.api.purchase import add_purchase, get_purchase_user_list_choices, get_purchase_rows, \
     get_purchase_pagination, edit_purchase, get_purchase_row_by_id, audit_purchase, cancel_audit_purchase
 from app_backend.api.purchase_items import add_purchase_items, edit_purchase_items, get_purchase_items_rows, \
     delete_purchase_items
+from app_backend.api.rack import get_rack_choices
+from app_backend.api.supplier import get_supplier_row_by_id
+from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
 from app_backend.api.user import get_user_choices, get_user_row_by_id
-from app_backend.forms.purchase import PurchaseSearchForm, PurchaseEditForm, PurchaseItemsEditForm
+from app_backend.api.warehouse import get_warehouse_choices
 from app_backend.forms.purchase import PurchaseAddForm
+from app_backend.forms.purchase import PurchaseSearchForm, PurchaseEditForm, PurchaseItemsEditForm
+from app_backend.models.bearing_project import Purchase
+from app_backend.permissions.buyer_purchase import (
+    permission_purchase_section_export,
+    permission_purchase_section_del,
+    permission_purchase_section_audit, permission_purchase_section_search, permission_purchase_section_add,
+    permission_purchase_section_edit, permission_purchase_section_get, permission_purchase_section_print)
+from app_backend.signals.purchase import signal_purchase_status_delete
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_audit import STATUS_AUDIT_NO, STATUS_AUDIT_OK
-from app_common.maps.status_order import STATUS_ORDER_CHOICES
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
-
-from app_backend.models.bearing_project import Purchase
-
-from app_backend.permissions.buyer_purchase import (
-    permission_purchase_section_add,
-    permission_purchase_section_search,
-    permission_purchase_section_stats,
-    permission_purchase_section_export,
-    permission_purchase_section_get,
-    permission_purchase_section_edit,
-    permission_purchase_section_del,
-    permission_purchase_section_audit,
-    permission_purchase_section_print,
-)
-
 # 定义蓝图
 from app_common.tools.date_time import time_utc_to_local
 
@@ -82,6 +69,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 @bp_purchase.route('/lists.html', methods=['GET', 'POST'])
 @login_required
+@permission_purchase_section_search.require(http_exception=403)
 def lists():
     template_name = 'purchase/lists.html'
     # 文档信息
@@ -104,7 +92,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_search_choice_option_int:
+            if form.uid.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Purchase.uid == form.uid.data)
             if form.supplier_cid.data and form.supplier_company_name.data:
                 search_condition.append(Purchase.cid == form.supplier_cid.data)
@@ -113,7 +101,7 @@ def lists():
             if form.end_create_time.data:
                 search_condition.append(Purchase.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_purchase_section_export.can():
                 abort(403)
@@ -127,7 +115,7 @@ def lists():
                 file_name='%s.csv' % _('purchase lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             # 检查删除权限
             if not permission_purchase_section_del.can():
                 abort(403)
@@ -178,6 +166,7 @@ def lists():
 
 @bp_purchase.route('/add.html', methods=['GET', 'POST'])
 @login_required
+@permission_purchase_section_add.require(http_exception=403)
 def add():
     """
     采购进货
@@ -328,6 +317,7 @@ def add():
 
 @bp_purchase.route('/<int:purchase_id>/edit.html', methods=['GET', 'POST'])
 @login_required
+@permission_purchase_section_edit.require(http_exception=403)
 def edit(purchase_id):
     """
     采购进货编辑
@@ -538,6 +528,7 @@ def edit(purchase_id):
 
 @bp_purchase.route('/<int:purchase_id>/info.html')
 @login_required
+@permission_purchase_section_get.require(http_exception=403)
 def info(purchase_id):
     """
     出货详情
@@ -588,6 +579,7 @@ def info(purchase_id):
 
 @bp_purchase.route('/<int:purchase_id>/preview.html')
 @login_required
+@permission_purchase_section_print.require(http_exception=403)
 def preview(purchase_id):
     """
     打印预览
@@ -638,6 +630,7 @@ def preview(purchase_id):
 
 @bp_purchase.route('/<int:purchase_id>.pdf')
 @login_required
+@permission_purchase_section_print.require(http_exception=403)
 def pdf(purchase_id):
     """
     文件下载
@@ -702,6 +695,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_purchase_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -712,13 +711,6 @@ def ajax_delete():
     purchase_id = request.args.get('purchase_id', 0, type=int)
     if not purchase_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    purchase_item_del_permission = PurchaseItemDelPermission(purchase_id)
-    if not purchase_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
@@ -767,6 +759,12 @@ def ajax_audit():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查审核权限
+    if not permission_purchase_section_audit.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -782,13 +780,6 @@ def ajax_audit():
         return jsonify(ajax_failure_msg)
     if audit_status not in [STATUS_AUDIT_NO, STATUS_AUDIT_OK]:
         ext_msg = _('Status not exist')
-        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查审核权限
-    purchase_item_audit_permission = PurchaseItemAuditPermission(purchase_id)
-    if not purchase_item_audit_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

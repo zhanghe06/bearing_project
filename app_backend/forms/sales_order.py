@@ -8,36 +8,28 @@
 @time: 2018-08-31 18:05
 """
 
-
 from __future__ import unicode_literals
 
+from copy import copy
+
+from flask_babel import lazy_gettext as _
+from flask_wtf import FlaskForm
+from six import iteritems
+from wtforms import StringField, BooleanField, DateField, IntegerField, SelectField, \
+    DecimalField
+from wtforms.fields import FieldList, FormField
+from wtforms.validators import InputRequired, DataRequired, ValidationError, \
+    Optional
+
+# from app_backend.api.user import get_user_rows
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT, DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.type_role import TYPE_ROLE_DICT
 
 # import sys
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 
-
-from flask_babel import lazy_gettext as _
-from six import iteritems
-from datetime import datetime, timedelta
-
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, \
-    DecimalField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress, Optional
-from wtforms.fields import FieldList, FormField, HiddenField
-
-from app_backend.forms import SelectBS, CheckBoxBS
-from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
-# from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
-
-from copy import copy
-
-from app_common.maps.type_tax import TYPE_TAX_CHOICES
-
-role_id_choices = copy(default_search_choices_int)
+role_id_choices = copy(DEFAULT_SEARCH_CHOICES_INT)
 role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
 
 
@@ -55,7 +47,8 @@ class AmountSalesOrderValidate(object):
         amount_sales_orders = 0
 
         for sales_order_item in form.sales_order_items.entries:
-            amount_sales_orders += (sales_order_item.form.quantity.data or 0) * (sales_order_item.form.unit_price.data or 0)
+            amount_sales_orders += (sales_order_item.form.quantity.data or 0) * (
+                sales_order_item.form.unit_price.data or 0)
 
         if amount_sales_orders >= 100000000:
             # raise ValidationError(self.message or _('Data limit exceeded'))
@@ -69,7 +62,7 @@ class SalesOrderSearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
         # choices=sales_order_brand_choices,
         description=_('sales order user'),

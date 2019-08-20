@@ -17,7 +17,7 @@ from app_backend.api.customer import get_customer_rows_by_ids
 from app_backend.api.user import get_user_rows_by_ids
 from app_common.libs.mysql_orm_op import DbInstance
 from app_backend.models.bearing_project import Delivery, DeliveryItems, Inventory, Warehouse, Rack
-from app_common.maps.default import default_search_choices_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT
 from app_common.maps.status_audit import STATUS_AUDIT_OK, STATUS_AUDIT_NO
 from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
@@ -138,7 +138,7 @@ def get_distinct_delivery_uid(*args, **kwargs):
 
 
 def get_delivery_user_list_choices():
-    delivery_user_list = copy(default_search_choices_int)
+    delivery_user_list = copy(DEFAULT_SEARCH_CHOICES_INT)
     uid_list = get_distinct_delivery_uid(status_delete=STATUS_DEL_NO)
     user_rows = get_user_rows_by_ids(uid_list)
     delivery_user_list.extend([(user.id, user.name) for user in user_rows])

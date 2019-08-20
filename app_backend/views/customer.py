@@ -11,7 +11,6 @@
 from __future__ import unicode_literals
 
 import json
-from copy import deepcopy
 from datetime import datetime
 
 from flask import (
@@ -41,11 +40,11 @@ from app_backend.api.customer import (
     customer_end_user_stats,
 )
 from app_backend.api.production_sensitive import count_production_sensitive
+from app_backend.api.quotation import count_quotation
+from app_backend.api.sales_order import count_sales_order
 from app_backend.api.user import (
     get_user_rows,
     get_user_choices)
-from app_backend.api.quotation import count_quotation
-from app_backend.api.sales_order import count_sales_order
 from app_backend.forms.customer import (
     CustomerSearchForm,
     CustomerAddForm,
@@ -60,18 +59,13 @@ from app_backend.permissions.customer import (
     permission_customer_section_get,
     permission_customer_section_edit,
     permission_customer_section_del,
-    permission_customer_section_audit,
-    permission_customer_section_print,
 )
 from app_backend.signals.customer import signal_customer_status_delete
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT, DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
-from app_common.maps.type_company import TYPE_COMPANY_CHOICES
-from app_common.maps.type_role import (
-    TYPE_ROLE_SALES,
-)
 from app_common.tools import json_default
 
 # 定义蓝图
@@ -83,14 +77,6 @@ PER_PAGE_BACKEND = app.config.get('PER_PAGE_BACKEND', 20)
 PER_PAGE_BACKEND_MODAL = app.config.get('PER_PAGE_BACKEND_MODAL', 10)
 AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
-
-
-def get_sales_user_list():
-    sales_user_list = deepcopy(default_search_choices_int)
-    user_list = get_user_rows(**{'role_id': TYPE_ROLE_SALES})
-    sales_user_list.extend([(0, '-')])
-    sales_user_list.extend([(user.id, user.name) for user in user_list])
-    return sales_user_list
 
 
 @bp_customer.route('/lists.html', methods=['GET', 'POST'])
@@ -108,7 +94,8 @@ def lists():
 
     # 搜索条件
     form = CustomerSearchForm(request.form)
-    form.owner_uid.choices = get_sales_user_list()
+    form.owner_uid.choices = DEFAULT_SEARCH_CHOICES_INT + [(user.id, user.name) for user in
+                                                           get_user_rows(**{'status_delete': STATUS_DEL_NO})]
     # app.logger.info('')
 
     search_condition = [
@@ -124,16 +111,16 @@ def lists():
         else:
             if form.company_name.data:
                 search_condition.append(Customer.company_name.like('%%%s%%' % form.company_name.data))
-            if form.company_type.data != default_search_choice_option_int:
+            if form.company_type.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Customer.company_type == form.company_type.data)
-            if form.owner_uid.data != default_search_choice_option_int:
+            if form.owner_uid.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Customer.owner_uid == form.owner_uid.data)
             if form.start_create_time.data:
                 search_condition.append(Customer.create_time >= form.start_create_time.data)
             if form.end_create_time.data:
                 search_condition.append(Customer.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_customer_section_export.can():
                 abort(403)
@@ -147,7 +134,7 @@ def lists():
                 file_name='%s.csv' % _('customer lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             # 检查删除权限
             if not permission_customer_section_del.can():
                 abort(403)
@@ -232,7 +219,8 @@ def search():
 
     # 搜索条件
     form = CustomerSearchForm(request.form)
-    form.owner_uid.choices = get_sales_user_list()
+    form.owner_uid.choices = DEFAULT_SEARCH_CHOICES_INT + [(user.id, user.name) for user in
+                                                           get_user_rows(**{'status_delete': STATUS_DEL_NO})]
     # app.logger.info('')
 
     search_condition = [
@@ -246,7 +234,7 @@ def search():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.company_type.data != default_search_choice_option_int:
+            if form.company_type.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Customer.company_type == form.company_type.data)
             if form.company_name.data:
                 search_condition.append(Customer.company_name.like('%%%s%%' % form.company_name.data))
@@ -301,8 +289,6 @@ def add():
 
     # 加载创建表单
     form = CustomerAddForm(request.form)
-
-    form.company_type.choices = TYPE_COMPANY_CHOICES
     form.owner_uid.choices = get_user_choices()
     form.owner_uid.data = current_user.id
 
@@ -375,8 +361,6 @@ def edit(customer_id):
 
     # 加载编辑表单
     form = CustomerEditForm(request.form)
-
-    form.company_type.choices = TYPE_COMPANY_CHOICES
     form.owner_uid.choices = get_user_choices()
 
     # 文档信息
@@ -488,11 +472,15 @@ def ajax_delete():
         return jsonify(ajax_failure_msg)
     # 检查是否正在使用
     # 报价、订单、敏感型号
-    if count_quotation(**{'cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+    if count_quotation(**{'customer_cid': customer_id, 'status_delete': STATUS_DEL_NO}):
         ext_msg = _('Currently In Use')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
-    if count_production_sensitive(**{'cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+    if count_sales_order(**{'customer_cid': customer_id, 'status_delete': STATUS_DEL_NO}):
+        ext_msg = _('Currently In Use')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+    if count_production_sensitive(**{'customer_cid': customer_id, 'status_delete': STATUS_DEL_NO}):
         ext_msg = _('Currently In Use')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)

@@ -8,24 +8,20 @@
 @time: 2018-08-30 19:47
 """
 
-
 from __future__ import unicode_literals
-
-import time
-from datetime import datetime, timedelta
-from six import iteritems
-from flask_babel import lazy_gettext as _
-
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress, Optional
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int, default_search_choice_option_str
-from app_common.maps.type_company import TYPE_COMPANY_DICT
 
 from copy import copy
 
-company_type_choices = copy(default_search_choices_int)
+from flask_babel import lazy_gettext as _
+from flask_wtf import FlaskForm
+from six import iteritems
+from wtforms import StringField, DateField, IntegerField
+from wtforms.validators import InputRequired, Optional
+
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT
+from app_common.maps.type_company import TYPE_COMPANY_DICT
+
+company_type_choices = copy(DEFAULT_SEARCH_CHOICES_INT)
 company_type_choices.extend(iteritems(TYPE_COMPANY_DICT))
 
 
@@ -33,6 +29,7 @@ class PriceSearchForm(FlaskForm):
     """
     搜索表单
     """
+
     def __init__(self, *args, **kwargs):
         kwargs['csrf_enabled'] = True  # enable csrf
         FlaskForm.__init__(self, *args, **kwargs)

@@ -16,8 +16,8 @@ from app_backend import app
 
 from app_backend.api.supplier_invoice import get_supplier_invoice_row_by_id, edit_supplier_invoice
 from app_backend.api.supplier_contact import get_supplier_contact_rows, edit_supplier_contact
-from app_backend.api.quotation import get_quotation_rows, edit_quotation
-from app_backend.api.quotation_items import get_quotation_items_rows, edit_quotation_items
+from app_backend.api.enquiry import get_enquiry_rows, edit_enquiry
+from app_backend.api.enquiry_items import get_enquiry_items_rows, edit_enquiry_items
 
 _signal = Namespace()
 
@@ -33,6 +33,7 @@ def supplier_status_delete(sender, **extra):
         1、开票资料删除状态同步更新
         2、联系方式删除状态同步更新
         3、渠道询价删除状态同步更新
+        4、渠道进货删除状态同步更新
     :param sender:
     :param extra:
     :return:
@@ -68,24 +69,24 @@ def supplier_status_delete(sender, **extra):
 
     # 3、渠道询价删除状态同步更新
     # 询价总表
-    quotation_items = get_quotation_rows(cid=supplier_id)
-    for quotation_item in quotation_items:
-        quotation_item_id = quotation_item.id
-        quotation_item_data = {
+    enquiry_items = get_enquiry_rows(supplier_cid=supplier_id)
+    for enquiry_item in enquiry_items:
+        enquiry_item_id = enquiry_item.id
+        enquiry_item_data = {
             'status_delete': status_delete,
             'delete_time': current_time,
             'update_time': current_time,
         }
-        result = result and edit_quotation(quotation_item_id, quotation_item_data)
+        result = result and edit_enquiry(enquiry_item_id, enquiry_item_data)
         # 询价明细
-        quotation_items_items = get_quotation_items_rows(quotation_id=quotation_item_id)
-        for quotation_item_item in quotation_items_items:
-            quotation_item_item_id = quotation_item_item.id
-            quotation_item_item_data = {
+        enquiry_items_items = get_enquiry_items_rows(enquiry_id=enquiry_item_id)
+        for enquiry_item_item in enquiry_items_items:
+            enquiry_item_item_id = enquiry_item_item.id
+            enquiry_item_item_data = {
                 'status_delete': status_delete,
                 'delete_time': current_time,
                 'update_time': current_time,
             }
-            result = result and edit_quotation_items(quotation_item_item_id, quotation_item_item_data)
+            result = result and edit_enquiry_items(enquiry_item_item_id, enquiry_item_item_data)
 
     return result

@@ -21,25 +21,25 @@ from flask import (
     url_for,
     flash,
 )
-from flask_principal import (
-    Identity,
-    identity_changed,
-)
+from flask_babel import gettext as _
 from flask_login import (
     current_user,
     login_user,
     fresh_login_required)
+from flask_principal import (
+    Identity,
+    identity_changed,
+)
 
 from app_backend import app
 from app_backend.api.login_user import get_login_user_row_by_id
 from app_backend.api.user_auth import get_user_auth_row, edit_user_auth
 from app_backend.forms.user_auth import UserAuthForm, UserAuthChangePasswordForm, UserAuthEmailForm
+from app_backend.tasks.send_mail_login import pub
 from app_common.libs.auth_token import AuthToken
 from app_common.maps.status_verified import STATUS_VERIFIED_OK
 from app_common.maps.type_auth import TYPE_AUTH_ACCOUNT, TYPE_AUTH_EMAIL
 from app_common.tools.date_time import get_tc
-from flask_babel import gettext as _, ngettext
-from app_backend.tasks.send_mail_login import pub
 
 bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
 

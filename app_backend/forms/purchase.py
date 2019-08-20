@@ -8,37 +8,17 @@
 @time: 2019-02-11 16:36
 """
 
-
 from __future__ import unicode_literals
 
-
-# import sys
-# reload(sys)
-# sys.setdefaultencoding('utf8')
-
-
 from flask_babel import lazy_gettext as _
-from six import iteritems
-from datetime import datetime, timedelta
-
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, \
+from wtforms import StringField, BooleanField, DateField, IntegerField, SelectField, \
     DecimalField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress, Optional
 from wtforms.fields import FieldList, FormField, HiddenField
+from wtforms.validators import InputRequired, DataRequired, ValidationError, \
+    Optional
 
-from app_backend.forms import SelectBS, CheckBoxBS
-from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
-# from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
-
-from copy import deepcopy
-
-from app_common.maps.type_tax import TYPE_TAX_CHOICES
-
-role_id_choices = deepcopy(default_search_choices_int)
-role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION, DEFAULT_SELECT_CHOICES_INT_OPTION
 
 
 class AmountPurchaseValidate(object):
@@ -69,7 +49,7 @@ class PurchaseSearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
         # choices=quotation_brand_choices,
         description=_('purchase user'),
@@ -107,7 +87,6 @@ class PurchaseSearchForm(FlaskForm):
     start_create_time = DateField(
         _('start time'),
         validators=[Optional()],
-        # default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -119,7 +98,6 @@ class PurchaseSearchForm(FlaskForm):
     end_create_time = DateField(
         _('end time'),
         validators=[Optional()],
-        # default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),
@@ -310,9 +288,8 @@ class PurchaseAddForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SELECT_CHOICES_INT_OPTION,
         coerce=int,
-        # choices=quotation_brand_choices,
         description=_('purchase user'),
         render_kw={
             'rel': 'tooltip',
@@ -371,7 +348,7 @@ class PurchaseAddForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SELECT_CHOICES_INT_OPTION,
         coerce=int,
         description=_('warehouse name'),
         render_kw={

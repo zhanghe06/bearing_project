@@ -8,10 +8,8 @@
 @time: 2018-08-14 14:55
 """
 
-
 from __future__ import unicode_literals
 
-import json
 from copy import copy
 from datetime import datetime
 
@@ -27,7 +25,6 @@ from flask import (
 )
 from flask_babel import gettext as _
 from flask_login import login_required
-from six import text_type
 
 from app_backend import app
 from app_backend import excel
@@ -44,33 +41,25 @@ from app_backend.api.production_sensitive import (
 from app_backend.api.production_sensitive import (
     get_production_sensitive_rows,
 )
-from app_backend.api.user import get_user_choices
 from app_backend.forms.production_sensitive import (
     ProductionSensitiveSearchForm,
     ProductionSensitiveAddForm,
     ProductionSensitiveEditForm,
 )
-from app_backend.forms.production import ProductionSelectForm
 from app_backend.models.bearing_project import ProductionSensitive
 from app_backend.permissions import permission_role_administrator
 from app_backend.permissions.production import (
     permission_production_section_add,
     permission_production_section_search,
-    permission_production_section_stats,
     permission_production_section_export,
-    permission_production_section_get,
     permission_production_section_edit,
     permission_production_section_del,
-    permission_production_section_audit,
-    permission_production_section_print,
 )
-from app_common.maps.default import default_search_choices_str, default_search_choice_option_str
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_STR, DEFAULT_SEARCH_CHOICES_STR_OPTION
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO,
 )
-from app_common.maps.type_role import TYPE_ROLE_MANAGER
-from app_common.tools import json_default
 
 # 定义蓝图
 bp_production_sensitive = Blueprint('production_sensitive', __name__, url_prefix='/production_sensitive')
@@ -84,7 +73,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_production_sensitive_brand_choices():
-    production_sensitive_brand_list = copy(default_search_choices_str)
+    production_sensitive_brand_list = copy(DEFAULT_SEARCH_CHOICES_STR)
     distinct_brand = get_distinct_production_sensitive_brand(status_delete=STATUS_DEL_NO)
     production_sensitive_brand_list.extend([(brand, brand) for brand in distinct_brand])
     return production_sensitive_brand_list
@@ -121,10 +110,11 @@ def lists():
         else:
             if form.customer_cid.data and form.customer_company_name.data:
                 search_condition.append(ProductionSensitive.customer_cid == form.customer_cid.data)
-            if form.production_brand.data != default_search_choice_option_str:
+            if form.production_brand.data != DEFAULT_SEARCH_CHOICES_STR_OPTION:
                 search_condition.append(ProductionSensitive.production_brand == form.production_brand.data)
             if form.production_model.data:
-                search_condition.append(ProductionSensitive.production_model.like('%%%s%%' % form.production_model.data))
+                search_condition.append(
+                    ProductionSensitive.production_model.like('%%%s%%' % form.production_model.data))
         # 处理导出
         if form.op.data == 1:
             # 检查导出权限

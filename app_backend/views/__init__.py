@@ -10,25 +10,8 @@
 
 from __future__ import unicode_literals
 
-import os
-from datetime import datetime
-import json
-import traceback
 import user_agents
-import six
-
-
-from flask import current_app, Response
-from flask import send_from_directory
-from flask_principal import (
-    identity_changed,
-    Identity,
-    AnonymousIdentity,
-    identity_loaded,
-    RoleNeed,
-    UserNeed,
-    IdentityContext)
-
+from flask import Response
 from flask import (
     g,
     request,
@@ -39,6 +22,8 @@ from flask import (
     url_for,
     flash
 )
+from flask import send_from_directory
+from flask_babel import gettext as _
 from flask_login import (
     login_user,
     logout_user,
@@ -46,32 +31,27 @@ from flask_login import (
     login_required,
     user_loaded_from_cookie
 )
-
+from flask_principal import (
+    identity_changed,
+    Identity,
+    AnonymousIdentity,
+    identity_loaded,
+    UserNeed)
 from flask_wtf.csrf import CSRFError
 from itsdangerous import SignatureExpired, BadTimeSignature
 
+from app_backend import app, login_manager, babel
+from app_backend.api.customer import get_customer_latest
+from app_backend.api.login_user import get_login_user_row_by_id
+from app_backend.api.quotation import get_quotation_latest
+from app_backend.api.sales_order import get_sales_order_latest
 from app_backend.identities import identity_role_administrator, identity_role_sales, identity_role_purchaser, \
     identity_role_manager, identity_role_stock_keeper, identity_role_accountant
 from app_backend.models.bearing_project import Customer, Quotation, SalesOrder
-
-from app_backend.api.login_user import get_login_user_row_by_id
-from app_backend.api.user import get_user_rows
-from app_backend.api.customer import get_customer_rows, get_customer_latest
-from app_backend.api.quotation import get_quotation_rows, get_quotation_latest
-from app_backend.api.sales_order import get_sales_order_latest
-from app_backend.api.role import get_role_row_by_id
-
-from app_backend import app, oauth_github, oauth_qq, oauth_weibo
-from flask_babel import gettext as _, ngettext
-
-from app_backend import app, login_manager, babel
 from app_backend.permissions import (
-    SectionActionNeed,
-    SectionActionItemNeed,
-    permission_role_administrator,
-    permission_role_default, permission_role_sales, permission_role_manager, permission_role_stock_keeper,
-    permission_role_accountant, permission_role_purchaser)
+    permission_role_administrator)
 from app_common.libs.auth_token import AuthToken
+from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.maps.type_role import (
     TYPE_ROLE_SALES,
     TYPE_ROLE_PURCHASER,
@@ -79,8 +59,6 @@ from app_common.maps.type_role import (
     TYPE_ROLE_SYSTEM,
     TYPE_ROLE_STOREKEEPER,
     TYPE_ROLE_ACCOUNTANT)
-
-from app_common.maps.status_delete import STATUS_DEL_NO
 
 # 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})

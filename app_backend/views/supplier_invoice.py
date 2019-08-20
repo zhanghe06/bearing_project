@@ -10,7 +10,6 @@
 
 from __future__ import unicode_literals
 
-import json
 from datetime import datetime
 
 from flask import (
@@ -24,35 +23,27 @@ from flask import (
     Blueprint,
 )
 from flask_babel import gettext as _
-from flask_login import login_required, current_user
+from flask_login import login_required
 
+from app_backend import (
+    app,
+    excel,
+)
 from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.api.supplier_invoice import get_supplier_invoice_rows, get_supplier_invoice_pagination, \
     get_supplier_invoice_row_by_id, edit_supplier_invoice, add_supplier_invoice
-from app_backend.models.bearing_project import SupplierInvoice
-
 from app_backend.forms.supplier_invoice import (
     SupplierInvoiceSearchForm,
     # SupplierInvoiceAddForm,
     # SupplierInvoiceEditForm,
     # SupplierInvoiceItemEditForm,
     SupplierInvoiceEditForm)
+from app_backend.models.bearing_project import SupplierInvoice
 from app_backend.permissions.supplier import (
-    permission_supplier_section_add,
-    permission_supplier_section_search,
-    permission_supplier_section_stats,
     permission_supplier_section_export,
-    permission_supplier_section_get,
     permission_supplier_section_edit,
-    permission_supplier_section_del,
-    permission_supplier_section_audit,
-    permission_supplier_section_print,
 )
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
-from app_backend import (
-    app,
-    excel,
-)
 
 # 定义蓝图
 bp_supplier_invoice = Blueprint('supplier_invoice', __name__, url_prefix='/supplier/invoice')

@@ -8,7 +8,6 @@
 @time: 2018-09-13 10:08
 """
 
-
 from __future__ import unicode_literals
 
 import json
@@ -28,14 +27,6 @@ from flask_babel import gettext as _
 from flask_login import login_required, current_user
 from flask_weasyprint import render_pdf, HTML, CSS
 
-from app_backend.api.catalogue import get_catalogue_choices
-# from app_backend.api.customer import get_customer_choices, get_customer_row_by_id
-# from app_backend.api.customer_contact import get_customer_contact_row_by_id
-from app_backend.api.supplier import get_supplier_row_by_id
-from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
-from app_backend.api.user import get_user_choices, get_user_row_by_id
-from app_backend.forms.production import ProductionSelectForm
-from app_backend.forms.enquiry import EnquiryItemEditForm
 from app_backend import (
     app,
     excel,
@@ -46,22 +37,21 @@ from app_backend.api.enquiry import (
     add_enquiry,
     edit_enquiry,
     get_enquiry_rows,
-    get_distinct_enquiry_uid,
-    get_distinct_enquiry_cid,
-    enquiry_total_stats,
-    enquiry_order_stats,
-    get_enquiry_user_list_choices, get_enquiry_customer_list_choices)
-
+    get_enquiry_user_list_choices)
 from app_backend.api.enquiry_items import get_enquiry_items_rows, add_enquiry_items, edit_enquiry_items, \
     delete_enquiry_items
-from wtforms.fields import FieldList, FormField
+# from app_backend.api.customer import get_customer_choices, get_customer_row_by_id
+# from app_backend.api.customer_contact import get_customer_contact_row_by_id
+from app_backend.api.supplier import get_supplier_row_by_id
+from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
+from app_backend.api.user import get_user_choices, get_user_row_by_id
+from app_backend.forms.enquiry import EnquiryItemEditForm
 from app_backend.forms.enquiry import (
     EnquirySearchForm,
     EnquiryAddForm,
     EnquiryEditForm,
 )
 from app_backend.models.bearing_project import Enquiry
-
 from app_backend.permissions.enquiry import (
     permission_enquiry_section_add,
     permission_enquiry_section_search,
@@ -74,16 +64,13 @@ from app_backend.permissions.enquiry import (
     permission_enquiry_section_print,
 )
 from app_backend.signals.enquiry import signal_enquiry_status_delete
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
 from app_common.maps.status_order import STATUS_ORDER_CHOICES
-from app_common.maps.type_role import (
-    TYPE_ROLE_SALES,
-)
 from app_common.tools import json_default
-
 # 定义蓝图
 from app_common.tools.date_time import time_utc_to_local
 
@@ -125,7 +112,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_search_choice_option_int:
+            if form.uid.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Enquiry.uid == form.uid.data)
             if form.supplier_cid.data and form.supplier_company_name.data:
                 search_condition.append(Enquiry.supplier_cid == form.supplier_cid.data)
@@ -134,7 +121,7 @@ def lists():
             if form.end_create_time.data:
                 search_condition.append(Enquiry.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_enquiry_section_export.can():
                 abort(403)
@@ -148,7 +135,7 @@ def lists():
                 file_name='%s.csv' % _('enquiry lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             # 检查删除权限
             if not permission_enquiry_section_del.can():
                 abort(403)

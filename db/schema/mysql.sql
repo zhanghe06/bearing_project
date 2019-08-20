@@ -17,8 +17,7 @@ CREATE TABLE `user` (
   `tel` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '电话',
   `fax` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '传真',
   `email` VARCHAR(60) NOT NULL DEFAULT '' COMMENT '邮箱',
-  `role_id` TINYINT NOT NULL DEFAULT 0 COMMENT '角色（0:默认,1:系统,2:销售,3:经理,4:库管,5:财务）',
-  `parent_id` INT NOT NULL DEFAULT 0 COMMENT '上级用户ID',
+  `role_id` TINYINT NOT NULL DEFAULT 0 COMMENT '角色（1:系统,2:销售,3:经理,4:库管,5:财务）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -32,7 +31,7 @@ DROP TABLE IF EXISTS `user_auth`;
 CREATE TABLE `user_auth` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
-  `type_auth` TINYINT NOT NULL DEFAULT 0 COMMENT '认证类型（0:账号,1:邮箱,2:手机,3:QQ,4:微信,5:微博）',
+  `type_auth` TINYINT NOT NULL DEFAULT 0 COMMENT '认证类型（1:账号,2:邮箱,3:手机,4:QQ,5:微信,6:微博）',
   `auth_key` VARCHAR(60) BINARY NOT NULL DEFAULT '' COMMENT '授权账号（账号;邮箱;手机;第三方登陆，这里是openid）',
   `auth_secret` VARCHAR(60) BINARY NOT NULL DEFAULT '' COMMENT '密码凭证（密码;token）',
   `status_verified` TINYINT NOT NULL DEFAULT 0 COMMENT '认证状态（0:未认证,1:已认证）',
@@ -44,18 +43,6 @@ CREATE TABLE `user_auth` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户认证表';
 
 
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '角色名称（0:默认,1:系统,2:销售,3:经理,4:库管,5:财务）',
-  `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '角色备注',
-  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限表';
-
-
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -65,7 +52,7 @@ CREATE TABLE `customer` (
   `company_tel` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司电话',
   `company_fax` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司传真',
   `company_email` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司邮箱',
-  `company_type` TINYINT NOT NULL DEFAULT 0 COMMENT '公司类型（0:未知,1:中间商2:终端）',
+  `company_type` TINYINT NOT NULL DEFAULT 0 COMMENT '公司类型（1:中间商,2:终端用户）',
   `owner_uid` INT NOT NULL DEFAULT 0 COMMENT '所属用户ID（未分配为0）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
@@ -124,7 +111,7 @@ CREATE TABLE `supplier` (
   `company_tel` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司电话',
   `company_fax` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司传真',
   `company_email` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司邮箱',
-  `company_type` TINYINT NOT NULL DEFAULT 0 COMMENT '公司类型（0:未知,1:中间商2:终端）',
+  `company_type` TINYINT NOT NULL DEFAULT 0 COMMENT '公司类型（1:中间商,2:终端用户）',
   `owner_uid` INT NOT NULL DEFAULT 0 COMMENT '所属用户ID（未分配为0）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
@@ -325,10 +312,10 @@ CREATE TABLE `quotation` (
   `amount_quotation` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '报价总额',
   `delivery_way` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '发货方式',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '报价备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `audit_uid` INT NOT NULL DEFAULT 0 COMMENT '审核用户ID',
-  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
-  `status_order` TINYINT NOT NULL DEFAULT 0 COMMENT '订单状态（0:待下单,1:下单成功,2:下单失败）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:等待审核,1:审核通过,2:审核失败）',
+  `status_order` TINYINT NOT NULL DEFAULT 0 COMMENT '订单状态（0:等待下单,1:下单成功,2:下单失败）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `expiry_date` DATE NOT NULL COMMENT '有效日期（中间商:可设置默认7天;终端用户:可根据情况延长）',
   `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
@@ -359,7 +346,7 @@ CREATE TABLE `quotation_items` (
   `quantity` INT NOT NULL DEFAULT 0 COMMENT '报价数量',
   `unit_price` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `status_ordered` TINYINT NOT NULL DEFAULT 0 COMMENT '下单状态（0:未下单,1:已下单）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
@@ -385,10 +372,10 @@ CREATE TABLE `enquiry` (
   `amount_enquiry` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '询价总额',
   `delivery_way` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '发货方式',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '询价备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `audit_uid` INT NOT NULL DEFAULT 0 COMMENT '审核用户ID',
-  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
-  `status_order` TINYINT NOT NULL DEFAULT 0 COMMENT '订单状态（0:待下单,1:下单成功,2:下单失败）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:等待审核,1:审核通过,2:审核失败）',
+  `status_order` TINYINT NOT NULL DEFAULT 0 COMMENT '订单状态（0:等待下单,1:下单成功,2:下单失败）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `expiry_date` DATE NOT NULL COMMENT '有效日期（中间商:可设置默认7天;终端用户:可根据情况延长）',
   `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
@@ -419,7 +406,7 @@ CREATE TABLE `enquiry_items` (
   `quantity` INT NOT NULL DEFAULT 0 COMMENT '报价数量',
   `unit_price` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `status_ordered` TINYINT NOT NULL DEFAULT 0 COMMENT '下单状态（0:未下单,1:已下单）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
@@ -445,11 +432,11 @@ CREATE TABLE `sales_order` (
   `amount_order` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '订单总额',
   `delivery_way` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '发货方式',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '订单备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `audit_uid` INT NOT NULL DEFAULT 0 COMMENT '审核用户ID',
-  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
-  `status_effect` TINYINT NOT NULL DEFAULT 0 COMMENT '生效状态（0:待生效,1:已生效,2:未生效）',
-  `status_completion` TINYINT NOT NULL DEFAULT 0 COMMENT '完成状态（0:待完成,1:已完成,2:已中止）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:等待审核,1:审核通过,2:审核失败）',
+  `status_effect` TINYINT NOT NULL DEFAULT 0 COMMENT '生效状态（0:等待生效,1:已生效,2:未生效）',
+  `status_completion` TINYINT NOT NULL DEFAULT 0 COMMENT '完成状态（0:等待完成,1:已完成,2:已中止）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
   `effect_time` TIMESTAMP NULL COMMENT '生效时间（通过、失败）',
@@ -480,7 +467,7 @@ CREATE TABLE `sales_order_items` (
   `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
   `unit_price` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -505,11 +492,11 @@ CREATE TABLE `buyer_order` (
   `amount_order` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '订单总额',
   `delivery_way` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '发货方式',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '订单备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `audit_uid` INT NOT NULL DEFAULT 0 COMMENT '审核用户ID',
-  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
-  `status_effect` TINYINT NOT NULL DEFAULT 0 COMMENT '生效状态（0:待生效,1:已生效,2:未生效）',
-  `status_completion` TINYINT NOT NULL DEFAULT 0 COMMENT '完成状态（0:待完成,1:已完成,2:已中止）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:等待审核,1:审核通过,2:审核失败）',
+  `status_effect` TINYINT NOT NULL DEFAULT 0 COMMENT '生效状态（0:等待生效,1:已生效,2:未生效）',
+  `status_completion` TINYINT NOT NULL DEFAULT 0 COMMENT '完成状态（0:等待完成,1:已完成,2:已中止）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
   `effect_time` TIMESTAMP NULL COMMENT '生效时间（通过、失败）',
@@ -540,7 +527,7 @@ CREATE TABLE `buyer_order_items` (
   `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
   `unit_price` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -568,10 +555,10 @@ CREATE TABLE `delivery` (
   `amount_delivery` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '出货总额',
   `warehouse_id` INT NOT NULL COMMENT '仓库编号',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '清单备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `audit_uid` INT NOT NULL DEFAULT 0 COMMENT '审核用户ID',
-  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
-  `status_confirm` TINYINT NOT NULL DEFAULT 0 COMMENT '确认状态（0:待确认,1:确认成功,2:确认失败）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:等待审核,1:审核通过,2:审核失败）',
+  `status_confirm` TINYINT NOT NULL DEFAULT 0 COMMENT '确认状态（0:等待确认,1:确认成功,2:确认失败）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
   `confirm_time` TIMESTAMP NULL COMMENT '确认时间（成功、失败）',
@@ -602,7 +589,7 @@ CREATE TABLE `delivery_items` (
   `warehouse_id` INT NOT NULL COMMENT '仓库编号',
   `rack_id` INT NOT NULL COMMENT '货架编号',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
   `unit_price` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
@@ -626,17 +613,17 @@ CREATE TABLE `purchase` (
   `supplier_cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
   `supplier_company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司名称',
   `supplier_contact_id` INT NOT NULL DEFAULT 0 COMMENT '联系方式ID',
-  `type_purchase` TINYINT NOT NULL DEFAULT 0 COMMENT '进货类型（0:正常采购,1:获赠样品,2:盘盈,3:组装）',
+  `type_purchase` TINYINT NOT NULL DEFAULT 0 COMMENT '进货类型（1:正常采购,2:获赠样品,3:盘盈,4:组装）',
   `amount_production` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '产品金额',
   `amount_shipping` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '运费金额',
   `amount_adjustment` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '调整金额',
   `amount_purchase` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '进货总额',
   `warehouse_id` INT NOT NULL COMMENT '仓库编号',
   `note` VARCHAR(256) NOT NULL DEFAULT '' COMMENT '清单备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `audit_uid` INT NOT NULL DEFAULT 0 COMMENT '审核用户ID',
-  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:待审核,1:审核通过,2:审核失败）',
-  `status_confirm` TINYINT NOT NULL DEFAULT 0 COMMENT '确认状态（0:待确认,1:确认成功,2:确认失败）',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:等待审核,1:审核通过,2:审核失败）',
+  `status_confirm` TINYINT NOT NULL DEFAULT 0 COMMENT '确认状态（0:等待确认,1:确认成功,2:确认失败）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
   `confirm_time` TIMESTAMP NULL COMMENT '确认时间（成功、失败）',
@@ -665,7 +652,7 @@ CREATE TABLE `purchase_items` (
   `warehouse_id` INT NOT NULL COMMENT '仓库编号',
   `rack_id` INT NOT NULL COMMENT '货架编号',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `quantity` INT NOT NULL DEFAULT 0 COMMENT '数量',
   `unit_price` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
@@ -702,11 +689,11 @@ CREATE TABLE `production_sensitive` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='敏感型号';
 
 
-DROP TABLE IF EXISTS `bank_account`;
-CREATE TABLE `bank_account` (
+DROP TABLE IF EXISTS `bank`;
+CREATE TABLE `bank` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `bank_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '银行名称',
-  `type_bank` TINYINT NOT NULL DEFAULT 0 COMMENT '银行类型（0:未知,1:基本账户,2:一般账户）',
+  `type_bank` TINYINT NOT NULL DEFAULT 0 COMMENT '银行类型（0:普通,1:基本账户,2:一般账户）',
   `initial_balance` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '期初余额',
   `closing_balance` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '期末余额',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '备注',
@@ -718,28 +705,32 @@ CREATE TABLE `bank_account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='银行总账';
 
 
-DROP TABLE IF EXISTS `bank_account_items`;
-CREATE TABLE `bank_account_items` (
+DROP TABLE IF EXISTS `bank_account`;
+CREATE TABLE `bank_account` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `bank_id` INT NOT NULL DEFAULT 0 COMMENT '银行ID',
   `type_current` TINYINT NOT NULL DEFAULT 0 COMMENT '往来类型（0:未知,1:客户,2:渠道）',
   `cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
   `company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司名称',
-  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '账目备注（货款-预付,货款-尾款,货款-全款,货款-退款,费用-银行,利息-银行）',
+  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '账目备注（货款,货款-预付,货款-尾款,货款-全款,货款-退款,费用-银行,利息-银行）',
   `type_account` TINYINT NOT NULL DEFAULT 0 COMMENT '账目类型（0:未知,1:收款,2:付款,3:退回,4:退出）',
   `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+  `record_date` DATE NOT NULL COMMENT '记账日期',
+  `audit_uid` INT NOT NULL DEFAULT 0 COMMENT '审核用户ID',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:等待审核,1:审核通过,2:审核失败）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY (`bank_id`),
-  KEY (`type_current`, `cid`)
+  KEY (`cid`, `type_current`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='银行明细账';
 
 
-DROP TABLE IF EXISTS `cash_account`;
-CREATE TABLE `cash_account` (
+DROP TABLE IF EXISTS `cash`;
+CREATE TABLE `cash` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `cash_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '现金名称',
   `initial_balance` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '期初余额',
@@ -753,8 +744,8 @@ CREATE TABLE `cash_account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='现金总账';
 
 
-DROP TABLE IF EXISTS `cash_account_items`;
-CREATE TABLE `cash_account_items` (
+DROP TABLE IF EXISTS `cash_account`;
+CREATE TABLE `cash_account` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `cash_id` INT NOT NULL DEFAULT 0 COMMENT '现金ID',
   `type_current` TINYINT NOT NULL DEFAULT 0 COMMENT '往来类型（0:未知,1:客户,2:渠道）',
@@ -763,13 +754,57 @@ CREATE TABLE `cash_account_items` (
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '账目备注',
   `type_account` TINYINT NOT NULL DEFAULT 0 COMMENT '账目类型（0:未知,1:收款,2:付款,3:退回,4:退出）',
   `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+  `record_date` DATE NOT NULL COMMENT '记账日期',
+  `audit_uid` INT NOT NULL DEFAULT 0 COMMENT '审核用户ID',
+  `status_audit` TINYINT NOT NULL DEFAULT 0 COMMENT '审核状态（0:等待审核,1:审核通过,2:审核失败）',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `audit_time` TIMESTAMP NULL COMMENT '审核时间（通过、失败）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`cid`, `type_current`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='现金明细账';
+
+
+DROP TABLE IF EXISTS `account_receive`;
+CREATE TABLE `account_receive` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `uid` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
+  `customer_cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
+  `customer_company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司名称',
+  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '账目备注（货款,货款-预付,货款-尾款,货款-全款,货款-退款）',
+  `type_ticket` TINYINT NOT NULL DEFAULT 0 COMMENT '票据类型（1:银行,2:现金,3:支票,4:承兑）',
+  `type_account` TINYINT NOT NULL DEFAULT 0 COMMENT '账目类型（1:收款,2:退款）',
+  `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+  `record_date` DATE NOT NULL COMMENT '记账日期',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY (`type_current`, `cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='现金明细账';
+  KEY (`customer_cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='入账记录';
+
+
+DROP TABLE IF EXISTS `account_payment`;
+CREATE TABLE `account_payment` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `uid` INT NOT NULL DEFAULT 0 COMMENT '用户ID',
+  `supplier_cid` INT NOT NULL DEFAULT 0 COMMENT '公司ID',
+  `supplier_company_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '公司名称',
+  `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '账目备注（货款,货款-预付,货款-尾款,货款-全款,货款-退款）',
+  `type_ticket` TINYINT NOT NULL DEFAULT 0 COMMENT '票据类型（1:银行,2:现金,3:支票,4:承兑）',
+  `type_account` TINYINT NOT NULL DEFAULT 0 COMMENT '账目类型（1:收款,2:退款）',
+  `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+  `record_date` DATE NOT NULL COMMENT '记账日期',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`supplier_cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='出账记录';
 
 
 DROP TABLE IF EXISTS `futures`;
@@ -785,7 +820,7 @@ CREATE TABLE `futures` (
   `unit_price` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `sub_total` DECIMAL(10, 2) NOT NULL DEFAULT '0.00' COMMENT '小计',
   `note` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '产品备注',
-  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（0:不含税,1:已含税）',
+  `type_tax` TINYINT NOT NULL DEFAULT 1 COMMENT '含税类型（1:已含税,2:不含税）',
   `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
   `delete_time` TIMESTAMP NULL COMMENT '删除时间',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -793,40 +828,3 @@ CREATE TABLE `futures` (
   PRIMARY KEY (`id`),
   KEY (`production_model`, `production_brand`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='在途期货';
-
-
-# catalog_contrast
-
-
-
-# 客户询价
-#
-#     日期 客户名称 询价原型号 询价数量
-#
-# 公司成本
-#
-#     SKF型号 SKF最新成本 涨跌趋势
-#
-# 公司库存
-#
-#     现存数量 在途数量
-#
-# 公司报价
-#
-#     报价时间 报价金额 是否含税
-#
-# 历史报价
-#
-#     历史报价-时间 历史报价-金额 历史报价-是否含税
-#
-# 采购询价
-#
-#     日系
-#         型号 市场价-最高 市场价-最低 报价单位 报价时间
-#
-#     欧系
-#         型号 市场价-最高 市场价-最低 报价单位 报价时间
-#
-#     SKF同行
-#         型号 市场价-最高 市场价-最低 报价单位 报价时间
-

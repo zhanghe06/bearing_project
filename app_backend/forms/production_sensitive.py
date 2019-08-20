@@ -8,21 +8,14 @@
 @time: 2018-08-14 16:34
 """
 
-
 from __future__ import unicode_literals
 
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, IntegerField, SelectField
-from wtforms.validators import DataRequired, ValidationError, Length, InputRequired
+from wtforms.validators import DataRequired, Length, InputRequired
 
-from wtforms.widgets import HTMLString
-from wtforms.compat import text_type, iteritems
-from wtforms.widgets import html_params
-
-from app_backend.api.production import get_production_row
-from app_backend.models.bearing_project import Production
-from app_common.maps.default import default_search_choice_option_str, default_search_choice_option_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_STR_OPTION
 
 
 class ProductionSensitiveSearchForm(FlaskForm):
@@ -57,7 +50,7 @@ class ProductionSensitiveSearchForm(FlaskForm):
     production_brand = SelectField(
         _('production brand'),
         validators=[],  # 字符类型，非必填
-        default=default_search_choice_option_str,
+        default=DEFAULT_SEARCH_CHOICES_STR_OPTION,
         description=_('production brand'),
         render_kw={
             'rel': 'tooltip',

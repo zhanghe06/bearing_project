@@ -10,10 +10,9 @@
 
 from __future__ import unicode_literals
 
-from flask_babel import lazy_gettext as _
 from wtforms import SelectField, BooleanField
+from wtforms.compat import text_type
 from wtforms.widgets import HTMLString
-from wtforms.compat import text_type, iteritems
 from wtforms.widgets import html_params
 
 

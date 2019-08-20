@@ -12,17 +12,16 @@ from __future__ import unicode_literals
 
 from flask_babel import lazy_gettext as _
 
-
 # 整数索引（默认）
-default_search_choices_int = [(-1, _('All'))]  # 需要copy, 不要直接引用
-default_search_choice_option_int = -1
+DEFAULT_SEARCH_CHOICES_INT = [(-1, _('All'))]  # 需要copy, 不要直接引用
+DEFAULT_SEARCH_CHOICES_INT_OPTION = -1
 
-default_select_choices_int = [(0, _('Choose an option'))]  # 需要copy, 不要直接引用
-default_select_choice_option_int = 0
+DEFAULT_SELECT_CHOICES_INT = [(0, _('Choose an option'))]  # 需要copy, 不要直接引用
+DEFAULT_SELECT_CHOICES_INT_OPTION = 0
 
 # 字符索引
-default_search_choices_str = [('', _('All'))]  # 需要copy, 不要直接引用
-default_search_choice_option_str = ''
+DEFAULT_SEARCH_CHOICES_STR = [('', _('All'))]  # 需要copy, 不要直接引用
+DEFAULT_SEARCH_CHOICES_STR_OPTION = ''
 
-default_select_choices_str = [('', _('Choose an option'))]  # 需要copy, 不要直接引用
-default_select_choice_option_str = ''
+DEFAULT_SELECT_CHOICES_STR = [('', _('Choose an option'))]  # 需要copy, 不要直接引用
+DEFAULT_SELECT_CHOICES_STR_OPTION = ''

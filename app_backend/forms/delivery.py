@@ -8,37 +8,22 @@
 @time: 2019-02-11 17:41
 """
 
-
 from __future__ import unicode_literals
-
-
-# import sys
-# reload(sys)
-# sys.setdefaultencoding('utf8')
-
-
-from flask_babel import lazy_gettext as _
-from six import iteritems
-from datetime import datetime, timedelta
-
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, \
-    DecimalField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress, Optional
-from wtforms.fields import FieldList, FormField, HiddenField
-
-from app_backend.forms import SelectBS, CheckBoxBS
-from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
-# from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 
 from copy import deepcopy
 
-from app_common.maps.type_tax import TYPE_TAX_CHOICES
+from flask_babel import lazy_gettext as _
+from flask_wtf import FlaskForm
+from six import iteritems
+from wtforms import StringField, BooleanField, DateField, IntegerField, SelectField, \
+    DecimalField
+from wtforms.fields import FieldList, FormField, HiddenField
+from wtforms.validators import InputRequired, DataRequired, ValidationError, \
+    Optional
 
-role_id_choices = deepcopy(default_search_choices_int)
-role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
+# from app_backend.api.user import get_user_rows
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT, DEFAULT_SEARCH_CHOICES_INT_OPTION, DEFAULT_SELECT_CHOICES_INT_OPTION
+from app_common.maps.type_role import TYPE_ROLE_DICT
 
 
 class AmountDeliveryValidate(object):
@@ -69,7 +54,7 @@ class DeliverySearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
         # choices=quotation_brand_choices,
         description=_('delivery user'),
@@ -107,7 +92,6 @@ class DeliverySearchForm(FlaskForm):
     start_create_time = DateField(
         _('start time'),
         validators=[Optional()],
-        # default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -119,7 +103,6 @@ class DeliverySearchForm(FlaskForm):
     end_create_time = DateField(
         _('end time'),
         validators=[Optional()],
-        # default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),
@@ -310,7 +293,7 @@ class DeliveryAddForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SELECT_CHOICES_INT_OPTION,
         coerce=int,
         # choices=quotation_brand_choices,
         description=_('delivery user'),
@@ -371,7 +354,7 @@ class DeliveryAddForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SELECT_CHOICES_INT_OPTION,
         coerce=int,
         description=_('warehouse name'),
         render_kw={

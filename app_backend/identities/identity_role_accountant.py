@@ -17,6 +17,7 @@ from app_backend.identities import setup_section, setup_section_action
 # 模块通用操作
 role_accountant_section_action = {
     # 基础模块
+    'account': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     'user': ['search', 'stats', 'get'],
     # 资源模块 - 销售
     'customer': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],

@@ -8,76 +8,33 @@
 @time: 2018-03-16 10:00
 """
 
-
 from __future__ import unicode_literals
 
-import json
-from datetime import datetime, timedelta
-from sqlalchemy import or_
 from flask import (
     request,
     flash,
     render_template,
-    url_for,
-    redirect,
     abort,
-    jsonify,
     Blueprint,
 )
 from flask_babel import gettext as _
-from flask_login import login_required, current_user
+from flask_login import login_required
+from sqlalchemy import or_
 
-from app_backend.api.catalogue import get_catalogue_choices
-from app_backend.api.customer import get_customer_choices, get_customer_row_by_id
-from app_backend.api.user import get_user_choices
-from app_backend.forms.production import ProductionSelectForm
-from app_backend.forms.quotation import QuotationItemEditForm
 from app_backend import (
     app,
     excel,
 )
-from app_backend.api.quotation import (
-    get_quotation_pagination,
-    get_quotation_row_by_id,
-    add_quotation,
-    edit_quotation,
-    get_quotation_rows,
-    get_distinct_quotation_uid,
-    get_distinct_quotation_cid,
-    quotation_total_stats,
-    quotation_order_stats,
-    get_quotation_user_list_choices, get_quotation_customer_list_choices)
-
-from app_backend.api.quotation_items import get_quotation_items_rows, add_quotation_items, edit_quotation_items, \
-    delete_quotation_items, get_quotation_items_pagination
-from wtforms.fields import FieldList, FormField
-from app_backend.forms.quotation import (
-    QuotationSearchForm,
-    QuotationAddForm,
-    QuotationEditForm,
-)
+from app_backend.api.quotation_items import get_quotation_items_rows, get_quotation_items_pagination
 from app_backend.forms.quotation_items import QuotationItemsSearchForm
-from app_backend.models.bearing_project import Quotation, QuotationItems
+from app_backend.models.bearing_project import QuotationItems
 from app_backend.permissions.quotation import (
-    permission_quotation_section_add,
     permission_quotation_section_search,
-    permission_quotation_section_stats,
     permission_quotation_section_export,
-    permission_quotation_section_get,
-    permission_quotation_section_edit,
-    permission_quotation_section_del,
-    permission_quotation_section_audit,
-    permission_quotation_section_print,
 )
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
+from app_common.maps.operations import OPERATION_EXPORT
 from app_common.maps.status_delete import (
-    STATUS_DEL_OK,
     STATUS_DEL_NO)
-from app_common.maps.status_order import STATUS_ORDER_CHOICES
-from app_common.maps.type_role import (
-    TYPE_ROLE_SALES,
-)
-from app_common.tools import json_default
 
 # 定义蓝图
 bp_quotation_items = Blueprint('quotation_items', __name__, url_prefix='/quotation/items')
@@ -133,7 +90,7 @@ def lists():
             if form.end_create_time.data:
                 search_condition.append(QuotationItems.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_quotation_section_export.can():
                 abort(403)

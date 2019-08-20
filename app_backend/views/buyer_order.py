@@ -10,7 +10,6 @@
 
 from __future__ import unicode_literals
 
-import json
 from datetime import datetime
 
 from flask import (
@@ -27,21 +26,23 @@ from flask import (
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
 from flask_weasyprint import render_pdf, HTML, CSS
+from werkzeug import exceptions
+
 from app_backend import (
     app,
     excel,
 )
-from werkzeug import exceptions
-
 # 定义蓝图
 from app_backend.api.buyer_order import get_buyer_order_rows, edit_buyer_order, get_buyer_order_pagination, \
     add_buyer_order, get_buyer_order_row_by_id
-from app_backend.api.buyer_order_items import add_buyer_order_items, get_buyer_order_items_rows, edit_buyer_order_items, delete_buyer_order_items
 from app_backend.api.buyer_order import get_buyer_order_user_list_choices
+from app_backend.api.buyer_order_items import add_buyer_order_items, get_buyer_order_items_rows, edit_buyer_order_items, \
+    delete_buyer_order_items
+from app_backend.api.supplier import get_supplier_row_by_id
 from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
 from app_backend.api.user import get_user_choices, get_user_row_by_id
-from app_backend.api.supplier import get_supplier_row_by_id
-from app_backend.forms.buyer_order import BuyerOrderSearchForm, BuyerOrderAddForm, BuyerOrderEditForm, BuyerOrderItemsEditForm
+from app_backend.forms.buyer_order import BuyerOrderSearchForm, BuyerOrderAddForm, BuyerOrderEditForm, \
+    BuyerOrderItemsEditForm
 from app_backend.models.bearing_project import BuyerOrder
 from app_backend.permissions.buyer_order import (
     permission_buyer_order_section_add,
@@ -54,13 +55,12 @@ from app_backend.permissions.buyer_order import (
     permission_buyer_order_section_audit,
     permission_buyer_order_section_print,
 )
-
 from app_backend.signals.buyer_orders import signal_buyer_orders_status_delete
-from app_common.maps.default import default_search_choice_option_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
+from app_common.maps.status_audit import STATUS_AUDIT_OK
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
-from app_common.maps.status_audit import STATUS_AUDIT_NO, STATUS_AUDIT_OK
-
-from app_common.tools.date_time import time_utc_to_local, time_local_to_utc
+from app_common.tools.date_time import time_utc_to_local
 
 bp_buyer_order = Blueprint('buyer_order', __name__, url_prefix='/buyer/order')
 
@@ -100,7 +100,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_search_choice_option_int:
+            if form.uid.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(BuyerOrder.uid == form.uid.data)
             if form.supplier_cid.data and form.supplier_company_name.data:
                 search_condition.append(BuyerOrder.cid == form.supplier_cid.data)
@@ -109,7 +109,7 @@ def lists():
             if form.end_create_time.data:
                 search_condition.append(BuyerOrder.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_buyer_order_section_export.can():
                 abort(403)
@@ -123,7 +123,7 @@ def lists():
                 file_name='%s.csv' % _('buyer order lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             # 检查删除权限
             if not permission_buyer_order_section_del.can():
                 abort(403)
@@ -561,7 +561,8 @@ def info(buyer_order_id):
         abort(410)
 
     buyer_order_print_date = time_utc_to_local(buyer_order_info.update_time).strftime('%Y-%m-%d')
-    buyer_order_code = '%s%s' % (g.BUYER_ORDER_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
+    buyer_order_code = '%s%s' % (
+        g.BUYER_ORDER_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
     supplier_info = get_supplier_row_by_id(buyer_order_info.supplier_cid)
@@ -612,7 +613,8 @@ def preview(buyer_order_id):
         abort(410)
 
     buyer_order_print_date = time_utc_to_local(buyer_order_info.update_time).strftime('%Y-%m-%d')
-    buyer_order_code = '%s%s' % (g.BUYER_ORDER_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
+    buyer_order_code = '%s%s' % (
+        g.BUYER_ORDER_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
     supplier_info = get_supplier_row_by_id(buyer_order_info.supplier_cid)
@@ -663,7 +665,8 @@ def pdf(buyer_order_id):
         abort(410)
 
     buyer_order_print_date = time_utc_to_local(buyer_order_info.update_time).strftime('%Y-%m-%d')
-    buyer_order_code = '%s%s' % (g.BUYER_ORDER_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
+    buyer_order_code = '%s%s' % (
+        g.BUYER_ORDER_PREFIX, time_utc_to_local(buyer_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
     supplier_info = get_supplier_row_by_id(buyer_order_info.supplier_cid)

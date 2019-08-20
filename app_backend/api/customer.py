@@ -16,7 +16,7 @@ from app_backend.models.bearing_project import Customer
 from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
-from app_common.maps.type_company import TYPE_COMPANY_MIDDLEMAN, TYPE_COMPANY_END_USER
+from app_common.maps.type_company import TYPE_COMPANY_MIDDLEMAN, TYPE_COMPANY_FINAL_USER
 
 db_instance = DbInstance(db)
 
@@ -205,7 +205,7 @@ def customer_end_user_stats(time_based='hour'):
     终端客户统计
     :return:
     """
-    condition = [Customer.company_type == TYPE_COMPANY_END_USER]
+    condition = [Customer.company_type == TYPE_COMPANY_FINAL_USER]
     # 按小时统计
     if time_based == 'hour':
         start_time, end_time = get_current_day_time_ends()

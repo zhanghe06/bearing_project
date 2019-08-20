@@ -8,37 +8,18 @@
 @time: 2018-09-12 22:18
 """
 
-
 from __future__ import unicode_literals
 
-
-# import sys
-# reload(sys)
-# sys.setdefaultencoding('utf8')
-
-
 from flask_babel import lazy_gettext as _
-from six import iteritems
-from datetime import datetime, timedelta
-
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, \
+from wtforms import StringField, BooleanField, DateField, IntegerField, SelectField, \
     DecimalField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress, Optional
-from wtforms.fields import FieldList, FormField, HiddenField
+from wtforms.fields import FieldList, FormField
+from wtforms.validators import InputRequired, DataRequired, ValidationError, \
+    Optional
 
-from app_backend.forms import SelectBS, CheckBoxBS
-from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
-# from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
-
-from copy import deepcopy
-
-from app_common.maps.type_tax import TYPE_TAX_CHOICES
-
-role_id_choices = deepcopy(default_search_choices_int)
-role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_SEARCH
 
 
 class AmountEnquiryValidate(object):
@@ -69,9 +50,8 @@ class EnquirySearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
-        # choices=enquiry_brand_choices,
         description=_('enquiry user'),
         render_kw={
             'rel': 'tooltip',
@@ -107,7 +87,6 @@ class EnquirySearchForm(FlaskForm):
     start_create_time = DateField(
         _('start time'),
         validators=[Optional()],
-        # default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -119,7 +98,6 @@ class EnquirySearchForm(FlaskForm):
     end_create_time = DateField(
         _('end time'),
         validators=[Optional()],
-        # default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),
@@ -131,7 +109,7 @@ class EnquirySearchForm(FlaskForm):
     op = IntegerField(
         _('operation'),
         validators=[],
-        default=0,
+        default=OPERATION_SEARCH,
     )
     page = IntegerField(
         _('page'),
@@ -431,119 +409,7 @@ class EnquiryAddForm(FlaskForm):
     )
 
 
-class EnquiryEditForm(FlaskForm):
-    uid = SelectField(
-        _('enquiry user'),
-        validators=[],
-        coerce=int,
-        description=_('enquiry user'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('enquiry user'),
-        }
-    )
-    supplier_cid = IntegerField(
-        _('supplier company id'),
-        validators=[
-            DataRequired(),
-        ],
-        default=0,
-        description=_('supplier company id'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('supplier company id'),
-            'placeholder': _('supplier company id'),
-            'autocomplete': 'off',
-            'type': 'hidden',
-        }
-    )
-    supplier_company_name = StringField(
-        _('supplier company name'),
-        validators=[],
-        description=_('supplier company name'),
-        render_kw={
-            'placeholder': _('supplier company name'),
-            'rel': 'tooltip',
-            'title': _('supplier company name'),
-        }
-    )
-    supplier_contact_id = IntegerField(
-        _('supplier contact id'),
-        validators=[
-            DataRequired(),
-        ],
-        default=0,
-        description=_('supplier contact id'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('supplier contact id'),
-            'type': 'hidden',
-        }
-    )
-    supplier_contact_name = StringField(
-        _('supplier contact name'),
-        validators=[],
-        description=_('supplier contact name'),
-        render_kw={
-            'placeholder': _('supplier contact name'),
-            'rel': 'tooltip',
-            'title': _('supplier contact name'),
-        }
-    )
-    delivery_way = StringField(
-        _('delivery way'),
-        validators=[],
-        description=_('delivery way'),
-        render_kw={
-            'placeholder': _('delivery way'),
-            'rel': 'tooltip',
-            'title': _('delivery way'),
-        }
-    )
-    note = StringField(
-        _('enquiry note'),
-        validators=[],
-        description=_('enquiry note'),
-        render_kw={
-            'placeholder': _('enquiry note'),
-            'rel': 'tooltip',
-            'title': _('enquiry note'),
-        }
-    )
-    status_order = SelectField(
-        _('order status'),
-        validators=[
-            InputRequired(),
-        ],
-        coerce=int,
-        description=_('order status'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('order status'),
-        }
-    )
-    amount_enquiry = DecimalField(
-        _('amount enquiry'),
-        validators=[
-            AmountEnquiryValidate()
-        ],
-        description=_('amount enquiry'),
-        render_kw={
-            'placeholder': _('amount enquiry'),
-            'rel': 'tooltip',
-            'title': _('amount enquiry'),
-            'type': 'number',
-            'readonly': 'readonly',
-        }
-    )
-    data_line_add = IntegerField(
-        '数据行新增',
-        validators=[],
-    )
-    data_line_del = IntegerField(
-        '数据行删除',
-        validators=[],
-    )
+class EnquiryEditForm(EnquiryAddForm):
     enquiry_items = FieldList(
         FormField(EnquiryItemEditForm),
         label='报价明细',

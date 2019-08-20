@@ -25,7 +25,9 @@ def ignore_exception(func):
         except Exception as e:
             print('Function name:', func.__name__)
             print('Function args:', args, kwargs)
-            print('Function error:', e)
+            print('Exception error:', e)
+            print('Exception module:', e.__class__.__module__)
+            print('Exception class name:', e.__class__.__name__)
 
     return wrapper
 

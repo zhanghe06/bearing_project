@@ -10,18 +10,13 @@
 
 from __future__ import unicode_literals
 
-import json
 from copy import copy
-from datetime import datetime
 
 from flask import (
     request,
     flash,
     render_template,
-    url_for,
-    redirect,
     abort,
-    jsonify,
     Blueprint,
 )
 from flask_babel import gettext as _
@@ -31,9 +26,6 @@ from app_backend import app
 from app_backend import excel
 from app_backend.api.catalogue import (
     get_catalogue_pagination,
-    get_catalogue_row_by_id,
-    add_catalogue,
-    edit_catalogue,
     # production_current_stats,
     # production_former_stats,
 )
@@ -43,10 +35,7 @@ from app_backend.api.production import (
 )
 from app_backend.forms.production import (
     ProductionSearchForm,
-    ProductionAddForm,
-    ProductionEditForm,
 )
-from app_backend.models.bearing_project import Catalogue
 # from app_backend.permissions import (
 #     permission_catalogue_section_add,
 #     permission_catalogue_section_search,
@@ -54,12 +43,7 @@ from app_backend.models.bearing_project import Catalogue
 #     permission_catalogue_section_stats,
 #     permission_role_administrator,
 # )
-from app_common.maps.default import default_search_choices_str, default_search_choice_option_str
-from app_common.maps.status_delete import (
-    STATUS_DEL_OK,
-)
-from app_common.maps.type_role import TYPE_ROLE_MANAGER
-from app_common.tools import json_default
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_STR, DEFAULT_SEARCH_CHOICES_STR_OPTION
 
 # 定义蓝图
 bp_catalogue = Blueprint('catalogue', __name__, url_prefix='/catalogue')
@@ -72,7 +56,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_production_brand_choices():
-    production_brand_list = copy(default_search_choices_str)
+    production_brand_list = copy(DEFAULT_SEARCH_CHOICES_STR)
     distinct_brand = get_distinct_production_brand()
     production_brand_list.extend([(brand, brand) for brand in distinct_brand])
     return production_brand_list
@@ -107,7 +91,7 @@ def lists(page=1):
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.production_brand.data != default_search_choice_option_str:
+            if form.production_brand.data != DEFAULT_SEARCH_CHOICES_STR_OPTION:
                 search_condition.append(Production.production_brand == form.production_brand.data)
             if form.production_model.data:
                 search_condition.append(Production.production_model == form.production_model.data)

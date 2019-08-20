@@ -25,10 +25,6 @@
                                 {{ form.role_id.label() }}
                                 {{ form.role_id(class="form-control input-sm") }}
                             </div>
-                            <div class="form-group{% if form.parent_id.errors %} has-error{% endif %}">
-                                {{ form.parent_id.label() }}
-                                {{ form.parent_id(class="form-control input-sm") }}
-                            </div>
                             <button type="submit" class="btn-sm btn-primary" name="op"
                                     value="0">{{ _('Search') }}</button>
                         </div>
@@ -44,7 +40,6 @@
                         <th></th>
                         <th>{{ _('user name') }}</th>
                         <th>{{ _('role type') }}</th>
-                        <th>所属领导</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -64,9 +59,6 @@
                                 {{ info.role_id | type_role }}
                                 <input name="role_type" disabled="disabled" type="hidden"
                                        value="{{ info.role_id }}"/>
-                            </td>
-                            <td>{{ info.parent_id | user_name }}
-                                <input name="user_parent" disabled="disabled" type="hidden" value="{{ info.parent_id }}"/>
                             </td>
                         </tr>
                     {% endfor %}

@@ -10,17 +10,9 @@
 
 from __future__ import unicode_literals
 
-import json
-from copy import copy
-from datetime import datetime
-
 from flask import (
     request,
-    flash,
     render_template,
-    url_for,
-    redirect,
-    abort,
     jsonify,
     Blueprint,
 )
@@ -28,26 +20,20 @@ from flask_babel import gettext as _
 from flask_login import login_required
 
 from app_backend import app
-
 from app_backend.api.catalogue import delete_catalogue_table, count_catalogue, add_catalogue
 from app_backend.api.futures import delete_futures_table, add_futures, count_futures
-from app_backend.models.bearing_project import Catalogue
-from app_backend.forms.system import CatalogueUploadForm
-
 from app_backend.api.production import delete_production_table, count_production, add_production
-from app_backend.models.bearing_project import Production
-from app_backend.forms.system import ProductionUploadForm
-
 from app_backend.api.quotation import delete_quotation_table, count_quotation, add_quotation
-from app_backend.models.bearing_project import Quotation
+from app_backend.forms.system import CatalogueUploadForm
+from app_backend.forms.system import ProductionUploadForm
 from app_backend.forms.system import QuotationUploadForm
-
+from app_backend.models.bearing_project import Catalogue
+from app_backend.models.bearing_project import Production
+from app_backend.models.bearing_project import Quotation
 from app_backend.permissions import (
     permission_role_administrator,
 )
-
 from app_common.maps.type_tax import TYPE_TAX_NOT
-
 # 定义蓝图
 from app_common.tools.file import get_file_size, bytes2human
 

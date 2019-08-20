@@ -9,17 +9,18 @@
 """
 
 from __future__ import unicode_literals
+
+from datetime import datetime
+
 from flask import Blueprint
 from flask import render_template
-from flask_socketio import send, emit
-from copy import copy
-from datetime import datetime
 from flask_babel import gettext as _
 from flask_login import (
     user_logged_in,
     user_logged_out,
     user_loaded_from_cookie,
 )
+from flask_socketio import emit
 
 from app_backend import app, socketio
 

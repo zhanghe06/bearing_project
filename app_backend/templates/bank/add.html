@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-accountant').trigger('click')">{{ _('accountant management') }}</a></li>
+            <li class="active">{{ _('bank add') }}</li>
+        </ol>
+        <form class="form-horizontal" method="post" action="">
+            {{ form.csrf_token }}
+            <div class="form-group{% if form.bank_name.errors %} has-error{% endif %}">
+                {{ form.bank_name.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.bank_name(class="form-control", title=form.bank_name.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.bank_name.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.type_bank.errors %} has-error{% endif %}">
+                {{ form.type_bank.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.type_bank(class="form-control", title=form.type_bank.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.type_bank.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.initial_balance.errors %} has-error{% endif %}">
+                {{ form.initial_balance.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.initial_balance(class="form-control", title=form.initial_balance.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.initial_balance.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.closing_balance.errors %} has-error{% endif %}">
+                {{ form.closing_balance.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.closing_balance(class="form-control", title=form.closing_balance.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.closing_balance.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.note.errors %} has-error{% endif %}">
+                {{ form.note.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.note(class="form-control", title=form.note.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.note.description }}</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-load"
+                            data-loading-text="{{ _('Submitting') }}">{{ _('Submit') }}</button>
+                    <button type="reset" class="btn btn-default">{{ _('Reset') }}</button>
+                    <button class="btn btn-default" onclick="history.back();return false">{{ _('Go Back') }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

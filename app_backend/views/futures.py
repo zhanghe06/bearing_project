@@ -45,8 +45,8 @@ from app_backend.permissions.futures import (
     permission_futures_section_get,
     permission_futures_section_del,
 )
-from app_common.maps.default import default_search_choices_str, \
-    default_search_choice_option_str
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_STR, \
+    DEFAULT_SEARCH_CHOICES_STR_OPTION
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
@@ -62,7 +62,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_futures_brand_choices():
-    futures_brand_list = copy(default_search_choices_str)
+    futures_brand_list = copy(DEFAULT_SEARCH_CHOICES_STR)
     distinct_brand = get_distinct_futures_brand(status_delete=STATUS_DEL_NO)
     futures_brand_list.extend([(brand, brand) for brand in distinct_brand])
     return futures_brand_list
@@ -97,7 +97,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.production_brand.data != default_search_choice_option_str:
+            if form.production_brand.data != DEFAULT_SEARCH_CHOICES_STR_OPTION:
                 search_condition.append(Futures.production_brand == form.production_brand.data)
             if form.production_model.data:
                 search_condition.append(Futures.production_model.like('%%%s%%' % form.production_model.data))

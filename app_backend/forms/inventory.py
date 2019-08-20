@@ -10,23 +10,14 @@
 
 from __future__ import unicode_literals
 
-import re
-import time
-from flask import session
-from six import iteritems
-from datetime import datetime, timedelta
 from flask_babel import lazy_gettext as _
-
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, HiddenField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress
+from wtforms import StringField, IntegerField, SelectField, \
+    HiddenField
+from wtforms.validators import InputRequired, DataRequired, Length
 
-from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
-from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int, default_search_choice_option_str
-
-from copy import copy
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION, \
+    DEFAULT_SEARCH_CHOICES_STR_OPTION
 
 
 class InventorySearchForm(FlaskForm):
@@ -35,7 +26,7 @@ class InventorySearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
         description=_('warehouse name'),
         render_kw={
@@ -48,7 +39,7 @@ class InventorySearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
         description=_('rack name'),
         render_kw={
@@ -59,7 +50,7 @@ class InventorySearchForm(FlaskForm):
     production_brand = SelectField(
         _('production brand'),
         validators=[],  # 字符类型，非必填
-        default=default_search_choice_option_str,
+        default=DEFAULT_SEARCH_CHOICES_STR_OPTION,
         description=_('production brand'),
         render_kw={
             'rel': 'tooltip',

@@ -10,24 +10,12 @@
 
 from __future__ import unicode_literals
 
-import re
-import time
-from flask import session
-from six import iteritems
-from datetime import datetime, timedelta
 from flask_babel import lazy_gettext as _
-
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress
+from wtforms import StringField, IntegerField, SelectField
+from wtforms.validators import InputRequired, DataRequired
 
-from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
-from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int, default_search_choices_str, \
-    default_search_choice_option_str
-
-from copy import copy
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
 
 
 class RackSearchForm(FlaskForm):
@@ -36,7 +24,7 @@ class RackSearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
         description=_('warehouse name'),
         render_kw={
@@ -73,7 +61,7 @@ class RackAddForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
         description=_('warehouse name'),
         render_kw={
@@ -96,4 +84,3 @@ class RackAddForm(FlaskForm):
 
 class RackEditForm(RackAddForm):
     pass
-

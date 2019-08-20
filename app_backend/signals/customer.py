@@ -33,6 +33,7 @@ def customer_status_delete(sender, **extra):
         1、开票资料删除状态同步更新
         2、联系方式删除状态同步更新
         3、客户报价删除状态同步更新
+        4、客户销货删除状态同步更新
     :param sender:
     :param extra:
     :return:
@@ -68,7 +69,7 @@ def customer_status_delete(sender, **extra):
 
     # 3、客户报价删除状态同步更新
     # 报价总表
-    quotation_items = get_quotation_rows(cid=customer_id)
+    quotation_items = get_quotation_rows(customer_cid=customer_id)
     for quotation_item in quotation_items:
         quotation_item_id = quotation_item.id
         quotation_item_data = {

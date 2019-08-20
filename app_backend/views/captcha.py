@@ -8,10 +8,6 @@
 @time: 2018-03-17 22:20
 """
 
-# from StringIO import StringIO     # PY2
-# from io import StringIO           # PY3
-from six import StringIO
-
 from flask import (
     Blueprint,
     request,
@@ -20,6 +16,9 @@ from flask import (
     abort,
     jsonify,
 )
+# from StringIO import StringIO     # PY2
+# from io import StringIO           # PY3
+from six import StringIO
 
 from app_backend import app
 from app_common.libs.captcha import Captcha

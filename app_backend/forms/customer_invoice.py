@@ -8,19 +8,12 @@
 @time: 2018-08-08 13:27
 """
 
-
 from __future__ import unicode_literals
 
-import time
-from datetime import datetime, timedelta
-from six import iteritems
 from flask_babel import lazy_gettext as _
-
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, \
-    FieldList, FormField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress
+from wtforms import StringField, DateField, IntegerField
+from wtforms.validators import InputRequired, DataRequired, Length
 
 
 class CustomerInvoiceSearchForm(FlaskForm):

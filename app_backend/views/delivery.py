@@ -8,10 +8,8 @@
 @time: 2018-08-31 15:41
 """
 
-
 from __future__ import unicode_literals
 
-import json
 from datetime import datetime
 
 from flask import (
@@ -28,52 +26,42 @@ from flask import (
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
 from flask_weasyprint import render_pdf, HTML, CSS
+from werkzeug import exceptions
 
 from app_backend import (
     app,
     excel,
 )
-from werkzeug import exceptions
-
 from app_backend.api.customer import get_customer_row_by_id
 from app_backend.api.customer_contact import get_customer_contact_row_by_id
-from app_backend.api.rack import get_rack_choices
-from app_backend.api.supplier import get_supplier_row_by_id
-from app_backend.api.warehouse import get_warehouse_choices
-from app_backend.signals.delivery import signal_delivery_status_delete
-
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
 from app_backend.api.delivery import add_delivery, get_delivery_user_list_choices, get_delivery_rows, \
     get_delivery_pagination, edit_delivery, get_delivery_row_by_id, audit_delivery, cancel_audit_delivery
 from app_backend.api.delivery_items import add_delivery_items, edit_delivery_items, get_delivery_items_rows, \
     delete_delivery_items
+from app_backend.api.rack import get_rack_choices
 from app_backend.api.user import get_user_choices, get_user_row_by_id
-from app_backend.forms.delivery import DeliverySearchForm, DeliveryEditForm, DeliveryItemsEditForm
+from app_backend.api.warehouse import get_warehouse_choices
 from app_backend.forms.delivery import DeliveryAddForm
-from app_common.maps.status_order import STATUS_ORDER_CHOICES
-from app_common.maps.status_delete import (
-    STATUS_DEL_OK,
-    STATUS_DEL_NO
-)
+from app_backend.forms.delivery import DeliverySearchForm, DeliveryEditForm, DeliveryItemsEditForm
+from app_backend.models.bearing_project import Delivery
+from app_backend.permissions.sales_delivery import (
+    permission_delivery_section_add,
+    permission_delivery_section_search,
+    permission_delivery_section_export,
+    permission_delivery_section_edit,
+    permission_delivery_section_del,
+    permission_delivery_section_audit)
+from app_backend.signals.delivery import signal_delivery_status_delete
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_audit import (
     STATUS_AUDIT_OK,
     STATUS_AUDIT_NO
 )
-
-from app_backend.models.bearing_project import Delivery
-
-from app_backend.permissions.sales_delivery import (
-    permission_delivery_section_add,
-    permission_delivery_section_search,
-    permission_delivery_section_stats,
-    permission_delivery_section_export,
-    permission_delivery_section_get,
-    permission_delivery_section_edit,
-    permission_delivery_section_del,
-    permission_delivery_section_audit,
-    permission_delivery_section_print,
+from app_common.maps.status_delete import (
+    STATUS_DEL_OK,
+    STATUS_DEL_NO
 )
-
 # 定义蓝图
 from app_common.tools.date_time import time_utc_to_local
 
@@ -111,7 +99,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_search_choice_option_int:
+            if form.uid.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Delivery.uid == form.uid.data)
             if form.customer_cid.data and form.customer_company_name.data:
                 search_condition.append(Delivery.cid == form.customer_cid.data)
@@ -120,7 +108,7 @@ def lists():
             if form.end_create_time.data:
                 search_condition.append(Delivery.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_delivery_section_export.can():
                 abort(403)
@@ -134,7 +122,7 @@ def lists():
                 file_name='%s.csv' % _('delivery lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             # 检查删除权限
             if not permission_delivery_section_del.can():
                 abort(403)
@@ -336,15 +324,11 @@ def add():
 
 @bp_delivery.route('/<int:delivery_id>/edit.html', methods=['GET', 'POST'])
 @login_required
+@permission_delivery_section_edit.require(http_exception=403)
 def edit(delivery_id):
     """
     销售出货编辑
     """
-    # 检查编辑权限
-    delivery_item_edit_permission = DeliveryItemEditPermission(delivery_id)
-    if not delivery_item_edit_permission.can():
-        abort(403)
-
     delivery_info = get_delivery_row_by_id(delivery_id)
     # 检查资源是否存在
     if not delivery_info:
@@ -716,6 +700,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_delivery_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -726,13 +716,6 @@ def ajax_delete():
     delivery_id = request.args.get('delivery_id', 0, type=int)
     if not delivery_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    delivery_item_del_permission = DeliveryItemDelPermission(delivery_id)
-    if not delivery_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 
@@ -781,6 +764,12 @@ def ajax_audit():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查审核权限
+    if not permission_delivery_section_audit.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -796,13 +785,6 @@ def ajax_audit():
         return jsonify(ajax_failure_msg)
     if audit_status not in [STATUS_AUDIT_NO, STATUS_AUDIT_OK]:
         ext_msg = _('Status not exist')
-        ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查审核权限
-    delivery_item_audit_permission = DeliveryItemAuditPermission(delivery_id)
-    if not delivery_item_audit_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Audit Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

@@ -1,0 +1,159 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('index') }}">{{ _('management center') }}</a></li>
+            <li><a href="javascript:void(0);"
+                   onclick="$('#menu-accountant').trigger('click')">{{ _('accountant management') }}</a></li>
+            <li class="active">{{ _('bank account lists') }}</li>
+        </ol>
+        <form method="post">
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSearch">
+                    <h4 class="panel-title panel-title-sm">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                           aria-expanded="true" aria-controls="collapseSearch">
+                            {{ _('Search toolbar') }}
+                            <span class="panel_resize_btn glyphicon glyphicon-resize-small pull-right"
+                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                                  data-placement="left"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="headingSearch">
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            {{ form.csrf_token }}
+                            <div class="form-group form-group-sm{% if form.bank_id.errors %} has-error{% endif %}">
+                                {{ form.bank_id.label() }}
+                                {{ form.bank_id(class="form-control") }}
+                            </div>
+                            <div class="form-group form-group-sm{% if form.type_current.errors %} has-error{% endif %}">
+                                {{ form.type_current.label() }}
+                                {{ form.type_current(class="form-control") }}
+                            </div>
+                            <div class="form-group form-group-sm{% if form.type_account.errors %} has-error{% endif %}">
+                                {{ form.type_account.label() }}
+                                {{ form.type_account(class="form-control") }}
+                            </div>
+                            <div class="form-group form-group-sm{% if form.start_record_date.errors %} has-error{% endif %}">
+                                {{ form.start_record_date.label() }}
+                                {{ form.start_record_date(class="form-control") }}
+                            </div>
+                            <div class="form-group form-group-sm{% if form.end_record_date.errors %} has-error{% endif %}">
+                                {{ form.end_record_date.label() }}
+                                {{ form.end_record_date(class="form-control") }}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                    value="0">{{ _('Search') }}</button>
+                        {% if permission_account_section_export.can() %}
+                            <button type="submit" class="btn btn-primary btn-sm" name="op"
+                                    value="1">{{ _('Export') }}</button>
+                        {% endif %}
+                        {% if permission_account_section_del.can() %}
+                            <button type="submit" class="btn-sm btn-danger delete_all" name="op"
+                                    value="2">{{ _('Delete') }}</button>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                {#         <table class="table table-striped">#}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <label class="select_all_label">
+                                <input class="select_all" name="bank_ids" title="{{- _('Select All') -}}"
+                                       rel="tooltip" type="checkbox" value=""/>
+                                {{- _('Select All') -}}
+                            </label>
+                        </th>
+                        <th>{{ _('bank name') }}</th>
+                        <th>{{ _('current type') }}</th>
+                        <th>{{ _('company name') }}</th>
+                        <th>{{ _('account type') }}</th>
+                        <th>{{ _('amount') }}</th>
+                        <th>{{ _('record date') }}</th>
+                        <th>{{ _('create time') }}</th>
+                        <th>{{ _('update time') }}</th>
+                        <th>{{ _('operation') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for info in pagination.items %}
+                        <tr class="text-muted item">
+                            <td>
+                                <label>
+                                    <input class="select_item" name="bank_id" title="{{ _('Select') }}"
+                                           rel="tooltip" type="checkbox" value="{{ info.id }}"/>
+                                </label>
+                            </td>
+                            <td>{{ info.bank_id }}</td>
+                            <td>{{ info.type_current }}</td>
+                            <td>{{ info.company_name }}</td>
+                            <td>{{ info.type_account }}</td>
+                            <td>{{ info.amount }}</td>
+                            <td>{{ info.record_date }}</td>
+                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                            <td style="min-width: 8em;">
+                                <!-- Split button -->
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-default"
+                                       href="{{ url_for('bank.edit', bank_id=info.id, next=request.path) }}">
+                                        <span class="glyphicon glyphicon-pencil"></span> {{ _('Edit') }}
+                                    </a>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="javascript:void(0);" onclick="bank_delete({{ info.id }})">
+                                                <span class="glyphicon glyphicon-trash"></span> {{ _('Delete') }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {# 翻页 #}
+                {% from "macros.html" import render_pagination_post %}
+                {{ render_pagination_post(pagination, 'bank_account.lists') }}
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // 银行删除
+        function bank_account_delete (bank_account_id) {
+            if (confirm('{{ _('Deleted data can not be recovered, whether to confirm deletion?') }}')) {
+                $.getJSON('{{ url_for('bank.ajax_delete') }}',
+                    {
+                        bank_account_id: bank_account_id
+                    }, function (data) {
+                        if (data.result === true) {
+                            alert(data.msg)
+                        } else {
+                            alert(data.msg)
+                        }
+                        window.location.reload()
+                    })
+                return false
+            }
+        }
+    </script>
+{% endblock %}

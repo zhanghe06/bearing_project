@@ -32,9 +32,7 @@ from app_backend import (
     excel,
 )
 from app_backend.api.supplier import (
-    get_supplier_pagination,
     get_supplier_row_by_id,
-    add_supplier,
     edit_supplier,
     get_supplier_rows,
     supplier_middleman_stats,
@@ -42,7 +40,6 @@ from app_backend.api.supplier import (
 )
 from app_backend.api.supplier_contact import (
     get_supplier_contact_pagination,
-    get_supplier_contact_row_by_id,
     add_supplier_contact,
     edit_supplier_contact,
     get_supplier_contact_rows,
@@ -51,29 +48,20 @@ from app_backend.api.supplier_contact import (
 from app_backend.api.user import (
     get_user_rows
 )
-from app_backend.forms.supplier import (
-    SupplierSearchForm,
-    SupplierAddForm,
-    SupplierEditForm,
-)
 from app_backend.forms.supplier_contact import (
     SupplierContactSearchForm,
     # SupplierContactAddForm,
     SupplierContactEditForm,
     SupplierContactItemEditForm)
-from app_backend.models.bearing_project import Supplier, SupplierContact
+from app_backend.models.bearing_project import SupplierContact
 from app_backend.permissions.supplier import (
-    permission_supplier_section_add,
     permission_supplier_section_search,
     permission_supplier_section_stats,
     permission_supplier_section_export,
-    permission_supplier_section_get,
     permission_supplier_section_edit,
-    permission_supplier_section_del,
-    permission_supplier_section_audit,
-    permission_supplier_section_print,
-)
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
+    permission_supplier_section_del)
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
@@ -94,7 +82,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
 def get_sales_user_list():
-    sales_user_list = deepcopy(default_search_choices_int)
+    sales_user_list = deepcopy(DEFAULT_SEARCH_CHOICES_INT)
     user_list = get_user_rows(**{'role_id': TYPE_ROLE_SALES})
     sales_user_list.extend([(0, '-')])
     sales_user_list.extend([(user.id, user.name) for user in user_list])
@@ -139,7 +127,7 @@ def lists():
                 search_condition.append(SupplierContact.mobile == form.mobile.data)
 
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_supplier_section_export.can():
                 abort(403)
@@ -152,6 +140,36 @@ def lists():
                 file_type='csv',
                 file_name='%s.csv' % _('supplier contact lists')
             )
+        # 批量删除
+        if form.op.data == OPERATION_DELETE:
+            # 检查删除权限
+            if not permission_supplier_section_del.can():
+                abort(403)
+            supplier_contact_ids = request.form.getlist('supplier_contact_id')
+            # 检查删除权限
+            permitted = True
+            for supplier_contact_id in supplier_contact_ids:
+                # TODO 资源删除权限验证
+                if False:
+                    ext_msg = _('Permission Denied')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+            if permitted:
+                result_total = True
+                for supplier_contact_id in supplier_contact_ids:
+                    current_time = datetime.utcnow()
+                    supplier_contact_data = {
+                        'status_delete': STATUS_DEL_OK,
+                        'delete_time': current_time,
+                        'update_time': current_time,
+                    }
+                    result = edit_supplier_contact(supplier_contact_id, supplier_contact_data)
+                    result_total = result_total and result
+                if result_total:
+                    flash(_('Del Success'), 'success')
+                else:
+                    flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_supplier_contact_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
@@ -303,7 +321,8 @@ def edit(supplier_id):
                 result = result and add_supplier_contact(supplier_contact_item_data)
             else:
                 # 修改
-                result = result and edit_supplier_contact(supplier_contact_item.form.id.data, supplier_contact_item_data)
+                result = result and edit_supplier_contact(supplier_contact_item.form.id.data,
+                                                          supplier_contact_item_data)
                 supplier_contact_items_ids_new.append(supplier_contact_item.form.id.data)
         # 删除
         supplier_contact_items_ids_del = list(set(supplier_contact_items_ids) - set(supplier_contact_items_ids_new))
@@ -380,6 +399,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_supplier_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -390,13 +415,6 @@ def ajax_delete():
     supplier_id = request.args.get('supplier_id', 0, type=int)
     if not supplier_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    supplier_item_del_permission = SupplierItemDelPermission(supplier_id)
-    if not supplier_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

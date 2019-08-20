@@ -44,3 +44,5 @@
 一般账户 | general account
 应收账款 | account receivable
 应付账款 | account payable
+入账记录 | account receive
+出账记录 | account payment

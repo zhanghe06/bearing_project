@@ -22,19 +22,9 @@
         <form class="form-inline" id="search_form" method="post">
             {{ form.csrf_token }}
 
-            <div class="form-group{% if form.cid.errors or form.company_name.errors %} has-error{% endif %}">
-                {{ form.cid() }}
+            <div class="form-group">
                 {{ form.company_name.label() }}
-                <div class="input-group">
-                    {{ form.company_name(
-                        class="form-control input-sm",
-                        title=form.cid.errors|join(', ') or form.company_name.errors|join(', '),
-                        autocomplete="off"
-                        ) }}
-                    <span class="input-group-addon glyphicon glyphicon-option-horizontal customer_select_search_btn"
-                          style="top: 0; cursor:pointer;" data-toggle="modal"
-                          data-target="#customer_select_modal"></span>
-                </div>
+                {{ form.company_name(class="form-control") }}
             </div>
 
             <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
@@ -69,7 +59,6 @@
                     {% for info in form.customer_contact_items %}
                         <tr class="text-muted">
                             {{ info.form.id() }}
-                            {{ info.form.cid() }}
                             <td>
                                 <span readonly="readonly" class="form-control input-sm">{{ loop.index }}</span>
                             </td>
@@ -115,15 +104,11 @@
         </form>
         <hr/>
     </div>
-    <!-- 客户搜索 -->
-    {% include "modal/customer_select.html" %}
-
 
 {% endblock %}
 
 {% block extra_js %}
-<!-- 客户搜索 -->
-{% include "modal/customer_select_js.html" %}
+
 <script>
     // 全选点击事件
     $('input[name$="status_default"]').on('change', function () {

@@ -10,7 +10,6 @@
 
 from __future__ import unicode_literals
 
-import json
 from datetime import datetime, timedelta
 
 from flask import (
@@ -27,31 +26,23 @@ from flask_babel import gettext as _
 from flask_login import login_required, current_user
 from flask_weasyprint import render_pdf, HTML, CSS
 
-from app_backend.api.catalogue import get_catalogue_choices
-from app_backend.api.customer import get_customer_choices, get_customer_row_by_id
-from app_backend.api.customer_contact import get_customer_contact_row_by_id
-from app_backend.api.user import get_user_choices, get_user_row_by_id
-from app_backend.forms.production import ProductionSelectForm
-from app_backend.forms.quotation import QuotationItemEditForm
 from app_backend import (
     app,
     excel,
 )
+from app_backend.api.customer import get_customer_row_by_id
+from app_backend.api.customer_contact import get_customer_contact_row_by_id
 from app_backend.api.quotation import (
     get_quotation_pagination,
     get_quotation_row_by_id,
     add_quotation,
     edit_quotation,
     get_quotation_rows,
-    get_distinct_quotation_uid,
-    get_distinct_quotation_cid,
-    quotation_total_stats,
-    quotation_order_stats,
-    get_quotation_user_list_choices, get_quotation_customer_list_choices)
-
+    get_quotation_user_list_choices)
 from app_backend.api.quotation_items import get_quotation_items_rows, add_quotation_items, edit_quotation_items, \
     delete_quotation_items
-from wtforms.fields import FieldList, FormField
+from app_backend.api.user import get_user_choices, get_user_row_by_id
+from app_backend.forms.quotation import QuotationItemEditForm
 from app_backend.forms.quotation import (
     QuotationSearchForm,
     QuotationAddForm,
@@ -70,16 +61,12 @@ from app_backend.permissions.quotation import (
     permission_quotation_section_print,
 )
 from app_backend.signals.quotation import signal_quotation_status_delete
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
 from app_common.maps.status_order import STATUS_ORDER_CHOICES
-from app_common.maps.type_role import (
-    TYPE_ROLE_SALES,
-)
-from app_common.tools import json_default
-
 # 定义蓝图
 from app_common.tools.date_time import time_utc_to_local
 
@@ -121,7 +108,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_search_choice_option_int:
+            if form.uid.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Quotation.uid == form.uid.data)
             if form.customer_cid.data and form.customer_company_name.data:
                 search_condition.append(Quotation.customer_cid == form.customer_cid.data)
@@ -130,7 +117,7 @@ def lists():
             if form.end_create_time.data:
                 search_condition.append(Quotation.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_quotation_section_export.can():
                 abort(403)
@@ -144,7 +131,7 @@ def lists():
                 file_name='%s.csv' % _('quotation lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             # 检查删除权限
             if not permission_quotation_section_del.can():
                 abort(403)
@@ -585,7 +572,8 @@ def info(quotation_id):
         abort(410)
 
     quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
-    quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
+    quotation_code = '%s%s' % (
+        g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
     customer_info = get_customer_row_by_id(quotation_info.customer_cid)
@@ -636,7 +624,8 @@ def preview(quotation_id):
         abort(410)
 
     quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
-    quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
+    quotation_code = '%s%s' % (
+        g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
     customer_info = get_customer_row_by_id(quotation_info.customer_cid)
@@ -687,7 +676,8 @@ def pdf(quotation_id):
         abort(410)
 
     quotation_print_date = time_utc_to_local(quotation_info.update_time).strftime('%Y-%m-%d')
-    quotation_code = '%s%s' % (g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
+    quotation_code = '%s%s' % (
+        g.QUOTATION_PREFIX, time_utc_to_local(quotation_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
     customer_info = get_customer_row_by_id(quotation_info.customer_cid)

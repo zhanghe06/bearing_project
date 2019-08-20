@@ -10,8 +10,6 @@
 
 from __future__ import unicode_literals
 
-import json
-from copy import copy
 from datetime import datetime
 
 from flask import (
@@ -30,9 +28,6 @@ from flask_login import login_required
 from app_backend import app
 from app_backend import excel
 from app_backend.api.inventory import count_inventory
-from app_backend.api.warehouse import (
-    get_warehouse_choices,
-)
 from app_backend.api.rack import (
     get_rack_pagination,
     get_rack_row_by_id,
@@ -46,31 +41,28 @@ from app_backend.api.rack import (
     get_rack_rows,
     # get_distinct_brand,
 )
+from app_backend.api.warehouse import (
+    get_warehouse_choices,
+)
 from app_backend.forms.rack import (
     RackSearchForm,
     RackAddForm,
     RackEditForm,
 )
 from app_backend.models.bearing_project import Rack
-from app_backend.permissions import permission_role_administrator, permission_role_stock_keeper
-
 from app_backend.permissions.rack import (
     permission_rack_section_add,
     permission_rack_section_search,
-    permission_rack_section_stats,
     permission_rack_section_export,
     permission_rack_section_get,
     permission_rack_section_edit,
     permission_rack_section_del,
-    permission_rack_section_audit,
-    permission_rack_section_print,
 )
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
-from app_common.maps.type_role import TYPE_ROLE_MANAGER
-from app_common.tools import json_default
 
 # 定义蓝图
 bp_rack = Blueprint('rack', __name__, url_prefix='/rack')
@@ -111,12 +103,12 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.warehouse_id.data != default_search_choice_option_int:
+            if form.warehouse_id.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Rack.warehouse_id == form.warehouse_id.data)
             if form.name.data:
                 search_condition.append(Rack.name == form.name.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_rack_section_export.can():
                 abort(403)
@@ -130,7 +122,7 @@ def lists():
                 file_name='%s.csv' % _('rack lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             # 检查删除权限
             if not permission_rack_section_del.can():
                 abort(403)

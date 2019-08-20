@@ -11,7 +11,6 @@
 from __future__ import unicode_literals
 
 import json
-from copy import deepcopy
 from datetime import datetime
 
 from flask import (
@@ -32,9 +31,7 @@ from app_backend import (
     excel,
 )
 from app_backend.api.customer import (
-    get_customer_pagination,
     get_customer_row_by_id,
-    add_customer,
     edit_customer,
     get_customer_rows,
     customer_middleman_stats,
@@ -42,44 +39,27 @@ from app_backend.api.customer import (
 )
 from app_backend.api.customer_contact import (
     get_customer_contact_pagination,
-    get_customer_contact_row_by_id,
     add_customer_contact,
     edit_customer_contact,
     get_customer_contact_rows,
     delete_customer_contact,
-)
-from app_backend.api.user import (
-    get_user_rows
-)
-from app_backend.forms.customer import (
-    CustomerSearchForm,
-    CustomerAddForm,
-    CustomerEditForm,
 )
 from app_backend.forms.customer_contact import (
     CustomerContactSearchForm,
     # CustomerContactAddForm,
     CustomerContactEditForm,
     CustomerContactItemEditForm)
-from app_backend.models.bearing_project import Customer, CustomerContact
+from app_backend.models.bearing_project import CustomerContact
 from app_backend.permissions.customer import (
-    permission_customer_section_add,
     permission_customer_section_search,
     permission_customer_section_stats,
     permission_customer_section_export,
-    permission_customer_section_get,
     permission_customer_section_edit,
-    permission_customer_section_del,
-    permission_customer_section_audit,
-    permission_customer_section_print,
-)
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
+    permission_customer_section_del)
+from app_common.maps.operations import OPERATION_DELETE, OPERATION_EXPORT
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
-from app_common.maps.type_role import (
-    TYPE_ROLE_SALES,
-)
 from app_common.tools import json_default
 
 # 定义蓝图
@@ -91,14 +71,6 @@ PER_PAGE_BACKEND = app.config.get('PER_PAGE_BACKEND', 20)
 PER_PAGE_BACKEND_MODAL = app.config.get('PER_PAGE_BACKEND_MODAL', 10)
 AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
-
-
-def get_sales_user_list():
-    sales_user_list = deepcopy(default_search_choices_int)
-    user_list = get_user_rows(**{'role_id': TYPE_ROLE_SALES})
-    sales_user_list.extend([(0, '-')])
-    sales_user_list.extend([(user.id, user.name) for user in user_list])
-    return sales_user_list
 
 
 @bp_customer_contact.route('/lists.html', methods=['GET', 'POST'])
@@ -139,7 +111,7 @@ def lists():
                 search_condition.append(CustomerContact.mobile == form.mobile.data)
 
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_customer_section_export.can():
                 abort(403)
@@ -152,6 +124,36 @@ def lists():
                 file_type='csv',
                 file_name='%s.csv' % _('customer contact lists')
             )
+        # 批量删除
+        if form.op.data == OPERATION_DELETE:
+            # 检查删除权限
+            if not permission_customer_section_del.can():
+                abort(403)
+            customer_contact_ids = request.form.getlist('customer_contact_id')
+            # 检查删除权限
+            permitted = True
+            for customer_contact_id in customer_contact_ids:
+                # TODO 资源删除权限验证
+                if False:
+                    ext_msg = _('Permission Denied')
+                    flash(_('Del Failure, %(ext_msg)s', ext_msg=ext_msg), 'danger')
+                    permitted = False
+                    break
+            if permitted:
+                result_total = True
+                for customer_contact_id in customer_contact_ids:
+                    current_time = datetime.utcnow()
+                    customer_contact_data = {
+                        'status_delete': STATUS_DEL_OK,
+                        'delete_time': current_time,
+                        'update_time': current_time,
+                    }
+                    result = edit_customer_contact(customer_contact_id, customer_contact_data)
+                    result_total = result_total and result
+                if result_total:
+                    flash(_('Del Success'), 'success')
+                else:
+                    flash(_('Del Failure'), 'danger')
     # 翻页数据
     pagination = get_customer_contact_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition)
 
@@ -184,8 +186,7 @@ def edit(customer_id):
 
     # 加载编辑表单
     form = CustomerContactEditForm(request.form)
-    form.cid.choices = customer_id
-    form.company_name.choices = customer_info.company_name
+    form.company_name.data = customer_info.company_name
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -196,15 +197,12 @@ def edit(customer_id):
         # 获取明细
         customer_contact_items = get_customer_contact_rows(cid=customer_id)
         # 表单赋值
-        form.cid.data = customer_info.id
-        form.company_name.data = customer_info.company_name
         # form.quotation_items = quotation_items
         while len(form.customer_contact_items) > 0:
             form.customer_contact_items.pop_entry()
         for customer_contact_item in customer_contact_items:
             customer_contact_item_form = CustomerContactItemEditForm()
             customer_contact_item_form.id = customer_contact_item.id
-            customer_contact_item_form.cid = customer_contact_item.cid
             customer_contact_item_form.contact_name = customer_contact_item.name
             customer_contact_item_form.salutation = customer_contact_item.salutation
             customer_contact_item_form.mobile = customer_contact_item.mobile
@@ -303,7 +301,8 @@ def edit(customer_id):
                 result = result and add_customer_contact(customer_contact_item_data)
             else:
                 # 修改
-                result = result and edit_customer_contact(customer_contact_item.form.id.data, customer_contact_item_data)
+                result = result and edit_customer_contact(customer_contact_item.form.id.data,
+                                                          customer_contact_item_data)
                 customer_contact_items_ids_new.append(customer_contact_item.form.id.data)
         # 删除
         customer_contact_items_ids_del = list(set(customer_contact_items_ids) - set(customer_contact_items_ids_new))
@@ -380,6 +379,12 @@ def ajax_delete():
     ajax_success_msg = AJAX_SUCCESS_MSG.copy()
     ajax_failure_msg = AJAX_FAILURE_MSG.copy()
 
+    # 检查删除权限
+    if not permission_customer_section_del.can():
+        ext_msg = _('Permission Denied')
+        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
+        return jsonify(ajax_failure_msg)
+
     # 检查请求方法
     if not (request.method == 'GET' and request.is_xhr):
         ext_msg = _('Method Not Allowed')
@@ -390,13 +395,6 @@ def ajax_delete():
     customer_id = request.args.get('customer_id', 0, type=int)
     if not customer_id:
         ext_msg = _('ID does not exist')
-        ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
-        return jsonify(ajax_failure_msg)
-
-    # 检查删除权限
-    customer_item_del_permission = CustomerItemDelPermission(customer_id)
-    if not customer_item_del_permission.can():
-        ext_msg = _('Permission Denied')
         ajax_failure_msg['msg'] = _('Del Failure, %(ext_msg)s', ext_msg=ext_msg)
         return jsonify(ajax_failure_msg)
 

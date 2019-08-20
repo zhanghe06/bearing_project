@@ -139,6 +139,9 @@ from app_backend.views.delivery import bp_delivery
 from app_backend.views.system import bp_system
 # from app_backend.views.socket_io import bp_socket_io
 from app_backend.views.price import bp_price
+from app_backend.views.bank import bp_bank
+from app_backend.views.cash import bp_cash
+from app_backend.views.bank_account import bp_bank_account
 
 # 注册蓝图
 app.register_blueprint(bp_permissions)
@@ -170,6 +173,9 @@ app.register_blueprint(bp_delivery)
 app.register_blueprint(bp_system)
 # app.register_blueprint(bp_socket_io)
 app.register_blueprint(bp_price)
+app.register_blueprint(bp_bank)
+app.register_blueprint(bp_cash)
+app.register_blueprint(bp_bank_account)
 
 # 导入自定义过滤器
 from app_backend import filters

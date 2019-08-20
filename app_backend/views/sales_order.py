@@ -10,7 +10,6 @@
 
 from __future__ import unicode_literals
 
-import json
 from datetime import datetime
 
 from flask import (
@@ -26,28 +25,28 @@ from flask import (
 )
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
-from flask_principal import IdentityContext
 from flask_weasyprint import render_pdf, HTML, CSS
+from werkzeug import exceptions
+
 from app_backend import (
     app,
     excel,
 )
-from werkzeug import exceptions
-
 # 定义蓝图
 from app_backend.api.customer import get_customer_row_by_id
 from app_backend.api.customer_contact import get_customer_contact_row_by_id
 from app_backend.api.sales_order import get_sales_order_rows, edit_sales_order, get_sales_order_pagination, \
     add_sales_order, get_sales_order_row_by_id
-from app_backend.api.sales_order_items import add_sales_order_items, get_sales_order_items_rows, edit_sales_order_items, delete_sales_order_items
 from app_backend.api.sales_order import get_sales_order_user_list_choices
+from app_backend.api.sales_order_items import add_sales_order_items, get_sales_order_items_rows, edit_sales_order_items, \
+    delete_sales_order_items
 from app_backend.api.user import get_user_choices, get_user_row_by_id
-from app_backend.forms.sales_order import SalesOrderSearchForm, SalesOrderAddForm, SalesOrderEditForm, SalesOrderItemEditForm
+from app_backend.forms.sales_order import SalesOrderSearchForm, SalesOrderAddForm, SalesOrderEditForm, \
+    SalesOrderItemEditForm
 from app_backend.models.bearing_project import SalesOrder
 from app_backend.permissions.sales_order import (
     permission_sales_order_section_add,
     permission_sales_order_section_search,
-    permission_sales_order_section_stats,
     permission_sales_order_section_export,
     permission_sales_order_section_get,
     permission_sales_order_section_edit,
@@ -56,11 +55,11 @@ from app_backend.permissions.sales_order import (
     permission_sales_order_section_print,
 )
 from app_backend.signals.sales_orders import signal_sales_orders_status_delete
-from app_common.maps.default import default_search_choice_option_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_audit import STATUS_AUDIT_OK
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
-
-from app_common.tools.date_time import time_utc_to_local, time_local_to_utc
+from app_common.tools.date_time import time_utc_to_local
 
 # 定义蓝图
 bp_sales_order = Blueprint('sales_order', __name__, url_prefix='/sales/order')
@@ -101,7 +100,7 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.uid.data != default_search_choice_option_int:
+            if form.uid.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(SalesOrder.uid == form.uid.data)
             if form.customer_cid.data and form.customer_company_name.data:
                 search_condition.append(SalesOrder.cid == form.customer_cid.data)
@@ -110,7 +109,7 @@ def lists():
             if form.end_create_time.data:
                 search_condition.append(SalesOrder.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_sales_order_section_export.can():
                 abort(403)
@@ -124,7 +123,7 @@ def lists():
                 file_name='%s.csv' % _('sales order lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             # 检查删除权限
             if not permission_sales_order_section_del.can():
                 abort(403)
@@ -565,7 +564,8 @@ def info(sales_order_id):
         abort(410)
 
     sales_order_print_date = time_utc_to_local(sales_order_info.update_time).strftime('%Y-%m-%d')
-    sales_order_code = '%s%s' % (g.SALES_ORDER_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
+    sales_order_code = '%s%s' % (
+        g.SALES_ORDER_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
     customer_info = get_customer_row_by_id(sales_order_info.customer_cid)
@@ -616,7 +616,8 @@ def preview(sales_order_id):
         abort(410)
 
     sales_order_print_date = time_utc_to_local(sales_order_info.update_time).strftime('%Y-%m-%d')
-    sales_order_code = '%s%s' % (g.SALES_ORDER_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
+    sales_order_code = '%s%s' % (
+        g.SALES_ORDER_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取渠道公司信息
     customer_info = get_customer_row_by_id(sales_order_info.customer_cid)
@@ -667,7 +668,8 @@ def pdf(sales_order_id):
         abort(410)
 
     sales_order_print_date = time_utc_to_local(sales_order_info.update_time).strftime('%Y-%m-%d')
-    sales_order_code = '%s%s' % (g.SALES_ORDER_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
+    sales_order_code = '%s%s' % (
+        g.SALES_ORDER_PREFIX, time_utc_to_local(sales_order_info.create_time).strftime('%y%m%d%H%M%S'))
 
     # 获取客户公司信息
     customer_info = get_customer_row_by_id(sales_order_info.customer_cid)

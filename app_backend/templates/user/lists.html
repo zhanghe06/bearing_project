@@ -34,10 +34,6 @@
                                 {{ form.role_id.label() }}
                                 {{ form.role_id(class="form-control") }}
                             </div>
-                            <div class="form-group form-group-sm{% if form.parent_id.errors %} has-error{% endif %}">
-                                {{ form.parent_id.label() }}
-                                {{ form.parent_id(class="form-control") }}
-                            </div>
                             <div class="form-group form-group-sm{% if form.start_create_time.errors %} has-error{% endif %}">
                                 {{ form.start_create_time.label() }}
                                 {{ form.start_create_time(class="form-control") }}
@@ -77,7 +73,6 @@
                         <th>{{ _('user name') }}</th>
                         <th>{{ _('user mobile') }}</th>
                         <th>{{ _('user role') }}</th>
-                        <th>{{ _('user leader') }}</th>
                         <th>{{ _('online status') }}</th>
                         <th>{{ _('create time') }}</th>
                         <th>{{ _('update time') }}</th>
@@ -97,7 +92,6 @@
                                    title="{{ _('Click details') }}">{{ info.name }}</a> <small>{{ info.salutation }}</small></td>
                             <td>{{ info.mobile }}</td>
                             <td>{{ info.role_id | type_role }}</td>
-                            <td>{{ info.parent_id | user_name }}</td>
                             <td>{% if info.id | status_online %}
                                 <span class="label label-success">{{ _('Online') }}</span>{% else %}
                                 <span class="label label-default">{{ _('Offline') }}</span>{% endif %}</td>

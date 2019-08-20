@@ -10,7 +10,6 @@
 
 from __future__ import unicode_literals
 
-import json
 from datetime import datetime
 
 from flask import (
@@ -28,21 +27,18 @@ from flask_login import login_required
 
 from app_backend import app
 from app_backend import excel
+from app_backend.api.inventory import count_inventory
+from app_backend.api.rack import count_rack
 from app_backend.api.warehouse import (
     get_warehouse_pagination,
     get_warehouse_row_by_id,
     add_warehouse,
     edit_warehouse,
     get_warehouse_choices,
-    # warehouse_current_stats,
-    # warehouse_former_stats,
 )
 from app_backend.api.warehouse import (
     get_warehouse_rows,
-    # get_distinct_brand,
 )
-from app_backend.api.inventory import count_inventory
-from app_backend.api.rack import count_rack
 from app_backend.forms.warehouse import (
     WarehouseSearchForm,
     WarehouseAddForm,
@@ -50,25 +46,19 @@ from app_backend.forms.warehouse import (
 )
 from app_backend.models.bearing_project import Warehouse
 from app_backend.permissions import permission_role_administrator, permission_role_stock_keeper
-
 from app_backend.permissions.warehouse import (
     permission_warehouse_section_add,
     permission_warehouse_section_search,
-    permission_warehouse_section_stats,
     permission_warehouse_section_export,
     permission_warehouse_section_get,
     permission_warehouse_section_edit,
     permission_warehouse_section_del,
-    permission_warehouse_section_audit,
-    permission_warehouse_section_print,
 )
-
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
-from app_common.maps.type_role import TYPE_ROLE_MANAGER
-from app_common.tools import json_default
 
 # 定义蓝图
 bp_warehouse = Blueprint('warehouse', __name__, url_prefix='/warehouse')
@@ -85,7 +75,7 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 @permission_warehouse_section_search.require(http_exception=403)
 def lists():
     """
-    产品列表
+    仓库列表
     :return:
     """
     template_name = 'warehouse/lists.html'
@@ -109,12 +99,12 @@ def lists():
             if hasattr(form, 'csrf_token') and getattr(form, 'csrf_token').errors:
                 map(lambda x: flash(x, 'danger'), form.csrf_token.errors)
         else:
-            if form.id.data != default_search_choice_option_int:
+            if form.id.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Warehouse.id == form.id.data)
             if form.address.data:
                 search_condition.append(Warehouse.address == form.address.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_warehouse_section_export.can():
                 abort(403)
@@ -128,7 +118,7 @@ def lists():
                 file_name='%s.csv' % _('warehouse lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             warehouse_ids = request.form.getlist('warehouse_id')
             # 检查删除权限
             if not (permission_role_administrator.can() or permission_role_stock_keeper.can()):
@@ -182,7 +172,7 @@ def lists():
 @permission_warehouse_section_get.require(http_exception=403)
 def info(warehouse_id):
     """
-    产品详情
+    仓库详情
     :param warehouse_id:
     :return:
     """
@@ -206,7 +196,7 @@ def info(warehouse_id):
 @permission_warehouse_section_add.require(http_exception=403)
 def add():
     """
-    创建产品
+    创建仓库
     :return:
     """
     template_name = 'warehouse/add.html'
@@ -268,7 +258,7 @@ def add():
 @permission_warehouse_section_edit.require(http_exception=403)
 def edit(warehouse_id):
     """
-    产品编辑
+    仓库编辑
     """
     warehouse_info = get_warehouse_row_by_id(warehouse_id)
     # 检查资源是否存在

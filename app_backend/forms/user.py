@@ -10,34 +10,21 @@
 
 from __future__ import unicode_literals
 
-import re
-import time
-from flask import session
-from six import iteritems
-from datetime import datetime, timedelta
 from flask_babel import lazy_gettext as _
-
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress, Optional
+from wtforms import StringField, DateField, IntegerField, SelectField
+from wtforms.validators import InputRequired, DataRequired, Length, Optional
 
 from app_backend.validators.user import AddUserNameRepeatValidate, EditUserNameRepeatValidate
-from app_common.maps.type_role import TYPE_ROLE_DICT, TYPE_ROLE_MANAGER
-from app_backend.api.user import get_user_rows
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
-
-from copy import deepcopy
-
-role_id_choices = deepcopy(default_search_choices_int)
-role_id_choices.extend(iteritems(TYPE_ROLE_DICT))
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION, DEFAULT_SELECT_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_SEARCH
+from app_common.maps.type_role import TYPE_ROLE_SELECT_CHOICES, TYPE_ROLE_SEARCH_CHOICES
 
 
 class UserSearchForm(FlaskForm):
     """
     搜索表单
     """
-
     name = StringField(
         _('user name'),
         validators=[],
@@ -54,30 +41,18 @@ class UserSearchForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
-        choices=role_id_choices,
+        choices=TYPE_ROLE_SEARCH_CHOICES,
         description=_('user role'),
         render_kw={
             'rel': 'tooltip',
             'title': _('user role'),
         }
     )
-    parent_id = SelectField(
-        _('user leader'),
-        validators=[],
-        default=default_search_choice_option_int,
-        coerce=int,
-        description=_('user leader'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('user leader'),
-        }
-    )
     start_create_time = DateField(
         _('start time'),
         validators=[Optional()],
-        # default=datetime.utcnow() - timedelta(days=365),
         description=_('start time'),
         render_kw={
             'placeholder': _('start time'),
@@ -89,7 +64,6 @@ class UserSearchForm(FlaskForm):
     end_create_time = DateField(
         _('end time'),
         validators=[Optional()],
-        # default=datetime.utcnow() + timedelta(days=1),
         description=_('end time'),
         render_kw={
             'placeholder': _('end time'),
@@ -101,7 +75,7 @@ class UserSearchForm(FlaskForm):
     op = IntegerField(
         _('Option'),
         validators=[],
-        default=0,
+        default=OPERATION_SEARCH,
     )
     page = IntegerField(
         _('page'),
@@ -112,7 +86,7 @@ class UserSearchForm(FlaskForm):
 
 class UserAddForm(FlaskForm):
     """
-    创建表单（字段一般带有默认选项）
+    创建表单
     """
     name = StringField(
         _('user name'),
@@ -121,7 +95,6 @@ class UserAddForm(FlaskForm):
             Length(min=2, max=20),
             AddUserNameRepeatValidate(),
         ],
-        default='',
         description=_('user name'),
         render_kw={
             'placeholder': _('user name'),
@@ -132,7 +105,6 @@ class UserAddForm(FlaskForm):
     salutation = StringField(
         _('salutation'),
         validators=[],
-        default='',
         description=_('salutation'),
         render_kw={
             'placeholder': _('salutation'),
@@ -143,7 +115,6 @@ class UserAddForm(FlaskForm):
     mobile = StringField(
         _('mobile'),
         validators=[],
-        default='',
         description=_('mobile'),
         render_kw={
             'placeholder': _('mobile'),
@@ -154,7 +125,6 @@ class UserAddForm(FlaskForm):
     tel = StringField(
         _('tel'),
         validators=[],
-        default='',
         description=_('tel'),
         render_kw={
             'placeholder': _('tel'),
@@ -165,7 +135,6 @@ class UserAddForm(FlaskForm):
     fax = StringField(
         _('fax'),
         validators=[],
-        default='',
         description=_('fax'),
         render_kw={
             'placeholder': _('fax'),
@@ -176,7 +145,6 @@ class UserAddForm(FlaskForm):
     email = StringField(
         _('email'),
         validators=[],
-        default='',
         description=_('email'),
         render_kw={
             'placeholder': _('email'),
@@ -189,29 +157,18 @@ class UserAddForm(FlaskForm):
         validators=[
             InputRequired(),  # 可以为0
         ],
-        default=default_search_choice_option_int,
+        default=DEFAULT_SELECT_CHOICES_INT_OPTION,
         coerce=int,
-        choices=role_id_choices,
+        choices=TYPE_ROLE_SELECT_CHOICES,
         description=_('user role'),
         render_kw={
             'rel': 'tooltip',
             'title': _('user role'),
         }
     )
-    parent_id = SelectField(
-        _('user leader'),
-        validators=[],
-        default=default_search_choice_option_int,
-        coerce=int,
-        description=_('user leader'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('user leader'),
-        }
-    )
 
 
-class UserEditForm(FlaskForm):
+class UserEditForm(UserAddForm):
     """
     编辑表单（字段默认选项需要去除）
     """
@@ -231,92 +188,11 @@ class UserEditForm(FlaskForm):
             Length(min=2, max=20),
             EditUserNameRepeatValidate(),
         ],
-        default='',
         description=_('user name'),
         render_kw={
             'placeholder': _('user name'),
             'rel': 'tooltip',
             'title': _('user name'),
-        }
-    )
-    salutation = StringField(
-        _('salutation'),
-        validators=[],
-        default='',
-        description=_('salutation'),
-        render_kw={
-            'placeholder': _('salutation'),
-            'rel': 'tooltip',
-            'title': _('salutation'),
-        }
-    )
-    mobile = StringField(
-        _('mobile'),
-        validators=[],
-        default='',
-        description=_('mobile'),
-        render_kw={
-            'placeholder': _('mobile'),
-            'rel': 'tooltip',
-            'title': _('mobile'),
-        }
-    )
-    tel = StringField(
-        _('tel'),
-        validators=[],
-        default='',
-        description=_('tel'),
-        render_kw={
-            'placeholder': _('tel'),
-            'rel': 'tooltip',
-            'title': _('tel'),
-        }
-    )
-    fax = StringField(
-        _('fax'),
-        validators=[],
-        default='',
-        description=_('fax'),
-        render_kw={
-            'placeholder': _('fax'),
-            'rel': 'tooltip',
-            'title': _('fax'),
-        }
-    )
-    email = StringField(
-        _('email'),
-        validators=[],
-        default='',
-        description=_('email'),
-        render_kw={
-            'placeholder': _('email'),
-            'rel': 'tooltip',
-            'title': _('email'),
-        }
-    )
-    role_id = SelectField(
-        _('user role'),
-        validators=[
-            InputRequired(),  # 可以为0
-        ],
-        default=default_search_choice_option_int,
-        coerce=int,
-        choices=role_id_choices,
-        description=_('user role'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('user role'),
-        }
-    )
-    parent_id = SelectField(
-        _('user leader'),
-        validators=[],
-        default=default_search_choice_option_int,
-        coerce=int,
-        description=_('user leader'),
-        render_kw={
-            'rel': 'tooltip',
-            'title': _('user leader'),
         }
     )
     create_time = DateField(

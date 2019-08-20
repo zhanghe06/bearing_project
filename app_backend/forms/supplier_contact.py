@@ -8,25 +8,20 @@
 @time: 2018-09-12 15:41
 """
 
-
 from __future__ import unicode_literals
-
-import time
-from datetime import datetime, timedelta
-from six import iteritems
-from flask_babel import lazy_gettext as _
-
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField, SelectField, \
-    FieldList, FormField
-from wtforms.validators import InputRequired, DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, \
-    IPAddress
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
-from app_common.maps.type_company import TYPE_COMPANY_DICT
 
 from copy import copy
 
-company_type_choices = copy(default_search_choices_int)
+from flask_babel import lazy_gettext as _
+from flask_wtf import FlaskForm
+from six import iteritems
+from wtforms import StringField, BooleanField, DateField, IntegerField, FieldList, FormField
+from wtforms.validators import InputRequired, DataRequired, Length, ValidationError
+
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT
+from app_common.maps.type_company import TYPE_COMPANY_DICT
+
+company_type_choices = copy(DEFAULT_SEARCH_CHOICES_INT)
 company_type_choices.extend(iteritems(TYPE_COMPANY_DICT))
 
 
@@ -141,6 +136,7 @@ class SupplierContactItemEditForm(FlaskForm):
     """
     编辑表单（字段默认选项需要去除）
     """
+
     def __init__(self, *args, **kwargs):
         kwargs['csrf_enabled'] = False  # disable csrf
         FlaskForm.__init__(self, *args, **kwargs)

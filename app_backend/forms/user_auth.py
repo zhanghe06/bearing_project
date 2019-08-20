@@ -11,12 +11,12 @@
 from __future__ import unicode_literals
 
 import re
-import time
+
 from flask import session
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, DateField, DateTimeField, IntegerField
-from wtforms.validators import DataRequired, Length, NumberRange, EqualTo, Email, ValidationError, IPAddress
+from wtforms import StringField, PasswordField, BooleanField, DateField, IntegerField
+from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
 
 
 class CaptchaValidate(object):
@@ -115,7 +115,8 @@ class UserAuthEmailForm(FlaskForm):
             DataRequired(_('This field is required.')),
             Email(),
         ],
-        description=_('Type email, click the login button, then enter mailbox, click the authentication link to sign in'),
+        description=_(
+            'Type email, click the login button, then enter mailbox, click the authentication link to sign in'),
         render_kw={
             'placeholder': _('Email'),
             'type': 'email',
@@ -181,132 +182,4 @@ class UserAuthChangePasswordForm(FlaskForm):
             'minlength': 6,
             'maxlength': 20,
         }
-    )
-
-
-class UserAuthAddForm(FlaskForm):
-    """
-    创建表单（字段一般带有默认选项）
-    """
-    company_name = StringField(
-        '公司名称',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司名称，最大长度100字符'
-    )
-    company_address = StringField(
-        '公司地址',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司地址，最大长度100字符'
-    )
-    company_site = StringField(
-        '公司官网',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司官网，最大长度100字符'
-    )
-    company_tel = StringField(
-        '公司电话',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司电话，最大长度100字符'
-    )
-    company_fax = StringField(
-        '公司传真',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司传真，最大长度100字符'
-    )
-    company_type = IntegerField(
-        '公司类型',
-        validators=[DataRequired()],
-        default=0,
-        description='公司类型'
-    )
-    owner_uid = IntegerField(
-        '所属销售',
-        validators=[DataRequired()],
-        default=0,
-        description='所属销售'
-    )
-    status_delete = IntegerField(
-        '删除状态',
-        validators=[DataRequired()],
-        default=0,
-        description='删除状态'
-    )
-    delete_time = DateField(
-        '删除时间',
-        validators=[DataRequired()],
-        description='删除时间'
-    )
-    create_time = DateField(
-        '创建时间',
-        validators=[DataRequired()],
-        description='创建时间'
-    )
-    update_time = DateField(
-        '更新时间',
-        validators=[DataRequired()],
-        description='更新时间'
-    )
-
-
-class UserAuthEditForm(FlaskForm):
-    """
-    编辑表单（字段默认选项需要去除）
-    """
-    company_name = StringField(
-        '公司名称',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司名称，最大长度100字符'
-    )
-    company_address = StringField(
-        '公司地址',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司地址，最大长度100字符'
-    )
-    company_site = StringField(
-        '公司官网',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司官网，最大长度100字符'
-    )
-    company_tel = StringField(
-        '公司电话',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司电话，最大长度100字符'
-    )
-    company_fax = StringField(
-        '公司传真',
-        validators=[DataRequired(), Length(max=100)],
-        description='公司传真，最大长度100字符'
-    )
-    company_type = IntegerField(
-        '公司类型',
-        validators=[DataRequired()],
-        default=0,
-        description='公司类型'
-    )
-    owner_uid = IntegerField(
-        '所属销售',
-        validators=[DataRequired()],
-        default=0,
-        description='所属销售'
-    )
-    status_delete = IntegerField(
-        '删除状态',
-        validators=[DataRequired()],
-        default=0,
-        description='删除状态'
-    )
-    delete_time = DateField(
-        '删除时间',
-        validators=[DataRequired()],
-        description='删除时间'
-    )
-    create_time = DateField(
-        '创建时间',
-        validators=[DataRequired()],
-        description='创建时间'
-    )
-    update_time = DateField(
-        '更新时间',
-        validators=[DataRequired()],
-        description='更新时间'
     )

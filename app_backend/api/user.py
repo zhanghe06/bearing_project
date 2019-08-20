@@ -16,6 +16,7 @@ from app_common.libs.mysql_orm_op import DbInstance
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
+from app_common.maps.default import DEFAULT_SELECT_CHOICES_INT
 
 db_instance = DbInstance(db)
 
@@ -254,6 +255,5 @@ def get_user_choices():
     :return:
     """
     uid_list = get_user_rows(status_delete=STATUS_DEL_NO)
-    user_choices = [(user.id, user.name) for user in uid_list]
-    user_choices.insert(0, (0, '-'))
+    user_choices = DEFAULT_SELECT_CHOICES_INT + [(user.id, user.name) for user in uid_list]
     return user_choices

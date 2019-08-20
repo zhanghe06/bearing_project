@@ -266,12 +266,30 @@
                 </ul>
             </li>
         {% endif %}
-        {%- if False and(permission_role_administrator.can() or permission_role_accountant.can()) -%}
+        {%- if permission_account_section -%}
             <li{% if 'accountant/' in request.path %} class="active"{% endif %}>
                 <a id="menu-accountant" href="#"><i
                         class="fa fa-bar-chart fa-fw"></i> {{ _('accountant management') }}<span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url_for('bank.lists') }}">{{ _('bank lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('bank.add') }}">{{ _('bank add') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('cash.lists') }}">{{ _('cash lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('cash.add') }}">{{ _('cash add') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('bank_account.lists') }}">{{ _('bank account lists') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('bank_account.add') }}">{{ _('bank account add') }}</a>
+                    </li>
                     <li>
                         <a href="{{ url_for('warehouse.lists') }}">{{ _('accountant lists') }}</a>
                     </li>

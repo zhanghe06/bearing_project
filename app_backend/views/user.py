@@ -11,8 +11,7 @@
 from __future__ import unicode_literals
 
 import json
-from copy import copy
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from flask import (
     request,
@@ -29,12 +28,12 @@ from flask_login import login_required
 
 from app_backend import app
 from app_backend import excel
-from app_backend.api.quotation import count_quotation
-from app_backend.api.sales_order import count_sales_order
+from app_backend.api.buyer_order import count_buyer_order
 from app_backend.api.delivery import count_delivery
 from app_backend.api.enquiry import count_enquiry
-from app_backend.api.buyer_order import count_buyer_order
 from app_backend.api.purchase import count_purchase
+from app_backend.api.quotation import count_quotation
+from app_backend.api.sales_order import count_sales_order
 from app_backend.api.user import (
     get_user_rows,
     get_user_pagination,
@@ -42,8 +41,7 @@ from app_backend.api.user import (
     add_user,
     edit_user,
     user_current_stats,
-    user_former_stats,
-    get_user_choices)
+    user_former_stats)
 from app_backend.api.user_auth import (
     add_user_auth,
     edit_user_auth, get_user_auth_row)
@@ -53,8 +51,6 @@ from app_backend.forms.user import (
     UserEditForm,
 )
 from app_backend.models.bearing_project import User
-from app_backend.permissions import permission_role_administrator
-
 from app_backend.permissions.user import (
     permission_user_section_add,
     permission_user_section_search,
@@ -63,16 +59,14 @@ from app_backend.permissions.user import (
     permission_user_section_get,
     permission_user_section_edit,
     permission_user_section_del,
-    permission_user_section_audit,
-    permission_user_section_print,
 )
-from app_common.maps.default import default_search_choices_int, default_search_choice_option_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION
+from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
     STATUS_DEL_NO)
 from app_common.maps.status_verified import STATUS_VERIFIED_OK
 from app_common.maps.type_auth import TYPE_AUTH_ACCOUNT
-from app_common.maps.type_role import TYPE_ROLE_MANAGER, TYPE_ROLE_CHOICES
 from app_common.tools import json_default
 
 # 定义蓝图
@@ -83,14 +77,6 @@ DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 PER_PAGE_BACKEND = app.config.get('PER_PAGE_BACKEND', 20)
 AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
-
-
-def get_manager_user_list():
-    manager_user_list = copy(default_search_choices_int)
-    user_list = get_user_rows(**{'role_id': TYPE_ROLE_MANAGER})
-    manager_user_list.extend([(0, '-')])
-    manager_user_list.extend([(user.id, user.name) for user in user_list])
-    return manager_user_list
 
 
 @bp_user.route('/lists.html', methods=['GET', 'POST'])
@@ -108,8 +94,6 @@ def lists():
 
     # 搜索条件
     form = UserSearchForm(request.form)
-    form.parent_id.choices = get_manager_user_list()
-    # app.logger.info('')
 
     search_condition = [
         User.status_delete == STATUS_DEL_NO,
@@ -124,16 +108,14 @@ def lists():
         else:
             if form.name.data:
                 search_condition.append(User.name == form.name.data)
-            if form.role_id.data != default_search_choice_option_int:
+            if form.role_id.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(User.role_id == form.role_id.data)
-            if form.parent_id.data != default_search_choice_option_int:
-                search_condition.append(User.parent_id == form.parent_id.data)
             if form.start_create_time.data:
                 search_condition.append(User.create_time >= form.start_create_time.data)
             if form.end_create_time.data:
                 search_condition.append(User.create_time <= form.end_create_time.data)
         # 处理导出
-        if form.op.data == 1:
+        if form.op.data == OPERATION_EXPORT:
             # 检查导出权限
             if not permission_user_section_export.can():
                 abort(403)
@@ -147,7 +129,7 @@ def lists():
                 file_name='%s.csv' % _('user lists')
             )
         # 批量删除
-        if form.op.data == 2:
+        if form.op.data == OPERATION_DELETE:
             # 检查删除权限
             if not permission_user_section_del.can():
                 abort(403)
@@ -304,9 +286,6 @@ def add():
     # 加载创建表单
     form = UserAddForm(request.form)
 
-    form.role_id.choices = TYPE_ROLE_CHOICES
-    form.parent_id.choices = get_user_choices()
-
     # 进入创建页面
     if request.method == 'GET':
         # 渲染页面
@@ -339,7 +318,6 @@ def add():
             'fax': form.fax.data,
             'email': form.email.data,
             'role_id': form.role_id.data,
-            'parent_id': form.parent_id.data,
             'create_time': current_time,
             'update_time': current_time,
         }
@@ -394,9 +372,7 @@ def edit(user_id):
 
     # 加载编辑表单
     form = UserEditForm(request.form)
-
-    form.role_id.choices = TYPE_ROLE_CHOICES
-    form.parent_id.choices = get_user_choices()
+    form.id.data = user_id  # id 仅作为编辑重复校验
 
     # 文档信息
     document_info = DOCUMENT_INFO.copy()
@@ -413,7 +389,6 @@ def edit(user_id):
         form.fax.data = user_info.fax
         form.email.data = user_info.email
         form.role_id.data = user_info.role_id
-        form.parent_id.data = user_info.parent_id
         form.create_time.data = user_info.create_time
         form.update_time.data = user_info.update_time
         # 渲染页面
@@ -448,7 +423,6 @@ def edit(user_id):
             'fax': form.fax.data,
             'email': form.email.data,
             'role_id': form.role_id.data,
-            'parent_id': form.parent_id.data,
             'update_time': current_time,
         }
         result = edit_user(user_id, user_data)

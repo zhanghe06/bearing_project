@@ -10,7 +10,6 @@
 
 from __future__ import unicode_literals
 
-import json
 from datetime import datetime
 
 from flask import (
@@ -24,36 +23,26 @@ from flask import (
     Blueprint,
 )
 from flask_babel import gettext as _
-from flask_login import login_required, current_user
+from flask_login import login_required
 
+from app_backend import (
+    app,
+    excel,
+)
 from app_backend.api.customer import get_customer_row_by_id
 from app_backend.api.customer_invoice import get_customer_invoice_rows, get_customer_invoice_pagination, \
     get_customer_invoice_row_by_id, edit_customer_invoice, add_customer_invoice
-from app_backend.models.bearing_project import CustomerInvoice
-
 from app_backend.forms.customer_invoice import (
     CustomerInvoiceSearchForm,
     # CustomerInvoiceAddForm,
     # CustomerInvoiceEditForm,
     # CustomerInvoiceItemEditForm,
     CustomerInvoiceEditForm)
-
-from app_backend import (
-    app,
-    excel,
-)
-
-
+from app_backend.models.bearing_project import CustomerInvoice
 from app_backend.permissions.customer import (
-    permission_customer_section_add,
     permission_customer_section_search,
-    permission_customer_section_stats,
     permission_customer_section_export,
-    permission_customer_section_get,
     permission_customer_section_edit,
-    permission_customer_section_del,
-    permission_customer_section_audit,
-    permission_customer_section_print,
 )
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
 

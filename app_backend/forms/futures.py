@@ -13,16 +13,16 @@ from __future__ import unicode_literals
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, SelectField, DateField
-from wtforms.validators import InputRequired, Optional
+from wtforms.validators import Optional
 
-from app_common.maps.default import default_search_choice_option_int, default_search_choice_option_str
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_STR_OPTION
 
 
 class FuturesSearchForm(FlaskForm):
     production_brand = SelectField(
         _('production brand'),
         validators=[],  # 字符类型，非必填
-        default=default_search_choice_option_str,
+        default=DEFAULT_SEARCH_CHOICES_STR_OPTION,
         description=_('production brand'),
         render_kw={
             'rel': 'tooltip',

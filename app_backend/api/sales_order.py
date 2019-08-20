@@ -17,7 +17,7 @@ from app_backend.api.customer import get_customer_rows_by_ids
 from app_backend.api.user import get_user_rows_by_ids
 from app_common.libs.mysql_orm_op import DbInstance
 from app_backend.models.bearing_project import SalesOrder
-from app_common.maps.default import default_search_choices_int
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT
 from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
@@ -296,7 +296,7 @@ def get_distinct_sales_order_cid(*args, **kwargs):
 
 
 def get_sales_order_user_list_choices():
-    sales_orders_user_list = copy(default_search_choices_int)
+    sales_orders_user_list = copy(DEFAULT_SEARCH_CHOICES_INT)
     uid_list = get_distinct_sales_order_uid(status_delete=STATUS_DEL_NO)
     user_rows = get_user_rows_by_ids(uid_list)
     sales_orders_user_list.extend([(user.id, user.name) for user in user_rows])
@@ -305,7 +305,7 @@ def get_sales_order_user_list_choices():
 
 def get_sales_order_customer_list_choices(uid):
     # todo 移动到客户模块
-    sales_orders_user_list = copy(default_search_choices_int)
+    sales_orders_user_list = copy(DEFAULT_SEARCH_CHOICES_INT)
     cid_list = get_distinct_sales_order_cid(status_delete=STATUS_DEL_NO, uid=uid)
     customer_rows = get_customer_rows_by_ids(cid_list)
     sales_orders_user_list.extend([(customer.id, customer.company_name) for customer in customer_rows])

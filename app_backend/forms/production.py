@@ -13,16 +13,14 @@ from __future__ import unicode_literals
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, IntegerField, SelectField
-from wtforms.validators import DataRequired, ValidationError, Length
-
+from wtforms.compat import text_type
+from wtforms.validators import DataRequired, Length
 from wtforms.widgets import HTMLString
-from wtforms.compat import text_type, iteritems
 from wtforms.widgets import html_params
 
-from app_backend.api.production import get_production_row
-from app_backend.models.bearing_project import Production
 from app_backend.validators.production import AddProductionModelRepeatValidate, EditProductionModelRepeatValidate
-from app_common.maps.default import default_search_choice_option_str
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_STR_OPTION
+from app_common.maps.operations import OPERATION_SEARCH
 
 
 class ProductionSearchForm(FlaskForm):
@@ -32,7 +30,7 @@ class ProductionSearchForm(FlaskForm):
     production_brand = SelectField(
         _('production brand'),
         validators=[],  # 字符类型，非必填
-        default=default_search_choice_option_str,
+        default=DEFAULT_SEARCH_CHOICES_STR_OPTION,
         description=_('production brand'),
         render_kw={
             'rel': 'tooltip',
@@ -53,7 +51,7 @@ class ProductionSearchForm(FlaskForm):
     op = IntegerField(
         _('operation'),
         validators=[],
-        default=0,
+        default=OPERATION_SEARCH,
     )
     page = IntegerField(
         _('page'),
@@ -71,7 +69,6 @@ class ProductionAddForm(FlaskForm):
         validators=[
             DataRequired(),
         ],
-        default='',
         description='产品品牌（例如：SKF、FAG、NSK...）',
         render_kw={
             'placeholder': _('production brand'),
@@ -86,7 +83,6 @@ class ProductionAddForm(FlaskForm):
             DataRequired(),
             AddProductionModelRepeatValidate(),
         ],
-        default='',
         description='产品型号（例如：7008CEGA/HCP4A）',
         render_kw={
             'placeholder': _('production model'),
@@ -158,7 +154,6 @@ class ProductionAddForm(FlaskForm):
     note = StringField(
         _('production note'),
         validators=[],
-        default='',
         description='产品备注（例如：最小起订量12个）',
         render_kw={
             'placeholder': _('production note'),
@@ -275,7 +270,7 @@ class SelectProductionWidget(object):
         html = ['<select %s>' % html_params(**params)]
         for data_id, data_value, data_label, data_ext in field.choices:
             html.append('<option value="%s" data-subtext="[%s]" data-content=\'%s\'>%s</option>' % (
-            data_id, data_ext, data_label, data_value))
+                data_id, data_ext, data_label, data_value))
         html.append('</select>')
         return HTMLString('\n'.join(html))
 
