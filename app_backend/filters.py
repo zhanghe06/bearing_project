@@ -33,8 +33,8 @@ from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.maps.type_auth import TYPE_AUTH_DICT
 from app_common.maps.type_company import TYPE_COMPANY_DICT
 from app_common.maps.type_role import TYPE_ROLE_DICT
-from app_common.maps.type_tax import TYPE_TAX_DICT
-from app_common.maps.status_audit import STATUS_AUDIT_DICT
+from app_common.maps.type_tax import TYPE_TAX_DICT, TYPE_TAX_HTML_CLASS_DICT
+from app_common.maps.status_audit import STATUS_AUDIT_DICT, STATUS_AUDIT_HTML_CLASS_DICT
 from app_common.maps.status_order import STATUS_ORDER_DICT
 from app_backend.clients.client_redis import redis_client
 
@@ -252,6 +252,16 @@ def filter_type_tax(type_tax_id):
     return TYPE_TAX_DICT.get(type_tax_id, '')
 
 
+@app.template_filter('type_tax_html_class')
+def filter_type_tax_html_class(type_tax_id):
+    """
+    含税类型 - HTML显示
+    :param type_tax_id:
+    :return:
+    """
+    return TYPE_TAX_HTML_CLASS_DICT.get(type_tax_id, '')
+
+
 @app.template_filter('status_audit')
 def filter_status_audit(status_audit_id):
     """
@@ -260,6 +270,16 @@ def filter_status_audit(status_audit_id):
     :return:
     """
     return STATUS_AUDIT_DICT.get(status_audit_id, '')
+
+
+@app.template_filter('status_audit_html_class')
+def filter_status_audit_html_class(status_audit_id):
+    """
+    审核状态
+    :param status_audit_id:
+    :return:
+    """
+    return STATUS_AUDIT_HTML_CLASS_DICT.get(status_audit_id, '')
 
 
 @app.template_filter('status_order')

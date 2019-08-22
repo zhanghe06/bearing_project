@@ -22,3 +22,9 @@ STATUS_AUDIT_DICT = {
     STATUS_AUDIT_OK: _('Audit Success'),  # 审核成功
     STATUS_AUDIT_ER: _('Audit Failure'),  # 审核失败
 }
+
+STATUS_AUDIT_HTML_CLASS_DICT = {
+    STATUS_AUDIT_NO: 'glyphicon glyphicon-minus',  # 等待审核
+    STATUS_AUDIT_OK: 'glyphicon glyphicon-ok',  # 审核成功
+    STATUS_AUDIT_ER: 'glyphicon glyphicon-remove',  # 审核失败
+}

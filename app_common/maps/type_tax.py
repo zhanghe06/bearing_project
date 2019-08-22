@@ -23,5 +23,10 @@ TYPE_TAX_DICT = {
     TYPE_TAX_NOT: _('Not Tax'),  # 不含税
 }
 
+TYPE_TAX_HTML_CLASS_DICT = {
+    TYPE_TAX_HAS: 'glyphicon glyphicon-ok',  # 含税
+    TYPE_TAX_NOT: 'glyphicon glyphicon-minus',  # 不含税
+}
+
 TYPE_TAX_SELECT_CHOICES = DEFAULT_SELECT_CHOICES_INT + TYPE_TAX_DICT.items()  # 选择
 TYPE_TAX_SEARCH_CHOICES = DEFAULT_SEARCH_CHOICES_INT + TYPE_TAX_DICT.items()  # 搜索

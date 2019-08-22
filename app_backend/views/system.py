@@ -286,14 +286,22 @@ def futures_import():
             print(csv_head)
 
             skf_head = [
-                u'Sales Name', u'Customer ID', u'Short Name', u'Cust Order ID', u'Line.', u'Split L',
-                u'Customers own ord ID', u'Product Desgn', u'Product Desgn1', u'Text', u'Req qty',
-                u'Package Code',
-                u'Country/Manufactured', u'RTW Date', u'Last date shipped', u'Acc Del Date', u'Req del date',
-                u'Transport Code', u'Warehouse Ident', u'Currency code', u'Order line status',
-                u'Good Receiving Date',
-                u'Loading Set number', u'Unit Price', u'Net Sales', u'Run Date', u'DD Code', u'Diff Acc Days',
-                u'Diff RTW Days'
+                'Sales Name', 'Customer ID', 'Short Name', 'Cust Order ID', 'Line.', 'Split L',
+                'Customers own ord ID', 'Product Desgn', 'Product Desgn1', 'Text', 'Req qty',
+                'Package Code',
+                'Country/Manufactured', 'RTW Date', 'Last date shipped', 'Acc Del Date', 'Req del date',
+                'Transport Code', 'Warehouse Ident', 'Currency code', 'Order line status',
+                'Good Receiving Date',
+                'Loading Set number', 'Unit Price', 'Net Sales', 'Run Date', 'DD Code', 'Diff Acc Days',
+                'Diff RTW Days'
+            ]
+            
+            skf_head = [
+                '客户号', '客户简称', '客户订单号', '系统订单号', '系统行号', '系统分行号', '型号', '客户物料号', '订单备注', '要求交货数量', '本币单价',
+                '订单总额（本币）', '单价', '订单发货确认', '跟踪理由', '包装代码', '产地', '订单包装日', '发货日期', '当前确认的交货期', '要求交货期',
+                '运输方式(TMC)', '配送中心', '仓库', '订单状态', '实到库时间', '箱单号', '开发票日期', '配送时间', '发票控制代码', '订单控制代码',
+                '仓库指令代码', '供应商订单号', '供应商订单行', '供应商订单分行', '供应商发票号', '供应商', '公司代码', '确认的上一个交货期', '订单货期改变次数',
+                '货期差异', '信贷状态', '新计划交货日期', '币种', '销售员', '销售经理', '经销商集团', '信用证是否收到', '信用证收取截止日',
             ]
 
             skf_map = {
@@ -307,6 +315,19 @@ def futures_import():
                 'Unit Price': 'unit_price',
                 'Net Sales': 'sub_total',
                 'Customers own ord ID': 'note',
+            }
+
+            skf_map = {
+                '客户号': 'supplier_company_name',
+                # '': 'production_brand',
+                '型号': 'production_model',
+                '币种': 'currency',
+                '要求交货期': 'req_date',
+                '当前确认的交货期': 'acc_date',
+                '要求交货数量': 'quantity',
+                '单价': 'unit_price',
+                '订单总额（本币）': 'sub_total',
+                '客户订单号': 'note',
             }
 
             csv_count = len(csv_data)

@@ -95,7 +95,7 @@ def lists():
             if form.uid.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Purchase.uid == form.uid.data)
             if form.supplier_cid.data and form.supplier_company_name.data:
-                search_condition.append(Purchase.cid == form.supplier_cid.data)
+                search_condition.append(Purchase.supplier_cid == form.supplier_cid.data)
             if form.start_create_time.data:
                 search_condition.append(Purchase.create_time >= form.start_create_time.data)
             if form.end_create_time.data:

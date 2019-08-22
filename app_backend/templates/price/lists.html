@@ -226,6 +226,7 @@
                                     <th class="text-right">{{ _('quantity') }}</th>
                                     <th>{{ _('production sku') }}</th>
                                     <th class="text-right">{{ _('unit price') }}</th>
+                                    <th>{{ _('tax type') }}</th>
                                     <th>{{ _('delivery time') }}</th>
                                     <th>{{ _('note') }}</th>
                                     <th>{{ _('create time') }}</th>
@@ -244,6 +245,7 @@
                                         <td class="text-right">{{ '{:,}'.format(info.quantity) }}</td>
                                         <td>{{ info.production_sku }}</td>
                                         <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
+                                        <td class="text-center"><span rel="tooltip" data-toggle="tooltip" title="{{ info.type_tax | type_tax }}" class="{{ info.type_tax | type_tax_html_class }}"></span></td>
                                         <td>{{ info.delivery_time }}</td>
                                         <td>{{ info.note }}</td>
                                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm') }}</td>
@@ -291,6 +293,7 @@
                                     <th class="text-right">{{ _('quantity') }}</th>
                                     <th>{{ _('production sku') }}</th>
                                     <th class="text-right">{{ _('unit price') }}</th>
+                                    <th>{{ _('tax type') }}</th>
                                     <th>{{ _('delivery time') }}</th>
                                     <th>{{ _('note') }}</th>
                                     <th>{{ _('create time') }}</th>
@@ -309,6 +312,7 @@
                                         <td class="text-right">{{ '{:,}'.format(info.quantity) }}</td>
                                         <td>{{ info.production_sku }}</td>
                                         <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
+                                        <td class="text-center"><span rel="tooltip" data-toggle="tooltip" title="{{ info.type_tax | type_tax }}" class="{{ info.type_tax | type_tax_html_class }}"></span></td>
                                         <td>{{ info.delivery_time }}</td>
                                         <td>{{ info.note }}</td>
                                         <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm') }}</td>

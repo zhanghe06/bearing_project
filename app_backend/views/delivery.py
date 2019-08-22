@@ -102,7 +102,7 @@ def lists():
             if form.uid.data != DEFAULT_SEARCH_CHOICES_INT_OPTION:
                 search_condition.append(Delivery.uid == form.uid.data)
             if form.customer_cid.data and form.customer_company_name.data:
-                search_condition.append(Delivery.cid == form.customer_cid.data)
+                search_condition.append(Delivery.customer_cid == form.customer_cid.data)
             if form.start_create_time.data:
                 search_condition.append(Delivery.create_time >= form.start_create_time.data)
             if form.end_create_time.data:

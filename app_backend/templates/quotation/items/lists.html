@@ -112,7 +112,7 @@
                             <td>{{ info.production_sku }}</td>
                             <td class="text-right">{{ '{:,}'.format(info.unit_price) }}</td>
                             <td>{{ info.delivery_time }}</td>
-                            <td>{{ info.note }}</td>
+                            <td><span rel="tooltip" data-toggle="tooltip" title="{{ info.note }}">{{ info.note | truncate(12, False, '...', 0) }}</span></td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             {#                        <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}
                         </tr>

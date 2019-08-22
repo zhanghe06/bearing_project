@@ -85,6 +85,7 @@
                         <th>{{ _('buyer order user') }}</th>
                         <th>{{ _('supplier company') }}</th>
                         <th class="text-right">{{ _('buyer order amount') }}</th>
+                        <th>{{ _('tax type') }}</th>
                         <th>{{ _('buyer order note') }}</th>
                         <th>{{ _('create time') }}</th>
                         <th>{{ _('update time') }}</th>
@@ -105,10 +106,11 @@
                             <td>{{ info.uid | user_name }}</td>
                             <td>{{ info.supplier_cid | supplier_company_name }}</td>
                             <td class="text-right">{{ '{:,}'.format(info.amount_order) }}</td>
-                            <td>{{ info.note }}</td>
+                            <td class="text-center"><span rel="tooltip" data-toggle="tooltip" title="{{ info.type_tax | type_tax }}" class="{{ info.type_tax | type_tax_html_class }}"></span></td>
+                            <td><span rel="tooltip" data-toggle="tooltip" title="{{ info.note }}">{{ info.note | truncate(12, False, '...', 0) }}</span></td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                            <td>{{ info.status_audit | status_audit }}</td>
+                            <td class="text-center"><span rel="tooltip" data-toggle="tooltip" title="{{ info.status_audit | status_audit }}" class="{{ info.status_audit | status_audit_html_class }}"></span></td>
                             <td style="min-width: 8em;">
                                 <!-- Split button -->
                                 <div class="btn-group btn-group-sm">
