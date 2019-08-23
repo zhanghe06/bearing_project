@@ -114,10 +114,10 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                {# 翻页 #}
-                {% from "macros.html" import render_pagination_post %}
-                {{ render_pagination_post(pagination, 'rack.lists') }}
             </div>
+            {# 翻页 #}
+            {% from "macros.html" import render_pagination_post %}
+            {{ render_pagination_post(pagination, 'rack.lists') }}
         </form>
     </div>
 

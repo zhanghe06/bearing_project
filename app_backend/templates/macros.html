@@ -56,19 +56,21 @@
                     {% else %}
                         <button class="btn-sm btn-default" type="reset" aria-label="Previous">
                     {% endif %}
-                    <span aria-hidden="true">&laquo;</span>
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </button>
                 </li>
                 {% for page in pagination.iter_pages() %}
                     <li>
-                    {% if page %}
+                    {%- if page -%}
                         {% if page == pagination.page %}
-                            <button class="btn-sm btn-primary" name="page" value={{ page }} aria-label="Previous">{{ page }}</button>
+                            <button class="btn-sm btn-primary" name="page" value={{ page }}>{{ page }}</button>
                                 {% else %}
-                            <button class="btn-sm btn-default" name="page" value={{ page }} aria-label="Previous">{{ page }}</button>
+                            <button class="btn-sm btn-default" name="page" value={{ page }}>{{ page }}</button>
                         {% endif %}
+                    {%- else -%}
+                        <i class="glyphicon glyphicon-option-horizontal" style="padding: 5px 5px; font-size: 12px; line-height: 1.5;"></i>
+                    {%- endif -%}
                     </li>
-                    {% endif %}
                 {% endfor %}
                 <li>
                     {% if pagination.has_next %}
@@ -76,7 +78,7 @@
                     {% else %}
                         <button class="btn-sm btn-default" type="reset" aria-label="Next">
                     {% endif %}
-                    <span aria-hidden="true">&raquo;</span>
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </button>
                 </li>
             </ul>

@@ -144,10 +144,10 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                {# 翻页 #}
-                {% from "macros.html" import render_pagination_post %}
-                {{ render_pagination_post(pagination, 'customer_contact.lists') }}
             </div>
+            {# 翻页 #}
+            {% from "macros.html" import render_pagination_post %}
+            {{ render_pagination_post(pagination, 'customer_contact.lists') }}
         </form>
     </div>
 
