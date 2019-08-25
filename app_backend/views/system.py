@@ -257,7 +257,7 @@ def quotation_import():
 
 @bp_system.route("/futures_import", methods=['GET', 'POST'])
 @login_required
-@permission_role_administrator.require(http_exception=403)
+# @permission_role_administrator.require(http_exception=403)
 def futures_import():
     """
     在途导入

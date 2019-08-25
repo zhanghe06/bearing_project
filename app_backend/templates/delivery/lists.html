@@ -104,7 +104,7 @@
                             </td>
                             <td><a href="{{ url_for('delivery.info', delivery_id=info.id) }}" target="_blank">{{ g.DELIVERY_PREFIX }}{{ moment(info.create_time).format('YYMMDDHHmmss') }}</a></td>
                             <td>{{ info.uid | user_name }}</td>
-                            <td>{{ info.customer_cid | customer_company_name | truncate(20, False, '...', 0) }}</td>
+                            <td><span rel="tooltip" data-toggle="tooltip" title="{{ info.customer_cid | customer_company_name }}">{{ info.customer_cid | customer_company_name | truncate(20, False, '...', 0) }}</span></td>
                             <td class="text-right">{{ '{:,}'.format(info.amount_delivery) }}</td>
                             <td class="text-center"><span rel="tooltip" data-toggle="tooltip" title="{{ info.type_tax | type_tax }}" class="{{ info.type_tax | type_tax_html_class }}"></span></td>
                             <td><span rel="tooltip" data-toggle="tooltip" title="{{ info.note }}">{{ info.note | truncate(12, False, '...', 0) }}</span></td>

@@ -74,13 +74,6 @@ AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 
 
-def get_production_brand_choices():
-    production_brand_list = copy(DEFAULT_SEARCH_CHOICES_STR)
-    distinct_brand = get_distinct_production_brand(status_delete=STATUS_DEL_NO)
-    production_brand_list.extend([(brand, brand) for brand in distinct_brand])
-    return production_brand_list
-
-
 @bp_production.route('/lists.html', methods=['GET', 'POST'])
 @login_required
 @permission_production_section_search.require(http_exception=403)
@@ -96,7 +89,6 @@ def lists():
 
     # 搜索条件
     form = ProductionSearchForm(request.form)
-    form.production_brand.choices = get_production_brand_choices()
     # app.logger.info('')
 
     search_condition = [
@@ -193,7 +185,6 @@ def search():
 
     # 搜索条件
     form = ProductionSearchForm(request.form)
-    form.production_brand.choices = get_production_brand_choices()
     # app.logger.info('')
 
     search_condition = [

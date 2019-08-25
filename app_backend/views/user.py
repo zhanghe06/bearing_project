@@ -24,7 +24,7 @@ from flask import (
     Blueprint,
 )
 from flask_babel import gettext as _
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from app_backend import app
 from app_backend import excel
@@ -51,6 +51,7 @@ from app_backend.forms.user import (
     UserEditForm,
 )
 from app_backend.models.bearing_project import User
+from app_backend.permissions import permission_role_administrator
 from app_backend.permissions.user import (
     permission_user_section_add,
     permission_user_section_search,
@@ -411,6 +412,18 @@ def edit(user_id):
                 form=form,
                 **document_info
             )
+
+        # 非系统角色，仅能修改自己的信息
+        if not permission_role_administrator.can():
+            if getattr(current_user, 'id') != form.id.data:
+                flash(_('Permission denied, only the user\'s own information can be modified'), 'danger')
+                # flash(form.errors, 'danger')
+                return render_template(
+                    template_name,
+                    user_id=user_id,
+                    form=form,
+                    **document_info
+                )
         # 表单校验成功
 
         # 编辑用户基本信息

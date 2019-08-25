@@ -112,3 +112,12 @@ $(function() {
         event.stopPropagation();
     });
 });
+
+$(function () {
+    var prev_page = $('.prev')
+    var next_page = $('.next')
+    $('body').keydown(function (event) {
+        if (event.keyCode === 37 && prev_page !== undefined) prev_page.click();
+        if (event.keyCode === 39 && next_page !== undefined) next_page.click();
+    })
+})

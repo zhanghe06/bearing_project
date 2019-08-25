@@ -299,7 +299,7 @@
                 </ul>
             </li>
         {% endif %}
-        {%- if permission_role_administrator.can() -%}
+        {%- if permission_role_administrator.can() or permission_role_purchaser.can() -%}
             <li{% if 'system/' in request.path %} class="active"{% endif %}>
                 <a id="menu-system" href="#"><i class="fa fa-cog fa-fw"></i> {{ _('system management') }}<span
                         class="fa arrow"></span></a>
@@ -307,6 +307,7 @@
                     <li>
                         <a id="menu-data-import" href="#">{{ _('data import') }} <span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
+                            {%- if permission_role_administrator.can() -%}
                             <li>
                                 <a href="{{ url_for('system.catalogue_import') }}">{{ _('catalogue import') }}</a>
                             </li>
@@ -316,9 +317,12 @@
                             <li>
                                 <a href="{{ url_for('system.quotation_import') }}">{{ _('quotation import') }}</a>
                             </li>
+                            {%- endif -%}
+                            {%- if permission_role_purchaser.can() -%}
                             <li>
                                 <a href="{{ url_for('system.futures_import') }}">{{ _('futures import') }}</a>
                             </li>
+                            {%- endif -%}
                         </ul>
                     </li>
                 </ul>

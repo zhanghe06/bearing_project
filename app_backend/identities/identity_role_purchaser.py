@@ -17,10 +17,11 @@ from app_backend.identities import setup_section_action, setup_section
 # 模块操作
 role_purchaser_section_action = {
     # 基础模块
-    'production': ['add', 'search', 'stats', 'get'],
-    'inventory': ['add', 'search', 'stats', 'get'],
-    'warehouse': ['add', 'search', 'stats', 'get'],
-    'rack': ['add', 'search', 'stats', 'get'],
+    'production': ['add', 'search', 'get', 'edit', 'del', 'audit', 'print'],
+    'inventory': ['add', 'search', 'get', 'edit', 'del', 'audit', 'print'],
+    'warehouse': ['add', 'search', 'get', 'edit', 'del', 'audit', 'print'],
+    'rack': ['add', 'search', 'get', 'edit', 'del', 'audit', 'print'],
+    'user': ['search', 'get', 'edit'],
     'futures': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     # 资源模块
     'supplier': ['add', 'search', 'stats', 'get', 'edit', 'del', 'audit', 'print'],

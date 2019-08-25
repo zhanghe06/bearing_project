@@ -21,6 +21,7 @@ role_stock_keeper_section_action = {
     'inventory': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     'warehouse': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
     'rack': ['add', 'search', 'stats', 'export', 'get', 'edit', 'del', 'audit', 'print'],
+    'user': ['search', 'get', 'edit'],
     'futures': ['search', 'get'],
     # 资源模块 - 销售
     'customer': ['add', 'search', 'stats', 'get', 'print'],

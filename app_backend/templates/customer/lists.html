@@ -92,13 +92,20 @@
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td><a href="{{ url_for('customer.edit', customer_id=info.id) }}">{{ info.company_name }}</a><br/>{{ info.company_address }}
+                            <td>
+                                <a href="{{ url_for('customer.edit', customer_id=info.id) }}">{{ info.company_name }}</a>
+                                <br/>
+                                <span rel="tooltip" data-toggle="tooltip" title="{{ info.company_address }}">{{ info.company_address | truncate(30, False, '...', 0) or '-' }}</span>
                             </td>
                             <td>{{ info.company_site }}</td>
-                            <td>{{ info.company_tel }}<br/>{{ info.company_fax }}</td>
+                            <td>
+                                {{ info.company_tel or '-' }}
+                                <br/>
+                                {{ info.company_fax or '-' }}
+                            </td>
 {#                            <td>{{ info.company_type | type_company }}</td>#}
 {#                            <td>{{ info.owner_uid | user_name }}</td>#}
-                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}
+                            <td>{{ moment(info.create_time).format('YYYY-MM-DD') }}
                             </td>
                             <td style="min-width: 8em;">
                                 <!-- Split button -->

@@ -15,7 +15,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, IntegerField, SelectField
 from wtforms.validators import InputRequired, DataRequired, Length, Optional
 
-from app_backend.validators.user import AddUserNameRepeatValidate, EditUserNameRepeatValidate
+from app_backend.validators.user import AddUserNameRepeatValidate, EditUserNameRepeatValidate, \
+    EditUserRolePermissionValidate
 from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION, DEFAULT_SELECT_CHOICES_INT_OPTION
 from app_common.maps.operations import OPERATION_SEARCH
 from app_common.maps.type_role import TYPE_ROLE_SELECT_CHOICES, TYPE_ROLE_SEARCH_CHOICES
@@ -193,6 +194,21 @@ class UserEditForm(UserAddForm):
             'placeholder': _('user name'),
             'rel': 'tooltip',
             'title': _('user name'),
+        }
+    )
+    role_id = SelectField(
+        _('user role'),
+        validators=[
+            InputRequired(),  # 可以为0
+            EditUserRolePermissionValidate(),
+        ],
+        default=DEFAULT_SELECT_CHOICES_INT_OPTION,
+        coerce=int,
+        choices=TYPE_ROLE_SELECT_CHOICES,
+        description=_('user role'),
+        render_kw={
+            'rel': 'tooltip',
+            'title': _('user role'),
         }
     )
     create_time = DateField(
