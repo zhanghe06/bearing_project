@@ -65,6 +65,33 @@
                     <span class="help-block hidden-xs">{{ form.wid.description }}</span>
                 </div>
             </div>
+            <div class="form-group{% if form.cost_ref.errors %} has-error{% endif %}">
+                {{ form.cost_ref.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.cost_ref(class="form-control", title=form.cost_ref.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.cost_ref.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.cost_new.errors %} has-error{% endif %}">
+                {{ form.cost_new.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.cost_new(class="form-control", title=form.cost_new.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.cost_new.description }}</span>
+                </div>
+            </div>
+            <div class="form-group{% if form.cost_avg.errors %} has-error{% endif %}">
+                {{ form.cost_avg.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-6">
+                    {{ form.cost_avg(class="form-control", title=form.cost_avg.errors|join(', ')) }}
+                </div>
+                <div class="col-sm-4">
+                    <span class="help-block hidden-xs">{{ form.cost_avg.description }}</span>
+                </div>
+            </div>
             <div class="form-group{% if form.note.errors %} has-error{% endif %}">
                 {{ form.note.label(class="col-sm-2 control-label") }}
                 <div class="col-sm-6">

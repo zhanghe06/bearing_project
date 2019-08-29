@@ -10,7 +10,6 @@
 
 from __future__ import unicode_literals
 
-from copy import copy
 from datetime import datetime
 
 from flask import (
@@ -40,7 +39,6 @@ from app_backend.api.production import (
 )
 from app_backend.api.production import (
     get_production_rows,
-    get_distinct_production_brand,
 )
 from app_backend.api.production_sensitive import count_production_sensitive
 from app_backend.api.quotation_items import count_quotation_items
@@ -48,7 +46,7 @@ from app_backend.forms.production import (
     ProductionSearchForm,
     ProductionAddForm,
     ProductionEditForm,
-    ProductionSelectForm)
+    ProductionSelectForm, get_production_brand_choices)
 from app_backend.models.bearing_project import Production
 from app_backend.permissions import permission_role_administrator
 from app_backend.permissions.production import (
@@ -56,7 +54,7 @@ from app_backend.permissions.production import (
     permission_production_section_search,
     permission_production_section_del,
 )
-from app_common.maps.default import DEFAULT_SEARCH_CHOICES_STR, DEFAULT_SEARCH_CHOICES_STR_OPTION
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_STR_OPTION
 from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -89,6 +87,7 @@ def lists():
 
     # 搜索条件
     form = ProductionSearchForm(request.form)
+    form.production_brand.choices = get_production_brand_choices()
     # app.logger.info('')
 
     search_condition = [
@@ -185,6 +184,7 @@ def search():
 
     # 搜索条件
     form = ProductionSearchForm(request.form)
+    form.production_brand.choices = get_production_brand_choices()
     # app.logger.info('')
 
     search_condition = [
@@ -282,6 +282,9 @@ def add():
             'ind': form.ind.data,
             'oud': form.oud.data,
             'wid': form.wid.data,
+            'cost_ref': form.cost_ref.data,
+            'cost_new': form.cost_new.data,
+            'cost_avg': form.cost_avg.data,
             'note': form.note.data,
             'create_time': current_time,
             'update_time': current_time,
@@ -335,6 +338,9 @@ def edit(production_id):
         form.ind.data = production_info.ind
         form.oud.data = production_info.oud
         form.wid.data = production_info.wid
+        form.cost_ref.data = production_info.cost_ref
+        form.cost_new.data = production_info.cost_new
+        form.cost_avg.data = production_info.cost_avg
         form.note.data = production_info.note
         form.create_time.data = production_info.create_time
         form.update_time.data = production_info.update_time
@@ -366,6 +372,9 @@ def edit(production_id):
             'ind': form.ind.data,
             'oud': form.oud.data,
             'wid': form.wid.data,
+            'cost_ref': form.cost_ref.data,
+            'cost_new': form.cost_new.data,
+            'cost_avg': form.cost_avg.data,
             'note': form.note.data,
             'update_time': current_time,
         }

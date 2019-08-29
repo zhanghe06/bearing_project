@@ -81,10 +81,10 @@
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td><a href="{{ url_for('warehouse.info', warehouse_id=info.warehouse_id) }}" rel="tooltip"
+                            <td><a href="{{ url_for('warehouse.edit', warehouse_id=info.warehouse_id) }}" rel="tooltip"
                                    title="{{ _('Click details') }}">{{ info.warehouse_id | warehouse_name }}</a>
                             </td>
-                            <td><a href="{{ url_for('rack.info', rack_id=info.id) }}" rel="tooltip"
+                            <td><a href="{{ url_for('rack.edit', rack_id=info.id) }}" rel="tooltip"
                                    title="{{ _('Click details') }}">{{ info.name }}</a>
                             </td>
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>

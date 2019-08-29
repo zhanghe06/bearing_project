@@ -68,7 +68,7 @@ pip install supervisor
 
 ## 项目演示
 python2
-```
+```bash
 virtualenv bearing.env
 source env_develop.sh
 pip install -r requirements.txt
@@ -76,12 +76,19 @@ python run_backend.py
 ```
 
 python3
-```
+```bash
 virtualenv bearing.env -p python3
 source env_develop.sh
 pip install -r requirements.txt
 python run_backend.py
 ```
+
+编译语音
+```bash
+sh babel_compile.sh
+```
+
+访问 [http://0.0.0.0:8060](http://0.0.0.0:8060)
 
 
 ## 信息安全
@@ -447,6 +454,9 @@ Version 2.2 新增了`required`属性的渲染, 注意: `hidden`类型的文本�
 ```
 {% if field.flags.required %}*{% endif %}
 ```
+
+SelectField 如果 choices 为动态数据，应该在视图中动态添加属性，而不是在表单定义中直接赋值
+
 
 ## Ajax CSRF Protection
 

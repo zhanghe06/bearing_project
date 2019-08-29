@@ -10,7 +10,6 @@
 
 from __future__ import unicode_literals
 
-from copy import copy
 from datetime import datetime
 
 from flask import (
@@ -36,7 +35,7 @@ from app_backend.api.inventory import (
     edit_inventory,
     # inventory_current_stats,
     # inventory_former_stats,
-    get_distinct_inventory_brand, transfer_inventory)
+    transfer_inventory)
 from app_backend.api.inventory import (
     get_inventory_rows,
     # get_distinct_brand,
@@ -64,7 +63,6 @@ from app_backend.permissions.inventory import (
     permission_inventory_section_del,
 )
 from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION, \
-    DEFAULT_SEARCH_CHOICES_STR, \
     DEFAULT_SEARCH_CHOICES_STR_OPTION
 from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
@@ -79,13 +77,6 @@ DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 PER_PAGE_BACKEND = app.config.get('PER_PAGE_BACKEND', 20)
 AJAX_SUCCESS_MSG = app.config.get('AJAX_SUCCESS_MSG', {'result': True})
 AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
-
-
-def get_inventory_brand_choices():
-    inventory_brand_list = copy(DEFAULT_SEARCH_CHOICES_STR)
-    distinct_brand = get_distinct_inventory_brand(status_delete=STATUS_DEL_NO)
-    inventory_brand_list.extend([(brand, brand) for brand in distinct_brand])
-    return inventory_brand_list
 
 
 @bp_inventory.route('/lists.html', methods=['GET', 'POST'])
@@ -105,7 +96,6 @@ def lists():
     form = InventorySearchForm(request.form)
     form.warehouse_id.choices = get_warehouse_choices()
     form.rack_id.choices = get_rack_choices(form.warehouse_id.data)
-    form.production_brand.choices = get_inventory_brand_choices()
     # app.logger.info('')
 
     search_condition = [

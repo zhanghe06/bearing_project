@@ -16,8 +16,15 @@ from wtforms import StringField, IntegerField, SelectField, \
     HiddenField
 from wtforms.validators import InputRequired, DataRequired, Length
 
+from app_backend.api.inventory import get_distinct_inventory_brand
 from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION, \
-    DEFAULT_SEARCH_CHOICES_STR_OPTION
+    DEFAULT_SEARCH_CHOICES_STR_OPTION, DEFAULT_SEARCH_CHOICES_STR
+from app_common.maps.status_delete import STATUS_DEL_NO
+
+inventory_brand_choices = [(brand, brand) for brand in get_distinct_inventory_brand(status_delete=STATUS_DEL_NO) if
+                           brand != '']
+
+INVENTORY_BRAND_SEARCH_CHOICES = DEFAULT_SEARCH_CHOICES_STR + inventory_brand_choices
 
 
 class InventorySearchForm(FlaskForm):
@@ -51,6 +58,7 @@ class InventorySearchForm(FlaskForm):
         _('production brand'),
         validators=[],  # 字符类型，非必填
         default=DEFAULT_SEARCH_CHOICES_STR_OPTION,
+        choices=INVENTORY_BRAND_SEARCH_CHOICES,
         description=_('production brand'),
         render_kw={
             'rel': 'tooltip',

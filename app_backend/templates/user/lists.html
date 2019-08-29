@@ -88,7 +88,7 @@
                                            rel="tooltip" type="checkbox" value="{{ info.id }}"/>
                                 </label>
                             </td>
-                            <td><a href="{{ url_for('user.info', user_id=info.id) }}" rel="tooltip"
+                            <td><a href="{{ url_for('user.edit', user_id=info.id) }}" rel="tooltip"
                                    title="{{ _('Click details') }}">{{ info.name }}</a> <small>{{ info.salutation }}</small></td>
                             <td>{{ info.mobile }}</td>
                             <td>{{ info.role_id | type_role }}</td>

@@ -168,6 +168,39 @@ def filter_production_model(production_id):
     return production_info.production_model if production_info else '-'
 
 
+@app.template_filter('production_cost_ref')
+def filter_production_cost_ref(production_id):
+    """
+    参考成本
+    :param production_id:
+    :return:
+    """
+    production_info = get_production_row_by_id(production_id)
+    return production_info.cost_ref if production_info else '0.00'
+
+
+@app.template_filter('production_cost_new')
+def filter_production_cost_new(production_id):
+    """
+    最新成本
+    :param production_id:
+    :return:
+    """
+    production_info = get_production_row_by_id(production_id)
+    return production_info.cost_new if production_info else '0.00'
+
+
+@app.template_filter('production_cost_avg')
+def filter_production_cost_avg(production_id):
+    """
+    平均成本
+    :param production_id:
+    :return:
+    """
+    production_info = get_production_row_by_id(production_id)
+    return production_info.cost_avg if production_info else '0.00'
+
+
 @app.template_filter('quotation_create_time')
 def filter_quotation_create_time(quotation_id):
     """

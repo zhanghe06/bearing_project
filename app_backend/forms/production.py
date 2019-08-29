@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, IntegerField, SelectField
+from wtforms import StringField, DateField, IntegerField, SelectField, DecimalField
 from wtforms.compat import text_type
 from wtforms.validators import DataRequired, Length
 from wtforms.widgets import HTMLString
@@ -24,10 +24,13 @@ from app_common.maps.default import DEFAULT_SEARCH_CHOICES_STR_OPTION, DEFAULT_S
 from app_common.maps.operations import OPERATION_SEARCH
 from app_common.maps.status_delete import STATUS_DEL_NO
 
-production_brand_choices = [(brand, brand) for brand in get_distinct_production_brand(status_delete=STATUS_DEL_NO) if
-                            brand != '']
 
-PRODUCTION_BRAND_SEARCH_CHOICES = DEFAULT_SEARCH_CHOICES_STR + production_brand_choices
+def get_production_brand_choices():
+    production_brand_choices = [(brand, brand) for brand in get_distinct_production_brand(status_delete=STATUS_DEL_NO)
+                                if
+                                brand != '']
+
+    return DEFAULT_SEARCH_CHOICES_STR + production_brand_choices
 
 
 class ProductionSearchForm(FlaskForm):
@@ -38,7 +41,7 @@ class ProductionSearchForm(FlaskForm):
         _('production brand'),
         validators=[],  # 字符类型，非必填
         default=DEFAULT_SEARCH_CHOICES_STR_OPTION,
-        choices=PRODUCTION_BRAND_SEARCH_CHOICES,
+        choices=DEFAULT_SEARCH_CHOICES_STR,
         description=_('production brand'),
         render_kw={
             'rel': 'tooltip',
@@ -125,7 +128,7 @@ class ProductionAddForm(FlaskForm):
             'title': _('ind'),
             'type': 'number',
             'step': 1,
-            'min': 1,
+            'min': 0,
             'max': 10000,
         }
     )
@@ -140,7 +143,7 @@ class ProductionAddForm(FlaskForm):
             'title': _('oud'),
             'type': 'number',
             'step': 1,
-            'min': 1,
+            'min': 0,
             'max': 10000,
         }
     )
@@ -155,8 +158,53 @@ class ProductionAddForm(FlaskForm):
             'title': _('wid'),
             'type': 'number',
             'step': 1,
-            'min': 1,
+            'min': 0,
             'max': 10000,
+        }
+    )
+    cost_ref = DecimalField(
+        _('cost ref'),
+        validators=[],
+        default=0.00,
+        description=_('cost ref'),
+        render_kw={
+            'placeholder': _('cost ref'),
+            'rel': 'tooltip',
+            'title': _('cost ref'),
+            'type': 'number',
+            'step': 0.01,
+            'min': 0.00,
+            'max': 1000000.00,
+        }
+    )
+    cost_new = DecimalField(
+        _('cost new'),
+        validators=[],
+        default=0.00,
+        description=_('cost new'),
+        render_kw={
+            'placeholder': _('cost new'),
+            'rel': 'tooltip',
+            'title': _('cost new'),
+            'type': 'number',
+            'step': 0.01,
+            'min': 0.00,
+            'max': 1000000.00,
+        }
+    )
+    cost_avg = DecimalField(
+        _('cost avg'),
+        validators=[],
+        default=0.00,
+        description=_('cost avg'),
+        render_kw={
+            'placeholder': _('cost avg'),
+            'rel': 'tooltip',
+            'title': _('cost avg'),
+            'type': 'number',
+            'step': 0.01,
+            'min': 0.00,
+            'max': 1000000.00,
         }
     )
     note = StringField(

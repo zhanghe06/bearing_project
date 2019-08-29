@@ -22,12 +22,16 @@ from flask_login import login_required
 from app_backend import (
     app,
 )
+from app_backend.api.inventory import get_inventory_pagination
+from app_backend.api.futures import get_futures_pagination
 from app_backend.api.delivery_items import get_delivery_items_pagination
 from app_backend.api.enquiry_items import get_enquiry_items_pagination
 from app_backend.api.purchase_items import get_purchase_items_pagination
 from app_backend.api.quotation_items import get_quotation_items_pagination
 from app_backend.forms.price import PriceSearchForm
 from app_backend.models.bearing_project import (
+    Inventory,
+    Futures,
     QuotationItems,
     EnquiryItems,
     DeliveryItems,
@@ -53,8 +57,8 @@ AJAX_FAILURE_MSG = app.config.get('AJAX_FAILURE_MSG', {'result': False})
 def search():
     """
     价格搜索
-    1、当前型号-价格情况
-    2、当前型号-价格情况
+    1、当前型号-价格货期
+    2、当前型号-价格历史
         2.1、报价记录（日期、客户、型号、数量、单价、货期）
         2.2、销售记录（日期、客户、型号、数量、单价）
         2.3、采购记录（日期、供应商、型号、数量、货期）
@@ -74,6 +78,12 @@ def search():
     # form.uid.choices = get_quotation_user_list_choices()
     # app.logger.info('')
 
+    search_condition_inventory = [
+        Inventory.status_delete == STATUS_DEL_NO,
+    ]
+    search_condition_futures = [
+        Futures.status_delete == STATUS_DEL_NO,
+    ]
     search_condition_quotation = [
         QuotationItems.status_delete == STATUS_DEL_NO,
     ]
@@ -100,6 +110,10 @@ def search():
                 search_condition_delivery.append(DeliveryItems.customer_cid == form.cid.data)
                 search_condition_purchase.append(PurchaseItems.supplier_cid == form.cid.data)
             if form.production_model.data:
+                search_condition_inventory.append(
+                    Inventory.production_model.like('%%%s%%' % form.production_model.data))
+                search_condition_futures.append(
+                    Futures.production_model.like('%%%s%%' % form.production_model.data))
                 search_condition_quotation.append(
                     QuotationItems.production_model.like('%%%s%%' % form.production_model.data))
                 search_condition_enquiry.append(
@@ -133,6 +147,8 @@ def search():
                 #         file_name='%s.csv' % _('price lists')
                 #     )
     # 翻页数据
+    pagination_inventory = get_inventory_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition_inventory)
+    pagination_futures = get_futures_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition_futures)
     pagination_quotation = get_quotation_items_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition_quotation)
     pagination_enquiry = get_enquiry_items_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition_enquiry)
     pagination_delivery = get_delivery_items_pagination(form.page.data, PER_PAGE_BACKEND, *search_condition_delivery)
@@ -142,6 +158,8 @@ def search():
     return render_template(
         template_name,
         form=form,
+        pagination_inventory=pagination_inventory,
+        pagination_futures=pagination_futures,
         pagination_quotation=pagination_quotation,
         pagination_enquiry=pagination_enquiry,
         pagination_delivery=pagination_delivery,

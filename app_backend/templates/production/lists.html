@@ -65,9 +65,12 @@
                         <th class="text-right">{{ _('production brand') }}</th>
                         <th>{{ _('production model') }}</th>
                         <th>{{ _('production sku') }}</th>
-                        <th>{{ _('ind') }}</th>
-                        <th>{{ _('oud') }}</th>
-                        <th>{{ _('wid') }}</th>
+                        <th class="text-right">{{ _('ind') }}</th>
+                        <th class="text-right">{{ _('oud') }}</th>
+                        <th class="text-right">{{ _('wid') }}</th>
+                        <th class="text-right">{{ _('cost ref') }}</th>
+                        <th class="text-right">{{ _('cost new') }}</th>
+                        <th class="text-right">{{ _('cost avg') }}</th>
                         <th>{{ _('production note') }}</th>
 {#                        <th>{{ _('create time') }}</th>#}
 {#                        <th>{{ _('update time') }}</th>#}
@@ -87,9 +90,12 @@
                             <td class="{% if info.id | status_sensitive %}danger{% endif %}"><a href="{{ url_for('production.info', production_id=info.id) }}" rel="tooltip"
                                    title="{{ _('Click details') }}">{{ info.production_model }}</a></td>
                             <td>{{ info.production_sku }}</td>
-                            <td>{{ info.ind }}</td>
-                            <td>{{ info.oud }}</td>
-                            <td>{{ info.wid }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.ind) }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.oud) }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.wid) }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.cost_ref) }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.cost_new) }}</td>
+                            <td class="text-right">{{ '{:,}'.format(info.cost_avg) }}</td>
                             <td>{{ info.note | default('-', True) }}</td>
 {#                            <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}
 {#                            <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>#}

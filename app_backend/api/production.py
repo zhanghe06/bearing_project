@@ -11,7 +11,7 @@
 from app_backend import db
 from app_common.libs.mysql_orm_op import DbInstance
 from app_backend.models.bearing_project import Production
-from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT
+from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT, DEFAULT_SEARCH_CHOICES_STR
 from app_common.maps.status_delete import STATUS_DEL_NO
 
 db_instance = DbInstance(db)
