@@ -318,7 +318,7 @@
                                 <a href="{{ url_for('system.quotation_import') }}">{{ _('quotation import') }}</a>
                             </li>
                             {%- endif -%}
-                            {%- if permission_role_purchaser.can() -%}
+                            {%- if permission_futures_section.can() -%}
                             <li>
                                 <a href="{{ url_for('system.futures_import') }}">{{ _('futures import') }}</a>
                             </li>
