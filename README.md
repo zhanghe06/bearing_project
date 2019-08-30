@@ -565,15 +565,9 @@ SUCCESS_MSG = app.config['SUCCESS_MSG'].copy()
 
 ## 移动端页面
 
-Gunicorn 或 Nginx 代理之后，出现静态文件加载报错`ERR_CONTENT_LENGTH_MISMATCH`
+Gunicorn 启动之后，出现静态文件加载报错`ERR_CONTENT_LENGTH_MISMATCH`
 
-删除`--worker-class eventlet`
-
-去掉之后有新的问题，后续用户没法登陆了
-
-恢复参数又好了
-
-待查
+前端加 Nginx 代理就好了
 
 
 ## TODO

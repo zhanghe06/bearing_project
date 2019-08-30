@@ -1,0 +1,72 @@
+server {
+    listen       80;
+    listen       443 ssl;
+
+    # HTTPS 专用配置
+    # http://nginx.org/en/docs/http/configuring_https_servers.html
+    ssl_certificate      /etc/nginx/ssl/server.crt; # 证书文件
+    ssl_certificate_key  /etc/nginx/ssl/server.key; # 密钥对文件(包含公钥和私钥, 私钥不会发给客户端)
+    # ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # SSL(包括 v3)都有漏洞，应该用 TLS(TLS1.0 = SSL 3.1)
+    # ssl_ciphers   HIGH:!aNULL:!MD5;
+
+
+    add_header Server-Host "$hostname";
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+    add_header X-Frame-Options "deny";
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-XSS-Protection "1; mode=block";
+
+    # 设定访问日志
+    access_log /var/log/nginx/admin_ssl_access.log main;
+    # 设定错误日志
+    error_log /var/log/nginx/admin_ssl_error.log warn;
+
+    # 重定向错误页
+    # error_page   404              /static/error/404.html;
+    # error_page   500 502 503 504  /static/error/50x.html;
+
+    location = /favicon.ico {
+        proxy_pass   http://upstream_backend;
+        access_log off;
+        log_not_found off;
+    }
+
+    location = /robots.txt {
+        proxy_pass   http://upstream_backend;
+        access_log off;
+        log_not_found off;
+        allow all;
+    }
+
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ {
+        proxy_pass   http://upstream_backend;
+        expires      30d;
+        access_log off;
+    }
+
+    location ~ .*\.(js|css|map|woff2)?$ {
+        proxy_pass   http://upstream_backend;
+        expires      1d;
+        access_log off;
+    }
+
+    location /socket.io {
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_pass http://upstream_backend;
+        access_log off;
+        log_not_found off;
+    }
+
+    # 动态数据，转给三个 web 实例负载均衡
+    location / {
+        proxy_pass   http://upstream_backend;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_connect_timeout 100ms; # 代理机器连接超时时长(默认的60s太长了)
+    }
+}

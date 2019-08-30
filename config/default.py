@@ -223,4 +223,4 @@ PURCHASE_PREFIX = 'PC'  # 进货
 
 
 # 静态资源
-STATIC_RES_VER = '1.5.30'
+STATIC_RES_VER = '1.5.31'
