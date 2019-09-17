@@ -100,6 +100,7 @@ def lists():
 
     search_condition = [
         Inventory.status_delete == STATUS_DEL_NO,
+        Inventory.stock_qty_current > 0,
     ]
     if request.method == 'POST':
         # 表单校验失败
@@ -117,7 +118,6 @@ def lists():
                 search_condition.append(Inventory.production_brand == form.production_brand.data)
             if form.production_model.data:
                 search_condition.append(Inventory.production_model.like('%%%s%%' % form.production_model.data))
-            search_condition.append(Inventory.stock_qty_current > 0)
         # 处理导出
         if form.op.data == OPERATION_EXPORT:
             # 检查导出权限

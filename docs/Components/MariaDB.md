@@ -355,3 +355,181 @@ EXPLAIN (buffers, analyze, verbose) SELECT * FROM table_name WHERE field_name="t
 
 1、联合索引，最左原则：建了一个(a,b,c)的复合索引，那么实际等于建了(a),(a,b),(a,b,c)三个索引
 2、索引类型，查询条件值类型必须与定义一致，特别注意数值类型和字符类型
+
+
+## 排错
+
+### sqlalchemy.exc.OperationalError
+OperationalError: (_mysql_exceptions.OperationalError) (2006, 'MySQL server has gone away')
+
+MySQL 提前回收了空闲连接，与连接池配置没有协调好，一般长时间闲置之后的第一次连接会出现这种错误。
+
+检查配置
+```
+MariaDB [flask_project]> show global variables like "%timeout%";
++-----------------------------+----------+
+| Variable_name               | Value    |
++-----------------------------+----------+
+| connect_timeout             | 5        |
+| deadlock_timeout_long       | 50000000 |
+| deadlock_timeout_short      | 10000    |
+| delayed_insert_timeout      | 300      |
+| innodb_flush_log_at_timeout | 1        |
+| innodb_lock_wait_timeout    | 50       |
+| innodb_rollback_on_timeout  | OFF      |
+| interactive_timeout         | 28800    |
+| lock_wait_timeout           | 31536000 |
+| net_read_timeout            | 30       |
+| net_write_timeout           | 60       |
+| slave_net_timeout           | 3600     |
+| thread_pool_idle_timeout    | 60       |
+| wait_timeout                | 600      |
++-----------------------------+----------+
+14 rows in set (0.00 sec)
+```
+
+查看连接情况
+```
+MariaDB [flask_project]> show full processlist;
++-----+------+------------------+---------------+---------+------+-------+------------------+----------+
+| Id  | User | Host             | db            | Command | Time | State | Info             | Progress |
++-----+------+------------------+---------------+---------+------+-------+------------------+----------+
+| 176 | root | 172.17.0.5:46672 | flask_project | Query   |    0 | init  | show processlist |    0.000 |
+| 180 | root | 172.17.0.1:39592 | flask_project | Sleep   |  284 |       | NULL             |    0.000 |
++-----+------+------------------+---------------+---------+------+-------+------------------+----------+
+2 rows in set (0.00 sec)
+```
+
+查看当前打开的连接的数量
+```
+MariaDB [flask_project]> show status like '%Threads_connected%';
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| Threads_connected | 2     |
++-------------------+-------+
+1 row in set (0.01 sec)
+```
+
+修改连接超时时间（测试）
+```
+MariaDB [flask_project]> set global wait_timeout=6;
+```
+
+```
+MariaDB [flask_project]> show global variables like 'wait_timeout';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| wait_timeout  | 600   |
++---------------+-------+
+1 row in set (0.00 sec)
+MariaDB [flask_project]> show variables like 'wait_timeout';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| wait_timeout  | 28800 |
++---------------+-------+
+1 row in set (0.00 sec)
+MariaDB [flask_project]> show global status like 'uptime';
++---------------+--------+
+| Variable_name | Value  |
++---------------+--------+
+| Uptime        | 204519 |
++---------------+--------+
+1 row in set (0.00 sec)
+
+MariaDB [flask_project]> show global variables like 'max_allowed_packet';
++--------------------+----------+
+| Variable_name      | Value    |
++--------------------+----------+
+| max_allowed_packet | 16777216 |
++--------------------+----------+
+1 row in set (0.00 sec)
+```
+
+
+错误重现:
+
+当有事务没有提交或者没有回滚时，sqlalchemy 的连接回收时间（SQLALCHEMY_POOL_RECYCLE）大于数据库关闭等待连接时间（global wait_timeout）；
+
+一旦数据库连接超时自动断开，此时 sqlalchemy 尝试连接数据库，会出现 OperationalError: (_mysql_exceptions.OperationalError) (2006, 'MySQL server has gone away')
+
+处理方案:
+1. sqlalchemy 的超时时间 小于 数据库的超时时间
+2. 代码操作数据库，立即提交事务，错误回滚
+
+官方说明:
+
+http://flask-sqlalchemy.pocoo.org/2.2/config/#timeouts
+
+
+### MySQLdb._exceptions.OperationalError
+(MySQLdb._exceptions.OperationalError) (2013, 'Lost connection to MySQL server during query')
+
+```
+MariaDB [bearing_project]> SHOW GLOBAL VARIABLES LIKE 'wait_timeout';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| wait_timeout  | 600   |
++---------------+-------+
+1 row in set (0.00 sec)
+
+MariaDB [bearing_project]> SET GLOBAL wait_timeout=5;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+错误重现:
+
+当事务处理时间过长，超过`wait_timeout`时间，会出现(MySQLdb._exceptions.OperationalError) (2013, 'Lost connection to MySQL server during query')
+
+
+### sqlalchemy.exc.InvalidRequestError
+StatementError: (sqlalchemy.exc.InvalidRequestError) Can't reconnect until invalid transaction is rolled back
+
+一旦出现前面2种情况，再次请求,`sqlalchemy`会报错
+
+
+## 调优
+
+- 超时时间只对非活动状态的connection进行计算。
+- 超时时间只以session级别的wait_timeout 为超时依据，global级别只决定session初始化时的超时默认值。
+- 交互式连接的wait_timeout 继承于global的interactive_timeout。非交互式连接的wait_timeout继承于global的wait_timeout
+- 继承关系和超时对 TCP/IP 和 Socket 连接均有效果
+
+查看当前连接数
+```
+MariaDB [bearing_project]> show status like 'Threads%';
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| Threads_cached    | 8     |
+| Threads_connected | 1     |
+| Threads_created   | 9     |
+| Threads_running   | 1     |
++-------------------+-------+
+4 rows in set (0.00 sec)
+```
+
+最大连接数
+```
+MariaDB [bearing_project]> show variables like '%max_connections%';
++-----------------------+-------+
+| Variable_name         | Value |
++-----------------------+-------+
+| extra_max_connections | 1     |
+| max_connections       | 100   |
++-----------------------+-------+
+2 rows in set (0.00 sec)
+```
+
+## sqlalchemy 最佳实践
+
+根据业务场景：
+- 网页应用
+处理时间短，并发量高，逻辑（事务）处理快，每次数据操作，可通过连接池复用，短期之内连接不会回收
+
+- 任务脚本
+处理时间长，并发量低，逻辑（事务）处理慢，每次数据操作，最好开启独立连接，防止历史连接会被回收
+避免事务耗时过长，控制单个连接处理时间
