@@ -204,11 +204,42 @@ Exchange: 当所有绑定队列都不在使用时，是否自动删除交换器
 
 **持久化配置**
 
+- 队列持久化，重启队列还在
+- 消息持久化，重启消息还在
+
 Queue持久化
 ```
 durable=true        # 持久化
 exclusive=false     # 排他性
 ```
+
+Message持久化
+```
+delivery_mode=2
+```
+
+若消息没有持久化，RabbitMQ重启之后，Unacked和Ready全部丢失。  
+当消息持久化后，RabbitMQ被重启之后，Unacked会回到Ready中。
+
+
+## consumer Acknowledgements and publisher confirms
+
+[https://www.rabbitmq.com/confirms.html](https://www.rabbitmq.com/confirms.html)
+
+consumer Acknowledgements
+
+动作 | 描述 | 说明
+--- | --- | ---
+basic.ack | 肯定确认 | 消息删除
+basic.nack | 否定确认 | 消息删除/重新入队（参数控制）
+basic.reject | 否定确认 | 消息删除
+
+publisher confirms
+
+
+## Channel Prefetch Setting (QoS)
+
+[https://www.rabbitmq.com/confirms.html#channel-qos-prefetch](https://www.rabbitmq.com/confirms.html#channel-qos-prefetch)
 
 
 ## 任务系统的几种场景（间隔、定时、延时）

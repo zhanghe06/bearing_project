@@ -79,24 +79,21 @@ $ sudo apt-get install python-software-properties
 $ sudo apt-get install software-properties-common
 ```
 
-1. Set up the repository
+1、Set up the repository
 ```
 $ sudo apt-get -y install \
   apt-transport-https \
   ca-certificates \
   curl
-
 $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
 $ sudo add-apt-repository \
        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
        $(lsb_release -cs) \
        stable"
-
 $ sudo apt-get update
 ```
 
-2. Get Docker CE
+2、Get Docker CE
 ```
 $ sudo apt-get -y install docker-ce
 ```

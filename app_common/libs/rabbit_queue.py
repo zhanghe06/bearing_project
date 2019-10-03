@@ -9,7 +9,7 @@
 """
 
 import pika
-from pika.exceptions import AMQPConnectionError, AMQPChannelError, ConnectionClosed
+from pika.exceptions import ConnectionClosed, ChannelClosed, IncompatibleProtocolError
 import json
 from retry import retry
 
@@ -18,8 +18,22 @@ class RabbitQueue(object):
     """
     队列
     """
-    def __init__(self, conn):
-        self.conn = conn
+    conf = None
+    conn = None
+    channel = None
+
+    def __init__(self, **conf):
+        self.conf = conf
+        self.open_conn()
+
+    def open_conn(self):
+        """
+        打开连接
+        :return:
+        """
+        if self.conn and self.conn.is_open:
+            return
+        self.conn = pika.BlockingConnection(pika.ConnectionParameters(**self.conf))
         self.channel = self.conn.channel()
 
     def close_conn(self):
@@ -54,22 +68,22 @@ class RabbitQueue(object):
             arguments=arguments,
         )
 
-    def queue_bind(self, exchange_name='amq.topic', queue_name='', binding_key='#'):
+    def queue_bind(self, exchange_name='amq.topic', queue_name='', routing_key='#'):
         """
         绑定队列
         :param exchange_name:
         :param queue_name:
-        :param binding_key:
+        :param routing_key:
         :return:
         """
         self.channel.queue_bind(
             exchange=exchange_name,
             queue=queue_name,
-            routing_key=binding_key
+            routing_key=routing_key
         )
 
-    def basic_qos(self):
-        self.channel.basic_qos(prefetch_count=1)
+    def basic_qos(self, prefetch_count=1):
+        self.channel.basic_qos(prefetch_count=prefetch_count)
 
     def basic_publish(self, message, exchange='amq.topic', routing_key='.'):
         """
@@ -114,20 +128,28 @@ class RabbitQueue(object):
         else:
             print('No message returned')
 
-    @retry(AMQPConnectionError, delay=5, jitter=(1, 3))
+    @retry((ConnectionClosed, ChannelClosed, IncompatibleProtocolError), tries=-1, delay=5, jitter=(1, 3))
     def basic_consume(self, on_message_callback, queue_name):
         """
         消费队列消息(阻塞)
         """
-        self.channel.basic_consume(consumer_callback=on_message_callback, queue=queue_name)
-
         try:
+            self.open_conn()  # 断线重连
+            self.channel.basic_qos(prefetch_count=1)
+
+            self.channel.basic_consume(consumer_callback=on_message_callback, queue=queue_name)
             self.channel.start_consuming()
         except KeyboardInterrupt:
             self.channel.stop_consuming()
-        # Don't recover connections closed by server
-        except (ConnectionClosed, AMQPChannelError):
-            pass
+        except ChannelClosed as e:
+            print('ChannelClosed')
+            raise e
+        except ConnectionClosed as e:
+            print('ConnectionClosed')
+            raise e
+        except IncompatibleProtocolError as e:
+            print('IncompatibleProtocolError')
+            raise e
         self.close_conn()
 
     def example_basic_consume_with_callback(self):
@@ -138,7 +160,7 @@ class RabbitQueue(object):
         def callback(ch, method, properties, body):
             print(" [x]  Get %r" % (body,))
             # raise Exception('test')
-            ch.ack_message(delivery_tag=method.delivery_tag)
+            self.ack_message(delivery_tag=method.delivery_tag)
 
         self.basic_consume(callback)
 
@@ -266,16 +288,6 @@ class RabbitQueue(object):
 #         except KeyboardInterrupt:
 #             self.channel.stop_consuming()
 #         self.close_conn()
-
-
-if __name__ == '__main__':
-    from app_backend.clients.client_rabbitmq import rabbitmq_client
-    rq = RabbitQueue(rabbitmq_client)
-    rq.exchange_declare()
-    rq.queue_declare()
-    binding_keys = ['', '']
-    for bind_key in binding_keys:
-        rq.queue_bind(binding_key=bind_key)
 
 
 """

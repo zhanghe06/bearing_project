@@ -8,7 +8,7 @@
 @time: 2019-08-17 15:29
 """
 
-from app_backend import redis_client
+from app_backend.clients.client_redis import redis_client
 from app_common.libs.redis_pub_sub import RedisPubSub
 
 redis_pub_sub_obj = RedisPubSub('test', redis_client=redis_client)

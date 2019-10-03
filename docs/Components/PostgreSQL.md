@@ -174,6 +174,11 @@ postgres=# SELECT COUNT(*) from pg_stat_activity;
 (1 row)
 ```
 
+清理连接
+```
+SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE datname='xxxx' AND pid=xxxx;
+```
+
 
 ## 数据类型
 

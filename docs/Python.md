@@ -246,3 +246,93 @@ pip install numpy==1.16.4
 pip install pandas==0.24.2
 ```
 其中 numpy 是 pandas 的依赖库，需要同步 Python2 版本，后续版本不在支持 Python2
+
+
+## 关键字
+
+python2
+```
+➜  ~ python2
+Python 2.7.15 (default, Aug 17 2018, 22:39:05)
+[GCC 4.2.1 Compatible Apple LLVM 9.1.0 (clang-902.0.39.2)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> help("keywords")
+
+Here is a list of the Python keywords.  Enter any keyword to get more help.
+
+and                 elif                if                  print
+as                  else                import              raise
+assert              except              in                  return
+break               exec                is                  try
+class               finally             lambda              while
+continue            for                 not                 with
+def                 from                or                  yield
+del                 global              pass
+
+>>>
+```
+
+python3
+```
+➜  ~ python3
+Python 3.6.5 (default, Apr 25 2018, 14:23:58)
+[GCC 4.2.1 Compatible Apple LLVM 9.1.0 (clang-902.0.39.1)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> help("keywords")
+
+Here is a list of the Python keywords.  Enter any keyword to get more help.
+
+False               def                 if                  raise
+None                del                 import              return
+True                elif                in                  try
+and                 else                is                  while
+as                  except              lambda              with
+assert              finally             nonlocal            yield
+break               for                 not
+class               from                or
+continue            global              pass
+
+>>>
+```
+
+
+## 调试运行中的进程
+
+```
+strace -p [PID]
+```
+
+```
+-tt 在每行输出的前面，显示毫秒级别的时间
+-T 显示每次系统调用所花费的时间
+-v 对于某些相关调用，把完整的环境变量，文件stat结构等打出来。
+-f 跟踪目标进程，以及目标进程创建的所有子进程
+-e 控制要跟踪的事件和跟踪行为,比如指定要跟踪的系统调用名称
+-o 把strace的输出单独写到指定的文件
+-s 当系统调用的某个参数是字符串时，最多输出指定长度的内容，默认是32个字节
+-p 指定要跟踪的进程pid, 要同时跟踪多个pid, 重复多次-p选项即可。
+```
+
+调试实践
+```
+strace -s 10240 -p <PID> -t -y -v
+cat /proc/<PID>/fd/<fd_id>
+lsof -p <PID> | grep <socket_id>
+```
+
+## 系统负载
+
+```
+uptime
+ 14:31:27 up 5 days, 23:52,  2 users,  load average: 0.37, 0.50, 0.25
+```
+
+load average 平均负载，这个一段时间一般取1分钟、5分钟、15分钟，需要和cpu（总线程数）对比
+
+
+```
+# 核心数
+cat /proc/cpuinfo |grep "cpu cores"|uniq|wc -l
+# 线程数
+cat /proc/cpuinfo |grep "processor"|wc -l
+```

@@ -1,6 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
+* [Markdown](Markdown.md)
 * Components
     * [Celery](Components/Celery.md)
     * [Elasticsearch](Components/Elasticsearch.md)
@@ -55,5 +56,15 @@
     * [Httpd](WebServer/Httpd.md)
     * [Nginx](WebServer/Nginx.md)
 * Architecture
+    * [Cache](Architecture/Cache.md)
+    * [MatchmakingTradeOff](Architecture/MatchmakingTradeOff.md)
+    * [MessageQueue](Architecture/MessageQueue.md)
     * [Migration](Architecture/Migration.md)
-    * [MonitoringSystem](Architecture/MonitoringSystem.md)
+    * [Monitoring](Architecture/Monitoring.md)
+    * [Notification](Architecture/Notification.md)
+    * [ProducerConsumer](Architecture/ProducerConsumer.md)
+    * [Quota](Architecture/Quota.md)
+    * [Reconciliation](Architecture/Reconciliation.md)
+    * [Status](Architecture/Status.md)
+    * [Task](Architecture/Task.md)
+

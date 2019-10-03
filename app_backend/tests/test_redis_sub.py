@@ -9,7 +9,7 @@
 """
 import time
 
-from app_backend import redis_client
+from app_backend.clients.client_redis import redis_client
 from app_common.decorators.exception import ignore_exception
 from app_common.libs.redis_pub_sub import RedisPubSub
 
