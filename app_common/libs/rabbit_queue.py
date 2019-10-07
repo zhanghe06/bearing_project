@@ -11,6 +11,8 @@
 import pika
 from pika.exceptions import ConnectionClosed, ChannelClosed, IncompatibleProtocolError
 import json
+
+from pika.spec import PERSISTENT_DELIVERY_MODE
 from retry import retry
 
 
@@ -34,14 +36,46 @@ class RabbitQueue(object):
         if self.conn and self.conn.is_open:
             return
         self.conn = pika.BlockingConnection(pika.ConnectionParameters(**self.conf))
-        self.channel = self.conn.channel()
+        # self.channel = self.conn.channel()
 
     def close_conn(self):
         """
         关闭连接
         :return:
         """
+        if not self.conn:
+            return
+        if self.conn.is_closing:
+            print(' [x]  Conn is closing')
+            return
+        if self.conn.is_closed:
+            print(' [x]  Conn is closed')
+            return
         self.conn.close()
+
+    def open_channel(self):
+        """
+        打开通道
+        :return:
+        """
+        if self.channel and self.channel.is_open:
+            return
+        self.channel = self.conn.channel()
+
+    def close_channel(self):
+        """
+        关闭通道
+        :return:
+        """
+        if not self.channel:
+            return
+        if self.channel.is_closing:
+            print(' [x]  Channel is closing')
+            return
+        if self.channel.is_closed:
+            print(' [x]  Channel is closed')
+            return
+        self.channel.close()
 
     def exchange_declare(self, exchange_name='amq.topic'):
         """
@@ -99,7 +133,7 @@ class RabbitQueue(object):
             exchange=exchange,
             routing_key=routing_key,
             body=message,
-            properties=pika.BasicProperties(delivery_mode=2)
+            properties=pika.BasicProperties(delivery_mode=PERSISTENT_DELIVERY_MODE)
         )
         print(" [x] Sent %r" % (message,))
 
@@ -110,6 +144,20 @@ class RabbitQueue(object):
         """
         if self.channel.is_open:
             self.channel.basic_ack(delivery_tag)
+            print(' [x]  %d, ACK' % delivery_tag)
+        else:
+            # Channel is already closed, so we can't acknowledge this message;
+            # log and/or do something that makes sense for your app in this case.
+            pass
+
+    def nack_message(self, delivery_tag):
+        """
+        Note that `channel` must be the same Pika channel instance via which
+        the message being acknowledged was retrieved (AMQP protocol constraint).
+        """
+        if self.channel.is_open:
+            self.channel.basic_nack(delivery_tag)
+            print(' [x]  %d, NACK' % delivery_tag)
         else:
             # Channel is already closed, so we can't acknowledge this message;
             # log and/or do something that makes sense for your app in this case.
@@ -122,7 +170,7 @@ class RabbitQueue(object):
         """
         method_frame, header_frame, body = self.channel.basic_get(queue_name)
         if method_frame:
-            print(" [x]  Get %r" % (body,))
+            print(' [x]  %d, Get %r' % (method_frame.delivery_tag, body,))
             print(method_frame, header_frame, body)
             self.ack_message(delivery_tag=method_frame.delivery_tag)
         else:
@@ -135,11 +183,13 @@ class RabbitQueue(object):
         """
         try:
             self.open_conn()  # 断线重连
-            self.channel.basic_qos(prefetch_count=1)
+            self.open_channel()
 
+            self.channel.basic_qos(prefetch_count=1)
             self.channel.basic_consume(consumer_callback=on_message_callback, queue=queue_name)
             self.channel.start_consuming()
         except KeyboardInterrupt:
+            print('KeyboardInterrupt')
             self.channel.stop_consuming()
         except ChannelClosed as e:
             print('ChannelClosed')
@@ -150,7 +200,6 @@ class RabbitQueue(object):
         except IncompatibleProtocolError as e:
             print('IncompatibleProtocolError')
             raise e
-        self.close_conn()
 
     def example_basic_consume_with_callback(self):
         """
@@ -158,7 +207,7 @@ class RabbitQueue(object):
         :return:
         """
         def callback(ch, method, properties, body):
-            print(" [x]  Get %r" % (body,))
+            print(' [x]  %d, Get %r' % (method.delivery_tag, body,))
             # raise Exception('test')
             self.ack_message(delivery_tag=method.delivery_tag)
 

@@ -20,6 +20,7 @@ bk = ['rk.*', '*.project']
 qn = 'test_mq'
 
 mq = RabbitQueue(**mq_conf)
+mq.open_channel()
 mq.exchange_declare(exchange_name=ex)
 mq.queue_declare(queue_name=qn)
 
@@ -29,10 +30,15 @@ for rk in bk:
 
 def get():
     def callback(ch, method, properties, body):
-        print(" [x]  Get %r" % (body,))
-        # raise Exception('test')  # 测试业务异常
-        time.sleep(20)  # 测试连接异常（手动停止rabbitmq服务）
-        mq.ack_message(delivery_tag=method.delivery_tag)
+        try:
+            print(' [x]  %d, Get %r' % (method.delivery_tag, body,))
+            # raise Exception('test')  # 测试业务异常
+            time.sleep(1)  # 测试连接异常（手动停止rabbitmq服务）
+            mq.ack_message(delivery_tag=method.delivery_tag)
+        except Exception as e:
+            mq.nack_message(delivery_tag=method.delivery_tag)
+            # print(e.message)
+            raise e
 
     mq.basic_consume(on_message_callback=callback, queue_name=qn)
 

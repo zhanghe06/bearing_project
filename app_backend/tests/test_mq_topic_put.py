@@ -18,6 +18,7 @@ rk = 'rk.project'
 qn = 'test_mq'
 
 mq = RabbitQueue(**mq_conf)
+mq.open_channel()
 mq.exchange_declare(exchange_name=ex)
 mq.queue_declare(queue_name=qn)  # 发消息也需要定义，避免数据存储不到队列
 mq.queue_bind(exchange_name=ex, queue_name=qn, routing_key=rk)

@@ -10,12 +10,9 @@
 
 from __future__ import unicode_literals
 
-import pika
-
+from app_common.libs.rabbit_queue import RabbitQueue
 from config import current_config
 
+mq_conf = current_config.RABBITMQ
 
-RABBITMQ = current_config.RABBITMQ
-
-
-rabbitmq_client = pika.BlockingConnection(pika.ConnectionParameters(**RABBITMQ))
+consumer = RabbitQueue(**mq_conf)

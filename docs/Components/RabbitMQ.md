@@ -251,3 +251,12 @@ publisher confirms
 - 定时
 
 - 延时
+
+
+## rabbitmqctl
+
+```
+rabbitmqctl list_connections | wc -l
+rabbitmqctl list_channels | wc -l
+rabbitmqctl list_queues name messages_ready messages_unacknowledged
+```
