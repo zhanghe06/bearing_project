@@ -40,7 +40,7 @@ def get():
             # print(e.message)
             raise e
 
-    mq.basic_consume(on_message_callback=callback, queue_name=qn)
+    mq.basic_consume(queue_name=qn, on_message_callback=callback)
 
 
 if __name__ == '__main__':

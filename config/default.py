@@ -103,7 +103,7 @@ RABBITMQ = {
     'host': HOST,
     'port': 5672,
     'virtual_host': '/',
-    'heartbeat_interval': 0,    # 默认None,根据server配置检测心跳是否正常;0:不检测心跳,server端将不会主动断开连接
+    'heartbeat': 0,             # 默认None,根据server配置检测心跳是否正常;0:不检测心跳,server端将不会主动断开连接
     'connection_attempts': 5,   # 最大重试次数
     'retry_delay': 3,           # 重试等待时间
 }

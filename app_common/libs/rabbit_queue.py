@@ -45,9 +45,6 @@ class RabbitQueue(object):
         """
         if not self.conn:
             return
-        if self.conn.is_closing:
-            print(' [x]  Conn is closing')
-            return
         if self.conn.is_closed:
             print(' [x]  Conn is closed')
             return
@@ -68,9 +65,6 @@ class RabbitQueue(object):
         :return:
         """
         if not self.channel:
-            return
-        if self.channel.is_closing:
-            print(' [x]  Channel is closing')
             return
         if self.channel.is_closed:
             print(' [x]  Channel is closed')
@@ -186,7 +180,7 @@ class RabbitQueue(object):
             self.open_channel()
 
             self.channel.basic_qos(prefetch_count=1)
-            self.channel.basic_consume(consumer_callback=on_message_callback, queue=queue_name)
+            self.channel.basic_consume(queue=queue_name, on_message_callback=on_message_callback)
             self.channel.start_consuming()
         except KeyboardInterrupt:
             print('KeyboardInterrupt')
