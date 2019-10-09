@@ -45,7 +45,7 @@ class FibonacciRpcClient(object):
             ),
             body=str(n))
         while self.response is None:
-            self.connection.process_data_events()
+            self.connection.process_data_events()  # todo 超时
         return int(self.response)
 
 

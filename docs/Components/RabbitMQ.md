@@ -260,3 +260,8 @@ rabbitmqctl list_connections | wc -l
 rabbitmqctl list_channels | wc -l
 rabbitmqctl list_queues name messages_ready messages_unacknowledged
 ```
+
+## 关于 conn 和 channel
+
+1. 一个进程一个conn(TCP连接)
+2. 多个channel共享一个conn，实践中，channel与conn的比例无需过高，若任务过多，可多开进程

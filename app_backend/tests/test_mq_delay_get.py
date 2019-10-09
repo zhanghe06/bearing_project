@@ -4,8 +4,8 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: test_mq_topic_get.py
-@time: 2019-10-03 17:50
+@file: test_mq_delay_get.py
+@time: 2019-10-09 17:50
 """
 
 import time
@@ -47,5 +47,5 @@ def get():
 
 
 if __name__ == '__main__':
-    # python app_backend/tests/test_mq_topic_get.py
+    # python app_backend/tests/test_mq_delay_get.py
     get()
