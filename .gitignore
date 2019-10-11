@@ -32,6 +32,7 @@ docker/MariaDB/log/
 
 # Nginx
 docker/Nginx/logs/
+docker/Nginx/dist/
 
 # Redis
 docker/Redis/data/
