@@ -143,8 +143,6 @@ from app_backend.views.bank import bp_bank
 from app_backend.views.cash import bp_cash
 from app_backend.views.bank_account import bp_bank_account
 
-from app_backend.views.stress_testing import bp_stress_testing
-
 # 注册蓝图
 app.register_blueprint(bp_permissions)
 app.register_blueprint(bp_captcha)
@@ -178,8 +176,6 @@ app.register_blueprint(bp_price)
 app.register_blueprint(bp_bank)
 app.register_blueprint(bp_cash)
 app.register_blueprint(bp_bank_account)
-
-app.register_blueprint(bp_stress_testing)
 
 # 导入自定义过滤器
 from app_backend import filters
