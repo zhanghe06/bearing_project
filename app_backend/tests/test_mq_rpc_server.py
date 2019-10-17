@@ -8,8 +8,9 @@
 @time: 2019-10-08 18:08
 """
 
-import pika
 import json
+
+import pika
 
 from config import current_config
 
@@ -26,13 +27,12 @@ def fib(n):
 
 
 class RpcServer(object):
-    response = ''
     corr_id = ''
     qn = 'rpc_queue'
     fun_map = {}
 
     def __init__(self, **conf):
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(**mq_conf))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(**conf))
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=self.qn)
 
@@ -47,9 +47,9 @@ class RpcServer(object):
 
     def on_request(self, ch, method, props, body):
 
-        body_obj = json.loads(body)
-        req_method = body_obj['req_method']
-        req_payload = body_obj['req_payload']
+        req_body_obj = json.loads(body)
+        req_method = req_body_obj['req_method']
+        req_payload = req_body_obj['req_payload']
 
         args = req_payload['args']
         kwargs = req_payload['kwargs']
@@ -57,13 +57,15 @@ class RpcServer(object):
         args_fmt = (', '.join([str(i) for i in list(args) + ['%s=%s' % (i, j) for i, j in kwargs.items()]]))
         print(" [.] %s(%s), correlation_id: %s" % (req_method, args_fmt, props.correlation_id))
 
-        response = self.fun_map[req_method](*args, **kwargs)
+        result = self.fun_map[req_method](*args, **kwargs)
+        res_body_obj = {'res_result': result}
+        res_body = json.dumps(res_body_obj)
 
         ch.basic_publish(
             exchange='',
             routing_key=props.reply_to,
             properties=pika.BasicProperties(correlation_id=props.correlation_id),
-            body=str(response)
+            body=res_body
         )
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
