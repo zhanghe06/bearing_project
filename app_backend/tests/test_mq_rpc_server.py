@@ -9,12 +9,11 @@
 """
 
 import pika
+import json
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+from config import current_config
 
-channel = connection.channel()
-
-channel.queue_declare(queue='rpc_queue')
+mq_conf = current_config.RABBITMQ
 
 
 def fib(n):
@@ -26,21 +25,62 @@ def fib(n):
         return fib(n - 1) + fib(n - 2)
 
 
-def on_request(ch, method, props, body):
-    n = int(body)
+class RpcServer(object):
+    response = ''
+    corr_id = ''
+    qn = 'rpc_queue'
+    fun_map = {}
 
-    print(" [.] fib(%s), correlation_id: %s" % (n, props.correlation_id))
-    response = fib(n)
+    def __init__(self, **conf):
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(**mq_conf))
+        self.channel = self.connection.channel()
+        self.channel.queue_declare(queue=self.qn)
 
-    ch.basic_publish(exchange='',
-                     routing_key=props.reply_to,
-                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
-                     body=str(response))
-    ch.basic_ack(delivery_tag=method.delivery_tag)
+        self.channel.basic_qos(prefetch_count=1)
+        self.channel.basic_consume(queue=self.qn, on_message_callback=self.on_request)
+
+    def register_fun(self, func_name):
+        if func_name not in globals():
+            print(" [x] function %s doesn't exist" % func_name)
+            return
+        self.fun_map[func_name] = globals()[func_name]
+
+    def on_request(self, ch, method, props, body):
+
+        body_obj = json.loads(body)
+        req_method = body_obj['req_method']
+        req_payload = body_obj['req_payload']
+
+        args = req_payload['args']
+        kwargs = req_payload['kwargs']
+
+        args_fmt = (', '.join([str(i) for i in list(args) + ['%s=%s' % (i, j) for i, j in kwargs.items()]]))
+        print(" [.] %s(%s), correlation_id: %s" % (req_method, args_fmt, props.correlation_id))
+
+        response = self.fun_map[req_method](*args, **kwargs)
+
+        ch.basic_publish(
+            exchange='',
+            routing_key=props.reply_to,
+            properties=pika.BasicProperties(correlation_id=props.correlation_id),
+            body=str(response)
+        )
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+
+    def run(self):
+        if not self.fun_map:
+            print(" [x] The registered function is empty")
+            return
+        print(" [x] Awaiting RPC requests")
+        self.channel.start_consuming()
 
 
-channel.basic_qos(prefetch_count=1)
-channel.basic_consume(queue='rpc_queue', on_message_callback=on_request)
+def server():
+    rpc_server = RpcServer(**mq_conf)
+    rpc_server.register_fun('fib')
+    rpc_server.run()
 
-print(" [x] Awaiting RPC requests")
-channel.start_consuming()
+
+if __name__ == '__main__':
+    # python app_backend/tests/test_mq_rpc_server.py
+    server()
