@@ -51,7 +51,7 @@ pyexcel-webio==0.1.4
 pyexcel-xls==0.5.7
 pymongo==3.7.2
 Pyphen==0.9.4
-python-engineio==2.2.0
+python-engineio==3.8.2.post1
 python-socketio==2.0.0
 pytz==2018.5
 redis==2.10.6
