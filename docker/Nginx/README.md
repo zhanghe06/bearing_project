@@ -86,3 +86,24 @@ curl -k -H "X-Forwarded-For: 1.2.3.4" https://www.app.com/ip
 ## 参数解析
 
 `proxy_next_upstream` 自动重试，默认`error timeout`
+`proxy_next_upstream_tries` 设置重试次数，默认0表示不限制，注意此重试次数指的是所有请求次数（包括第一次和之后的重试次数之和）。
+`proxy_next_upstream_timeout` 设置重试最大超时时间，默认0表示不限制。
+
+参考：[http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream)
+
+```
+normally, requests with a non-idempotent method (POST, LOCK, PATCH) are not passed to the next server if a request has been sent to an upstream server (1.9.13); enabling this option explicitly allows retrying such requests;
+```
+
+也就是说，一般情况下，幂等的操作会重试，而非幂等的操作不会重试。也可以`non_idempotent`参数使得非幂等操作一样重试
+
+HTTP方法
+- 非幂等：POST、LOCK、PATCH
+- 幂等：GET、HEAD、PUT、DELETE、OPTIONS、TRACE
+
+
+## 采坑
+
+windows 下接口特别慢，部分接口出现响应1分钟，时间特别有规律，就是1分钟
+
+proxy_pass localhost换成了127.0.0.1，速度飞起
