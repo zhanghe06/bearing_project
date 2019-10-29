@@ -1,8 +1,9 @@
-## nginx
+# Nginx
 
+## 限速
 http://nginx.org/en/docs/http/ngx_http_limit_req_module.html
 
-```
+```nginx
 http {
     limit_req_zone $binary_remote_addr zone=one:10m rate=1r/s;
     server {
@@ -24,3 +25,35 @@ rate 表示nginx处理请求的速度有多快
 burst 表示峰值
 nodelay 表示是否延迟处理请求，还是直接503返回给客户端，如果超出rate设置的情况下。
 
+
+## 反向代理域名
+https://www.nginx.com/resources/wiki/modules/domain_resolve/
+
+```nginx
+http {
+    resolver 8.8.8.8;
+    resolver_timeout 10s;
+
+    upstream backend {
+        jdomain  www.baidu.com;
+        # keepalive 10;
+    }
+    server {
+        listen 8080;
+
+        location / {
+            proxy_pass http://backend;
+        }
+    }
+}
+```
+
+注意windows环境下，proxy_pass指向localhost访问时非常慢，需要替换为127.0.0.1
+
+```
+# Localhost (DO NOT REMOVE)
+127.0.0.1       localhost
+```
+
+
+## 日志切割
