@@ -66,3 +66,78 @@ import six
 # def b(s: str) -> binary_type: ...
 # def u(s: str) -> text_type: ...
 ```
+
+继承类
+```python
+# python2
+class MainClass(object):
+    def __init__(self, *args, **kwargs):
+        pass
+
+
+class SubClass(MainClass):
+    def __init__(self, *args, **kwargs):
+        super(SubClass, self).__init__(*args, **kwargs)
+
+# python3
+class MainClass(object):
+    def __init__(self, *args, **kwargs):
+        pass
+
+
+class SubClass(MainClass):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+# 兼容
+class MainClass(object):
+    def __init__(self, *args, **kwargs):
+        pass
+
+
+class SubClass(MainClass):
+    def __init__(self, *args, **kwargs):
+        MainClass.__init__(self)
+```
+
+抽象类
+```python
+# python2
+import abc
+class SomeAbstractClass(object):
+    __metaclass__ = abc.ABCMeta
+    @abc.abstractmethod
+    def do_something(self):
+        pass
+
+# python3
+import abc
+class SomeAbstractClass(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
+    def do_something(self):
+        pass
+```
+
+元类
+```python
+class MetaClass(type):  # 只有继承了type类才能称之为一个元类，否则就是一个普通的自定义类
+    def __init__(self, class_name, class_bases, class_dic):
+        print(self)  # 现在是People
+        print(class_name)
+        print(class_bases)
+        print(class_dic)
+        super(MetaClass,self).__init__(class_name, class_bases, class_dic)  # 重用父类的功能
+
+# python2
+
+
+# python3
+
+
+# 兼容
+import six
+
+@six.add_metaclass(MetaClass)
+class SomeClass(object):
+    pass
+```
