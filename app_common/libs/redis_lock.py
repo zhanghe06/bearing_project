@@ -51,6 +51,7 @@ class RedisDistributedLock(object):
         except redis.exceptions.WatchError:
             pipe.reset()
 
+
 if __name__ == '__main__':
     redis_lock_obj = RedisDistributedLock('app')
     redis_lock_obj.get_lock()

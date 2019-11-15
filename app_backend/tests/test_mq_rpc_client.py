@@ -47,6 +47,9 @@ class RpcClient(object):
         if self.corr_id == props.correlation_id:
             self.response = body
 
+    def cast(self, req_method='', *args, **kwargs):
+        pass
+
     def call(self, req_method='', *args, **kwargs):
         print(" [x] RPC Requesting")
         self.response = ''
