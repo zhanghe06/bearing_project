@@ -103,7 +103,7 @@ oauth_weibo = oauth.remote_app(
 
 
 # 配置日志
-# dictConfig(app.config['LOG_CONFIG'])
+dictConfig(app.config['LOG_CONFIG'])
 
 # 这个 import 语句放在这里, 防止views, models import发生循环import
 from app_backend.models import bearing_project
