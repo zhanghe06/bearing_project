@@ -18,15 +18,9 @@ from wtforms import StringField, DateField, IntegerField, SelectField, \
     DecimalField
 from wtforms.validators import InputRequired, NumberRange, Optional
 
-from app_backend.api.bank import (
-    get_bank_choices,
-    # bank_current_stats,
-    # bank_former_stats,
-)
 from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT, DEFAULT_SEARCH_CHOICES_INT_OPTION
 from app_common.maps.type_account import TYPE_ACCOUNT_SEARCH_CHOICES, TYPE_ACCOUNT_SELECT_CHOICES
 from app_common.maps.type_current import TYPE_CURRENT_SEARCH_CHOICES, TYPE_CURRENT_SELECT_CHOICES
-
 
 
 class BankAccountSearchForm(FlaskForm):
@@ -115,7 +109,6 @@ class BankAccountAddForm(FlaskForm):
         ],
         default=DEFAULT_SEARCH_CHOICES_INT_OPTION,
         coerce=int,
-        choices=get_bank_choices('create'),
         description=_('user role'),
         render_kw={
             'rel': 'tooltip',
