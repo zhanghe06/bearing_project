@@ -35,7 +35,7 @@ from app_backend.api.inventory import (
     edit_inventory,
     # inventory_current_stats,
     # inventory_former_stats,
-    transfer_inventory)
+    transfer_inventory, get_distinct_inventory_brand)
 from app_backend.api.inventory import (
     get_inventory_rows,
     # get_distinct_brand,
@@ -63,7 +63,7 @@ from app_backend.permissions.inventory import (
     permission_inventory_section_del,
 )
 from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT_OPTION, \
-    DEFAULT_SEARCH_CHOICES_STR_OPTION
+    DEFAULT_SEARCH_CHOICES_STR_OPTION, DEFAULT_SEARCH_CHOICES_STR
 from app_common.maps.operations import OPERATION_EXPORT, OPERATION_DELETE
 from app_common.maps.status_delete import (
     STATUS_DEL_OK,
@@ -97,6 +97,11 @@ def lists():
     form.warehouse_id.choices = get_warehouse_choices()
     form.rack_id.choices = get_rack_choices(form.warehouse_id.data)
     # app.logger.info('')
+
+    inventory_brand_choices = [(brand, brand) for brand in get_distinct_inventory_brand(status_delete=STATUS_DEL_NO) if
+                               brand != '']
+
+    form.production_brand.choices = DEFAULT_SEARCH_CHOICES_STR + inventory_brand_choices
 
     search_condition = [
         Inventory.status_delete == STATUS_DEL_NO,
