@@ -215,6 +215,7 @@ def add():
 
     # 加载创建表单
     form = BankAccountAddForm(request.form)
+    form.bank_id.choices = get_bank_choices('create'),
 
     # 进入创建页面
     if request.method == 'GET':
