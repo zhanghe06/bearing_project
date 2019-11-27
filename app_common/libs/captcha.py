@@ -11,6 +11,7 @@
 import random
 from os.path import abspath
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from past.builtins import xrange
 
 
 class Captcha(object):
