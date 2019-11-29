@@ -1,15 +1,34 @@
 ## Elasticsearch
 
-https://www.docker.elastic.co
+[https://hub.docker.com/_/elasticsearch](https://hub.docker.com/_/elasticsearch)
+
+[https://www.docker.elastic.co](https://www.docker.elastic.co)
 
 ```
-$ docker pull docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+$ docker pull elasticsearch:7.6.0
 ```
 
 ```
-$ curl http://127.0.0.1:9200/_cat/health
+$ curl --basic -u "elastic:changeme" http://127.0.0.1:9200/_cat/health
 1523173079 07:37:59 docker-cluster green 1 1 1 1 0 0 0 0 - 100.0%
 ```
+
+注意：如果是特殊密码需要转义
+```
+username: elastic
+password: $sHz!7cnJ5
+# 速记：啥时候这疫情才能结束
+```
+
+```
+curl --basic -u elastic:\$sHz\!7cnJ5 http://147.139.132.179:9200/_cat/health
+```
+注意，特殊符号需要转义（$和!）
+
+
+单点单节点部署Elasticsearch, 集群状态可能为yellow
+
+因为单点部署Elasticsearch, 默认的分片副本数目配置为1，而相同的分片不能在一个节点上，所以就存在副本分片指定不明确的问题，所以显示为yellow，可以通过在Elasticsearch集群上添加一个节点来解决问题，如果不想这么做，可以删除那些指定不明确的副本分片（当然这不是一个好办法）但是作为测试和解决办法还是可以尝试的
 
 Built-in Users
 ```
@@ -21,6 +40,18 @@ logstash_system
 The user Logstash uses when storing monitoring information in Elasticsearch.
 ```
 
+### 插件
+
+#### Elasticsearch-Head（web管理）
+
+A web front end for an Elasticsearch cluster
+
+[Elasticsearch-Head Chrome extension](https://chrome.google.com/webstore/detail/elasticsearch-head/ffmkiejjmecolpfloofpjologoblkegm)
+
+打开扩展进入页面，地址填入[http://localhost:9200/](http://localhost:9200/)，连接，界面显示集群状态
+
+
+#### IK（中文分词）
 
 分词测试
 
@@ -31,6 +62,7 @@ curl -XGET "http://localhost:9200/catalogue/_analyze?pretty=true" -H 'Content-Ty
    "text":"7008CEGA/P4A","tokenizer": "ik_smart"
 }'
 ```
+
 ```
 {
   "tokens" : [
