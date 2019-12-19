@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source bearing.env/bin/activate
+source .env/bin/activate
 
 export PATH=${PWD}:${PATH}
 export PYTHONPATH=${PWD}
