@@ -30,6 +30,12 @@ docker/MariaDB/backup/
 docker/MariaDB/data/
 docker/MariaDB/log/
 
+# MySQL
+docker/MySQL/backup/
+docker/MySQL/schema/
+docker/MySQL/data/
+docker/MySQL/log/
+
 # Nginx
 docker/Nginx/logs/
 docker/Nginx/dist/
