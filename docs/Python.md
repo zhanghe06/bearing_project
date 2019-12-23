@@ -352,10 +352,25 @@ load average 平均负载，这个一段时间一般取1分钟、5分钟、15分
 
 ```
 # 核心数
-cat /proc/cpuinfo |grep "cpu cores"|uniq|wc -l
+cat /proc/cpuinfo | grep "core id" | uniq | wc -l
 # 线程数
-cat /proc/cpuinfo |grep "processor"|wc -l
+cat /proc/cpuinfo | grep "processor" | wc -l
+# 列出所有核心主频
+cat /proc/cpuinfo |grep "cpu MHz"
 ```
+
+MacOS 查看CPU
+```
+# 查看品牌，例如：Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz
+sysctl -n machdep.cpu.brand_string
+
+# 核心数
+sysctl -n machdep.cpu.core_count
+
+# 线程数
+sysctl -n machdep.cpu.thread_count
+```
+
 
 ## \_\_new\_\_、\_\_init\_\_ 区别
 
