@@ -2,6 +2,7 @@
 
 compatibility for python2 and python3
 
+[https://python-future.org/compatible_idioms.html](https://python-future.org/compatible_idioms.html)
 
 ```python
 from __future__ import print_function
@@ -49,6 +50,13 @@ from future.builtins import input
 # PY2(iteritems)
 # PY3(items)
 from six import iteritems, iterkeys, itervalues
+```
+
+```python
+# PY2(xrange)
+# PY3(range)
+from future.builtins import range
+from past.builtins import xrange
 ```
 
 ```python
