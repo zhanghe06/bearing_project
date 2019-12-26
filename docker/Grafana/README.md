@@ -1,17 +1,46 @@
 ## Grafana
 
-https://hub.docker.com/r/grafana/grafana/
+[https://hub.docker.com/r/grafana/grafana](https://hub.docker.com/r/grafana/grafana)
+
+[https://github.com/grafana/grafana](https://github.com/grafana/grafana)
+
 ```
-$ sudo docker pull grafana/grafana:5.0.4
+docker pull grafana/grafana:6.6.2
 ```
 
-http://localhost:3000/
+[http://localhost:3000](http://localhost:3000)
 
 默认账号密码：admin/admin
+
+首次登陆，提示更新密码，也可跳过
+
+1. Configuration -> Data Sources 添加数据源（选择Prometheus, http://192.168.4.1:9090）
+2. Create Import, Dashboard 填入[11074](https://grafana.com/grafana/dashboards/11074), 数据源选择刚添加的Prometheus
+
+容器的模板：
+[893](https://grafana.com/grafana/dashboards/893)
+[193](https://grafana.com/grafana/dashboards/193)
+[11277](https://grafana.com/grafana/dashboards/11277)
+
+
+常用变量设置
+
+Name | Label | Query | Regex
+--- | --- | --- | ---
+job | Job | label_values(node_uname_info, job) | -
+hostname | Host | label_values(node_uname_info{job=~"$job"}, nodename) | -
+instance | Instance | label_values(container_cpu_user_seconds_total{job=~"$job"}, instance) | -
+
 
 Grafana社区用户分享的Dashboard: [https://grafana.com/dashboards](https://grafana.com/dashboards)
 
 
-Docker 集群监控平台
+### 创建用户
 
-cAdvisor-InfluxDB-Grafana
+```
+# 1、创建用户
+Server Admin -> Users -> New user -> 填入: Name、Username、Password
+
+# 2、配置权限
+Configuration -> Users -> Role -> Viewer
+```
