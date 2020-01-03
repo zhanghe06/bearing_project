@@ -2,9 +2,9 @@
 
 docker run \
     -it \
-    --link mariadb:mysql \
+    --link mysql:mysql \
     --rm \
-    mariadb:10.1.23 \
+    mysql:5.7 \
     sh -c 'exec mysql \
     -h"$MYSQL_PORT_3306_TCP_ADDR" \
     -P"$MYSQL_PORT_3306_TCP_PORT" \
