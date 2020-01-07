@@ -2,8 +2,13 @@
 # Default Kibana configuration from kibana-docker.
 
 server.name: kibana
-server.host: "0"
-elasticsearch.url: http://elasticsearch:9200
-elasticsearch.username: elastic
-elasticsearch.password: changeme
+server.host: 0.0.0.0
+elasticsearch.hosts: http://elasticsearch:9200
+elasticsearch.username: "elastic"
+elasticsearch.password: "changeme"
+xpack.reporting.encryptionKey: "accfb5723fef21b04b35dddc75a4206f"
+# something_at_least_32_characters
+# >>> import os
+# >>> os.urandom(16).encode('hex')
+# 'accfb5723fef21b04b35dddc75a4206f'
 xpack.monitoring.ui.container.elasticsearch.enabled: true
