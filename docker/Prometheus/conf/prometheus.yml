@@ -41,3 +41,10 @@ scrape_configs:
     - targets: ['192.168.4.1:9100']
       labels:
         instance: node1
+
+  # Docker
+  - job_name: 'Docker'
+    static_configs:
+    - targets: ['192.168.4.1:8080']
+      labels:
+        instance: cadvisor
