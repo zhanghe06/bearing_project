@@ -1,4 +1,4 @@
-# RabbitMQ
+## RabbitMQ
 
 https://hub.docker.com/_/rabbitmq/
 ```
@@ -15,7 +15,7 @@ python mq_emit_log_topic.py red.rabbit Hello
 ```
 
 
-## 故障排错
+### 故障排错
 
 磁盘空间占满，服务重启失败
 ```
