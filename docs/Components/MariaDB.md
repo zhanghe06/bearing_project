@@ -1,5 +1,17 @@
 # MariaDB
 
+## 与 MySQL 的兼容性
+
+[https://mariadb.com/kb/en/mariadb-vs-mysql-compatibility](https://mariadb.com/kb/en/mariadb-vs-mysql-compatibility)
+
+MariaDB版本 | MySQL版本 | 说明
+--- | --- | ---
+MariaDB 10.2，MariaDB 10.3和MariaDB 10.4 | MySQL 5.7 | 有限替代
+MariaDB 10.0和MariaDB 10.1 | MySQL 5.6 | 有限替代
+MariaDB 5.5 | MySQL 5.5 | 可以替代
+MariaDB 5.1，MariaDB 5.2和MariaDB 5.3 | MySQL 5.1 | 直接替代
+
+MariaDB 10.2、MySQL 5.7 版本开始，支持JSON字段类型，但是实现方式不同；如果将MySQL迁移到MariaDB，JSON则被转换为TEXT
 
 ## 事务
 
