@@ -1,0 +1,16 @@
+/var/log/nginx/*.log {
+        daily                   # 日志文件每天进行滚动
+        missingok               # 如果日志没找到，直接开始下一个日志的备份
+        rotate 52               # 保留最近52次滚动的日志
+        compress                # 通过gzip压缩转储以后的日志
+        delaycompress           # 压缩延迟至下一次转储，和compress一起使用时
+        dateext                 # 日志文件切割时添加日期后缀
+        notifempty              # 如果是空文件的话，不转储
+        create 640 nginx adm    # 设置切割后新的日志文件权限是640，属主是nginx，属组是adm
+        sharedscripts           # 共享脚本，下面的postrotate <s> endscript中的脚本只执行一次即可
+        postrotate              # 转储以后执行 - 开始
+                if [ -f /var/run/nginx.pid ]; then              # 如果进程存在
+                        kill -USR1 `cat /var/run/nginx.pid`     # 给进程发送USR1信号，重新打开日志
+                fi
+        endscript               # 转储以后执行 - 结束
+}
