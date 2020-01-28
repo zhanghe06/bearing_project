@@ -39,6 +39,8 @@ docker/MySQL/log/
 # Nginx
 docker/Nginx/logs/
 docker/Nginx/dist/
+docker/Nginx/dist_*/
+docker/Nginx/logrotate.d/nginx
 
 # Redis
 docker/Redis/data/
