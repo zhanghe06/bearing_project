@@ -1,4 +1,4 @@
-## 轴承行业 - 最佳实践
+# 轴承行业 - 最佳实践
 
 [![Build Status](https://travis-ci.org/zhanghe06/bearing_project.svg?branch=master)](https://travis-ci.org/zhanghe06/bearing_project)
 [![Coverage Status](https://coveralls.io/repos/github/zhanghe06/bearing_project/badge.svg?branch=master)](https://coveralls.io/github/zhanghe06/bearing_project?branch=master)
@@ -24,13 +24,29 @@
 - [ ] 用户注册
 - [ ] 注册邀请
 - [ ] 链路追踪
+- [ ] 数据备份
 
-系统依赖
+组件依赖
 - Nginx
 - Redis
 - MariaDB
 - MongoDB
 
+
+系统依赖（CentOS）
+```
+yum -y install python-devel     # python2
+yum -y install python34-devel   # python3
+yum -y install mysql-devel
+```
+
+系统依赖（Ubuntu）
+```
+sudo apt-get install python-dev     # python2
+sudo apt-get install python3-dev    # python3
+sudo apt-get install mysql-dev
+sudo apt-get install libffi-dev
+```
 
 项目依赖
 ```bash
@@ -38,18 +54,23 @@ pip install Flask
 pip install Flask-Login
 pip install Flask-SQLAlchemy
 pip install Flask-WTF
+pip install requests-oauthlib==1.0.0
 pip install Flask-OAuthlib
 pip install Flask-Excel
-pip install pyexcel-xls
+pip install Flask-SocketIO
+pip install tinycss2==0.6.1
+pip install cffi==1.14.0
+pip install cairocffi==0.9.0
+pip install WeasyPrint==0.42.3
+pip install Flask-WeasyPrint
 pip install Flask-Principal
 pip install Flask-Babel
 pip install Flask-Moment
 pip install Flask-Mail
 pip install sqlacodegen==1.1.6  # 注意: 最新版 sqlacodegen==2.0 有bug
-pip install gunicorn
+pip install gunicorn==19.10.0
 pip install eventlet
-pip install Flask-SocketIO
-pip install Flask-WeasyPrint
+pip install pyexcel-xls
 pip install redis
 pip install requests
 pip install mysqlclient
@@ -69,23 +90,20 @@ pip install supervisor
 ## 项目演示
 python2
 ```bash
-virtualenv bearing.env
-source env_develop.sh
-pip install -r requirements.txt
-python run_backend.py
+virtualenv bearing.env              # 创建虚拟环境
+source env_develop.sh               # 加载环境变量
+pip install -r requirements.txt     # 安装项目依赖
+sh babel_compile.sh                 # 编译本地语言
+python run_backend.py               # 启动项目服务
 ```
 
 python3
 ```bash
-virtualenv bearing.env -p python3
-source env_develop.sh
-pip install -r requirements.txt
-python run_backend.py
-```
-
-编译语音
-```bash
-sh babel_compile.sh
+virtualenv bearing.env -p python3   # 创建虚拟环境
+source env_develop.sh               # 加载环境变量
+pip install -r requirements.txt     # 安装项目依赖
+sh babel_compile.sh                 # 编译本地语言
+python run_backend.py               # 启动项目服务
 ```
 
 访问 [http://0.0.0.0:8060](http://0.0.0.0:8060)
@@ -489,7 +507,7 @@ JavaScript Requests
 
 A Flask extension for handling Cross Origin Resource Sharing (CORS), making cross-origin AJAX possible.
 
-https://flask-cors.readthedocs.io/en/latest/
+[https://flask-cors.readthedocs.io/en/latest](https://flask-cors.readthedocs.io/en/latest)
 
 
 ## 本地事务的幂等性
@@ -570,6 +588,16 @@ Gunicorn 启动之后，出现静态文件加载报错`ERR_CONTENT_LENGTH_MISMAT
 前端加 Nginx 代理就好了
 
 
+## 日志方案
+
+Fluentd、Elasticsearch、Kibana
+
+
+## 监控方案
+
+Prometheus、Exporter、Grafana、Alertmanager、cAdvisor（容器）
+
+
 ## TODO
 
 - [x] 联动删除
@@ -585,5 +613,7 @@ Gunicorn 启动之后，出现静态文件加载报错`ERR_CONTENT_LENGTH_MISMAT
 - [ ] 滚动升级
 - [ ] 性能测试
 - [ ] 压力测试
+- [ ] 设计负载
+- [ ] 服务扩容
 - [x] 打印页面
 - [ ] 独立仓库

@@ -10,6 +10,10 @@
 
 from __future__ import unicode_literals
 
+import time
+from collections import defaultdict
+from uuid import uuid4
+import logging
 import user_agents
 from flask import Response
 from flask import (
@@ -60,6 +64,9 @@ from app_common.maps.type_role import (
     TYPE_ROLE_STOREKEEPER,
     TYPE_ROLE_ACCOUNTANT)
 
+api_logger = logging.getLogger('api')
+debug_logger = logging.getLogger('debug')
+
 # 加载配置
 DOCUMENT_INFO = app.config.get('DOCUMENT_INFO', {})
 
@@ -85,6 +92,10 @@ def before_request():
     """
     当前用户信息
     """
+    request_id = request.headers.get('X-Request-Id', str(uuid4()))  # 不带短横: uuid4().get_hex()
+    g.request_id = request_id
+    debug_logger.debug('before_request')
+
     lang = request.accept_languages.best_match(['en', 'zh'], default='zh')
     g.lang = lang
     g.moment_locale = moment_locale_map.get(lang)
@@ -107,6 +118,48 @@ def before_request():
     g.PURCHASE_PREFIX = app.config.get('PURCHASE_PREFIX', '')  # 进货
 
     g.STATIC_RES_VER = app.config.get('STATIC_RES_VER', '1.0')  # 静态资源版本
+
+
+@app.errorhandler(Exception)
+def unhandled_exception(e):
+    debug_logger.debug('after_request')
+    # return render_template('generic.html'), 500
+    return 'Exception', 500
+
+
+@app.after_request
+def after_request(response):
+    request_id = g.get('request_id', str(uuid4()))
+    g.request_id = request_id
+    debug_logger.debug('after_request')
+
+    # 头部注入
+    response.headers.add('X-Request-Id', request_id)
+
+    return response  # 必须返回response
+
+
+@app.teardown_request
+def teardown_request(exception=None):
+    request_id = g.get('request_id', str(uuid4()))
+    g.request_id = request_id
+    debug_logger.debug('teardown_request')
+
+    # 接口日志
+    g.api_log = defaultdict(lambda: '-')
+    g.api_log['project_name'] = app.name
+
+    if exception:
+        exception_info = {
+            'module': exception.__class__.__module__,
+            'name': exception.__class__.__name__,
+            'message': exception.message,
+        }
+        g.api_log['exception'] = '%(module)s.%(name)s: %(message)s' % exception_info
+        api_logger.error(dict(g.api_log))
+    else:
+        api_logger.info(dict(g.api_log))
+    return exception
 
 
 @identity_loaded.connect_via(app)
@@ -245,6 +298,11 @@ def index():
     """
     后台首页
     """
+    # ERROR > WARNING > INFO > DEBUG
+    debug_logger.debug('api debug')
+    debug_logger.info('api info')
+    debug_logger.warning('api warning')
+    debug_logger.error('api error')
     # return "Hello, World!"
     # return str(current_user.__dict__)
     document_info = DOCUMENT_INFO.copy()
@@ -410,6 +468,9 @@ def too_many_requests(error):
 
 @app.errorhandler(500)
 def internal_server_error(error):
+    # 提取原始异常
+    error = getattr(error, 'original_exception', error)
+
     message = getattr(error, 'description', None) or getattr(error, 'message', None) or _('Internal Server Error')
 
     # Redis 连接失败
