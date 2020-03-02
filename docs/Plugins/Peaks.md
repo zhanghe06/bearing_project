@@ -1,4 +1,4 @@
-# Peaks
+# Peaks.js
 
 A client-side JavaScript component to display and interact with audio waveforms in the browser
 

@@ -19,38 +19,54 @@ from config import current_config
 
 
 BASE_DIR = current_config.BASE_DIR
-SQLALCHEMY_DATABASE_URI = current_config.SQLALCHEMY_DATABASE_URI
+SQLALCHEMY_BINDS = current_config.SQLALCHEMY_BINDS
 
 
-def gen_models(app_name):
+def gen_models(app_name, db_key):
     """
-    创建 models
-    $ python gen.py gen_models
+    创建 models 支持多库
     :param app_name:
+    :param db_key:
     :return:
     """
-    file_path = os.path.join(BASE_DIR, '%s/models/bearing_project.py' % app_name)
-    cmd = b'sqlacodegen %s --noinflect --outfile %s' % (SQLALCHEMY_DATABASE_URI, file_path)
+    file_path = os.path.join(BASE_DIR, app_name, 'models', 'model_%s.py' % db_key)
+    # 检查文件
+    if not os.path.exists(file_path):
+        with open(file_path, b'wb') as _:
+            pass
+    cmd = 'sqlacodegen \'%s\' --noinflect --outfile %s' % (SQLALCHEMY_BINDS[db_key], file_path)
+    print(cmd)
 
     output = os.popen(cmd)
     result = output.read()
-    print(result)
+    print(result) if result else None
 
     # 更新 model 文件
     with open(file_path, b'r') as f:
         lines = f.readlines()
     # 替换 model 关键内容
-    lines[2] = b'from %s import db\n' % app_name
-    lines[5] = b'Base = db.Model\n'
+    lines[2] = b'from %s.databases.%s import db_%s\n' % (app_name, db_key, db_key)
+    lines[5] = b'Base = db_%s.Model\n' % db_key
 
     # 新增 model 转 dict 方法
     with open(file_path, b'w') as f:
         lines.insert(9, b'def to_dict(self):\n')
         lines.insert(10, b'    return {c.name: getattr(self, c.name, None) for c in self.__table__.columns}\n')
-        lines.insert(11, b'\n')
+        lines.insert(11, b'\n\n')
         lines.insert(12, b'Base.to_dict = to_dict\n')
-        lines.insert(13, b'\n\n')
+        lines.insert(13, b'Base.__bind_key__ = \'%s\'\n' % db_key)
+        lines.insert(14, b'\n\n')
         f.write(b''.join(lines))
+
+
+def usage():
+    print('''
+创建/更新 models
+$ python gen.py [项目名称] [数据库键]
+$ python gen.py app_frontend bearing
+$ python gen.py app_backend bearing
+$ python gen.py api_restful bearing
+''')
 
 
 def run():
@@ -59,23 +75,12 @@ def run():
     """
     # print sys.argv
     try:
-        if len(sys.argv) > 2:
-            fun_name = globals()[sys.argv[1]]
-            fun_name(sys.argv[2])
-        else:
-            print('缺失参数\n')
-            usage()
-    except NameError as e:
-        print(e)
-        print('未定义的方法[%s]' % sys.argv[1])
-
-
-def usage():
-    print('''
-创建/更新 models
-$ python gen.py gen_models app_frontend
-$ python gen.py gen_models app_backend
-''')
+        if len(sys.argv) < 3:
+            raise Exception('缺失参数\n')
+        gen_models(sys.argv[1], sys.argv[2])
+    except Exception as e:
+        print(e.message)
+        usage()
 
 
 if __name__ == '__main__':

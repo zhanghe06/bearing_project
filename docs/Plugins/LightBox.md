@@ -1,4 +1,4 @@
-# LightBox
+# LightBox.js
 
 [http://lokeshdhakar.com/projects/lightbox2](http://lokeshdhakar.com/projects/lightbox2)
 
