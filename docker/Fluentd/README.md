@@ -64,3 +64,7 @@ out_file
 out_s3
 out_webhdfs
 
+
+#### Data Types
+
+https://docs.fluentd.org/configuration/config-file#supported-data-types-for-values

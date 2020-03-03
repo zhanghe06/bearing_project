@@ -10,9 +10,9 @@ docker network ls | grep -wq "$NET_NAME" && echo "The network: $NET_NAME already
 #    -h kibana \
 #    --name kibana \
 #    --add-host elasticsearch:192.168.4.1 \
-#    -d \
-#    -p 5601:5601 \
 #    -v "${PWD}/kibana.yml":/usr/share/kibana/config/kibana.yml \
+#    -p 5601:5601 \
+#    -d \
 #    kibana:7.6.0
 
 # 对接同网环境ES
@@ -20,7 +20,10 @@ docker run \
     -h kibana \
     --name kibana \
     --net "$NET_NAME" \
-    -d \
-    -p 5601:5601 \
+    --cpus ".25" \
+    --memory "1g" \
+    --memory-swap "1g" \
     -v "${PWD}/kibana.yml":/usr/share/kibana/config/kibana.yml \
+    -p 5601:5601 \
+    -d \
     kibana:7.6.0

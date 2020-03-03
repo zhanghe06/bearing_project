@@ -76,6 +76,10 @@ docker images | grep <镜像的关键字> | awk '{print "docker rmi "$1":"$2}' |
 ```
 `$3`为镜像ID，如果遇到同一ID打了多个标签，仅仅通过ID删除会报错
 
+### 批量删除容器
+```bash
+docker ps --format {{.Names}} | grep <容器的关键字> | awk '{print "docker rm -f "$1}' | sh
+```
 
 ### 资源限制
 
