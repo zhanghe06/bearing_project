@@ -10,15 +10,15 @@
 
 from datetime import datetime
 from sqlalchemy.sql import func
-from app_backend import db
+from app_backend.databases.bearing import db_bearing
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import Customer
+from app_backend.models.model_bearing import Customer
 from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 from app_common.maps.type_company import TYPE_COMPANY_MIDDLEMAN, TYPE_COMPANY_FINAL_USER
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_customer_row_by_id(customer_id):

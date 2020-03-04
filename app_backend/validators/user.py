@@ -15,7 +15,7 @@ from flask_babel import lazy_gettext as _
 from wtforms.validators import ValidationError
 
 from app_backend.api.user import get_user_row
-from app_backend.models.bearing_project import User
+from app_backend.models.model_bearing import User
 from app_backend.permissions import permission_role_administrator
 from flask_login import current_user
 

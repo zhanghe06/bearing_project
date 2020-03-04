@@ -27,7 +27,7 @@ from app_backend import (
 )
 from app_backend.api.quotation_items import get_quotation_items_rows, get_quotation_items_pagination
 from app_backend.forms.quotation_items import QuotationItemsSearchForm
-from app_backend.models.bearing_project import QuotationItems
+from app_backend.models.model_bearing import QuotationItems
 from app_backend.permissions.quotation import (
     permission_quotation_section_search,
     permission_quotation_section_export,

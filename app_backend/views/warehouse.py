@@ -44,7 +44,7 @@ from app_backend.forms.warehouse import (
     WarehouseAddForm,
     WarehouseEditForm,
 )
-from app_backend.models.bearing_project import Warehouse
+from app_backend.models.model_bearing import Warehouse
 from app_backend.permissions import permission_role_administrator, permission_role_stock_keeper
 from app_backend.permissions.warehouse import (
     permission_warehouse_section_add,

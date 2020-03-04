@@ -15,7 +15,7 @@ from flask_babel import lazy_gettext as _
 from wtforms.validators import ValidationError
 
 from app_backend.api.user_auth import get_user_auth_row
-from app_backend.models.bearing_project import UserAuth
+from app_backend.models.model_bearing import UserAuth
 
 
 class AddUserAuthKeyRepeatValidate(object):

@@ -8,11 +8,11 @@
 @time: 2019-08-20 17:03
 """
 
-from app_backend import db
-from app_backend.models.bearing_project import AccountPayment
+from app_backend.databases.bearing import db_bearing
+from app_backend.models.model_bearing import AccountPayment
 from app_common.libs.mysql_orm_op import DbInstance
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_account_payment_row_by_id(account_payment_id):

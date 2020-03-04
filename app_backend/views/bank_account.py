@@ -47,7 +47,7 @@ from app_backend.forms.bank_account import (
     BankAccountAddForm,
     BankAccountEditForm,
 )
-from app_backend.models.bearing_project import BankAccount
+from app_backend.models.model_bearing import BankAccount
 from app_backend.permissions import permission_role_administrator, permission_role_stock_keeper
 from app_backend.permissions.account import (
     permission_account_section_add,

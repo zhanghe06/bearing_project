@@ -51,7 +51,7 @@ from app_backend.forms.enquiry import (
     EnquiryAddForm,
     EnquiryEditForm,
 )
-from app_backend.models.bearing_project import Enquiry
+from app_backend.models.model_bearing import Enquiry
 from app_backend.permissions.enquiry import (
     permission_enquiry_section_add,
     permission_enquiry_section_search,

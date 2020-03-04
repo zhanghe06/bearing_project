@@ -10,14 +10,14 @@
 
 from datetime import datetime
 from sqlalchemy.sql import func
-from app_backend import db
+from app_backend.databases.bearing import db_bearing
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import Inventory, Warehouse, Rack
+from app_backend.models.model_bearing import Inventory, Warehouse, Rack
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
     get_current_month_time_ends, get_days, get_current_year_time_ends, get_months
 from app_common.maps.status_order import STATUS_ORDER_OK
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_inventory_row_by_id(inventory_id):

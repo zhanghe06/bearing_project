@@ -56,9 +56,6 @@ login_manager.session_protection = 'basic'  # 设置安全等级（basic、stron
 # basic 模式下，如果该标识未匹配，会话会简单地被标记为非活 跃的，且任何需要活跃登入的东西会强制用户重新验证。
 # strong模式下，如果该标识未匹配，整个会话（记住的令牌如果存在，则同样）被删除。
 
-db = SQLAlchemy()
-db.init_app(app)
-
 # Moment 时间插件
 moment = Moment(app)
 
@@ -106,7 +103,6 @@ oauth_weibo = oauth.remote_app(
 dictConfig(app.config['LOG_CONFIG'])
 
 # 这个 import 语句放在这里, 防止views, models import发生循环import
-from app_backend.models import bearing_project
 
 from app_backend import views
 

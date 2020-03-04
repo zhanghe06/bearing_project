@@ -43,7 +43,7 @@ from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.api.warehouse import get_warehouse_choices
 from app_backend.forms.delivery import DeliveryAddForm
 from app_backend.forms.delivery import DeliverySearchForm, DeliveryEditForm, DeliveryItemsEditForm
-from app_backend.models.bearing_project import Delivery
+from app_backend.models.model_bearing import Delivery
 from app_backend.permissions.sales_delivery import (
     permission_delivery_section_add,
     permission_delivery_section_search,

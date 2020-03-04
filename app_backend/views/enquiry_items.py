@@ -27,7 +27,7 @@ from app_backend import (
 )
 from app_backend.api.enquiry_items import get_enquiry_items_rows, get_enquiry_items_pagination
 from app_backend.forms.enquiry_items import EnquiryItemsSearchForm
-from app_backend.models.bearing_project import EnquiryItems
+from app_backend.models.model_bearing import EnquiryItems
 from app_backend.permissions.enquiry import (
     permission_enquiry_section_search,
     permission_enquiry_section_export,

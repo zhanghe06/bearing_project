@@ -46,7 +46,7 @@ from app_backend.forms.production_sensitive import (
     ProductionSensitiveAddForm,
     ProductionSensitiveEditForm,
 )
-from app_backend.models.bearing_project import ProductionSensitive
+from app_backend.models.model_bearing import ProductionSensitive
 from app_backend.permissions import permission_role_administrator
 from app_backend.permissions.production import (
     permission_production_section_add,

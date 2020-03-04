@@ -8,11 +8,11 @@
 @time: 2018-03-16 10:02
 """
 
-from app_backend import db
+from app_backend.databases.bearing import db_bearing
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import UserAuth
+from app_backend.models.model_bearing import UserAuth
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_user_auth_row_by_id(user_auth_id):

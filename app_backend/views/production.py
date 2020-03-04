@@ -47,7 +47,7 @@ from app_backend.forms.production import (
     ProductionAddForm,
     ProductionEditForm,
     ProductionSelectForm, get_production_brand_choices)
-from app_backend.models.bearing_project import Production
+from app_backend.models.model_bearing import Production
 from app_backend.permissions import permission_role_administrator
 from app_backend.permissions.production import (
     permission_production_section_add,

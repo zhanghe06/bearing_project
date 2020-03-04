@@ -38,7 +38,7 @@ from app_backend.api.futures import (
 from app_backend.forms.futures import (
     FuturesSearchForm,
 )
-from app_backend.models.bearing_project import Futures
+from app_backend.models.model_bearing import Futures
 from app_backend.permissions.futures import (
     permission_futures_section_search,
     permission_futures_section_export,

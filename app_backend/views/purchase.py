@@ -42,7 +42,7 @@ from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.api.warehouse import get_warehouse_choices
 from app_backend.forms.purchase import PurchaseAddForm
 from app_backend.forms.purchase import PurchaseSearchForm, PurchaseEditForm, PurchaseItemsEditForm
-from app_backend.models.bearing_project import Purchase
+from app_backend.models.model_bearing import Purchase
 from app_backend.permissions.buyer_purchase import (
     permission_purchase_section_export,
     permission_purchase_section_del,

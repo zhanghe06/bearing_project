@@ -43,7 +43,7 @@ from app_backend.api.sales_order_items import add_sales_order_items, get_sales_o
 from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.forms.sales_order import SalesOrderSearchForm, SalesOrderAddForm, SalesOrderEditForm, \
     SalesOrderItemEditForm
-from app_backend.models.bearing_project import SalesOrder
+from app_backend.models.model_bearing import SalesOrder
 from app_backend.permissions.sales_order import (
     permission_sales_order_section_add,
     permission_sales_order_section_search,

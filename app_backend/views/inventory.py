@@ -53,7 +53,7 @@ from app_backend.forms.inventory import (
     InventoryEditForm,
     InventoryTransferForm,
 )
-from app_backend.models.bearing_project import Inventory
+from app_backend.models.model_bearing import Inventory
 from app_backend.permissions.inventory import (
     permission_inventory_section_add,
     permission_inventory_section_search,

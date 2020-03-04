@@ -14,7 +14,7 @@ from flask_babel import lazy_gettext as _
 from wtforms.validators import ValidationError
 
 from app_backend.api.production import get_production_row
-from app_backend.models.bearing_project import Production
+from app_backend.models.model_bearing import Production
 
 
 class AddProductionModelRepeatValidate(object):

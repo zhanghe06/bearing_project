@@ -15,7 +15,7 @@ from flask_babel import lazy_gettext as _
 from wtforms.validators import ValidationError
 
 from app_backend.api.customer import get_customer_row
-from app_backend.models.bearing_project import Customer
+from app_backend.models.model_bearing import Customer
 
 
 class AddCustomerCompanyNameRepeatValidate(object):

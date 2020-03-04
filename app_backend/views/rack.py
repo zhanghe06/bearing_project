@@ -49,7 +49,7 @@ from app_backend.forms.rack import (
     RackAddForm,
     RackEditForm,
 )
-from app_backend.models.bearing_project import Rack
+from app_backend.models.model_bearing import Rack
 from app_backend.permissions.rack import (
     permission_rack_section_add,
     permission_rack_section_search,

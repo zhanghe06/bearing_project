@@ -8,13 +8,13 @@
 @time: 2018-03-16 09:59
 """
 
-from app_backend import db
+from app_backend.databases.bearing import db_bearing
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import Production
+from app_backend.models.model_bearing import Production
 from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT, DEFAULT_SEARCH_CHOICES_STR
 from app_common.maps.status_delete import STATUS_DEL_NO
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_production_row_by_id(production_id):

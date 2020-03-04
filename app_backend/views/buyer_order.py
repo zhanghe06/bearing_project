@@ -43,7 +43,7 @@ from app_backend.api.supplier_contact import get_supplier_contact_row_by_id
 from app_backend.api.user import get_user_choices, get_user_row_by_id
 from app_backend.forms.buyer_order import BuyerOrderSearchForm, BuyerOrderAddForm, BuyerOrderEditForm, \
     BuyerOrderItemsEditForm
-from app_backend.models.bearing_project import BuyerOrder
+from app_backend.models.model_bearing import BuyerOrder
 from app_backend.permissions.buyer_order import (
     permission_buyer_order_section_add,
     permission_buyer_order_section_search,

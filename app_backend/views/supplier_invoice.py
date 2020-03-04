@@ -38,7 +38,7 @@ from app_backend.forms.supplier_invoice import (
     # SupplierInvoiceEditForm,
     # SupplierInvoiceItemEditForm,
     SupplierInvoiceEditForm)
-from app_backend.models.bearing_project import SupplierInvoice
+from app_backend.models.model_bearing import SupplierInvoice
 from app_backend.permissions.supplier import (
     permission_supplier_section_export,
     permission_supplier_section_edit,

@@ -10,10 +10,10 @@
 
 
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import PurchaseItems
-from app_backend import db
+from app_backend.models.model_bearing import PurchaseItems
+from app_backend.databases.bearing import db_bearing
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_purchase_items_rows(*args, **kwargs):

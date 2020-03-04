@@ -9,12 +9,12 @@
 """
 
 
-from app_backend import db
+from app_backend.databases.bearing import db_bearing
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import SupplierContact
+from app_backend.models.model_bearing import SupplierContact
 
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_supplier_contact_row_by_id(supplier_contact_id):

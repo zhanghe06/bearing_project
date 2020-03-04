@@ -8,11 +8,11 @@
 @time: 2018-03-23 14:52
 """
 
-from app_backend import db
+from app_backend.databases.bearing import db_bearing
 from app_backend.login import LoginUser
 from app_common.libs.mysql_orm_op import DbInstance
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_login_user_row_by_id(user_id):

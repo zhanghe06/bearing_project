@@ -50,7 +50,7 @@ from app_backend.forms.user import (
     UserAddForm,
     UserEditForm,
 )
-from app_backend.models.bearing_project import User
+from app_backend.models.model_bearing import User
 from app_backend.permissions import permission_role_administrator
 from app_backend.permissions.user import (
     permission_user_section_add,

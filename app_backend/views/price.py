@@ -29,7 +29,7 @@ from app_backend.api.enquiry_items import get_enquiry_items_pagination
 from app_backend.api.purchase_items import get_purchase_items_pagination
 from app_backend.api.quotation_items import get_quotation_items_pagination
 from app_backend.forms.price import PriceSearchForm
-from app_backend.models.bearing_project import (
+from app_backend.models.model_bearing import (
     Inventory,
     Futures,
     QuotationItems,

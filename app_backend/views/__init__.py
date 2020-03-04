@@ -51,7 +51,7 @@ from app_backend.api.quotation import get_quotation_latest
 from app_backend.api.sales_order import get_sales_order_latest
 from app_backend.identities import identity_role_administrator, identity_role_sales, identity_role_purchaser, \
     identity_role_manager, identity_role_stock_keeper, identity_role_accountant
-from app_backend.models.bearing_project import Customer, Quotation, SalesOrder
+from app_backend.models.model_bearing import Customer, Quotation, SalesOrder
 from app_backend.permissions import (
     permission_role_administrator)
 from app_common.libs.auth_token import AuthToken
@@ -64,7 +64,7 @@ from app_common.maps.type_role import (
     TYPE_ROLE_STOREKEEPER,
     TYPE_ROLE_ACCOUNTANT)
 
-api_logger = logging.getLogger('api')
+app_logger = logging.getLogger('app')
 debug_logger = logging.getLogger('debug')
 
 # 加载配置
@@ -119,12 +119,12 @@ def before_request():
 
     g.STATIC_RES_VER = app.config.get('STATIC_RES_VER', '1.0')  # 静态资源版本
 
-
-@app.errorhandler(Exception)
-def unhandled_exception(e):
-    debug_logger.debug('after_request')
-    # return render_template('generic.html'), 500
-    return 'Exception', 500
+#
+# @app.errorhandler(Exception)
+# def unhandled_exception(e):
+#     debug_logger.debug('after_request')
+#     # return render_template('generic.html'), 500
+#     return 'Exception', 500
 
 
 @app.after_request
@@ -145,9 +145,11 @@ def teardown_request(exception=None):
     g.request_id = request_id
     debug_logger.debug('teardown_request')
 
+    g.project = app.name
+
     # 接口日志
-    g.api_log = defaultdict(lambda: '-')
-    g.api_log['project_name'] = app.name
+    g.app_log = defaultdict(lambda: '-')
+    # g.app_log['project_name'] = app.name
 
     if exception:
         exception_info = {
@@ -155,10 +157,10 @@ def teardown_request(exception=None):
             'name': exception.__class__.__name__,
             'message': exception.message,
         }
-        g.api_log['exception'] = '%(module)s.%(name)s: %(message)s' % exception_info
-        api_logger.error(dict(g.api_log))
+        g.app_log['exception'] = '%(module)s.%(name)s: %(message)s' % exception_info
+        app_logger.error(dict(g.app_log))
     else:
-        api_logger.info(dict(g.api_log))
+        app_logger.info(dict(g.app_log))
     return exception
 
 

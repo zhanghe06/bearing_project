@@ -16,7 +16,8 @@ from datetime import timedelta
 from flask_babel import lazy_gettext as _
 from future.moves.urllib.parse import quote_plus
 
-from app_backend.loggings import ContextFilter
+# from app_backend.loggings import ContextFilter
+from app_common.filters.logging_filter import ContextFilter
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -72,6 +73,10 @@ SQLALCHEMY_MAX_OVERFLOW = 10  # 默认 10 连接池达到最大值后可以创�
 SQLALCHEMY_POOL_TIMEOUT = 10  # 默认 10秒
 SQLALCHEMY_POOL_RECYCLE = 500  # 配置要小于 数据库配置 wait_timeout
 SQLALCHEMY_ECHO = False  # 是否打印SQL语句
+
+SQLALCHEMY_BINDS = {
+    'bearing': SQLALCHEMY_DATABASE_URI
+}
 
 # 缓存，队列
 REDIS = {
@@ -139,6 +144,17 @@ AJAX_FAILURE_MSG = {
     'result': False,
     'msg': '',
 }
+
+API_SUCCESS_MSG = AJAX_SUCCESS_MSG
+API_FAILURE_MSG = AJAX_FAILURE_MSG
+
+# Basic Auth
+BASIC_AUTH_USERNAME = 'username'
+BASIC_AUTH_PASSWORD = 'password'
+
+# 页码默认配置
+DEFAULT_PAGE = 1
+DEFAULT_SITE = 20
 
 # 图形验证码参数配置
 CAPTCHA_CONFIG = {
@@ -226,11 +242,15 @@ LOG_CONFIG = {
     },
     'formatters': {
         'api': {
-            'format': '%(asctime)s %(request_id)s %(levelname)s %(message)s',
+            'format': '[%(asctime)s] %(request_id)s %(project)s %(request_path)s %(method)s %(status_code)s %(latency).3f %(message)s',
+            # 'datefmt': '%Y-%m-%d %H:%M:%S,uuu',
+        },
+        'app': {
+            'format': '[%(asctime)s] %(request_id)s %(project)s %(request_path)s %(method)s %(levelname)s %(message)s',
             # 'datefmt': '%Y-%m-%d %H:%M:%S,uuu',
         },
         'debug': {
-            'format': '%(asctime)s %(request_id)s %(levelname)s [%(module)s.%(funcName)s:%(lineno)d] %(message)s',
+            'format': '[%(asctime)s] %(request_id)s %(project)s %(levelname)s [%(module)s.%(funcName)s:%(lineno)d] %(message)s',
             # 'datefmt': '%Y-%m-%d %H:%M:%S,uuu',
         }
     },
@@ -242,6 +262,12 @@ LOG_CONFIG = {
             'when': 'D',
             'backupCount': 3,
         },
+        # 报文日志
+        'tcp_handler': {
+            'class': 'logging.handlers.SocketHandler',
+            'host': '192.168.4.1',
+            'port': 24224,
+        },
         # 接口日志
         'api_handler': {
             'class': 'logging.handlers.TimedRotatingFileHandler',
@@ -249,6 +275,15 @@ LOG_CONFIG = {
             'when': 'D',
             'backupCount': 3,
             'formatter': 'api',
+            'filters': ['context_filter'],
+        },
+        # 应用日志
+        'app_handler': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': 'logs/app.log',
+            'when': 'D',
+            'backupCount': 3,
+            'formatter': 'app',
             'filters': ['context_filter'],
         },
         # 调试日志
@@ -265,10 +300,20 @@ LOG_CONFIG = {
         }
     },
     'loggers': {
+        'udp': {
+            'level': LOG_LEVEL,
+            'propagate': 0,
+            'handlers': ['udp_handler', 'console'],
+        },
         'api': {
             'level': LOG_LEVEL,
             'propagate': 0,
             'handlers': ['api_handler', 'console'],
+        },
+        'app': {
+            'level': LOG_LEVEL,
+            'propagate': 0,
+            'handlers': ['app_handler', 'console'],
         },
         'debug': {
             'level': LOG_LEVEL,

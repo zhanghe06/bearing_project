@@ -37,7 +37,7 @@ from app_backend.api.supplier import get_supplier_rows, edit_supplier, get_suppl
     supplier_end_user_stats, supplier_middleman_stats, add_supplier
 from app_backend.api.user import get_user_rows, get_user_choices
 from app_backend.forms.supplier import SupplierSearchForm, SupplierEditForm, SupplierAddForm
-from app_backend.models.bearing_project import Supplier
+from app_backend.models.model_bearing import Supplier
 from app_backend.permissions.supplier import (
     permission_supplier_section_add,
     permission_supplier_section_search,

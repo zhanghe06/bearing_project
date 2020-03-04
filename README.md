@@ -67,6 +67,7 @@ pip install Flask-Principal
 pip install Flask-Babel
 pip install Flask-Moment
 pip install Flask-Mail
+pip install Flask-RESTful
 pip install sqlacodegen==1.1.6  # 注意: 最新版 sqlacodegen==2.0 有bug
 pip install gunicorn==19.10.0
 pip install eventlet

@@ -11,11 +11,11 @@
 from copy import copy
 from datetime import datetime
 from sqlalchemy.sql import func
-from app_backend import db
+from app_backend.databases.bearing import db_bearing
 from app_backend.api.customer import get_customer_rows_by_ids
 from app_backend.api.user import get_user_rows_by_ids
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import Purchase, PurchaseItems, Inventory, Warehouse, Rack
+from app_backend.models.model_bearing import Purchase, PurchaseItems, Inventory, Warehouse, Rack
 from app_common.maps.default import DEFAULT_SEARCH_CHOICES_INT
 from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
@@ -23,7 +23,7 @@ from app_common.tools.date_time import get_current_day_time_ends, get_hours, tim
 from app_common.maps.status_order import STATUS_ORDER_OK
 from app_common.maps.status_audit import STATUS_AUDIT_OK, STATUS_AUDIT_NO
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_purchase_row_by_id(purchase_id):

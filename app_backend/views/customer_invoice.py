@@ -38,7 +38,7 @@ from app_backend.forms.customer_invoice import (
     # CustomerInvoiceEditForm,
     # CustomerInvoiceItemEditForm,
     CustomerInvoiceEditForm)
-from app_backend.models.bearing_project import CustomerInvoice
+from app_backend.models.model_bearing import CustomerInvoice
 from app_backend.permissions.customer import (
     permission_customer_section_search,
     permission_customer_section_export,

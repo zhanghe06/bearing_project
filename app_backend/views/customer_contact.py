@@ -49,7 +49,7 @@ from app_backend.forms.customer_contact import (
     # CustomerContactAddForm,
     CustomerContactEditForm,
     CustomerContactItemEditForm)
-from app_backend.models.bearing_project import CustomerContact
+from app_backend.models.model_bearing import CustomerContact
 from app_backend.permissions.customer import (
     permission_customer_section_search,
     permission_customer_section_stats,

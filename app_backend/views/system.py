@@ -27,9 +27,9 @@ from app_backend.api.quotation import delete_quotation_table, count_quotation, a
 from app_backend.forms.system import CatalogueUploadForm
 from app_backend.forms.system import ProductionUploadForm
 from app_backend.forms.system import QuotationUploadForm
-from app_backend.models.bearing_project import Catalogue
-from app_backend.models.bearing_project import Production
-from app_backend.models.bearing_project import Quotation
+from app_backend.models.model_bearing import Catalogue
+from app_backend.models.model_bearing import Production
+from app_backend.models.model_bearing import Quotation
 from app_backend.permissions import (
     permission_role_administrator,
 )

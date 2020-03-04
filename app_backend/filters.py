@@ -27,7 +27,7 @@ from app_backend.api.rack import get_rack_row_by_id
 from app_backend.api.production import get_production_row_by_id
 from app_backend.api.production_sensitive import get_production_sensitive_row
 from app_backend.api.sales_order import count_sales_order
-from app_backend.models.bearing_project import Customer, Quotation, SalesOrder
+from app_backend.models.model_bearing import Customer, Quotation, SalesOrder
 from app_common.maps.status_default import STATUS_DEFAULT_DICT
 from app_common.maps.status_delete import STATUS_DEL_NO
 from app_common.maps.type_auth import TYPE_AUTH_DICT

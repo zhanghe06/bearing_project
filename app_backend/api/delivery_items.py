@@ -10,10 +10,10 @@
 
 
 from app_common.libs.mysql_orm_op import DbInstance
-from app_backend.models.bearing_project import DeliveryItems
-from app_backend import db
+from app_backend.models.model_bearing import DeliveryItems
+from app_backend.databases.bearing import db_bearing
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_delivery_items_rows(*args, **kwargs):

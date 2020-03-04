@@ -10,7 +10,7 @@
 
 from datetime import datetime
 from sqlalchemy.sql import func
-from app_backend import db
+from app_backend.databases.bearing import db_bearing
 from app_backend.login import User
 from app_common.libs.mysql_orm_op import DbInstance
 from app_common.tools.date_time import get_current_day_time_ends, get_hours, time_local_to_utc, \
@@ -18,7 +18,7 @@ from app_common.tools.date_time import get_current_day_time_ends, get_hours, tim
 from app_common.maps.status_delete import STATUS_DEL_NO, STATUS_DEL_OK
 from app_common.maps.default import DEFAULT_SELECT_CHOICES_INT
 
-db_instance = DbInstance(db)
+db_instance = DbInstance(db_bearing)
 
 
 def get_user_row_by_id(user_id):
