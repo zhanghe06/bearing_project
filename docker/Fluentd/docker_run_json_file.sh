@@ -11,11 +11,10 @@ docker run \
   -h fluentd_json_file \
   --name fluentd_json_file \
   --net "$NET_NAME" \
+  -u fluent \
   --cpus ".25" \
   --memory "500m" \
   --memory-swap "500m" \
-  -e TD_AGENT_USER=root \
-  -e TD_AGENT_GROUP=root \
   -v "$PWD"/etc:/fluentd/etc \
   -v /var/lib/docker/containers/:/containers \
   -p 24224:24224 \
