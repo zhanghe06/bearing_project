@@ -618,3 +618,8 @@ Prometheus、Exporter、Grafana、Alertmanager、cAdvisor（容器）
 - [ ] 服务扩容
 - [x] 打印页面
 - [ ] 独立仓库
+
+
+## PyCharm License Support
+
+![https://www.jetbrains.com/?from=zhanghe06/bearing_project](https://github.com/zhanghe06/bearing_project/blob/master/app_backend/static/img/jetbrains-logos/jetbrains-variant-4.svg "JetBrains Community Support Team")
