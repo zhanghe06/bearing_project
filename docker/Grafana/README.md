@@ -44,3 +44,19 @@ Server Admin -> Users -> New user -> 填入: Name、Username、Password
 # 2、配置权限
 Configuration -> Users -> Role -> Viewer
 ```
+
+
+### Using Elasticsearch in Grafana
+
+[https://grafana.com/docs/grafana/latest/features/datasources/elasticsearch](https://grafana.com/docs/grafana/latest/features/datasources/elasticsearch)
+
+[Elasticsearch Templated Dashboard](https://play.grafana.org/dashboard/db/elasticsearch-templated)
+
+
+### Alerting
+
+Template variables are not supported in alert queries
+
+变量条件查询不支持告警
+
+变通方式: 提供隐藏的确定条件查询
