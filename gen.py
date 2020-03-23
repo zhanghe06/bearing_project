@@ -34,7 +34,7 @@ def gen_models(app_name, db_key):
     if not os.path.exists(file_path):
         with open(file_path, b'wb') as _:
             pass
-    cmd = 'sqlacodegen \'%s\' --noinflect --outfile %s' % (SQLALCHEMY_BINDS[db_key], file_path)
+    cmd = b'sqlacodegen \'%s\' --noinflect --outfile %s' % (SQLALCHEMY_BINDS[db_key], file_path)
     print(cmd)
 
     output = os.popen(cmd)
