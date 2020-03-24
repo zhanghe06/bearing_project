@@ -24,3 +24,8 @@ sh examples/send_alerts.sh
 ```
 netstat -ant | grep -E "9090|9093|5001"
 ```
+
+## 告警方案
+
+1. 如果只用Prometheus，告警需要AlertManager来支持
+2. 如果有Grafana，并且配置了Prometheus数据源，那么直接使用Grafana自带的告警就行了
