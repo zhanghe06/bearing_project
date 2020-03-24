@@ -129,7 +129,7 @@ def user_current_stats(time_based='hour'):
                 User.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(User.create_time).label('hour'), func.count(User.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -150,7 +150,7 @@ def user_current_stats(time_based='hour'):
                 User.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(User.create_time).label('date'), func.count(User.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -170,7 +170,7 @@ def user_current_stats(time_based='hour'):
                 User.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(User.create_time).label('month'), func.count(User.id)) \
             .filter(*condition) \
             .group_by('month') \
@@ -198,7 +198,7 @@ def user_former_stats(time_based='hour'):
                 User.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(User.create_time).label('hour'), func.count(User.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -219,7 +219,7 @@ def user_former_stats(time_based='hour'):
                 User.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(User.create_time).label('date'), func.count(User.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -239,7 +239,7 @@ def user_former_stats(time_based='hour'):
                 User.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(User.create_time).label('month'), func.count(User.id)) \
             .filter(*condition) \
             .group_by('month') \

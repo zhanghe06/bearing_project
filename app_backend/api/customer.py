@@ -149,7 +149,7 @@ def customer_middleman_stats(time_based='hour'):
                 Customer.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(Customer.create_time).label('hour'), func.count(Customer.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -170,7 +170,7 @@ def customer_middleman_stats(time_based='hour'):
                 Customer.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(Customer.create_time).label('date'), func.count(Customer.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -190,7 +190,7 @@ def customer_middleman_stats(time_based='hour'):
                 Customer.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(Customer.create_time).label('month'), func.count(Customer.id)) \
             .filter(*condition) \
             .group_by('month') \
@@ -218,7 +218,7 @@ def customer_end_user_stats(time_based='hour'):
                 Customer.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(Customer.create_time).label('hour'), func.count(Customer.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -239,7 +239,7 @@ def customer_end_user_stats(time_based='hour'):
                 Customer.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(Customer.create_time).label('date'), func.count(Customer.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -259,7 +259,7 @@ def customer_end_user_stats(time_based='hour'):
                 Customer.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(Customer.create_time).label('month'), func.count(Customer.id)) \
             .filter(*condition) \
             .group_by('month') \

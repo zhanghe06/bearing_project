@@ -152,7 +152,7 @@ def quotation_total_stats(time_based='hour'):
                 Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(Quotation.create_time).label('hour'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -173,7 +173,7 @@ def quotation_total_stats(time_based='hour'):
                 Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(Quotation.create_time).label('date'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -193,7 +193,7 @@ def quotation_total_stats(time_based='hour'):
                 Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(Quotation.create_time).label('month'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('month') \
@@ -221,7 +221,7 @@ def quotation_order_stats(time_based='hour'):
                 Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(Quotation.create_time).label('hour'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -242,7 +242,7 @@ def quotation_order_stats(time_based='hour'):
                 Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(Quotation.create_time).label('date'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -262,7 +262,7 @@ def quotation_order_stats(time_based='hour'):
                 Quotation.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(Quotation.create_time).label('month'), func.count(Quotation.id)) \
             .filter(*condition) \
             .group_by('month') \

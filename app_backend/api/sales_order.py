@@ -153,7 +153,7 @@ def sales_orders_total_stats(time_based='hour'):
                 SalesOrder.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(SalesOrder.create_time).label('hour'), func.count(SalesOrder.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -174,7 +174,7 @@ def sales_orders_total_stats(time_based='hour'):
                 SalesOrder.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(SalesOrder.create_time).label('date'), func.count(SalesOrder.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -194,7 +194,7 @@ def sales_orders_total_stats(time_based='hour'):
                 SalesOrder.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(SalesOrder.create_time).label('month'), func.count(SalesOrder.id)) \
             .filter(*condition) \
             .group_by('month') \
@@ -222,7 +222,7 @@ def sales_orders_order_stats(time_based='hour'):
                 SalesOrder.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(SalesOrder.create_time).label('hour'), func.count(SalesOrder.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -243,7 +243,7 @@ def sales_orders_order_stats(time_based='hour'):
                 SalesOrder.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(SalesOrder.create_time).label('date'), func.count(SalesOrder.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -263,7 +263,7 @@ def sales_orders_order_stats(time_based='hour'):
                 SalesOrder.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(SalesOrder.create_time).label('month'), func.count(SalesOrder.id)) \
             .filter(*condition) \
             .group_by('month') \

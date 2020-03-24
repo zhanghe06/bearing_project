@@ -143,7 +143,7 @@ def enquiry_total_stats(time_based='hour'):
                 Enquiry.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(Enquiry.create_time).label('hour'), func.count(Enquiry.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -164,7 +164,7 @@ def enquiry_total_stats(time_based='hour'):
                 Enquiry.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(Enquiry.create_time).label('date'), func.count(Enquiry.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -184,7 +184,7 @@ def enquiry_total_stats(time_based='hour'):
                 Enquiry.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(Enquiry.create_time).label('month'), func.count(Enquiry.id)) \
             .filter(*condition) \
             .group_by('month') \
@@ -212,7 +212,7 @@ def enquiry_order_stats(time_based='hour'):
                 Enquiry.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.hour(Enquiry.create_time).label('hour'), func.count(Enquiry.id)) \
             .filter(*condition) \
             .group_by('hour') \
@@ -233,7 +233,7 @@ def enquiry_order_stats(time_based='hour'):
                 Enquiry.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.day(Enquiry.create_time).label('date'), func.count(Enquiry.id)) \
             .filter(*condition) \
             .group_by('date') \
@@ -253,7 +253,7 @@ def enquiry_order_stats(time_based='hour'):
                 Enquiry.create_time <= time_local_to_utc(end_time)
             ]
         )
-        rows = db.session \
+        rows = db_bearing.session \
             .query(func.month(Enquiry.create_time).label('month'), func.count(Enquiry.id)) \
             .filter(*condition) \
             .group_by('month') \
