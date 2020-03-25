@@ -7,3 +7,9 @@ network.host: 0.0.0.0
 discovery.zen.minimum_master_nodes: 1
 xpack.license.self_generated.type: basic
 xpack.security.enabled: true
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-fielddata.html
+# 默认情况下，设置都是 unbounded ，Elasticsearch 永远都不会从 fielddata 中回收数据。
+# 设置的副作用：内存的回收机制会导致重度磁盘I/O，并且在内存中生成很多垃圾，这些垃圾必须在晚些时候被回收掉。
+# 缓存限制必须小于断路限制，否则无效。indices.breaker.fielddata.limit，默认堆内存的60%
+indices.fielddata.cache.size: 20%

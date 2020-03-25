@@ -9,7 +9,7 @@ ES_PORT=9200
 ES_USERNAME='elastic'
 ES_PASSWORD='changeme'
 
-ES_INDEX='robot-'`date '+%Y%m%d'`
+ES_INDEX="robot-"$(date "+%Y%m%d")
 ES_TYPE='_doc'
 
 # 查看索引配置

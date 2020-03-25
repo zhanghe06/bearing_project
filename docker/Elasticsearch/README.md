@@ -4,12 +4,14 @@
 
 [https://www.docker.elastic.co](https://www.docker.elastic.co)
 
+重要: [https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html)
+
 ```
 $ docker pull elasticsearch:7.6.0
 ```
 
 ```
-$ curl --basic -u "elastic:changeme" http://127.0.0.1:9200/_cat/health
+$ curl --basic -u elastic:changeme http://127.0.0.1:9200/_cat/health
 1523173079 07:37:59 docker-cluster green 1 1 1 1 0 0 0 0 - 100.0%
 ```
 
@@ -21,7 +23,7 @@ password: $sHz!7cnJ5
 ```
 
 ```
-curl --basic -u elastic:\$sHz\!7cnJ5 http://147.139.132.179:9200/_cat/health
+curl --basic -u elastic:\$sHz\!7cnJ5 http://127.0.0.1:9200/_cat/health
 ```
 注意，特殊符号需要转义（$和!）
 
@@ -160,7 +162,8 @@ GET /catalogue/_search
       "product_label": {}
     }
   }
-}```
+}
+```
 
 
 内存分配
@@ -169,3 +172,119 @@ GET /catalogue/_search
 不要超过32GB
 
 参考: https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html#compressed_oops
+
+[https://www.elastic.co/guide/cn/elasticsearch/guide/current/_limiting_memory_usage.html#fielddata-size](https://www.elastic.co/guide/cn/elasticsearch/guide/current/_limiting_memory_usage.html#fielddata-size)
+
+[https://www.elastic.co/guide/cn/elasticsearch/guide/current/heap-sizing.html](https://www.elastic.co/guide/cn/elasticsearch/guide/current/heap-sizing.html)
+
+[https://www.elastic.co/guide/cn/elasticsearch/guide/current/aggregations-and-analysis.html](https://www.elastic.co/guide/cn/elasticsearch/guide/current/aggregations-and-analysis.html)
+
+[https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-fielddata.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-fielddata.html)
+
+堆内存分配
+
+ES_JAVA_OPTS设置为分配内存的一半
+
+
+### 排错
+
+```
+{"type": "server", "timestamp": "2020-04-15T16:18:07,770Z", "level": "WARN", "component": "o.e.b.BootstrapChecks", "cluster.name": "docker-cluster", "node.name": "elasticsearch", "message": "max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]" }
+```
+
+
+### 生产环境优化
+
+[https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-prerequisites](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-prerequisites)
+
+[https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html)
+
+- vm.max_map_count
+`/etc/sysctl.conf`
+
+或者`/proc/sys/vm/max_map_count`
+
+Linux
+```
+# grep vm.max_map_count /etc/sysctl.conf
+# sysctl -w vm.max_map_count=262144
+# grep vm.max_map_count /etc/sysctl.conf
+vm.max_map_count=262144
+```
+
+macOS with Docker for Mac
+```
+➜  ~ screen ~/Library/Containers/com.docker.docker/Data/vms/0/tty
+➜  ~ sysctl -w vm.max_map_count=262144
+```
+
+- nofile
+`/etc/security/limits.conf`
+
+```
+$ sudo su
+# ulimit -n 65535
+# su elasticsearch
+$ ulimit -a
+```
+
+```
+* soft nofile 65535
+* hard nofile 65535
+```
+
+```
+# echo "* hard nofile 65535
+* soft nofile 65535
+root hard nofile 65535
+root soft nofile 65535" >> /etc/security/limits.conf
+# reboot
+```
+
+检查max_file_descriptors
+[http://localhost:5601](http://localhost:5601)
+```
+GET _nodes/stats/process?filter_path=**.max_file_descriptors
+```
+
+```
+{
+  "nodes" : {
+    "Q5hwQcJERZqZDtma4QHZkQ" : {
+      "process" : {
+        "max_file_descriptors" : 65536
+      }
+    }
+  }
+}
+```
+
+- nproc
+`/etc/security/limits.conf`
+
+```
+# ulimit -u 4096
+```
+
+### 优化配置
+
+/etc/security/limits.conf
+```
+root soft nofile 65536
+root hard nofile 65536
+* soft nofile 65536
+* hard nofile 65536
+```
+
+/etc/sysctl.conf
+```
+net.core.somaxconn = 1024
+net.core.netdev_max_backlog = 5000
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216relabel
+net.ipv4.tcp_wmem = 4096 12582912 16777216
+net.ipv4.tcp_rmem = 4096 12582912 16777216
+net.ipv4.tcp_max_syn_backlog = 8096
+net.ipv4.tcp_slow_start_after_idle = 0
+net.ipv4.tcp_tw_reuse = 1
+```
