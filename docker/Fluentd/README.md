@@ -68,3 +68,14 @@ out_webhdfs
 #### Data Types
 
 https://docs.fluentd.org/configuration/config-file#supported-data-types-for-values
+
+retry_wait 默认值为1.0秒，未设置（无限制）。间隔加倍（+/- 12.5％随机性），每次重试，直到达到max_retry_wait
+max_retry_wait 在默认配置中，最后一次重试等待大约131072秒，大约36小时
+
+retry_limit
+disable_retry_limit
+
+
+### 配置详解
+
+[https://blog.gmem.cc/efk-as-a-log-analysis-system](https://blog.gmem.cc/efk-as-a-log-analysis-system)
