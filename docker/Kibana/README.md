@@ -54,3 +54,8 @@ curl -i 127.0.0.1:5601
 ### 查询
 
 [https://www.elastic.co/guide/en/kibana/7.6/kuery-query.html](https://www.elastic.co/guide/en/kibana/7.6/kuery-query.html)
+
+
+### Nodes stats API
+
+[https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-stats.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-stats.html)
