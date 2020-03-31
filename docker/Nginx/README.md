@@ -107,3 +107,35 @@ HTTP方法
 windows 下接口特别慢，部分接口出现响应1分钟，时间特别有规律，就是1分钟
 
 proxy_pass localhost换成了127.0.0.1，速度飞起
+
+
+## 优化
+
+[https://blog.csdn.net/zhangjunli/article/details/80648912](https://blog.csdn.net/zhangjunli/article/details/80648912)
+
+`client_header_buffer_size 4k;`
+```
+# 查看系统分页大小
+getconf PAGESIZE
+```
+
+1）nginx进程数，建议按照cpu数目来指定，一般跟cpu核数相同或为它的倍数。
+```
+worker_processes 8;
+```
+2）为每个进程分配cpu，上例中将8个进程分配到8个cpu，当然可以写多个，或者将一个进程分配到多个cpu。
+```
+worker_cpu_affinity 00000001 00000010 00000100 00001000 00010000 00100000 01000000 10000000;
+```
+3）下面这个指令是指当一个nginx进程打开的最多文件描述符数目，理论值应该是系统的最多打开文件数（ulimit -n）与nginx进程数相除，但是nginx分配请求并不是那么均匀，所以最好与ulimit -n的值保持一致。
+```
+worker_rlimit_nofile 65535;
+```
+4）使用epoll的I/O模型，用这个模型来高效处理异步事件
+```
+use epoll;
+```
+5）每个进程允许的最多连接数，理论上每台nginx服务器的最大连接数为worker_processes*worker_connections。
+```
+worker_connections 65535;
+```
