@@ -57,3 +57,13 @@ http {
       username: your-username
       password: your-password
 ```
+
+### 规模化部署
+
+1. Prometheus本身不适用于持久化存储长期的历史数据，默认情况下Prometheus只保留15天的数据。
+2. 本地存储也意味着Prometheus自身无法进行有效的弹性伸缩。
+
+需要思考的问题:
+1. 单点问题
+2. 大量存储
+3. 大量写入

@@ -34,6 +34,7 @@ scrape_configs:
     - targets: ['192.168.4.1:9104']
       labels:
         instance: db1
+        ip: 192.168.4.1
 
   # Node
   - job_name: 'Node'
@@ -41,6 +42,7 @@ scrape_configs:
     - targets: ['192.168.4.1:9100']
       labels:
         instance: node1
+        ip: 192.168.4.1
 
   # Docker
   - job_name: 'Docker'
@@ -48,3 +50,5 @@ scrape_configs:
     - targets: ['192.168.4.1:8080']
       labels:
         instance: cadvisor
+        ip: 192.168.4.1
+
