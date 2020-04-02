@@ -6,6 +6,8 @@ docker run \
     --cpus ".25" \
     --memory "500m" \
     --memory-swap "500m" \
+    --log-opt max-size=10m \
+    --log-opt max-file=3 \
     -v /:/rootfs:ro \
     -v /var/run:/var/run:rw \
     -v /sys:/sys:ro \
