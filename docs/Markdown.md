@@ -68,3 +68,45 @@ gantt
         发布: 2d
         验收: 3d
 ```
+
+第三方接口(Gravizo：http://g.gravizo.com)
+
+免费版有水印
+
+![Alt text](https://g.gravizo.com/svg?
+    digraph G {
+        main -> parse -> execute;
+        main -> init;
+        main -> cleanup;
+        execute -> make_string;
+        execute -> printf
+        init -> make_string;
+        main -> printf;
+        execute -> compare;
+    }
+)
+
+
+<img src='https://g.gravizo.com/svg?
+@startuml;
+%28*%29 --> if "Some Test" then;
+  -->[true] "activity 1";
+  if "" then;
+    -> "activity 3" as a3;
+  else;
+    if "Other test" then;
+      -left-> "activity 5";
+    else;
+      --> "activity 6";
+    endif;
+  endif;
+else;
+  ->[false] "activity 2";
+endif;
+a3 --> if "last test" then;
+  --> "activity 7";
+else;
+  -> "activity 8";
+endif;
+@enduml 
+'>
