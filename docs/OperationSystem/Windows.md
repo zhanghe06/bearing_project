@@ -91,10 +91,11 @@ msiexec.exe /i "C:\VCForPython27.msi"
 下载 [Visual C++ Tools](https://aka.ms/vs/16/release/RemoteTools.amd64ret.chs.exe)
 
 
+```
 pip install virtualenv
 virtualenv .venv
 .venv\Scripts\activate
-
+```
 
 pip install -r requirements.txt
 
@@ -109,6 +110,7 @@ mkdir "%PROJ_HOME%"
 
 ## 打包
 
+```
 pip install pyinstaller
 pip install pywin32
 pyinstaller -n lims -D run_apps.py  # 进入项目入口文件夹
@@ -116,3 +118,31 @@ pyinstaller -n lims -D run_apps.py  # 进入项目入口文件夹
 pyinstaller lims.spec
 
 会生成 dist, build 目录
+```
+
+## NPM
+
+## Host切换
+1、hosts文件赋予修改权限
+2、switchhost工具修改hosts
+
+
+## 排错
+
+python3安装库时关于 ImportError: cannot import name 'Feature' from 'setuptools'报错解决
+
+```
+pip install --upgrade pip setuptools==45.2.0
+```
+
+## Windows系统目录环境变量
+
+环境变量 | 说明 | 路径
+--- | --- | ---
+%systemdrive% | Windows系统所在磁盘分区 | 通常就是C盘的根目录
+%systemroot%,%windir% | Windows系统所在的目录 | 通常是C:\Winows
+%programfiles% | 应用程序所在的目录 | 通常情况下是C:\program files
+%commonprogramfiles% | 公用文件目录 | 通常是C:\program files\common files
+%userprofile% | 当前账户的用户目录 | 通常是C:\documents and settings\当前用户名
+%alluserprofile% | 所有用户的用户目录 | 通常是C:\documents and settings\all user
+%temp%,%tmp% | 当前用户的临时文件目录 | 通常是C:\documents and settings\当前用户名\local settings\temp
