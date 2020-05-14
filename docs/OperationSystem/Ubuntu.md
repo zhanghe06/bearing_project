@@ -122,3 +122,40 @@ https://github.com/docker/docker.github.io/blob/master/compose/compose-file/inde
 $ docker-compose build
 $ docker-compose up
 ```
+
+## 防火墙
+
+Ubuntu 18.04 LTS 系统中已经默认附带了 UFW 工具
+ 
+```
+# 检查UFW状态
+sudo ufw status verbose
+
+# 打开特定端口
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# 打开一组端口
+sudo ufw allow 7100:7200/tcp
+sudo ufw allow 7100:7200/udp
+
+# 允许访问
+sudo ufw allow from 123.123.123.123
+sudo ufw allow from 192.168.1.0/24 to any port 3306
+
+# 拒绝访问
+sudo ufw deny from 23.34.45.0/24
+sudo ufw deny from 23.34.45.0/24 to any port 80
+
+# 查看规则
+sudo ufw status numbered
+
+# 删除规则
+sudo ufw delete 4               # 通过编号删除
+sudo ufw delete allow 8069      # 通过端口删除
+
+# 操作
+sudo ufw enable                 # 启用
+sudo ufw disable                # 禁用
+sudo ufw reset                  # 重置
+```
