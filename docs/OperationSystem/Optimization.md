@@ -52,3 +52,18 @@ root hard nofile 65535
 # default: 65530
 262144
 ```
+
+
+
+
+```
+#对于一个经常处理新连接的高负载 web服务环境来说，默认的 128 太小了
+net.core.somaxconn = 262144
+​#表示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数
+net.ipv4.tcp_max_syn_backlog = 8192
+#网卡设备将请求放入队列的长度
+net.core.netdev_max_backlog = 65536
+
+修改完成之后要记得 sysctl -p 重新加载参数
+```
+
