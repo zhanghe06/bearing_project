@@ -269,3 +269,21 @@ sudo vim /etc/ssh/ssh_config
 ```
 sudo spctl --master-disable
 ```
+
+## 在 Mac 上的“磁盘工具”中抹掉并重新格式化储存设备
+
+[https://support.apple.com/zh-cn/guide/disk-utility/dskutl14079/mac](https://support.apple.com/zh-cn/guide/disk-utility/dskutl14079/mac)
+
+
+## 创建虚拟环境报`` Too many levels of symbolic links
+
+```
+✗ virtualenv .venv
+OSError: [Errno 62] Too many levels of symbolic links: '/usr/local/Cellar/python@2/2.7.17_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
+```
+
+解决方案
+```
+# 直接删除这个文件
+rm -rf /usr/local/Cellar/python@2/2.7.17_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile
+```
