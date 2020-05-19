@@ -947,3 +947,10 @@ root@192.168.1.100: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
 Last login: Thu Mar  7 09:59:36 2019
 [root@host-192-168-1-100 ~]#
 ```
+
+
+## 解决中文乱码
+```
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+```
