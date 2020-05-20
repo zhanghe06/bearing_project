@@ -13,9 +13,19 @@ helm list my
 kubectl get po -o wide
 ```
 
-安装Dashboard
+~~安装Dashboard~~
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+```
+
+安装新版Dashboard
+
+[https://github.com/kubernetes/dashboard](https://github.com/kubernetes/dashboard)
+```bash
+# 下载需要翻墙
+wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.3/aio/deploy/recommended.yaml
+# 安装不要翻墙
+kubectl apply -f recommended.yaml
 ```
 
 获取Token
@@ -35,7 +45,12 @@ Starting to serve on 127.0.0.1:8001
 Starting to serve on [::]:8001
 ```
 
-登录 [K8s Dashboard](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/overview?namespace=default)
+登录
+
+[~~K8s Dashboard~~](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/overview?namespace=default)
+
+[K8s Dashboard 新版](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
+
 输入令牌
 
 
