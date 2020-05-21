@@ -484,3 +484,94 @@ git br -m hotfix ok_hotfix
 
 评审驳回再次提交 方式一 适用于开发节奏较慢，评审较快的场景
 评审驳回再次提交 方式二 适用于开发节奏较快，评审较慢的场景
+
+为什么要用`git commit --amend`（注意不是`git commit -m 'xxxxxx' --amend`）
+1. 对于开发节奏较快，评审较慢的项目经常会用到
+2. 多次提交时，如果前面的提交被驳回，导致后面的commit基于历史错误的提交，
+
+对于没有合并的提交，想继续修改且无需产生新的提交
+```
+# 根据需要添加新的修改，如果仅仅修改comment内容，直接通过git commit --amend进入编辑界面
+git add .
+git commit --amend
+# 进入编辑界面，根据需要修改提交内容，保持Change-Id不变，:wq保存退出
+git review <分支名称>
+```
+
+Gerrit 合并冲突（Merge Conflit）的解决办法
+```
+git pull orgin <分支名称> --rebase
+# 修复本地冲突
+git add .
+git rebase --continue
+git commit --amend
+# 进入编辑界面，根据需要修改提交内容，保持Change-Id不变，:wq保存退出
+git review <分支名称>
+```
+
+## Git 状态及版本回退
+
+```
+未修改
+       原始内容
+已修改    ↓   
+       工 作 区
+已暂存    ↓    git add
+       暂 存 区
+已提交    ↓    git commit
+       本地仓库
+已推送    ↓    git push
+       远程仓库
+```
+
+丢弃修改
+```
+# edit file
+git restore .
+git restore <file>...
+git checkout .
+git checkout -- <file>
+```
+
+丢弃暂存
+```
+# git add .
+git reset
+git restore --staged .
+git restore --staged <file>...
+```
+
+修改提交
+```
+# git commit -m 'update'
+git commit -m 'update for xxx' --amend
+```
+
+丢弃提交
+```
+# git commit -m 'update'
+git reset HEAD^
+```
+回到上一次提交，并保留工作区（保留提交前的修改）
+
+切回提交
+```
+git reset --hard <commitid>
+```
+
+丢弃推送
+```
+git reset --hard HEAD^
+git push origin <branch> -f
+```
+回到上一次提交，并丢弃工作区（放弃提交前的修改），强行推送
+
+
+## git配置别名
+
+```bash
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+```
