@@ -503,6 +503,26 @@ StatementError: (sqlalchemy.exc.InvalidRequestError) Can't reconnect until inval
 一旦出现前面2种情况，再次请求,`sqlalchemy`会报错
 
 
+### InnoDB: Cannot allocate memory for the buffer pool
+
+内存不足导致错误
+```
+# free -m
+              total        used        free      shared  buff/cache   available
+Mem:           1838        1549          70           0         217         118
+Swap:             0           0           0
+```
+
+```
+MariaDB [bearing_project]> show global variables like 'innodb_buffer_pool_size';
++-------------------------+-----------+
+| Variable_name           | Value     |
++-------------------------+-----------+
+| innodb_buffer_pool_size | 268435456 |
++-------------------------+-----------+
+1 row in set (0.00 sec)
+```
+
 ## 调优
 
 - 超时时间只对非活动状态的connection进行计算。
@@ -545,3 +565,18 @@ MariaDB [bearing_project]> show variables like '%max_connections%';
 - 任务脚本
 处理时间长，并发量低，逻辑（事务）处理慢，每次数据操作，最好开启独立连接，防止历史连接会被回收
 避免事务耗时过长，控制单个连接处理时间
+
+
+## 查询页大小
+
+InnoDB存储引擎中有页（Page）的概念，页是其磁盘管理的最小单位。InnoDB存储引擎中默认每个页的大小为16KB
+
+```
+MariaDB [bearing_project]> show variables like 'innodb_page_size';
++------------------+-------+
+| Variable_name    | Value |
++------------------+-------+
+| innodb_page_size | 16384 |
++------------------+-------+
+1 row in set (0.01 sec)
+```
