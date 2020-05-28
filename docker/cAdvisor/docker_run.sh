@@ -13,6 +13,9 @@ docker run \
     -v /sys:/sys:ro \
     -v /var/lib/docker/:/var/lib/docker:ro \
     -v /dev/disk/:/dev/disk:ro \
-    -p 8080:8080 \
+    -p "${1-8080}":8080 \
     -d \
     google/cadvisor:v0.32.0
+
+# sh docker_run.sh
+# sh docker_run.sh 8090
