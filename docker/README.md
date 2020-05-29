@@ -6,6 +6,22 @@ Docker的监控原则：
 容器操作，涉及数据变化的持久化，需要用`link`，否则直接`docker exec`
 
 
+### Docker Hub
+```
+docker login -u 用户名 -p 密码
+```
+
+### docker save
+
+[https://docs.docker.com/engine/reference/commandline/save](https://docs.docker.com/engine/reference/commandline/save)
+
+```
+docker save -o fedora-latest.tar fedora:latest
+docker save myimage:latest | gzip > myimage_latest.tar.gz
+
+docker load -i fedora-latest.tar
+docker load -i myimage_latest.tar.gz
+```
 
 ### docker删除名称none镜像
 ```bash
@@ -45,6 +61,7 @@ https://docs.docker.com/engine/reference/commandline/dockerd/
 ```
 docker ps -a --format {{.Names}}
 docker inspect --format="{{.State.Running}}" redis
+docker inspect --format="{{.HostConfig.RestartPolicy.Name}}" redis
 docker stats redis --no-stream --format "{{.CPUPerc}}"
 docker stats --format "table{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"
 docker stats redis --no-stream --format "table{{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}"
@@ -72,8 +89,10 @@ format name | description
 ### 批量删除镜像
 
 ```bash
+docker images | grep <镜像的关键字> | awk '{print "docker rmi "$3}' | sh
 docker images | grep <镜像的关键字> | awk '{print "docker rmi "$1":"$2}' | sh
 ```
+`$2`可能为None，删除会报错
 `$3`为镜像ID，如果遇到同一ID打了多个标签，仅仅通过ID删除会报错
 
 ### 批量删除容器
@@ -133,3 +152,54 @@ docker volume inspect grafana-vol
 docker volume rm grafana-vol
 docker volume prune
 ```
+
+数据卷迁移
+```
+docker inspect mongo
+
+```
+
+
+### 指定储存目录
+
+```
+cat << EOF >>/etc/docker/daemon.json
+{
+    "data-root": "/mnt/docker-data"
+}
+EOF
+
+systemctl restart docker 
+```
+
+### 修改容器配置
+```
+$ sudo docker container update --restart=always fluentd
+fluentd
+$ sudo docker inspect --format="{{.HostConfig.RestartPolicy.Name}}" fluentd
+always
+```
+
+### 控制日志大小
+
+
+```
+# 查看所有容器日志大小
+sudo du -sh /var/lib/docker/containers/
+# 查看指定容器日志大小
+docker inspect --format {{.LogPath}} fluentd | xargs sudo du -sh
+# 查看日志目录大小
+du -BG -d 2
+```
+
+
+控制容器日志大小
+```
+docker run \
+    --log-opt max-size=10m \
+    --log-opt max-file=3 \
+    ...
+```
+
+[https://docs.docker.com/config/containers/logging/json-file](https://docs.docker.com/config/containers/logging/json-file)
+
