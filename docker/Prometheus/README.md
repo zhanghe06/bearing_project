@@ -67,3 +67,8 @@ http {
 1. 单点问题
 2. 大量存储
 3. 大量写入
+
+
+### 高可用
+
+[https://github.com/yunlzheng/prometheus-book/blob/master/ha/prometheus-and-high-availability.md](https://github.com/yunlzheng/prometheus-book/blob/master/ha/prometheus-and-high-availability.md)
