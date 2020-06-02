@@ -13,3 +13,4 @@ kubectl -n namespace get po | grep node_name | awk '{print $1;}' | xargs -o -t -
 
 ### `Kubernetes`的三种外部访问方式：`NodePort`、`LoadBalancer`和`Ingress`
 
+参考[http://dockone.io/article/4884](http://dockone.io/article/4884)
