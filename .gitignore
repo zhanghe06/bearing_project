@@ -22,6 +22,9 @@ htmlcov/
 docker/Elasticsearch/data/
 docker/Elasticsearch/logs/
 
+# Fluentd
+docker/Fluentd/log/
+
 # InfluxDB
 docker/InfluxDB/data/
 
@@ -66,6 +69,9 @@ docs/package-lock.json
 # databases backup
 db/backup/*
 !db/backup/README.md
+
+# NIPAP
+docker/NIPAP/data/
 
 # sync
 sync/*
