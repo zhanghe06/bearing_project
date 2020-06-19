@@ -556,6 +556,11 @@ MariaDB [bearing_project]> show variables like '%max_connections%';
 2 rows in set (0.00 sec)
 ```
 
+修改
+```
+set global max_connections = 1000;
+```
+
 ## sqlalchemy 最佳实践
 
 根据业务场景：
@@ -579,4 +584,23 @@ MariaDB [bearing_project]> show variables like 'innodb_page_size';
 | innodb_page_size | 16384 |
 +------------------+-------+
 1 row in set (0.01 sec)
+```
+
+## sql_mode
+
+```
+MariaDB [(none)]> select @@GLOBAL.sql_mode;
++--------------------------------------------+
+| @@GLOBAL.sql_mode                          |
++--------------------------------------------+
+| NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++--------------------------------------------+
+1 row in set (0.002 sec)
+MariaDB [(none)]> select @@SESSION.sql_mode;
++--------------------------------------------+
+| @@SESSION.sql_mode                         |
++--------------------------------------------+
+| NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++--------------------------------------------+
+1 row in set (0.004 sec)
 ```
