@@ -38,3 +38,16 @@
 参考：
 
 [https://juejin.im/post/5c19be51f265da615c593351](https://juejin.im/post/5c19be51f265da615c593351)
+
+
+## 读取数据类型
+
+默认读取的是字节，如需字符串，需要设置`decode_responses=True`
+
+```
+import redis
+
+redis_client = redis.Redis(host='localhost', port=6379,
+                 db=0, password=None,
+                 decode_responses=True)
+```
