@@ -11,7 +11,7 @@
 from flask import render_template
 
 from app_backend import app, mail
-from app_common.libs.email import MailClient
+from app_common.libs.mail import MailClient
 
 
 ctx = app.app_context()
