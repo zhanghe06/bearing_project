@@ -146,3 +146,40 @@ pip install --upgrade pip setuptools==45.2.0
 %userprofile% | 当前账户的用户目录 | 通常是C:\documents and settings\当前用户名
 %alluserprofile% | 所有用户的用户目录 | 通常是C:\documents and settings\all user
 %temp%,%tmp% | 当前用户的临时文件目录 | 通常是C:\documents and settings\当前用户名\local settings\temp
+
+
+## .Net Framework
+
+错误一、.Net Framework 安装失败 提示一般信任关系失败
+
+1. 进入系统后按下`Win + R`快捷键打开运行，输入`gpedit.msc`并点击确定打开组策略
+2. 在本地组策略编辑器依次展开到`计算机配置--管理模板--Windows 组件--Windows Installer`，在右侧窗口找到并双击打开`允许用户对安装进行控制`策略
+3. 将其设置为`已启动`，点击确定，如已经是`已启动`，可先设置为`未配置`，确定退出后，再重新设置为`已启动`
+4. 重启
+
+错误二、已处理证书链，但是在不受信任提供程序信任的根证书中终止
+
+1. 点击链接下载微软证书：[MicrosoftRootCertificateAuthority2011.cer](http://download.microsoft.com/download/2/4/8/248D8A62-FCCD-475C-85E7-6ED59520FC0F/MicrosoftRootCertificateAuthority2011.cer)
+2. 按 Windows徽标键+R 打开运行，输入MMC
+3. 打开控制台，文件→添加/删除管理单元 (Ctrl+M)
+4. 选择证书 → 添加 → 计算机账户（其他的保持默认，一直下一步）
+5. 回到控制台主窗口，依次展开：证书 → 受信任的根证书颁发机构 → 证书，单击更多操作的小箭头，选择所有任务 → 导入；接下来选择步骤1中下载好的cer证书文件，然后一直点击下一步，导入成功即可。
+6. 此时重新安装 .Net Framework 则不会提示问题了。
+
+
+## .NET Core SDK
+
+[https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)
+
+## Visual Studio
+
+[https://go.microsoft.com/fwlink/?LinkId=615448&clcid=0x409](https://go.microsoft.com/fwlink/?LinkId=615448&clcid=0x409)
+
+## VS Code
+
+打开终端（Terminal -> New Terminal），进入项目，编译
+```
+dotnet build
+```
+
+目前Visual Studio Code里官方C#插件只支持.NET Core编译调试。暂不支持Mono和传统.NET Framework
