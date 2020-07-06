@@ -99,6 +99,14 @@ vultr 默认是通过系统动态防火墙firewalld控制
 # firewall-cmd --list-ports
 ```
 
+删除
+```
+# firewall-cmd --zone=public --remove-port=3128/tcp --permanent
+# firewall-cmd --reload
+```
+3128/tcp 80/tcp 2202/tcp 33080/tcp 5000/tcp 18282/tcp
+
+
 方式二
 
 也可以先关闭系统firewalld, 然后web管理界面添加防火墙规则，并将规则链接到实例
@@ -153,3 +161,9 @@ PasswordAuthentication no                       # 禁止密码认证(防止爆�
 创建快照、创建实例（根据快照类型，选择快照）
 
 ping不通，国内国外都不通，ICMP协议默认没开，安全组规则加上就好了
+
+
+## 腾讯云
+
+chacha20协议
+yum install libsodium
