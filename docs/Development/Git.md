@@ -567,6 +567,20 @@ git push origin <branch> -f
 回到上一次提交，并丢弃工作区（放弃提交前的修改），强行推送
 
 
+## git stash
+```bash
+git stash list              # 查看所有
+git stash clear             # 清除所有
+git stash save              # 贮藏代码，贮藏所有，带上默认信息WIP on master: <前一版本的commit msg>，也可以带上指定信息：git stash save "message"
+git stash push [file ...]   # git stash push -m "message"
+git stash show              # 显示改动，仅仅显示差异文件，如需显示详细代码，可以：git stash show -p
+git stash pop [stash]       # 恢复贮藏
+git stash drop [stash]      # 丢弃贮藏
+```
+说明：
+`stash@{$num}`，`$num`下标从0开始，默认是`stash@{0}`
+
+
 ## git配置别名
 
 ```bash
