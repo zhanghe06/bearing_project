@@ -69,3 +69,13 @@ File -->> Settings -->> Editor -->> Appearance ，勾选 Show Line Numbers。
 ```
 Preferences -->> Plugins, 搜索，选择，安装
 ```
+
+## 五、解决PyCharm太卡的问题
+```
+Help -->> Find Action... -->> 输入"VM" 选择Edit Custom VM Options -->> 此时会打开文件pycharm.vmoptions
+```
+修改参数
+```
+-Xms128m
+-Xmx2048m
+```
