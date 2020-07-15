@@ -80,3 +80,15 @@ registry-1.docker.io.	35	IN	A	34.228.211.243
 ```
 echo '52.22.201.61 registry-1.docker.io' >> /etc/hosts
 ```
+
+## 离线处理镜像
+
+[https://docs.docker.com/engine/reference/commandline/save](https://docs.docker.com/engine/reference/commandline/save)
+
+```
+# 下载
+docker save -o myimage.tar myimage:latest
+docker save myimage:latest | gzip > myimage_latest.tar.gz
+# 加载
+docker load -i myimage.tar
+```
