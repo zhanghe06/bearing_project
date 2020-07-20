@@ -83,6 +83,10 @@ REDIS = {
     'host': HOST,
     'port': 6379,
     # 'password': '123456'  # redis-cli AUTH 123456
+    # 'max_connections': 10,
+    'socket_connect_timeout': 1,
+    'retry_on_timeout': True,
+    'decode_responses': True,  # 默认False, 解析为字节; True为字符串
 }
 
 REDIS_URL = 'redis://:%s@%s' % (REDIS['password'], REDIS['host']) \
@@ -229,7 +233,7 @@ DELIVERY_PREFIX = 'DL'  # 出货
 PURCHASE_PREFIX = 'PC'  # 进货
 
 # 静态资源
-STATIC_RES_VER = '1.5.31'
+STATIC_RES_VER = '1.5.32'
 
 # 日志配置
 LOG_LEVEL = 'DEBUG'
@@ -300,11 +304,11 @@ LOG_CONFIG = {
         }
     },
     'loggers': {
-        'udp': {
-            'level': LOG_LEVEL,
-            'propagate': 0,
-            'handlers': ['udp_handler', 'console'],
-        },
+        # 'udp': {
+        #     'level': LOG_LEVEL,
+        #     'propagate': 0,
+        #     'handlers': ['udp_handler', 'console'],
+        # },
         'api': {
             'level': LOG_LEVEL,
             'propagate': 0,
