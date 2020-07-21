@@ -3,14 +3,18 @@
 # https://docs.docker.com/config/containers/logging/syslog/
 # udp 模式的好处: Fluentd重启不影响之后的日志收集
 
-docker rm -f udp
+HOST_NAME="${1-localhost}"
+CONTAINER_NAME="${2-datetime}"
+TAG="udp"
+
+docker rm -f "${CONTAINER_NAME}"
 
 docker run \
-    -h udp \
-    --name udp \
+    -h "${CONTAINER_NAME}" \
+    --name "${CONTAINER_NAME}" \
     --log-driver syslog \
-    --log-opt syslog-address=udp://192.168.4.1:24224 \
-    --log-opt tag={{.Name}} \
+    --log-opt syslog-address=udp://192.168.0.106:24224 \
+    --log-opt tag="${TAG}.${HOST_NAME}.${CONTAINER_NAME}" \
     -d \
     python:2.7 sh -c "while true
 do
@@ -25,3 +29,5 @@ done"
 # i=0; while true; do echo "[$(uname -n)] $(date)"; i=$((i+1)); sleep 1; done
 
 #     --add-host fluentd:192.168.4.1 \
+
+# sh docker_run_udp.sh test_host test_container
