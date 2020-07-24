@@ -4,7 +4,7 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: email.py
+@file: mail.py
 @time: 2018-12-25 18:22
 """
 
