@@ -27,7 +27,7 @@ class DbInstance(object):
         :param pk_id:
         :return: None/object
         """
-        return self.db_instance.session.query(model_class).get(pk_id)
+        return self.db_instance.session.query(model_class).with_for_update().get(pk_id)
 
     def get_row(self, model_class, *args, **kwargs):
         """
