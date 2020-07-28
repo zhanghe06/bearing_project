@@ -203,6 +203,6 @@ class RabbitQueueDelay(RabbitQueue):
 
 
 """
-这种方式 如果队列中前面的消息延时时间大于后面的时间 那么后面的消息将会被堵塞 应为消息在被消费前才会去检查过期时间
+这种方式 如果队列中前面的消息延时时间大于后面的时间 那么后面的消息将会被堵塞 因为消息在被消费前才会去检查过期时间
 参考官方文档发现“Only when expired messages reach the head of a queue will they actually be discarded (or dead-lettered).”只有当过期的消息到了队列的顶端（队首），才会被真正的丢弃或者进入死信队列。
 """
