@@ -9,6 +9,8 @@ docker network ls | grep -wq "${NET_NAME}" && echo "The network: ${NET_NAME} alr
   docker network create "${NET_NAME}" && echo "The network: ${NET_NAME} has been created"
 
 mkdir -p data logs
+chmod g+rwx data logs
+chgrp 0 data logs
 
 # Development mode
 docker run \
@@ -16,14 +18,14 @@ docker run \
   --name elasticsearch \
   --net "${NET_NAME}" \
   --cpus ".25" \
-  --memory "4g" \
-  --memory-swap "4g" \
+  --memory "2g" \
+  --memory-swap "2g" \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
   --ulimit nofile=65536:65536 \
   --ulimit memlock=-1:-1 \
   -e "bootstrap.memory_lock=true" \
-  -e ES_JAVA_OPTS="-Xms2g -Xmx2g" \
+  -e ES_JAVA_OPTS="-Xms1g -Xmx1g" \
   -e ELASTIC_PASSWORD='changeme' \
   -e "discovery.type=single-node" \
   -v "${PWD}"/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
@@ -34,5 +36,6 @@ docker run \
   -d \
   elasticsearch:7.6.0
 
+# 服务器先优化: sysctl -w vm.max_map_count=262144
 # 最小分配内存: 2G, 否则无法启动
 # 堆内存分配内存总量的一半
