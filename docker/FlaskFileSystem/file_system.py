@@ -125,6 +125,8 @@ def downloads(subdir=''):
     cur_abs_dir = os.path.join(app.config['UPLOAD_FOLDER'], subdir)
     for root, dirs, files in os.walk(cur_abs_dir, topdown=True):
         print(root, dirs, files)
+        dirs.sort()
+        dirs.reverse()
         files.sort()
         files.reverse()
         # files.sort(reverse=True)
