@@ -13,10 +13,11 @@ from __future__ import unicode_literals
 
 import time
 from functools import wraps
-
 from flask import jsonify, make_response
 from flask_restful import abort
-from werkzeug.exceptions import NotFound, InternalServerError
+from werkzeug.exceptions import HTTPException, NotFound, InternalServerError
+from sqlalchemy.exc import DatabaseError
+from redis.exceptions import RedisError
 
 
 def api_response(func):
@@ -26,13 +27,54 @@ def api_response(func):
         try:
             res = func(*args, **kwargs)
             return res
-        except Exception as e:
+        # 框架内部异常
+        # e.description 框架内置信息，需要屏蔽
+        except HTTPException as e:
             return make_response(
                 jsonify(
                     {
-                        'msg': e.message,
+                        'msg': e.data.get('message', e.message),
                         'result': False,
-                        # 'status': InternalServerError.code,
+                    }
+                ),
+                e.code
+            )
+        # 组件连接异常（数据库、消息、缓存等）
+        # 拦截具体消息
+        except DatabaseError as e:
+            return make_response(
+                jsonify(
+                    {
+                        'msg': '数据库异常' or ', '.join(e.args) or e.message,
+                        'result': False,
+                    }
+                ),
+                InternalServerError.code
+            )
+        except RedisError as e:
+            return make_response(
+                jsonify(
+                    {
+                        'msg': '缓存异常' or ', '.join(e.args) or e.message,
+                        'result': False,
+                    }
+                ),
+                InternalServerError.code
+            )
+        # 框架外部异常
+        # raise Exception("123")
+        # raise Exception("123", "456")
+        except Exception as e:
+            # print('Function name:', func.__name__)
+            # print('Function args:', args, kwargs)
+            # print('Exception error:', e)
+            # print('Exception module:', e.__class__.__module__)
+            # print('Exception class name:', e.__class__.__name__)
+            return make_response(
+                jsonify(
+                    {
+                        'msg': ', '.join(e.args) or e.message,
+                        'result': False,
                     }
                 ),
                 InternalServerError.code
