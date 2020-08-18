@@ -73,3 +73,26 @@ input[type="datetime-local"].form-control,
 input[type="month"].form-control {
     line-height: 1.5;
 }
+
+/*表格内容自适应*/
+.td-12 {
+    max-width: 12em; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;
+}
+
+.td-24 {
+    max-width: 24em; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;
+}
+
+.td-36 {
+    max-width: 36em; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;
+}
+
+.td-op {
+    min-width: 8em; text-align: right;
+}
+
+/*文本域仅允许垂直拉伸*/
+textarea {
+    overflow: auto;
+    resize: vertical;
+}
