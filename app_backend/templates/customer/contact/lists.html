@@ -90,7 +90,7 @@
                         <th>{{ _('tel') }}<br/>{{ _('fax') }}</th>
                         <th>{{ _('email') }}</th>
                         <th>{{ _('default status') }}</th>
-                        <th>{{ _('operation') }}</th>
+                        <th class="td-op">{{ _('operation') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -112,7 +112,7 @@
                             <td>{{ info.tel }}<br/>{{ info.fax }}</td>
                             <td>{{ info.email }}</td>
                             <td>{{ info.status_default | status_default }}</td>
-                            <td style="min-width: 8em;">
+                            <td class="td-op">
                                 <!-- Split button -->
                                 <div class="btn-group btn-group-sm">
                                     <a class="btn btn-default"
