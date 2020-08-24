@@ -89,7 +89,7 @@
                         <th>{{ _('create time') }}</th>
                         <th>{{ _('update time') }}</th>
                         <th>{{ _('audit status') }}</th>
-                        <th>{{ _('operation') }}</th>
+                        <th class="td-op">{{ _('operation') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -109,7 +109,7 @@
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td>{{ moment(info.update_time).format('YYYY-MM-DD HH:mm:ss') }}</td>
                             <td class="text-center"><span rel="tooltip" data-toggle="tooltip" title="{{ info.status_audit | status_audit }}" class="{{ info.status_audit | status_audit_html_class }}"></span></td>
-                            <td style="min-width: 8em;">
+                            <td class="td-op">
                                 <!-- Split button -->
                                 <div class="btn-group btn-group-sm">
                                     <a class="btn btn-default"
