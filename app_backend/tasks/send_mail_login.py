@@ -18,7 +18,7 @@ from flask import render_template
 from app_backend import app, mail
 from app_backend.clients.client_redis import redis_client
 from app_common.decorators.exception import ignore_exception
-from app_common.libs.email import MailClient
+from app_common.libs.mail import MailClient
 from app_common.libs.redis_pub_sub import RedisPubSub
 
 ctx = app.app_context()
