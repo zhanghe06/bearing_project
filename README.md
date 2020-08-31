@@ -599,6 +599,21 @@ Fluentd、Elasticsearch、Kibana
 Prometheus、Exporter、Grafana、Alertmanager、cAdvisor（容器）
 
 
+## Restful
+
+注意以下区别
+```
+from flask import abort
+from flask_restful import abort
+```
+
+## 流程图
+
+[https://app.diagrams.net](https://app.diagrams.net)
+
+[drawio桌面版](https://github.com/jgraph/drawio-desktop)
+
+
 ## TODO
 
 - [x] 联动删除
