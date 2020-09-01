@@ -14,6 +14,8 @@
 > 我是INFO类型引用
 
 
+## 插件
+
 Mermaid 插件
 
 序列图
@@ -110,3 +112,8 @@ else;
 endif;
 @enduml 
 '>
+
+
+LaTex 数学符号插件
+
+
