@@ -7,8 +7,12 @@
 **xlrd**
 This package is for reading data and formatting information from older Excel files (ie: .xls)
 
+[https://github.com/python-excel/xlrd](https://github.com/python-excel/xlrd)
+
 **xlwt**
 This package is for writing data and formatting information to older Excel files (ie: .xls)
+
+[https://github.com/python-excel/xlwt](https://github.com/python-excel/xlwt)
 
 .xlsx格式采用以下方式：
 
