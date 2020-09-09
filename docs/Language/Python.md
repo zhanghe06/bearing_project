@@ -372,7 +372,7 @@ sysctl -n machdep.cpu.thread_count
 ```
 
 
-## \_\_new\_\_、\_\_init\_\_ 区别
+## `__new__`、`__init__` 区别
 
 1. 首先用法不同
 ```
@@ -392,3 +392,27 @@ __init__()至少有一个参数self，就是这个__new__()返回的实例，__i
 __new__()必须有返回值，返回实例对象；
 __init__()不需要返回值。
 ```
+
+## 序列化与反序列化
+
+`encode`、`decode`
+
+python3中
+```
+encode 输出字节串
+decode 输出字符串
+```
+
+```
+>>> a = '编码'
+>>> a
+'编码'
+>>> b = a.encode('utf-8')
+>>> b
+b'\xe7\xbc\x96\xe7\xa0\x81'
+>>> b.decode('utf-8')
+'编码'
+```
+
+pickle.dumps() 将python数据序列化为bytes类型
+pickle.loads() 将bytes类型数据反序列化为python的数据类型
