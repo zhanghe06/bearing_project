@@ -567,6 +567,15 @@ git push origin <branch> -f
 回到上一次提交，并丢弃工作区（放弃提交前的修改），强行推送
 
 
+## git log 和 git reflog
+
+- git log
+可以显示所有提交过的版本信息
+
+- git reflog
+可以查看所有分支的所有操作记录（包括已经被删除的 commit 记录和 reset 的操作）
+
+
 ## git stash
 ```bash
 git stash list              # 查看所有
@@ -588,4 +597,31 @@ git config --global alias.st status
 git config --global alias.co checkout
 git config --global alias.ci commit
 git config --global alias.br branch
+```
+
+全局配置文件路径：~/.gitconfig
+
+```
+git config --global core.pager ''
+git config --global core.editor vim
+```
+
+排错：$'\r': command not found
+
+一般是Linux服务器上执行通过windows环境远程拷贝的脚本时会出错。
+
+git默认配置：core.autocrlf=true
+
+windows环境下，提交自动转LF，签出自动转CRLF
+
+手动更新换行符
+```
+:set ff=unix
+:wq
+```
+出现原因：windows环境下的编辑器，换行符默认是CRLF，上传到Linux服务器之后执行脚本会报错
+
+如果你是Windows程序员，且正在开发仅运行在Windows上的项目，可以设置false取消此功能，把回车符记录在库中
+```
+$ git config --global core.autocrlf false
 ```
