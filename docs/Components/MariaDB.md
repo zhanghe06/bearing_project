@@ -523,6 +523,53 @@ MariaDB [bearing_project]> show global variables like 'innodb_buffer_pool_size';
 1 row in set (0.00 sec)
 ```
 
+
+### Specified key was too long; max key length is 767 bytes
+
+MySQL在大字段上创建索引时，偶尔会遇到如下错误。
+```
+Specified key was too long; max key length is 767 bytes
+```
+
+例如安装 django-celery 后配置数据库时报错
+```
+django.db.utils.OperationalError: (1071, 'Specified key was too long; max key length is 767 bytes')
+```
+
+问题原因
+
+由于MySQL的InnoDB引擎表索引字段长度的限制为767字节，因此对于多字节字符集的大字段或者多字段组合，创建索引时会出现该问题。
+
+```
+说明：以utf8mb4字符集字符串类型字段为例。
+utf8mb4是4字节字符集，默认支持的索引字段最大长度是191字符（767字节/4字节每字符≈191字符），因此在varchar(255)或char(255)类型字段上创建索引会失败。
+详情请参见[MySQL官网文档](https://dev.mysql.com/doc/refman/5.6/en/charset-unicode-utf8mb4.html?spm=a2c4g.11186623.2.14.4c247177s7YQCS)。
+```
+
+解决方案
+
+`SET GLOBAL innodb_large_prefix = ON;`
+
+```
+MariaDB [school_project]> SHOW GLOBAL VARIABLES LIKE 'innodb_large_prefix';
++---------------------+-------+
+| Variable_name       | Value |
++---------------------+-------+
+| innodb_large_prefix | OFF   |
++---------------------+-------+
+1 row in set (0.004 sec)
+
+MariaDB [school_project]> SET GLOBAL innodb_large_prefix = ON;
+Query OK, 0 rows affected (0.004 sec)
+```
+
+### Index column size too large. The maximum column size is 767 bytes.
+
+报错主要出在mysql5.6版本和MariaDB10，改参数什么就不好使了，最直接的就是修改CHARACTER和COLLATE，将utf8mb4改为utf8
+
+`DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci`
+
+
 ## 调优
 
 - 超时时间只对非活动状态的connection进行计算。
