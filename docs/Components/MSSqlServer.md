@@ -124,15 +124,14 @@ using default charset "UTF-8"
 ```
 
 python 客户端 pymssql
-
 ```
 pip install pymssql
 ```
 
-
 测试连接
 
 1. pymssql 客户端方式
+
 ```
 import pymssql
 
@@ -147,6 +146,7 @@ conn.close()
 ```
 
 2. sqlalchemy 方式
+
 ```
 from sqlalchemy import create_engine
 
