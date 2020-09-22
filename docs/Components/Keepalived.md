@@ -2,7 +2,7 @@
 
 keepalived是以VRRP协议为实现基础的，VRRP全称Virtual Router Redundancy Protocol，即虚拟路由冗余协议
 
-keepalived默认使用端口122进行通讯,必须开放112端口,或者停用防火墙.保证各个主机之间112端口的连通性
+keepalived默认使用端口112进行通讯，必须开放112端口，或者停用防火墙，保证各个主机之间112端口的连通性
 
 ```
 node1   192.168.64.133       # master
