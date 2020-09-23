@@ -16,4 +16,4 @@ docker run \
     -e MYSQL_PASSWORD='123456' \
     -p 3306:3306 \
     -d \
-    mariadb:10.1.23
+    mariadb:10.1.23 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
