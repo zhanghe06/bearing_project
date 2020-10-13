@@ -4,7 +4,7 @@
 """
 @author: zhanghe
 @software: PyCharm
-@file: __init__.py.py
+@file: __init__.py
 @time: 2018-08-15 15:45
 """
 
