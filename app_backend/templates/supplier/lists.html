@@ -80,7 +80,7 @@
 {#                        <th>{{ _('company type') }}</th>#}
 {#                        <th>所属销售</th>#}
                         <th>{{ _('create time') }}</th>
-                        <th>{{ _('operation') }}</th>
+                        <th class="td-op">{{ _('operation') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -107,7 +107,7 @@
 {#                            <td>{{ info.owner_uid | user_name }}</td>#}
                             <td>{{ moment(info.create_time).format('YYYY-MM-DD') }}
                             </td>
-                            <td style="min-width: 8em;">
+                            <td class="td-op">
                                 <!-- Split button -->
                                 <div class="btn-group btn-group-sm">
                                     <a class="btn btn-default"
