@@ -203,3 +203,9 @@ docker run \
 
 [https://docs.docker.com/config/containers/logging/json-file](https://docs.docker.com/config/containers/logging/json-file)
 
+
+Ubuntu版本	| debian版本号	| debian代号
+---------   | -----------   | ---------
+14.04	    | 8	            | jessie
+16.04	    | 9	            | strech
+18.04	    | -	            | buster
