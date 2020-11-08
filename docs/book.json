@@ -2,8 +2,73 @@
     "language": "zh-hans",
     "title": "Bearing Project 最佳实践",
     "author": "空ping子",
+    "links": {
+        "sidebar": {
+            "Bearing Project 最佳实践": "https://zhendime.com"
+        }
+    },
     "plugins": [
+        "back-to-top-button",
+        "-sharing",
+        "sharing-plus",
         "todo",
-        "mermaid-full@>=0.5.1"
-    ]
+        "mermaid-full@>=0.5.1",
+        "mathjax-full@>=0.6.2",
+        "donate",
+        "insert-logo",
+        "flexible-alerts",
+        "terminal"
+    ],
+    "pluginsConfig": {
+        "sharing": {
+            "douban": true,
+            "qq": true,
+            "qzone": true,
+            "weibo": true,
+            "google": false,
+            "facebook": false,
+            "whatsapp": false,
+            "all": [
+                "weibo",
+                "qzone",
+                "qq",
+                "douban",
+                "google",
+                "linkedin",
+                "twitter",
+                "facebook",
+                "whatsapp"
+            ]
+        },
+        "donate": {
+            "alipay": "/images/qr_alipay.png",
+            "wechat": "/images/qr_wechat.png",
+            "title": "法不空传，道不贱卖",
+            "button": "捐赠",
+            "alipayText": "支付宝捐赠",
+            "wechatText": "微信捐赠"
+        },
+        "insert-logo": {
+            "url": "/images/logo.png",
+            "style": "background: none; max-width: 80%; margin: -30px 0;"
+        },
+        "tbfed-pagefooter": {
+            "copyright": "Copyright &copy zhendime.com",
+            "modify_label": "最近更新:",
+            "modify_format": "YYYY-MM-DD HH:mm"
+        },
+        "flexible-alerts": {
+            "style": "callout",
+            "comment": {
+                "label": "Comment",
+                "icon": "fa fa-comments",
+                "className": "info"
+            }
+        },
+        "terminal": {
+            "copyButtons": true,
+            "fade": true,
+            "style": "flat"
+        }
+    }
 }
