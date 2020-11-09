@@ -67,4 +67,7 @@
     * [Reconciliation](Architecture/Reconciliation.md)
     * [Status](Architecture/Status.md)
     * [Task](Architecture/Task.md)
-
+* Mathematics
+    * [Alerts](Mathematics/Alerts.md)
+    * [Equation](Mathematics/Equation.md)
+    * [Picture](Mathematics/Picture.md)
