@@ -4,7 +4,7 @@ Babel==2.8.0
 billiard==3.6.2.0
 blinker==1.4
 cairocffi==0.9.0
-CairoSVG==1.0.22
+CairoSVG==2.5.1
 celery==4.4.0
 certifi==2019.11.28
 cffi==1.14.0
