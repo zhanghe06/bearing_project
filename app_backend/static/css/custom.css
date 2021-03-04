@@ -20,6 +20,15 @@ body {
     border-top-right-radius: 0;
 }
 
+.panel-search {
+    margin-top: -56px;
+    padding-top: 36px;
+    background-color: transparent;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top-width: 0;
+}
+
 /*垂直居中*/
 .center-vertical {
     position: absolute;

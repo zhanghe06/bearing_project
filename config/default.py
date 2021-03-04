@@ -233,7 +233,7 @@ DELIVERY_PREFIX = 'DL'  # 出货
 PURCHASE_PREFIX = 'PC'  # 进货
 
 # 静态资源
-STATIC_RES_VER = '1.5.32'
+STATIC_RES_VER = '1.5.33'
 
 # 日志配置
 LOG_LEVEL = 'DEBUG'

@@ -7,20 +7,17 @@
             <li><a href="javascript:void(0);"
                    onclick="$('#menu-production').trigger('click')">{{ _('production management') }}</a></li>
             <li class="active">{{ _('production lists') }}</li>
+            <div class="pull-right" id="headingSearch">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
+                   aria-expanded="true" aria-controls="collapseSearch">
+                    <span class="panel_resize_btn glyphicon glyphicon-chevron-up"
+                          style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
+                          data-placement="left"></span>
+                </a>
+            </div>
         </ol>
         <form method="post">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingSearch">
-                    <h4 class="panel-title panel-title-sm">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSearch"
-                           aria-expanded="true" aria-controls="collapseSearch">
-                            {{ _('Search toolbar') }}
-                            <span class="panel_resize_btn glyphicon glyphicon-chevron-up pull-right"
-                                  style="cursor: pointer;" title="{{ _('Resize') }}" rel="tooltip"
-                                  data-placement="left"></span>
-                        </a>
-                    </h4>
-                </div>
+            <div class="panel panel-default panel-search">
                 <div id="collapseSearch" class="panel-collapse collapse in" role="tabpanel"
                      aria-labelledby="headingSearch">
                     <div class="panel-body">
