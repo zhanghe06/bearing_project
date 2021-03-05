@@ -426,7 +426,7 @@ $ git checkout -b origin/<branch>
 开发分支 | develop | git co -b develop origin/master | git pull origin develop --rebase
 发布分支 | release | git co -b release origin/master | git pull origin release --rebase
 功能分支 | feature | git co -b feature origin/master | git pull origin feature --rebase
-热修复分支 | hotfix | git co -b hotfix origin/master | git pull origin master --rebase
+补丁分支 | hotfix | git co -b hotfix origin/master | git pull origin master --rebase
 
 hotfix 分支说明
 ```
