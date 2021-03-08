@@ -224,6 +224,21 @@ Array.from(str).reduce((accumulator, current) => {
 }, obj)
 ```
 
+```
+// 列表分组
+const data = [
+    { source: 'test1', target: 'test7', value: 20 },
+    { source: 'test5', target: 'test3', value: 50 },
+    { source: 'test1', target: 'test4', value: 90 },
+    { source: 'test6', target: 'test3', value: 10 }
+]
+const obj = {}
+data.reduce((grouping, current) => {
+  current['source'] in grouping ? grouping[current['source']].push(current) : grouping[current['source']] = [current]
+  return grouping;
+}, obj)
+```
+
 ## JavaScript String 对象
 
 方法 | 描述
@@ -283,3 +298,30 @@ const obj = {'a': 1}
 obj.hasOwnProperty('a') // true
 obj.hasOwnProperty('b') // false
 obj.hasOwnProperty('toString') // false
+
+
+## JSON
+
+​JSON.parse 将json字符串反序列化为json对象
+```
+// 定义一个字符串
+var data='{"name":"tom"}'
+// 解析对象​
+​JSON.parse(data)
+// 结果
+{name: "tom"}
+
+typeof(JSON.parse(data))
+"object"
+JSON.parse(data)["name"]
+"tom"
+JSON.parse(data).name
+"tom"
+```
+
+JSON.stringify 将json对象序列化为json字符串
+```
+var data={name: 'tom'}
+JSON.stringify(data)
+'{"name":"tom"}'
+```
