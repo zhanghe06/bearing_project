@@ -1,12 +1,29 @@
 # Siege 压力测试
 
 
+测试指标 | 测试描述
+--- | ---
+Transactions | 事务命中次数
+Availability | 请求处理成功比例
+Elapsed time | 测试持续时间
+Data transferred | 传输数据总和
+Response time | 平均响应时间
+Transaction rate | 事务处理效率
+Throughput | 吞吐量
+Concurrency | 并发连接数量
+Successful transactions | 成功事务次数
+Failed transactions | 失败事务次数
+Longest transaction | 最长事务时间
+Shortest transaction | 最短事务时间
+
+
+
 100并发，发生2次
 ```
 $ siege -c 100 -r 2 http://0.0.0.0:8010/performance/ -b
 ```
 
-自带的web服务
+Flask 自带的web服务
 ```
 Transactions:                200 hits
 Availability:             100.00 %
@@ -46,7 +63,7 @@ Gunicorn 性能也只是 Flask 自带服务的一倍
 siege -c 200 -r 100 -b http://0.0.0.0:8010/performance/
 ```
 
-自带的web服务
+Flask 自带的web服务
 ```
 Transactions:		       19856 hits
 Availability:		       99.28 %
