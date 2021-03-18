@@ -49,7 +49,7 @@ mysqlclient==1.4.6
 oauthlib==2.1.0
 pathlib2==2.3.5
 pdfrw==0.4
-Pillow==6.2.2
+Pillow==8.1.1
 py==1.8.1
 pycparser==2.19
 pyexcel==0.5.15
