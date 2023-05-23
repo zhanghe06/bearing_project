@@ -1,5 +1,19 @@
 # BlueKing
 
+急速体验
+
+- PAAS
+```
+docker run -d --name="bk-paas" -p 8000-8003:8000-8003 ccr.ccs.tencentyun.com/bk.io/paas-standalone:latest
+```
+
+- CMDB
+```
+docker run -d --name="bk-cmdb" -p 8090:8090 ccr.ccs.tencentyun.com/bk.io/cmdb-standalone:latest
+```
+
+[http://127.0.0.1:8090](http://127.0.0.1:8090)
+
 ## PaaS
 
 [https://github.com/Tencent/bk-PaaS](https://github.com/Tencent/bk-PaaS)

@@ -62,5 +62,5 @@ default_handler.setFormatter(
 
 ## traceback
 
-traceback.format_exc()返回字符串，traceback.print_exc()则直接给打印出来
+traceback.format_exc() 返回字符串，traceback.print_exc()则直接给打印出来
 traceback.print_exc() 终端运行才会打印

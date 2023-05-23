@@ -2,6 +2,9 @@
 
 compatibility for python2 and python3
 
+- six: python2的写法，兼容python3
+- future: python3的写法，兼容python2
+
 [https://python-future.org/compatible_idioms.html](https://python-future.org/compatible_idioms.html)
 
 ```python
@@ -13,6 +16,9 @@ from __future__ import unicode_literals
 # from StringIO import StringIO     # PY2
 # from io import StringIO           # PY3
 from six import StringIO
+# 可以用字节方式替代:
+from io import BytesIO
+from six import BytesIO
 ```
 
 ```python
@@ -73,6 +79,14 @@ import six
 
 # def b(s: str) -> binary_type: ...
 # def u(s: str) -> text_type: ...
+```
+
+```python
+unichr(i)               # PY2
+chr(i)                  # PY3
+
+from six import unichr
+unichr(i)
 ```
 
 继承类

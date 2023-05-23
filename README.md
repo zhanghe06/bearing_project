@@ -44,7 +44,7 @@ yum -y install mysql-devel
 ```
 sudo apt-get install python-dev     # python2
 sudo apt-get install python3-dev    # python3
-sudo apt-get install mysql-dev
+sudo apt-get install libmysqld-dev
 sudo apt-get install libffi-dev
 ```
 
@@ -91,7 +91,7 @@ pip install supervisor
 ## 项目演示
 python2
 ```bash
-virtualenv bearing.env              # 创建虚拟环境
+virtualenv .venv                    # 创建虚拟环境
 source env_develop.sh               # 加载环境变量
 pip install -r requirements.txt     # 安装项目依赖
 sh babel_compile.sh                 # 编译本地语言
@@ -100,7 +100,7 @@ python run_backend.py               # 启动项目服务
 
 python3
 ```bash
-virtualenv bearing.env -p python3   # 创建虚拟环境
+virtualenv .venv -p python3         # 创建虚拟环境
 source env_develop.sh               # 加载环境变量
 pip install -r requirements.txt     # 安装项目依赖
 sh babel_compile.sh                 # 编译本地语言

@@ -52,6 +52,21 @@ from sqlalchemy.sql import func
 - func.date(User.create_time).label('date')
 - func.count(User.id)
 
+## 查询指定的列字段
+
+SQLAlchemy
+```
+session.query(Article.read_num).all()
+# 或者
+session.query.with_entities(Article.read_num).all()
+```
+
+Flask_SQLAlchemy
+```
+Article.query.with_entities(Article.read_num).all()
+# 或者
+db.session.query(Article.read_num).all()
+```
 
 ## Transtraction
 

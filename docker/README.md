@@ -71,6 +71,9 @@ docker ps --format "table{{.Names}}\t{{.Status}}"
 
 # 查看日志驱动
 docker info --format '{{.LoggingDriver}}'
+
+# 查看存储目录
+docker info | grep "Docker Root Dir"
 ```
 
 format name | description

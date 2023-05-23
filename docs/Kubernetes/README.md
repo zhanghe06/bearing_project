@@ -23,9 +23,15 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/
 [https://github.com/kubernetes/dashboard](https://github.com/kubernetes/dashboard)
 ```bash
 # 下载需要翻墙
-wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.3/aio/deploy/recommended.yaml
+wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml
 # 安装不要翻墙
 kubectl apply -f recommended.yaml
+```
+
+或者通过Helm方式
+```
+helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard
 ```
 
 获取Token
@@ -61,3 +67,12 @@ ingress 安装
 RBAC: 基于角色的权限访问控制（Role-Based Access Control）
 
 https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac
+
+```
+helm search repo ingress-nginx
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install [RELEASE_NAME] ingress-nginx/ingress-nginx
+helm uninstall [RELEASE_NAME]                       # 卸载
+helm upgrade [RELEASE_NAME] [CHART] --install       # 更新
+```

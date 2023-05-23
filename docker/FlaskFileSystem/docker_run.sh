@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+mkdir -p uploads
+
 # 后台运行
 docker run \
     --name flask_file_system \

@@ -831,3 +831,18 @@ CREATE TABLE `futures` (
   PRIMARY KEY (`id`),
   KEY (`production_model`, `production_brand`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='在途期货';
+
+
+DROP TABLE IF EXISTS `test_load`;
+CREATE TABLE `test_load` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(20) BINARY NOT NULL DEFAULT '' COMMENT '姓名',
+  `role_id` TINYINT NOT NULL DEFAULT 0 COMMENT '角色（1:系统,2:销售,3:经理,4:库管,5:财务,6:采购）',
+  `status_delete` TINYINT NOT NULL DEFAULT 0 COMMENT '删除状态（0:未删除,1:已删除）',
+  `delete_time` TIMESTAMP NULL COMMENT '删除时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='test_load';
+
+

@@ -1,5 +1,7 @@
 # PostgresQL
 
+[https://developer.aliyun.com/article/43416](https://developer.aliyun.com/article/43416)
+
 主备、集群、高可用方案
 
 ## PostgresQL + KeepaliveD（基于 Hot Standby 的异步流复制、单VIP）

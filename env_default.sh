@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source .env/bin/activate
+source .venv/bin/activate
 
 export PATH=${PWD}:${PATH}
 export PYTHONPATH=${PWD}

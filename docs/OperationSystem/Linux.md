@@ -950,6 +950,8 @@ Last login: Thu Mar  7 09:59:36 2019
 
 
 ## 解决中文乱码
+
+/etc/profile
 ```
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8

@@ -4,11 +4,11 @@ Helm把Kubernetes资源(比如deployments、services或 ingress等) 打包到一
 
 Helm使发布可配置，支持发布应用配置的版本管理，简化了Kubernetes部署应用的版本控制、打包、发布、删除、更新等操作。
 
-https://github.com/helm/helm
+[https://github.com/helm/helm](https://github.com/helm/helm)
 
-https://helm.sh/
+[https://helm.sh/](https://helm.sh/)
 
-https://hub.helm.sh/
+[https://hub.helm.sh/](https://hub.helm.sh/)
 
 
 
@@ -152,3 +152,24 @@ helm repo update
 ```bash
 helm repo remove my_local
 ```
+
+## 钩子
+
+[https://helm.sh/zh/docs/topics/charts_hooks/](https://helm.sh/zh/docs/topics/charts_hooks/)
+
+注释值	| 描述
+--- | ---
+pre-install	    | 在模板渲染之后，Kubernetes资源创建之前执行
+post-install	| 在所有资源加载到Kubernetes之后执行
+pre-delete	    | 在Kubernetes删除之前，执行删除请求
+post-delete	    | 在所有的版本资源删除之后执行删除请求
+pre-upgrade	    | 在模板渲染之后，资源更新之前执行一个升级请求
+post-upgrade	| 所有资源升级之后执行一个升级请求
+pre-rollback	| 在模板渲染之后，资源回滚之前，执行一个回滚请求
+post-rollback	| 在所有资源被修改之后执行一个回滚请求
+test	        | 调用Helm test子命令时执行 ( test文档)
+
+
+
+pre-install k8s资源创建之前，调用注册接口
+post-delete k8s资源删除之后，调用注销接口

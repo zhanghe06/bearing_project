@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>魔方</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background: url(../img/2.png) no-repeat 0 0/cover;
+        }
+
+
+        .box {
+            width: 65%;
+            height: 80%;
+            position: absolute;
+            left: 28%;
+            top: 19%;
+            transform: rotateY(45deg) rotateX(-20deg);
+            transform-style: preserve-3d;
+
+        }
+
+        /*閲岄潰鐨勭洅瀛�*/
+        .box > .in {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            /*寮€鍚�3d*/
+            transform-style: preserve-3d;
+            transform: translate(-50%, -50%) rotateY(45deg) rotateX(-20deg);
+            /*璋冪敤鍔ㄧ敾*/
+            animation: mofan 5s linear 0s infinite normal;
+            z-index: 100;
+
+        }
+
+        /*閲岄潰鐩掑瓙鍏釜闈㈢殑鍏卞悓鍊�*/
+        .box > .in > div {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            opacity: 0.7;
+            border: 1px solid white;
+        }
+
+        /*閲岄潰鐩掑瓙鐨勫叚涓潰*/
+        /*鍓�*/
+        .n1 {
+            background-color: #00ffff;
+            transform: translateZ(51px);
+        }
+
+        /*鍚�*/
+        .n2 {
+            background-color: black;
+            transform: translateZ(-51px);
+
+
+        }
+
+        /*宸�*/
+        .n3 {
+            background-color: black;
+            transform: translateX(-51px) rotateY(90deg);
+        }
+
+        /*鍙�*/
+        .n4 {
+            background-color: #00ffff;
+            transform: translateX(51px) rotateY(90deg);
+        }
+
+        /*涓�*/
+        .n5 {
+            background-color: #00ffff;
+            transform: translateY(-51px) rotateX(90deg);
+        }
+
+        /*涓�*/
+        .n6 {
+            background-color: black;
+            transform: translateY(51px) rotateX(90deg);
+        }
+
+        /*閲岄潰鐩掑瓙鐨勫叚涓潰缁撴潫*/
+        /*鍔ㄧ敾*/
+        @keyframes mofan {
+            from {
+                transform: translate(-50%, -50%) rotateY(0deg) rotateX(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotateY(360deg) rotateX(0deg);
+            }
+        }
+
+        @keyframes nixuan {
+            from {
+                transform: translate(-50%, -50%) rotateY(0deg) rotateX(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotateY(-360deg) rotateX(0deg);
+            }
+        }
+
+
+        /*澶栭潰鐨勭洅瀛�*/
+
+        .box > .out {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform-style: preserve-3d;
+            transform: translate(-50%, -50%);
+            /*璋冪敤鍔ㄧ敾*/
+            animation: mofan 5s linear 0s infinite normal;
+            color: white;
+
+        }
+
+
+        .box > .out > .t1, .t2, .t3, .t4, .t5, .t6 {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            opacity: 0.5;
+            border: 1px solid white;
+
+        }
+
+        /*鍓�*/
+        .t1 {
+            background-color: black;
+            transform: translateZ(100px);
+        }
+
+        /*鍚�*/
+        .t2 {
+            background-color: black;
+            transform: translateZ(-100px);
+
+
+        }
+
+        /*宸�*/
+        .t3 {
+            background-color: black;
+            transform: translateX(-100px) rotateY(90deg);
+        }
+
+        /*鍙�*/
+        .t4 {
+            background-color: black;
+            transform: translateX(100px) rotateY(90deg);
+        }
+
+        /*涓�*/
+        .t5 {
+            background-color: black;
+            transform: translateY(-100px) rotateX(90deg);
+        }
+
+        /*涓�*/
+        .t6 {
+            background-color: black;
+            transform: translateY(100px) rotateX(90deg);
+        }
+
+        .box:hover > .out > .t1 {
+            transform: translateZ(300px);
+            transition: all 0.3s linear;
+        }
+
+        .box:hover > .out > .t2 {
+            transform: translateZ(-300px);
+            transition: all 0.3s linear;
+        }
+
+        .box:hover > .out > .t3 {
+            transform: translateX(-300px) rotateY(90deg);
+            transition: all 0.3s linear;
+        }
+
+        .box:hover > .out > .t4 {
+            transform: translateX(300px) rotateY(90deg);
+            transition: all 0.3s linear;
+        }
+
+        .box:hover > .out > .t5 {
+            transform: translateY(-300px) rotateX(90deg);
+            transition: all 0.3s linear;
+        }
+
+        .box:hover > .out > .t6 {
+            transform: translateY(300px) rotateX(90deg);
+            transition: all 0.3s linear;
+        }
+
+        /*榧犳爣鎮诞鏃跺鐩掑瓙閫嗚浆*/
+        .box:hover > .out {
+            animation: nixuan 5s linear 0s infinite normal;
+        }
+
+
+        .n1, .n4, .n5 {
+            background-image: linear-gradient(to right, #00ffff, black)
+        }
+
+        .k1 {
+            width: 29.3px;
+            height: 29.3px;
+            border: 2px solid white;
+            float: left;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="in">
+        <div class="n1">
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+        </div>
+        <div class="n2">
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+        </div>
+        <div class="n3">
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+        </div>
+        <div class="n4">
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+        </div>
+        <div class="n5">
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+        </div>
+        <div class="n6">
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+            <div class="k1"></div>
+        </div>
+    </div>
+    <div class="out">
+        <div class="t1"></div>
+        <div class="t2"></div>
+        <div class="t3"></div>
+        <div class="t4"></div>
+        <div class="t5"></div>
+        <div class="t6"></div>
+    </div>
+
+
+</div>
+</body>
+</html>

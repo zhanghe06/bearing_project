@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS 实例</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 分割线 */
+        .split-line::before, .split-line::after {
+            content: '';
+            display: inline-block;
+            border-top: 1px solid black;
+            width: 200px;
+            margin: 5px;
+        }
+
+        /* 三角箭头 */
+        .top-triangle {
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-bottom: 20px solid pink;
+        }
+
+        .bottom-triangle {
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-top: 20px solid pink;
+        }
+
+        .left-triangle {
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-right: 20px solid pink;
+        }
+
+        .right-triangle {
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-left: 20px solid pink;
+        }
+
+        .triangle-top-left {
+            width: 0;
+            height: 0;
+            border-top: 20px solid red;
+            border-right: 20px solid transparent;
+        }
+
+        .triangle-top-right {
+            width: 0;
+            height: 0;
+            border-top: 20px solid red;
+            border-left: 20px solid transparent;
+        }
+
+        .triangle-bottom-left {
+            width: 0;
+            height: 0;
+            border-bottom: 20px solid red;
+            border-right: 20px solid transparent;
+        }
+
+        .triangle-bottom-right {
+            width: 0;
+            height: 0;
+            border-bottom: 20px solid red;
+            border-left: 20px solid transparent;
+        }
+
+        /*矩形选框*/
+        .rectangle-checkbox input[type="checkbox"] {
+            /*隐藏选框*/
+            width: 0;
+            height: 0;
+        }
+
+        .rectangle-checkbox label {
+            display: inline-block;
+            padding: 8px 20px;
+            font-size: 14px;
+            color: #ccc;
+            border: 1px solid #ddd;
+            margin-right: 20px;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .rectangle-checkbox input[type="checkbox"]:checked + label {
+            color: #222;
+            border: 1px solid #008028;
+        }
+
+        .rectangle-checkbox input[type="checkbox"]:checked + label::before {
+            content: '';
+            display: block;
+            height: 0;
+            width: 0;
+            font-size: 0;
+            border: 10px solid transparent;
+            border-right: 10px solid #008028;
+            border-bottom: 10px solid #008028;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+
+        /* 对话边框 */
+        .chat-box {
+            background-color: #eee;
+            padding: 10px;
+        }
+
+        .left-chat, .right-chat {
+            position: relative;
+            display: table;
+            min-height: 40px;
+            text-align: center;
+            /*background-color: #9EEA6A;*/
+            margin: 0;
+            border-radius: 7px;
+        }
+
+        .left-chat {
+            left: 10px;
+            background-color: #FFFFFF;
+        }
+
+        .right-chat {
+            right: 10px;
+            background-color: #9EEA6A;
+        }
+
+        .left-chat::before, .right-chat::after {
+            position: absolute;
+            display: inline-block;
+            content: "";
+            width: 0;
+            height: 0;
+            border: 8px solid transparent;
+            top: 12px; /*移到中间*/
+        }
+
+        .left-chat::before {
+            border-right-color: #FFFFFF;
+            left: -16px;
+        }
+
+        .right-chat::after {
+            border-left-color: #9EEA6A;
+            right: -16px;
+        }
+
+        .left-chat p, .right-chat p {
+            padding: 10px 10px;
+        }
+
+        /* 清除浮动 */
+        .clear-float:after {
+            clear: both; /*清除浮动*/
+            content: '';
+            display: block; /*显示伪元素*/
+            width: 0;
+            height: 0; /*不占位置*/
+            visibility: hidden; /*允许浏览器渲染它，但是不显示出来*/
+        }
+
+        .parent-float {
+            border: 1px solid #000000;
+        }
+
+        .child-float-left {
+            float: left;
+        }
+
+        .child-float-right {
+            float: right;
+        }
+
+        /* 菜单箭头 */
+        .box {
+            position: relative;
+            width: 200px;
+            height: 50px;
+            background-color: pink;
+        }
+
+        .box::before {
+            position: absolute;
+            content: "";
+            width: 12px;
+            height: 12px;
+            border: 1px solid black;
+            border-bottom-color: transparent;
+            border-right-color: transparent;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            left: 20px;
+            top: 50%;
+        }
+
+        /* 蒙版遮罩 */
+        .mask {
+            padding: 15px;
+            z-index: 2;
+            position: relative;
+            height: 50px;
+            color: #ffffff;
+        }
+
+        .mask:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            height: 100%;
+            z-index: -1;
+        }
+
+        .sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            padding: 5px;
+            background-color: #cae8ca;
+            border: 2px solid #4CAF50;
+        }
+
+        .box-shadow-bottom {
+            box-shadow: 0 15px 15px #eeeeee;
+        }
+
+        /* 整体居中 */
+        .picker {
+            width: 400px;
+            height: 300px;
+            position: relative;
+            background: linear-gradient(to bottom, rgba(117, 107, 128, 0.3) 0%, rgba(117, 107, 128, 0) 25%, rgba(117, 107, 128, 0) 75%, rgba(117, 107, 128, .3) 100%);
+            box-shadow: inset 0px 0px 12px rgba(0, 0, 0, .2);
+            border-radius: 12px;
+        }
+
+        /* 选择框 */
+        .picker::after {
+            content: '';
+            position: absolute;
+            top: 120px;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(117, 107, 128, 0.1) 0%, rgba(117, 107, 128, .2) 50%, rgba(117, 107, 128, .25) 50%, rgba(117, 107, 128, .1) 100%);
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+            border-top: 1px solid rgba(0, 0, 0, .12);
+            border-bottom: 1px solid rgba(0, 0, 0, .12);
+        }
+
+        /* 最大盒子 */
+        .picker .roller {
+            list-style: none;
+            width: 400px;
+            height: 300px;
+            overflow: auto;
+            scroll-snap-type: y mandatory;
+            /* scroll-snap-type: y mandatory 中，y 表示捕捉 y 轴方向上的滚动，
+             mandatory 表示强制将滚动结束后元素的停留位置设置到我们规定的地方。 */
+        }
+
+        .picker .roller li {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #333;
+            scroll-snap-align: start;
+            /* 滚动父容器元素设置scroll-snap-type:y mandatory，强制定位， 子列表元素设置scroll-snap-start使当前聚焦的滚动子元素在滚动方向上相对于父容器顶部对齐，于是效果达成。 */
+        }
+
+        .picker .roller li:last-child {
+            margin-bottom: 120px;
+        }
+        .picker .roller li:hover {
+            transform: scale(1.2, 1.2);
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 滚轮 */
+        .scroll ul {
+            display: block;
+        }
+        .scroll ul li {
+            transition: transform 0.25s ease;
+            float: left;
+            width: 500px;
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+            margin: 10px;
+            background-color: #00b5e1;
+            list-style: none;
+        }
+        .scroll ul li:hover {
+            transform: scale(1.2, 1.2);
+            box-shadow: 0 0 10px #0000ff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<p class="split-line">粘性定位</p>
+<div class="sticky box-shadow-bottom">粘性定位内容</div>
+
+<p class="split-line">三角箭头</p>
+<div class="top-triangle"></div>
+<div class="left-triangle"></div>
+<div class="right-triangle"></div>
+<div class="bottom-triangle"></div>
+
+<div class="triangle-top-left"></div>
+<div class="triangle-top-right"></div>
+<div class="triangle-bottom-left"></div>
+<div class="triangle-bottom-right"></div>
+
+<p class="split-line">矩形复选</p>
+<div class="rectangle-checkbox">
+    <input type="checkbox" name="fruit" id="apple" value=""><label for="apple">苹果</label>
+    <input type="checkbox" name="fruit" id="peach"><label for="peach">桃子</label>
+    <input type="checkbox" name="fruit" id="banana"><label for="banana">香蕉</label>
+    <input type="checkbox" name="fruit" id="pear"><label for="pear">梨子</label>
+    <input type="checkbox" name="fruit" id="other"><label for="other">其它</label>
+</div>
+
+<p class="split-line">对话边框</p>
+<div class="chat-box clear-float">
+    <div class="left-chat">
+        <p>你好啊</p>
+    </div>
+    <div class="right-chat child-float-right">
+        <p>好久不见~</p>
+    </div>
+</div>
+
+<p class="split-line">清除浮动</p>
+<div class="parent-float clear-float">
+    <div class="child-float-left">左侧子块</div>
+    <div class="child-float-right">右侧子块</div>
+</div>
+
+<p class="split-line">菜单箭头</p>
+<div class="box"></div>
+
+<p class="split-line">蒙版遮罩</p>
+<div class="mask">
+    <p>text</p>
+</div>
+
+<p class="split-line">强制换行</p>
+<div>
+    <p style="width: 160px; word-break: break-all;">word-break: break-all; 只对英文起作用，以字母作为换行依据。</p>
+    <p style="width: 160px; word-wrap: break-word;">word-wrap: break-word; 只对英文起作用，以单词作为换行依据。</p>
+
+    <p style="width: 160px; white-space: nowrap;">white-space: nowrap; 文本不会换行，文本会在在同一行上继续，直到遇到标签为止。</p>
+    <p style="width: 160px; white-space: pre-wrap;">white-space: pre-wrap; 保留 空白 符序列，正常地进行
+        换行。
+    </p>
+    <p style="width: 160px; white-space: pre-line;">white-space: pre-line; 合并 空白 符序列，但是保留
+        换行符。
+    </p>
+</div>
+
+<p class="split-line">滚动选择</p>
+<div class="picker">
+    <ul class="roller">
+        <li></li>
+        <li></li>
+        <li>第一</li>
+        <li>第二</li>
+        <li>地三</li>
+        <li>第四</li>
+        <li>第五</li>
+        <li>第六</li>
+        <li>第七</li>
+        <li>第八</li>
+        <li>第九</li>
+        <li>第十</li>
+    </ul>
+</div>
+
+<p class="scroll-line">滚轮选择</p>
+<div class="scroll">
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+</div>
+
+</body>
+</html>
